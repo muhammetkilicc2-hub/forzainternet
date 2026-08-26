@@ -82,16 +82,8 @@ const TIERS: TierData[] = [
 ];
 
 export default function ReservationPage() {
-  const [selectedPrices, setSelectedPrices] = useState<Record<string, { label: string; amount: number }>>({
-    sari: TIERS[0].prices[0],
-    mavi: TIERS[1].prices[0],
-    yesil: TIERS[2].prices[0],
-  });
-  const [selectedPcsByTier, setSelectedPcsByTier] = useState<Record<string, string[]>>({
-    sari: ["PC 1"],
-    mavi: ["PC 11"],
-    yesil: ["PC 38"],
-  });
+  const [selectedPrices, setSelectedPrices] = useState<Record<string, { label: string; amount: number }>>({});
+  const [selectedPcsByTier, setSelectedPcsByTier] = useState<Record<string, string[]>>({});
 
   const [modalOpen, setModalOpen] = useState(false);
   const [activeModalTier, setActiveModalTier] = useState<TierData>(TIERS[0]);
@@ -115,7 +107,14 @@ export default function ReservationPage() {
 
   const handleSelectPrice = (tierId: string, priceObj: { label: string; amount: number }) => {
     triggerHaptic();
-    setSelectedPrices((prev) => ({ ...prev, [tierId]: priceObj }));
+    setSelectedPrices((prev) => {
+      if (prev[tierId]?.label === priceObj.label) {
+        const next = { ...prev };
+        delete next[tierId];
+        return next;
+      }
+      return { ...prev, [tierId]: priceObj };
+    });
   };
 
   const handleTogglePc = (tierId: string, pcName: string) => {
@@ -123,7 +122,6 @@ export default function ReservationPage() {
     setSelectedPcsByTier((prev) => {
       const current = prev[tierId] || [];
       if (current.includes(pcName)) {
-        if (current.length === 1) return prev;
         return { ...prev, [tierId]: current.filter((p) => p !== pcName) };
       } else {
         if (current.length >= 3) {
@@ -137,6 +135,11 @@ export default function ReservationPage() {
 
   const handleOpenPayment = (tier: TierData) => {
     triggerHaptic();
+    let price = selectedPrices[tier.id];
+    if (!price) {
+      price = tier.prices[0];
+      setSelectedPrices((prev) => ({ ...prev, [tier.id]: price }));
+    }
     let pcs = selectedPcsByTier[tier.id] || [];
     if (pcs.length === 0) {
       pcs = [tier.pcs[0]];

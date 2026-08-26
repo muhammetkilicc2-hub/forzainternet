@@ -1,214 +1,139 @@
-import React from "react";
-import type { Metadata } from "next";
+"use client";
+
+import React, { useState } from "react";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
-import PhotoGallery from "@/components/public/PhotoGallery";
 
-export const metadata: Metadata = {
-  title: "Hakkımızda & Mekan Galerisi — Forza İnternet & Cafe",
-  description: "Forza İnternet & Cafe hakkında bilgiler, 540 Hz espor salonu fotoğrafları, donanım özellikleri ve iletişim adresimiz.",
-};
+const PHOTOS = [
+  { src: "/foto2.jpeg", alt: "Forza Gaming Alanı 1" },
+  { src: "/foto3.jpeg", alt: "Forza Gaming Alanı 2" },
+  { src: "/foto4.jpeg", alt: "Forza Gaming Alanı 3" },
+  { src: "/foto6.jpeg", alt: "Forza Gaming Alanı 4" },
+  { src: "/foto5.jpeg", alt: "Forza Gaming Alanı 5" },
+];
 
 export default function AboutPage() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => Math.max(0, prev - 1));
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev >= PHOTOS.length - 1 ? 0 : prev + 1));
+  };
+
   return (
     <>
       <Navbar />
 
       <main className="about">
-        <div className="about-hero">
+        {/* ABOUT HERO */}
+        <section className="about-hero">
           <div className="about-left">
-            <span className="about-badge" style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "6px 14px",
-              borderRadius: "30px",
-              background: "rgba(255, 215, 0, 0.12)",
-              border: "1px solid rgba(255, 215, 0, 0.3)",
-              color: "#ffd700",
-              fontSize: "12px",
-              fontWeight: 800,
-              letterSpacing: "0.5px",
-              width: "fit-content",
-              marginBottom: "8px"
-            }}>
-              ✨ HİKAYEMİZ &amp; VİZYONUMUZ
-            </span>
-            <h1 style={{ fontSize: "clamp(32px, 4.5vw, 54px)", margin: "8px 0" }}>
-              Şehrin Espor Kalbi <span className="gold-text">Forza’da</span> Atıyor
-            </h1>
-            <h2 style={{ fontSize: "clamp(18px, 2.5vw, 24px)", color: "#fdfbf7", margin: "0 0 16px" }}>
-              Kesintisiz Güç, Sıfır Gecikme ve Üst Düzey Konfor
-            </h2>
-            <div className="gold-line" style={{ marginBottom: "18px" }}></div>
+            <h1>FORZA</h1>
+            <h2>HAKKIMIZDA</h2>
+            <div className="gold-line"></div>
             <p>
-              Forza İnternet &amp; Cafe; rekabetçi oyun tutkunlarına, espor takımlarına ve keyifli vakit geçirmek isteyen tüm oyunculara en üst düzey donanım altyapısını sunmak amacıyla kuruldu.
+              Antalya'nın Premium Gaming Merkezi olarak, yüksek performanslı espor bilgisayarlarımız, 540 Hz monitörlerimiz ve konforlu ortamımızla oyunculara benzersiz bir deneyim sunuyoruz.
             </p>
             <p>
-              64 masalık ferah salonumuzda 240Hz, 360Hz ve Türkiye&apos;nin en iddialı <strong>540 Hz</strong> monitörleriyle donatılmış özel espor istasyonları yer almaktadır. Yüksek hızlı simetrik fiber internet bağlantımızla ping değerlerinizi minimumda tutuyoruz.
+              Arkadaşlarınızla takım kurup rekabet edebileceğiniz, turnuva heyecanını yaşayabileceğiniz ve kesintisiz fiber hızında oyunun tadını çıkarabileceğiniz modern bir buluşma noktasıyız.
             </p>
-
-            <div className="about-metrics" style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "12px",
-              marginTop: "20px"
-            }}>
-              <div className="metric-box" style={{
-                background: "rgba(14, 18, 26, 0.7)",
-                border: "1px solid rgba(247, 242, 232, 0.12)",
-                borderRadius: "16px",
-                padding: "16px 12px",
-                textAlign: "center"
-              }}>
-                <strong style={{ display: "block", fontSize: "24px", color: "#ffd700", fontWeight: 800 }}>64</strong>
-                <span style={{ fontSize: "12px", color: "#94a3b8" }}>Gaming Masası</span>
-              </div>
-              <div className="metric-box" style={{
-                background: "rgba(14, 18, 26, 0.7)",
-                border: "1px solid rgba(247, 242, 232, 0.12)",
-                borderRadius: "16px",
-                padding: "16px 12px",
-                textAlign: "center"
-              }}>
-                <strong style={{ display: "block", fontSize: "24px", color: "#0ea5e9", fontWeight: 800 }}>1000 Mbps</strong>
-                <span style={{ fontSize: "12px", color: "#94a3b8" }}>Simetrik Fiber</span>
-              </div>
-              <div className="metric-box" style={{
-                background: "rgba(14, 18, 26, 0.7)",
-                border: "1px solid rgba(247, 242, 232, 0.12)",
-                borderRadius: "16px",
-                padding: "16px 12px",
-                textAlign: "center"
-              }}>
-                <strong style={{ display: "block", fontSize: "24px", color: "#10b981", fontWeight: 800 }}>540 Hz</strong>
-                <span style={{ fontSize: "12px", color: "#94a3b8" }}>Espor Zirvesi</span>
-              </div>
-            </div>
           </div>
 
           <div className="about-right">
-            <img src="/foto1.jpeg" alt="Forza Gaming Salonu" className="about-hero-img" style={{
-              width: "100%",
-              height: "420px",
-              objectFit: "cover",
-              borderRadius: "24px",
-              border: "1px solid rgba(247, 242, 232, 0.16)",
-              boxShadow: "0 20px 50px rgba(0, 0, 0, 0.6)"
-            }} />
+            <img src="/foto1.jpeg" alt="Forza İnternet Cafe Salonu" />
           </div>
-        </div>
+        </section>
 
         {/* WHO WE ARE SECTION */}
-        <section className="about-info" style={{
-          background: "rgba(14, 18, 26, 0.8)",
-          border: "1px solid rgba(247, 242, 232, 0.14)",
-          borderRadius: "24px",
-          padding: "36px",
-          backdropFilter: "blur(20px)"
-        }}>
-          <h2 style={{ fontSize: "24px", fontWeight: 800, color: "#fdfbf7", margin: "0 0 8px" }}>BİZ KİMİZ?</h2>
-          <div className="gold-line" style={{ marginBottom: "16px" }}></div>
-          <p style={{ fontSize: "15px", color: "#cbd5e1", lineHeight: 1.8 }}>
+        <section className="about-info">
+          <h2>BİZ KİMİZ?</h2>
+          <div className="gold-line"></div>
+          <p>
             Forza İnternet &amp; Cafe olarak oyun tutkusunu, en son donanım teknolojilerini ve sıcak bir cafe ortamını bir araya getiriyoruz.
           </p>
-          <p style={{ fontSize: "15px", color: "#cbd5e1", lineHeight: 1.8 }}>
+          <p>
             En yeni nesil RTX ekran kartlı sistemlerimiz, yüksek hızlı simetrik fiber internetimiz ve profesyonel oyuncu koltuklarımız sayesinde espor tutkunlarına en yüksek kare hızı (FPS) ve minimum gecikmeyi garanti ediyoruz.
           </p>
-          <p style={{ fontSize: "15px", color: "#cbd5e1", lineHeight: 1.8 }}>
-            Sadece oyun oynanan bir mekan değil; turnuvalarla topluluğun birleştiği, dostlukların pekiştiği ve keyifli anıların biriktiği Antalya&apos;nın en sevilen dijital yaşam alanıyız.
+          <p>
+            Sadece oyun oynanan bir mekan değil; turnuvalarla topluluğun birleştiği, dostlukların pekiştiği ve keyifli anıların biriktiği Antalya'nın en sevilen dijital yaşam alanıyız.
           </p>
         </section>
 
-        {/* PHOTO GALLERY SLIDER + LIGHTBOX */}
-        <PhotoGallery />
+        {/* PHOTO GALLERY SLIDER */}
+        <section className="fotogaleri" aria-label="Mekan Fotoğrafları Galerisi">
+          <button
+            type="button"
+            className="photo-nav prev"
+            id="prev"
+            aria-label="Önceki Fotoğraf"
+            onClick={prevSlide}
+            disabled={currentIndex === 0}
+          >
+            <i className="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          </button>
 
-        {/* FACILITY HIGHLIGHTS */}
-        <div className="about-info-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "20px"
-        }}>
-          <div className="about-info-card" style={{
-            background: "rgba(14, 18, 26, 0.75)",
-            border: "1px solid rgba(247, 242, 232, 0.12)",
-            borderRadius: "20px",
-            padding: "28px",
-            backdropFilter: "blur(20px)"
-          }}>
-            <div style={{ fontSize: "32px", marginBottom: "12px" }}>⚡</div>
-            <h3 style={{ fontSize: "18px", fontWeight: 800, color: "#fdfbf7", marginBottom: "8px" }}>Yüksek Hızlı Fiber İnternet</h3>
-            <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: 1.6 }}>Yedekli ve düşük ping garantili 1000 Mbps simetrik espor omurgasıyla takılmadan oynayın.</p>
-          </div>
-
-          <div className="about-info-card" style={{
-            background: "rgba(14, 18, 26, 0.75)",
-            border: "1px solid rgba(247, 242, 232, 0.12)",
-            borderRadius: "20px",
-            padding: "28px",
-            backdropFilter: "blur(20px)"
-          }}>
-            <div style={{ fontSize: "32px", marginBottom: "12px" }}>🎧</div>
-            <h3 style={{ fontSize: "18px", fontWeight: 800, color: "#fdfbf7", marginBottom: "8px" }}>Profesyonel Çevre Birimleri</h3>
-            <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: 1.6 }}>HyperX, SteelSeries ve Razer espor serisi kulaklıklar, mekanik klavyeler ve hassas oyuncu fareleri.</p>
-          </div>
-
-          <div className="about-info-card" style={{
-            background: "rgba(14, 18, 26, 0.75)",
-            border: "1px solid rgba(247, 242, 232, 0.12)",
-            borderRadius: "20px",
-            padding: "28px",
-            backdropFilter: "blur(20px)"
-          }}>
-            <div style={{ fontSize: "32px", marginBottom: "12px" }}>🍔</div>
-            <h3 style={{ fontSize: "18px", fontWeight: 800, color: "#fdfbf7", marginBottom: "8px" }}>Zengin Kafe &amp; İçecek Barı</h3>
-            <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: 1.6 }}>Oyununuza ara vermeden masanıza sipariş edebileceğiniz sıcak/soğuk kahveler, tost ve atıştırmalıklar.</p>
-          </div>
-        </div>
-
-        {/* WORKING HOURS & LOCATION */}
-        <div className="about-location-card" style={{
-          background: "linear-gradient(135deg, rgba(14, 18, 26, 0.95), rgba(20, 25, 36, 0.9))",
-          border: "1px solid rgba(247, 242, 232, 0.16)",
-          borderRadius: "24px",
-          padding: "36px",
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: "24px"
-        }}>
-          <div className="location-details" style={{ maxWidth: "600px" }}>
-            <h2 style={{ fontSize: "24px", fontWeight: 800, color: "#fdfbf7", margin: "0 0 8px" }}>Bizi Ziyaret Edin</h2>
-            <p style={{ fontSize: "14px", color: "#94a3b8", margin: "0 0 20px" }}>Merkezi konumumuz ve ferah espor merkezimizle haftanın 7 günü hizmetinizdeyiz.</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-              <div><strong style={{ color: "#fdfbf7" }}>📍 Adres:</strong> Kültür Mh. 3809 Sk. Muratpaşa, Antalya</div>
-              <div><strong style={{ color: "#fdfbf7" }}>🕒 Saatler:</strong> Her gün 09:00 – 04:00</div>
-              <div><strong style={{ color: "#fdfbf7" }}>📞 Telefon:</strong> <a href="tel:05464659693" style={{ color: "#ffd700", fontWeight: 700 }}>0 (546) 465 96 93</a></div>
+          <div className="photo-window">
+            <div
+              className="photo-track"
+              style={{
+                transform: `translateX(-${currentIndex * (100 / 3)}%)`,
+                transition: "transform 0.35s ease",
+              }}
+            >
+              {PHOTOS.map((photo, index) => (
+                <img
+                  key={index}
+                  src={photo.src}
+                  alt={photo.alt}
+                  onClick={() => setLightboxSrc(photo.src)}
+                />
+              ))}
             </div>
           </div>
 
-          <div className="location-cta">
-            <a
-              href="https://wa.me/905464659693?text=Merhaba,%20Forza%20İnternet%20Cafe%20hakkında%20bilgi%20almak%20istiyorum."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "16px 28px",
-                fontSize: "15px",
-                fontWeight: 800,
-                borderRadius: "14px",
-                textDecoration: "none"
-              }}
-            >
-              💬 WhatsApp ile Yol Tarifi Al
-            </a>
-          </div>
+          <button
+            type="button"
+            className="photo-nav next"
+            id="next"
+            aria-label="Sonraki Fotoğraf"
+            onClick={nextSlide}
+            disabled={currentIndex >= PHOTOS.length - 3}
+          >
+            <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+        </section>
+
+        {/* LIGHTBOX MODAL */}
+        <div
+          className={`lightbox ${lightboxSrc ? "active" : ""}`}
+          id="lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Büyütülmüş Fotoğraf Görüntüleyici"
+          onClick={() => setLightboxSrc(null)}
+        >
+          <button
+            type="button"
+            className="close-lightbox"
+            id="closeLightbox"
+            aria-label="Fotoğrafı Kapat"
+            onClick={() => setLightboxSrc(null)}
+          >
+            ×
+          </button>
+          {lightboxSrc && (
+            <img
+              src={lightboxSrc}
+              alt="Büyütülmüş mekan fotoğrafı"
+              id="lightboxImage"
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
         </div>
       </main>
 

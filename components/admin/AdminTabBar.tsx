@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -8,11 +8,11 @@ export default function AdminTabBar() {
   const pathname = usePathname();
 
   const tabs = [
-    { href: "/admin", label: "Panel", icon: "📊" },
-    { href: "/admin/masalar", label: "Masalar", icon: "🖥️" },
-    { href: "/admin/kampanya", label: "Fiyatlar", icon: "🏷️" },
-    { href: "/admin/rezervasyonlar", label: "Talepler", icon: "📅" },
-    { href: "/admin/ayarlar", label: "Ayarlar", icon: "⚙️" },
+    { href: "/admin", label: "Panel", iconClass: "fa-solid fa-gauge-high" },
+    { href: "/admin/masalar", label: "Masalar", iconClass: "fa-solid fa-desktop" },
+    { href: "/admin/kampanya", label: "Fiyatlar", iconClass: "fa-solid fa-tags" },
+    { href: "/admin/rezervasyonlar", label: "Talepler", iconClass: "fa-solid fa-calendar-check" },
+    { href: "/admin/ayarlar", label: "Ayarlar", iconClass: "fa-solid fa-gear" },
   ];
 
   return (
@@ -25,9 +25,7 @@ export default function AdminTabBar() {
             href={tab.href}
             className={`ios-tab-item ${isActive ? "active" : ""}`}
           >
-            <span className="ios-tab-icon" style={{ fontSize: "18px" }}>
-              {tab.icon}
-            </span>
+            <i className={tab.iconClass} aria-hidden="true"></i>
             <span className="ios-tab-label">{tab.label}</span>
           </Link>
         );

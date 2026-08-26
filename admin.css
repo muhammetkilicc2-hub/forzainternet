@@ -1405,28 +1405,27 @@ button, input, select { font-family: inherit; }
 .toast-item.uyari i { color: var(--a-warning); }
 
 /* =========================================================
-   9. iOS TOP TAB BAR (STUDIO NAVIGATION DOCK)
+   9. iOS BOTTOM TAB BAR (NATIVE MOBILE DOCK)
    ========================================================= */
 .ios-tab-bar {
-    position: sticky;
-    top: 74px;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-width: 600px;
-    margin: 10px auto 20px;
-    height: 52px;
+    position: fixed;
+    bottom: max(12px, env(safe-area-inset-bottom, 12px));
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 20px);
+    max-width: 480px;
+    height: 62px;
     background: rgba(14, 18, 26, 0.94);
     backdrop-filter: blur(30px) saturate(180%);
     -webkit-backdrop-filter: blur(30px) saturate(180%);
     border: 1px solid var(--cream-border-strong);
     border-radius: var(--a-radius-full);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 238, 219, 0.12);
+    box-shadow: var(--a-shadow-lg), 0 0 30px rgba(245, 238, 219, 0.14);
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 0 8px;
-    z-index: 900;
+    padding: 0 6px;
+    z-index: 99999;
     box-sizing: border-box;
     pointer-events: auto;
 }

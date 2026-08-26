@@ -24,40 +24,45 @@ export const KATEGORILER: Record<PcKategori, KategoriBilgisi> = {
   },
 };
 
-// 64 Masalık Standart Liste Oluştur
+// 48 Masalık Salon Gerçek Masa Listesi (bilgisayar.json ile birebir eşleşir)
+const SARI_IDS = [1, 2, 4, 5, 6, 8, 9, 10];
+const MAVI_IDS = [11, 12, 14, 15, 16, 17, 18, 20, 22, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 36, 37, 42];
+const YESIL_IDS = [38, 40, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 54, 55, 56, 57, 59, 60];
+
 function createInitialPcList(): PC[] {
   const list: PC[] = [];
-  // Sarı: PC 1 - PC 24
-  for (let i = 1; i <= 24; i++) {
+
+  SARI_IDS.forEach((no) => {
     list.push({
-      id: `pc-${i}`,
-      no: i,
-      isim: `PC ${i}`,
+      id: `pc-${no}`,
+      no: no,
+      isim: `PC ${no}`,
       kategori: "sari",
-      durum: i % 4 === 0 ? "kullanimda" : i === 13 ? "rezerve" : "bos",
+      durum: "bos",
     });
-  }
-  // Mavi: PC 25 - PC 48
-  for (let i = 25; i <= 48; i++) {
+  });
+
+  MAVI_IDS.forEach((no) => {
     list.push({
-      id: `pc-${i}`,
-      no: i,
-      isim: `PC ${i}`,
+      id: `pc-${no}`,
+      no: no,
+      isim: `PC ${no}`,
       kategori: "mavi",
-      durum: i % 3 === 0 ? "kullanimda" : i === 31 ? "rezerve" : "bos",
+      durum: "bos",
     });
-  }
-  // Yeşil: PC 49 - PC 64
-  for (let i = 49; i <= 64; i++) {
+  });
+
+  YESIL_IDS.forEach((no) => {
     list.push({
-      id: `pc-${i}`,
-      no: i,
-      isim: `PC ${i}`,
+      id: `pc-${no}`,
+      no: no,
+      isim: `PC ${no}`,
       kategori: "yesil",
-      durum: i % 5 === 0 ? "kullanimda" : i === 55 ? "rezerve" : "bos",
+      durum: "bos",
     });
-  }
-  return list;
+  });
+
+  return list.sort((a, b) => a.no - b.no);
 }
 
 // Global Singletons (Hot reload korumalı)

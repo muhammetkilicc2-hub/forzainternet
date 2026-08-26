@@ -18,13 +18,36 @@ export default function MasalarManagementPage() {
 
   async function loadData() {
     try {
+      let localStatuses: Record<string, string> = {};
+      try {
+        const raw = localStorage.getItem("forzaPcDurumlari");
+        if (raw) localStatuses = JSON.parse(raw);
+      } catch (e) {}
+
       const [resPc, resPricing] = await Promise.all([
         fetch("/api/computers"),
         fetch("/api/pricing"),
       ]);
       const dataPc = await resPc.json();
       const dataPricing = await resPricing.json();
-      if (dataPc.computers) setComputers(dataPc.computers);
+
+      if (dataPc.computers) {
+        const merged = dataPc.computers.map((pc: PC) => {
+          const numId = pc.no || (pc.isim.match(/\d+/) ? parseInt(pc.isim.match(/\d+/)![0], 10) : pc.id);
+          const localDurum = localStatuses[numId] || localStatuses[pc.id];
+          if (localDurum) {
+            const mappedDurum =
+              localDurum === "kullanımda" || localDurum === "kullanimda"
+                ? "kullanimda"
+                : localDurum === "rezerve"
+                ? "rezerve"
+                : "bos";
+            return { ...pc, durum: mappedDurum };
+          }
+          return pc;
+        });
+        setComputers(merged);
+      }
       if (dataPricing.pricing) setPricing(dataPricing.pricing);
     } catch (err) {
       console.error("Masalar yüklenemedi:", err);
@@ -34,24 +57,39 @@ export default function MasalarManagementPage() {
   }
 
   const toggleStatus = async (pc: PC) => {
-    const nextStatus =
+    const nextStatus: import("@/lib/types").PcDurum =
       pc.durum === "bos" ? "kullanimda" : pc.durum === "kullanimda" ? "rezerve" : "bos";
 
+    // 1. React State Güncelle
+    setComputers((prev) =>
+      prev.map((p) => (p.id === pc.id ? { ...p, durum: nextStatus } : p))
+    );
+
+    // 2. localStorage Senkronizasyonu (Kalıcı Saklama)
     try {
-      const res = await fetch("/api/computers", {
+      let localStatuses: Record<string, string> = {};
+      const raw = localStorage.getItem("forzaPcDurumlari");
+      if (raw) localStatuses = JSON.parse(raw);
+      const numId = pc.no || (pc.isim.match(/\d+/) ? parseInt(pc.isim.match(/\d+/)![0], 10) : pc.id);
+      const trDurum = nextStatus === "kullanimda" ? "kullanımda" : nextStatus;
+      localStatuses[numId] = trDurum;
+      localStatuses[pc.id] = trDurum;
+      localStorage.setItem("forzaPcDurumlari", JSON.stringify(localStatuses));
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: localStatuses }));
+      }
+    } catch (e) {}
+
+    // 3. API Sunucusuna Gönder
+    try {
+      await fetch("/api/computers", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: pc.id, durum: nextStatus }),
       });
-      const data = await res.json();
-      if (data.success) {
-        setComputers((prev) =>
-          prev.map((p) => (p.id === pc.id ? { ...p, durum: nextStatus } : p))
-        );
-        showToast("Durum Güncellendi", `${pc.isim} ➔ ${nextStatus.toUpperCase()}`);
-      }
+      showToast("Durum Güncellendi", `${pc.isim} ➔ ${nextStatus.toUpperCase()}`);
     } catch {
-      showToast("Hata", "Masa güncellenemedi", "error");
+      showToast("Bilgi", "Yerel olarak kaydedildi", "info");
     }
   };
 

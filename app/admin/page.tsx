@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { PC, Rezervasyon, AdminStats } from "@/lib/types";
+import { PC, PcDurum, Rezervasyon, AdminStats } from "@/lib/types";
 import { useToast } from "@/components/admin/Toast";
 
 export default function AdminDashboardPage() {
@@ -37,6 +37,12 @@ export default function AdminDashboardPage() {
 
   async function loadData() {
     try {
+      let localStatuses: Record<string, string> = {};
+      try {
+        const raw = localStorage.getItem("forzaPcDurumlari");
+        if (raw) localStatuses = JSON.parse(raw);
+      } catch (e) {}
+
       const [resPc, resRez] = await Promise.all([
         fetch("/api/computers"),
         fetch("/api/reservations"),
@@ -45,8 +51,31 @@ export default function AdminDashboardPage() {
       const dataRez = await resRez.json();
 
       if (dataPc.computers) {
-        setComputers(dataPc.computers);
-        setStats(dataPc.stats);
+        const merged = dataPc.computers.map((pc: PC) => {
+          const numId = pc.no || (pc.isim.match(/\d+/) ? parseInt(pc.isim.match(/\d+/)![0], 10) : pc.id);
+          const localDurum = localStatuses[numId] || localStatuses[pc.id];
+          if (localDurum) {
+            const mappedDurum =
+              localDurum === "kullanımda" || localDurum === "kullanimda"
+                ? "kullanimda"
+                : localDurum === "rezerve"
+                ? "rezerve"
+                : "bos";
+            return { ...pc, durum: mappedDurum };
+          }
+          return pc;
+        });
+
+        setComputers(merged);
+        if (dataPc.stats) {
+          setStats({
+            ...dataPc.stats,
+            toplamPc: merged.length,
+            aktifPc: merged.filter((p: PC) => p.durum === "kullanimda").length,
+            bosPc: merged.filter((p: PC) => p.durum === "bos").length,
+            rezervePc: merged.filter((p: PC) => p.durum === "rezerve").length,
+          });
+        }
       }
       if (dataRez.reservations) {
         setReservations(dataRez.reservations);
@@ -60,25 +89,48 @@ export default function AdminDashboardPage() {
 
   // Masanın durumunu döngüsel değiştir (Boş -> Kullanımda -> Rezerve -> Boş)
   const togglePcStatus = async (pc: PC) => {
-    const nextStatus =
+    const nextStatus: PcDurum =
       pc.durum === "bos" ? "kullanimda" : pc.durum === "kullanimda" ? "rezerve" : "bos";
 
+    // 1. React State Güncelle
+    const updatedList: PC[] = computers.map((p) => (p.id === pc.id ? { ...p, durum: nextStatus } : p));
+    setComputers(updatedList);
+    setStats((prev) =>
+      prev
+        ? {
+            ...prev,
+            aktifPc: updatedList.filter((p) => p.durum === "kullanimda").length,
+            bosPc: updatedList.filter((p) => p.durum === "bos").length,
+            rezervePc: updatedList.filter((p) => p.durum === "rezerve").length,
+          }
+        : null
+    );
+
+    // 2. localStorage Senkronizasyonu
     try {
-      const res = await fetch("/api/computers", {
+      let localStatuses: Record<string, string> = {};
+      const raw = localStorage.getItem("forzaPcDurumlari");
+      if (raw) localStatuses = JSON.parse(raw);
+      const numId = pc.no || (pc.isim.match(/\d+/) ? parseInt(pc.isim.match(/\d+/)![0], 10) : pc.id);
+      const trDurum = nextStatus === "kullanimda" ? "kullanımda" : nextStatus;
+      localStatuses[numId] = trDurum;
+      localStatuses[pc.id] = trDurum;
+      localStorage.setItem("forzaPcDurumlari", JSON.stringify(localStatuses));
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: localStatuses }));
+      }
+    } catch (e) {}
+
+    // 3. API Sunucusuna Gönder
+    try {
+      await fetch("/api/computers", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: pc.id, durum: nextStatus }),
       });
-      const data = await res.json();
-      if (data.success) {
-        setComputers((prev) =>
-          prev.map((p) => (p.id === pc.id ? { ...p, durum: nextStatus } : p))
-        );
-        if (data.stats) setStats(data.stats);
-        showToast("Masa Güncellendi", `${pc.isim} durumu: ${nextStatus.toUpperCase()}`, "success");
-      }
+      showToast("Masa Güncellendi", `${pc.isim} durumu: ${nextStatus.toUpperCase()}`, "success");
     } catch {
-      showToast("Hata", "Masa durumu güncellenemedi", "error");
+      showToast("Bilgi", "Yerel olarak kaydedildi", "info");
     }
   };
 

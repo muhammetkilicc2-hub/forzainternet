@@ -117,22 +117,6 @@ export default function ReservationPage() {
     });
   };
 
-  const handleTogglePc = (tierId: string, pcName: string) => {
-    triggerHaptic();
-    setSelectedPcsByTier((prev) => {
-      const current = prev[tierId] || [];
-      if (current.includes(pcName)) {
-        return { ...prev, [tierId]: current.filter((p) => p !== pcName) };
-      } else {
-        if (current.length >= 3) {
-          alert("Aynı anda en fazla 3 masa seçebilirsiniz.");
-          return prev;
-        }
-        return { ...prev, [tierId]: [...current, pcName] };
-      }
-    });
-  };
-
   const handleOpenPayment = (tier: TierData) => {
     triggerHaptic();
     let price = selectedPrices[tier.id];
@@ -140,19 +124,12 @@ export default function ReservationPage() {
       price = tier.prices[0];
       setSelectedPrices((prev) => ({ ...prev, [tier.id]: price }));
     }
-    let pcs = selectedPcsByTier[tier.id] || [];
-    if (pcs.length === 0) {
-      pcs = [tier.pcs[0]];
-      setSelectedPcsByTier((prev) => ({ ...prev, [tier.id]: pcs }));
-    }
     setActiveModalTier(tier);
     setModalOpen(true);
   };
 
   const calculateTotal = () => {
-    const price = selectedPrices[activeModalTier.id]?.amount || 0;
-    const count = (selectedPcsByTier[activeModalTier.id] || []).length;
-    return price * count;
+    return selectedPrices[activeModalTier.id]?.amount || activeModalTier.prices[0].amount;
   };
 
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,9 +158,8 @@ export default function ReservationPage() {
 
     setIsSubmitting(true);
 
-    const pcs = selectedPcsByTier[activeModalTier.id] || [];
     const total = calculateTotal();
-    const durationLabel = selectedPrices[activeModalTier.id]?.label || "5 Saat Paket";
+    const durationLabel = selectedPrices[activeModalTier.id]?.label || activeModalTier.prices[0].label;
 
     try {
       await fetch("/api/reservations", {
@@ -192,8 +168,8 @@ export default function ReservationPage() {
         body: JSON.stringify({
           musteriAdi: `${name.trim()} ${surname.trim()}`,
           telefon: phone.trim(),
-          masaId: pcs.join(", "),
-          masaIsim: pcs.join(", "),
+          masaId: activeModalTier.name,
+          masaIsim: `${activeModalTier.name} (${activeModalTier.badge})`,
           kategori: activeModalTier.id,
           tarih: new Date().toISOString().split("T")[0],
           saat: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }),
@@ -203,7 +179,7 @@ export default function ReservationPage() {
         }),
       });
 
-      alert(`✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: ${pcs.join(", ")}\nToplam Tutar: ₺${total}\n\nEn kısa sürede onay iletilecektir.`);
+      alert(`✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Paket: ${activeModalTier.name}\nTarife: ${durationLabel}\nToplam Tutar: ₺${total}\n\nEn kısa sürede onay iletilecektir.`);
       setModalOpen(false);
       setName("");
       setSurname("");
@@ -235,7 +211,6 @@ export default function ReservationPage() {
           <div className="kampanya-kartlari">
             {TIERS.map((tier) => {
               const currentPrice = selectedPrices[tier.id];
-              const currentPcs = selectedPcsByTier[tier.id] || [];
 
               return (
                 <div key={tier.id} className={`kart ${tier.id}`} data-tier={tier.id}>
@@ -266,15 +241,15 @@ export default function ReservationPage() {
                       return (
                         <div
                           key={pIdx}
-                          className={`fiyat ${isSelected ? "secili-fiyat" : ""}`}
+                          className={`fiyat ${isSelected ? "secili" : ""}`}
                           role="button"
                           tabIndex={0}
                           aria-label={`${tier.name} ${p.label}`}
                           onClick={() => handleSelectPrice(tier.id, p)}
                           style={{
                             cursor: "pointer",
-                            borderColor: isSelected ? "var(--cream-gold)" : undefined,
-                            background: isSelected ? "rgba(255, 215, 0, 0.12)" : undefined,
+                            borderColor: isSelected ? "var(--gold)" : undefined,
+                            background: isSelected ? "rgba(255, 215, 0, 0.14)" : undefined,
                           }}
                         >
                           <span>{p.label}</span>
@@ -282,28 +257,6 @@ export default function ReservationPage() {
                         </div>
                       );
                     })}
-
-                    <div className="bolum-basligi" style={{ marginTop: "14px" }}>
-                      <i className="fa-solid fa-desktop" aria-hidden="true"></i> Masa Seçin (Maks. 3)
-                    </div>
-
-                    <div className="pc-container" aria-label={`${tier.name} Bilgisayarları`}>
-                      {tier.pcs.map((pcName) => {
-                        const isSelected = currentPcs.includes(pcName);
-                        return (
-                          <div
-                            key={pcName}
-                            className={`comp ${isSelected ? "secili" : ""}`}
-                            tabIndex={0}
-                            role="button"
-                            aria-label={pcName}
-                            onClick={() => handleTogglePc(tier.id, pcName)}
-                          >
-                            {pcName}
-                          </div>
-                        );
-                      })}
-                    </div>
 
                     <button
                       type="button"
@@ -317,13 +270,13 @@ export default function ReservationPage() {
                         width: "100%",
                         cursor: "pointer",
                       }}
-                      aria-label="Ödemeye Geç"
+                      aria-label="Rezervasyon Yap"
                       onClick={() => handleOpenPayment(tier)}
                     >
-                      <i className="fa-solid fa-credit-card"></i>{" "}
-                      {currentPcs.length > 0
-                        ? `${currentPcs.length} Masa Seçildi (₺${(currentPrice?.amount || 0) * currentPcs.length}) — Ödemeye Geç`
-                        : "Ödemeye Geç"}
+                      <i className="fa-solid fa-calendar-check"></i>{" "}
+                      {currentPrice
+                        ? `${currentPrice.label} (₺${currentPrice.amount}) — Rezervasyon Yap`
+                        : "Paket Seç & Rezervasyon Yap"}
                     </button>
                   </div>
                 </div>
@@ -366,19 +319,13 @@ export default function ReservationPage() {
 
             <div className="payment-summary">
               <div className="payment-summary-row">
-                <span>Seçilen Bilgisayarlar</span>
-                <strong id="paymentPc">
-                  {(selectedPcsByTier[activeModalTier.id] || []).join(", ") || "PC -"}
-                </strong>
-              </div>
-              <div className="payment-summary-row">
                 <span>Donanım Paketi</span>
-                <strong id="paymentPackage">{activeModalTier.name}</strong>
+                <strong id="paymentPackage">{activeModalTier.name} ({activeModalTier.badge})</strong>
               </div>
               <div className="payment-summary-row">
                 <span>Süre Tarifesi</span>
                 <strong id="paymentDuration">
-                  {selectedPrices[activeModalTier.id]?.label || "-"}
+                  {selectedPrices[activeModalTier.id]?.label || activeModalTier.prices[0].label}
                 </strong>
               </div>
               <div className="payment-total">

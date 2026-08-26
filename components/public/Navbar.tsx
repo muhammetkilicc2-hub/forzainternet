@@ -36,7 +36,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav>
+      <nav className="public-navbar">
         <Link
           href="/"
           className="logo-brand"

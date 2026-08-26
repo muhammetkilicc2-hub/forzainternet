@@ -206,7 +206,8 @@ button, input {
 /* =========================================================
    3. NAVIGATION (PREMIUM FLOATING GLASS)
    ========================================================= */
-nav {
+nav.public-navbar,
+nav:not(.ios-tab-bar) {
     position: fixed;
     top: 16px;
     left: 50%;
@@ -230,7 +231,8 @@ nav {
                 transform var(--duration-normal) var(--spring-smooth);
 }
 
-nav.scrolled {
+nav.public-navbar.scrolled,
+nav:not(.ios-tab-bar).scrolled {
     background: var(--bg-glass-heavy);
     border-color: rgba(255, 255, 255, 0.14);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);

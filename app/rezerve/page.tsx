@@ -180,6 +180,27 @@ export default function ReservationPage() {
     setCardExpiry(val);
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let digits = e.target.value.replace(/\D/g, "");
+    if (digits.startsWith("0")) digits = digits.slice(1);
+    digits = digits.slice(0, 10);
+
+    let formatted = "";
+    if (digits.length > 0) {
+      formatted = "0 (" + digits.slice(0, 3);
+      if (digits.length >= 3) {
+        formatted += ") " + digits.slice(3, 6);
+      }
+      if (digits.length >= 6) {
+        formatted += " " + digits.slice(6, 8);
+      }
+      if (digits.length >= 8) {
+        formatted += " " + digits.slice(8, 10);
+      }
+    }
+    setPhone(formatted);
+  };
+
   const handleSubmitReservation = async () => {
     if (!name.trim() || !surname.trim()) {
       alert("Lütfen ad ve soyadınızı giriniz.");
@@ -508,10 +529,10 @@ export default function ReservationPage() {
               <input
                 type="tel"
                 id="paymentPhone"
-                placeholder="05XX XXX XX XX"
+                placeholder="0 (5XX) XXX XX XX"
                 autoComplete="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={handlePhoneChange}
                 required
               />
             </div>

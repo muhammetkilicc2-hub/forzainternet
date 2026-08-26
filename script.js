@@ -380,6 +380,7 @@
                         kart.dispatchEvent(new Event("forzaYenidenHesapla"))            // Her kart için seçim ve hesaplama mekanizması
             kartlar.forEach(function (kart) {
                 const fiyatlar = kart.querySelectorAll(".fiyat");
+                const pcler = kart.querySelectorAll(".comp");
                 const odemeBtn = kart.querySelector(".odeme-btn");
 
                 function triggerHaptic() {
@@ -390,6 +391,9 @@
 
                 function toplamFiyatHesapla() {
                     const seciliFiyat = kart.querySelector(".fiyat.secili");
+                    const seciliPcler = kart.querySelectorAll(".comp.secili");
+                    const pcSayisi = seciliPcler.length;
+
                     let tekilFiyat = 0;
                     let sureEtiket = "";
 
@@ -403,15 +407,21 @@
                         if (span) sureEtiket = span.textContent.trim();
                     }
 
+                    const toplam = tekilFiyat * pcSayisi;
+
                     if (odemeBtn) {
-                        if (seciliFiyat) {
-                            odemeBtn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> ' + sureEtiket + ' (' + tekilFiyat.toLocaleString("tr-TR") + ' TL) — Rezervasyon Yap';
+                        if (seciliFiyat && pcSayisi > 0) {
+                            odemeBtn.innerHTML = '<i class="fa-solid fa-credit-card"></i> ' + pcSayisi + ' Masa Seçildi (' + toplam.toLocaleString("tr-TR") + ' TL) — Ödemeye Geç';
+                        } else if (pcSayisi > 0) {
+                            odemeBtn.innerHTML = '<i class="fa-solid fa-credit-card"></i> ' + pcSayisi + ' Masa Seçildi (Tarife Seçin)';
+                        } else if (seciliFiyat) {
+                            odemeBtn.innerHTML = '<i class="fa-solid fa-credit-card"></i> ' + sureEtiket + ' — Masa Seçin';
                         } else {
-                            odemeBtn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Paket Seç &amp; Rezervasyon Yap';
+                            odemeBtn.innerHTML = '<i class="fa-solid fa-credit-card"></i> Masa &amp; Tarife Seçin';
                         }
                     }
 
-                    return tekilFiyat;
+                    return toplam;
                 }
 
                 // Fiyat Seçimi (Aç/Kapa - Toggle)
@@ -422,9 +432,10 @@
                         kartlar.forEach(function (digerKart) {
                             if (digerKart !== kart) {
                                 digerKart.querySelectorAll(".fiyat.secili").forEach(function (f) { f.classList.remove("secili"); });
+                                digerKart.querySelectorAll(".comp.secili").forEach(function (c) { c.classList.remove("secili"); });
                                 const digerBtn = digerKart.querySelector(".odeme-btn");
                                 if (digerBtn) {
-                                    digerBtn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Paket Seç &amp; Rezervasyon Yap';
+                                    digerBtn.innerHTML = '<i class="fa-solid fa-credit-card"></i> Masa &amp; Tarife Seçin';
                                 }
                             }
                         });
@@ -447,6 +458,44 @@
                         }
                     });
                 });
+
+                // Masa Seçimi (Aç/Kapa - Toggle, Maksimum 3)
+                pcler.forEach(function (pc) {
+                    function masaSec() {
+                        triggerHaptic();
+                        if (pc.classList.contains("dolu") || pc.classList.contains("rezerveli")) {
+                            alert("Bu bilgisayar şu anda müsait değildir.");
+                            return;
+                        }
+
+                        // Diğer kartların seçimlerini temizle
+                        kartlar.forEach(function (digerKart) {
+                            if (digerKart !== kart) {
+                                digerKart.querySelectorAll(".comp.secili").forEach(function (c) { c.classList.remove("secili"); });
+                            }
+                        });
+
+                        if (pc.classList.contains("secili")) {
+                            pc.classList.remove("secili");
+                        } else {
+                            const seciliSayisi = kart.querySelectorAll(".comp.secili").length;
+                            if (seciliSayisi >= 3) {
+                                alert("Aynı anda en fazla 3 masa seçebilirsiniz.");
+                                return;
+                            }
+                            pc.classList.add("secili");
+                        }
+                        toplamFiyatHesapla();
+                    }
+
+                    pc.addEventListener("click", masaSec);
+                    pc.addEventListener("keydown", function (e) {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            masaSec();
+                        }
+                    });
+                });
             });
         }());
 
@@ -460,6 +509,7 @@
 
             const paymentClose = document.getElementById("paymentClose");
             const paymentSubmit = document.getElementById("paymentSubmit");
+            const paymentPc = document.getElementById("paymentPc");
             const paymentPackage = document.getElementById("paymentPackage");
             const paymentDuration = document.getElementById("paymentDuration");
             const paymentTotal = document.getElementById("paymentTotal");
@@ -478,6 +528,7 @@
 
             function openModal(data) {
                 currentReservation = data;
+                if (paymentPc) paymentPc.textContent = data.pcs.join(", ");
                 if (paymentPackage) paymentPackage.textContent = data.package;
                 if (paymentDuration) paymentDuration.textContent = data.duration;
                 if (paymentTotal) paymentTotal.textContent = "₺" + data.price.toLocaleString("tr-TR");
@@ -537,39 +588,45 @@
                 });
             }
 
-            // "Rezervasyon Yap" Butonlarına Tıklama
+            // "Ödemeye Geç" Butonlarına Tıklama
             document.querySelectorAll(".odeme-btn").forEach(function (btn) {
                 btn.addEventListener("click", function () {
                     const kart = btn.closest(".kart");
                     if (!kart) return;
 
-                    let seciliFiyat = kart.querySelector(".fiyat.secili");
-                    const fiyatlar = kart.querySelectorAll(".fiyat");
-                    if (!seciliFiyat && fiyatlar.length > 0) {
-                        fiyatlar[0].classList.add("secili");
-                        seciliFiyat = fiyatlar[0];
+                    const seciliFiyat = kart.querySelector(".fiyat.secili");
+                    const seciliPcler = Array.from(kart.querySelectorAll(".comp.secili"));
+
+                    if (!seciliPcler.length) {
+                        alert("Lütfen rezervasyon yapmak istediğiniz en az 1 adet masayı seçiniz.");
+                        return;
+                    }
+                    if (!seciliFiyat) {
+                        alert("Lütfen bir süre tarifesi (5 Saat veya Gün Boyu) seçiniz.");
+                        return;
                     }
 
+                    const pcs = seciliPcler.map(function (p) { return p.textContent.trim(); });
                     const packageTitle = kart.querySelector("h3");
                     const packageName = packageTitle ? packageTitle.textContent.trim() : "Forza Kampanya";
-                    const durationEl = seciliFiyat ? seciliFiyat.querySelector("span") : null;
+                    const durationEl = seciliFiyat.querySelector("span");
                     const duration = durationEl ? durationEl.textContent.trim() : "5 Saat Paket";
                     
-                    const priceEl = seciliFiyat ? seciliFiyat.querySelector("strong") : null;
+                    const priceEl = seciliFiyat.querySelector("strong");
                     let unitPrice = 0;
                     if (priceEl) {
                         const match = priceEl.textContent.match(/\d+/);
                         if (match) unitPrice = parseInt(match[0], 10);
                     }
 
+                    const total = unitPrice * pcs.length;
+
                     openModal({
+                        pcs: pcs,
                         package: packageName,
                         duration: duration,
-                        price: unitPrice,
+                        price: total,
                         unitPrice: unitPrice
-                    });
-                });
-            });                   unitPrice: unitPrice
                     });
                 });
             });
@@ -637,18 +694,30 @@
                                 tur: "siparis",
                                 durum: "pending",
                                 baslik: "Yeni Rezervasyon — " + currentReservation.package,
-                                mesaj: currentReservation.package + " · " + currentReservation.duration + " · ₺" + currentReservation.price.toLocaleString("tr-TR") + " · " + name + " " + surname + " (" + phone + ")",
+                                mesaj: (currentReservation.pcs ? currentReservation.pcs.join(", ") : "") + " · " + currentReservation.package + " · " + currentReservation.duration + " · ₺" + currentReservation.price.toLocaleString("tr-TR") + " · " + name + " " + surname + " (" + phone + ")",
+                                pcler: currentReservation.pcs,
                                 kampanya: currentReservation.package,
                                 sure: currentReservation.duration,
                                 tutar: currentReservation.price,
                                 musteri: name + " " + surname,
                                 telefon: phone
                             });
+
+                            // Seçilen masaları geçici rezerve durumuna al
+                            if (Array.isArray(currentReservation.pcs)) {
+                                currentReservation.pcs.forEach(function (pcName) {
+                                    const pcId = pcData.idCikar(pcName);
+                                    if (pcId !== null) {
+                                        pcData.tekDurumGuncelle(pcId, pcData.DURUM.REZERVE);
+                                    }
+                                });
+                            }
                         }
 
-                        alert("✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Paket: " + currentReservation.package + "\nTarife: " + currentReservation.duration + "\nTutar: ₺" + currentReservation.price.toLocaleString("tr-TR") + "\n\nİşletmemize geldiğinizde adınızı belirterek yerinize geçebilirsiniz.");
+                        alert("✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: " + (currentReservation.pcs ? currentReservation.pcs.join(", ") : "-") + "\nPaket: " + currentReservation.package + "\nTarife: " + currentReservation.duration + "\nTutar: ₺" + currentReservation.price.toLocaleString("tr-TR") + "\n\nİşletmemize geldiğinizde adınızı belirterek masanıza geçebilirsiniz.");
 
                         // Seçimleri sıfırla
+                        document.querySelectorAll(".comp.secili").forEach(function (c) { c.classList.remove("secili"); });
                         document.querySelectorAll(".fiyat.secili").forEach(function (f) { f.classList.remove("secili"); });
                         document.querySelectorAll(".kampanya-kartlari .kart").forEach(function (k) {
                             k.dispatchEvent(new Event("forzaYenidenHesapla"));

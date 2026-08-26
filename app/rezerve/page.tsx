@@ -117,19 +117,44 @@ export default function ReservationPage() {
     });
   };
 
+  const handleTogglePc = (tierId: string, pcName: string) => {
+    triggerHaptic();
+    setSelectedPcsByTier((prev) => {
+      const current = prev[tierId] || [];
+      if (current.includes(pcName)) {
+        return { ...prev, [tierId]: current.filter((p) => p !== pcName) };
+      } else {
+        if (current.length >= 3) {
+          alert("Tek seferde en fazla 3 masa seçebilirsiniz.");
+          return prev;
+        }
+        return { ...prev, [tierId]: [...current, pcName] };
+      }
+    });
+  };
+
   const handleOpenPayment = (tier: TierData) => {
     triggerHaptic();
-    let price = selectedPrices[tier.id];
-    if (!price) {
-      price = tier.prices[0];
-      setSelectedPrices((prev) => ({ ...prev, [tier.id]: price }));
+    const pcs = selectedPcsByTier[tier.id] || [];
+    const price = selectedPrices[tier.id];
+
+    if (pcs.length === 0) {
+      alert("Lütfen rezervasyon yapmak istediğiniz en az 1 adet masayı seçiniz.");
+      return;
     }
+    if (!price) {
+      alert("Lütfen bir süre tarifesi (5 Saat veya Gün Boyu) seçiniz.");
+      return;
+    }
+
     setActiveModalTier(tier);
     setModalOpen(true);
   };
 
   const calculateTotal = () => {
-    return selectedPrices[activeModalTier.id]?.amount || activeModalTier.prices[0].amount;
+    const unitPrice = selectedPrices[activeModalTier.id]?.amount || 0;
+    const pcs = selectedPcsByTier[activeModalTier.id] || [];
+    return unitPrice * pcs.length;
   };
 
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,8 +183,9 @@ export default function ReservationPage() {
 
     setIsSubmitting(true);
 
+    const pcs = selectedPcsByTier[activeModalTier.id] || [];
     const total = calculateTotal();
-    const durationLabel = selectedPrices[activeModalTier.id]?.label || activeModalTier.prices[0].label;
+    const durationLabel = selectedPrices[activeModalTier.id]?.label || "5 Saat Paket";
 
     try {
       await fetch("/api/reservations", {
@@ -168,8 +194,8 @@ export default function ReservationPage() {
         body: JSON.stringify({
           musteriAdi: `${name.trim()} ${surname.trim()}`,
           telefon: phone.trim(),
-          masaId: activeModalTier.name,
-          masaIsim: `${activeModalTier.name} (${activeModalTier.badge})`,
+          masaId: pcs.join(", "),
+          masaIsim: `${pcs.join(", ")} (${activeModalTier.name})`,
           kategori: activeModalTier.id,
           tarih: new Date().toISOString().split("T")[0],
           saat: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }),
@@ -179,7 +205,7 @@ export default function ReservationPage() {
         }),
       });
 
-      alert(`✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Paket: ${activeModalTier.name}\nTarife: ${durationLabel}\nToplam Tutar: ₺${total}\n\nEn kısa sürede onay iletilecektir.`);
+      alert(`✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: ${pcs.join(", ")}\nPaket: ${activeModalTier.name}\nTarife: ${durationLabel}\nToplam Tutar: ₺${total}\n\nEn kısa sürede onay iletilecektir.`);
       setModalOpen(false);
       setName("");
       setSurname("");
@@ -258,6 +284,28 @@ export default function ReservationPage() {
                       );
                     })}
 
+                    <div className="bolum-basligi" style={{ marginTop: "14px" }}>
+                      <i className="fa-solid fa-desktop" aria-hidden="true"></i> Masa Seçin (Maks. 3)
+                    </div>
+
+                    <div className="pc-container" aria-label={`${tier.name} Bilgisayarları`}>
+                      {(selectedPcsByTier[tier.id] || []) && tier.pcs.map((pcName) => {
+                        const isSelected = (selectedPcsByTier[tier.id] || []).includes(pcName);
+                        return (
+                          <div
+                            key={pcName}
+                            className={`comp ${isSelected ? "secili" : ""}`}
+                            tabIndex={0}
+                            role="button"
+                            aria-label={pcName}
+                            onClick={() => handleTogglePc(tier.id, pcName)}
+                          >
+                            {pcName}
+                          </div>
+                        );
+                      })}
+                    </div>
+
                     <button
                       type="button"
                       className="odeme-btn"
@@ -270,13 +318,21 @@ export default function ReservationPage() {
                         width: "100%",
                         cursor: "pointer",
                       }}
-                      aria-label="Rezervasyon Yap"
+                      aria-label="Ödemeye Geç"
                       onClick={() => handleOpenPayment(tier)}
                     >
-                      <i className="fa-solid fa-calendar-check"></i>{" "}
-                      {currentPrice
-                        ? `${currentPrice.label} (₺${currentPrice.amount}) — Rezervasyon Yap`
-                        : "Paket Seç & Rezervasyon Yap"}
+                      <i className="fa-solid fa-credit-card"></i>{" "}
+                      {(() => {
+                        const pcs = selectedPcsByTier[tier.id] || [];
+                        if (pcs.length > 0 && currentPrice) {
+                          return `${pcs.length} Masa Seçildi (₺${currentPrice.amount * pcs.length}) — Ödemeye Geç`;
+                        } else if (pcs.length > 0) {
+                          return `${pcs.length} Masa Seçildi (Tarife Seçin)`;
+                        } else if (currentPrice) {
+                          return `${currentPrice.label} — Masa Seçin`;
+                        }
+                        return "Masa & Tarife Seçin";
+                      })()}
                     </button>
                   </div>
                 </div>
@@ -319,13 +375,17 @@ export default function ReservationPage() {
 
             <div className="payment-summary">
               <div className="payment-summary-row">
+                <span>Seçilen Masalar</span>
+                <strong id="paymentPc">{(selectedPcsByTier[activeModalTier.id] || []).join(", ")}</strong>
+              </div>
+              <div className="payment-summary-row">
                 <span>Donanım Paketi</span>
                 <strong id="paymentPackage">{activeModalTier.name} ({activeModalTier.badge})</strong>
               </div>
               <div className="payment-summary-row">
                 <span>Süre Tarifesi</span>
                 <strong id="paymentDuration">
-                  {selectedPrices[activeModalTier.id]?.label || activeModalTier.prices[0].label}
+                  {selectedPrices[activeModalTier.id]?.label || "-"}
                 </strong>
               </div>
               <div className="payment-total">

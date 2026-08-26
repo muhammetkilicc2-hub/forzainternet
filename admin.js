@@ -327,8 +327,43 @@
 
 
         /* =========================================================
-           3. TOAST BİLDİRİM SİSTEMİ
+           3. TOAST BİLDİRİM & SES SİSTEMİ
         ========================================================= */
+        function sesBildirimiCal() {
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                const ctx = new AudioContextClass();
+                if (ctx.state === "suspended") {
+                    ctx.resume();
+                }
+
+                const playTone = function (freq, start, dur, gainLevel) {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+
+                    gain.gain.setValueAtTime(0, ctx.currentTime + start);
+                    gain.gain.linearRampToValueAtTime(gainLevel, ctx.currentTime + start + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + dur);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start(ctx.currentTime + start);
+                    osc.stop(ctx.currentTime + start + dur + 0.05);
+                };
+
+                // Kristal Apple Studio Chime Sesi (3 Ton Akustik)
+                playTone(659.25, 0, 0.35, 0.18);
+                playTone(880.00, 0.10, 0.45, 0.22);
+                playTone(1318.51, 0.20, 0.65, 0.15);
+            } catch (e) {
+                console.warn("Ses çalınamadı:", e);
+            }
+        }
+
         function toastKonteynirAl() {
             let container = document.getElementById("toastContainer");
             if (!container) {
@@ -340,6 +375,7 @@
         }
 
         function toastGoster(baslik, mesaj, tip) {
+            sesBildirimiCal();
             const container = toastKonteynirAl();
             const toast = document.createElement("div");
             toast.className = "toast-item " + (tip || "basarili");
@@ -666,9 +702,19 @@
             });
         }
 
+        let sonBildirimSayisi = pcData && pcData.bildirimleriYukle ? pcData.bildirimleriYukle().length : 0;
+
         if (pcData && pcData.bildirimDegisiklikleriDinle) {
-            pcData.bildirimDegisiklikleriDinle(function () {
+            pcData.bildirimDegisiklikleriDinle(function (tumBildirimler) {
+                const yeniListe = Array.isArray(tumBildirimler) ? tumBildirimler : (pcData.bildirimleriYukle ? pcData.bildirimleriYukle() : []);
+                if (yeniListe.length > sonBildirimSayisi && yeniListe.length > 0) {
+                    const enYeni = yeniListe[0];
+                    sesBildirimiCal();
+                    toastGoster(enYeni.baslik || "Yeni Rezervasyon Geldi!", enYeni.mesaj || "Rezervasyon talebi iletildi.", "basarili");
+                }
+                sonBildirimSayisi = yeniListe.length;
                 bildirimListesiniRenderla();
+                if (typeof gridRender === "function") gridRender();
             });
         }
 

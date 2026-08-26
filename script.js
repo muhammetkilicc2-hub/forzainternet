@@ -721,6 +721,26 @@
                             }
                         }
 
+                        // Sunucu API'sine de gönder
+                        try {
+                            fetch("/api/reservations", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    musteriAdi: name + " " + surname,
+                                    telefon: phone,
+                                    masaId: (currentReservation.pcs || []).join(", "),
+                                    masaIsim: (currentReservation.pcs || []).join(", ") + " (" + currentReservation.package + ")",
+                                    kategori: currentReservation.package.toLowerCase().includes("60") ? "sari" : currentReservation.package.toLowerCase().includes("70") ? "mavi" : "yesil",
+                                    tarih: new Date().toISOString().split("T")[0],
+                                    saat: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }),
+                                    sure: currentReservation.duration.includes("Gün") ? 12 : 5,
+                                    toplamTutar: currentReservation.price,
+                                    odemeYontemi: (cardPayment && cardPayment.checked) ? "kart" : "nakit"
+                                })
+                            }).catch(function () {});
+                        } catch (e) {}
+
                         alert("✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: " + (currentReservation.pcs ? currentReservation.pcs.join(", ") : "-") + "\nPaket: " + currentReservation.package + "\nTarife: " + currentReservation.duration + "\nTutar: ₺" + currentReservation.price.toLocaleString("tr-TR") + "\n\nİşletmemize geldiğinizde adınızı belirterek masanıza geçebilirsiniz.");
 
                         // Seçimleri sıfırla

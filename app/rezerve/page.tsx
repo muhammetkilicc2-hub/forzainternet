@@ -214,6 +214,47 @@ export default function ReservationPage() {
         }),
       });
 
+      // LocalStorage Bildirim & PC Durumu Senkronizasyonu (panel.html için)
+      try {
+        const rawNotifs = localStorage.getItem("forzaBildirimler");
+        const bildirimler = rawNotifs ? JSON.parse(rawNotifs) : [];
+        const yeniBildirim = {
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+          tur: "siparis",
+          durum: "pending",
+          baslik: `Yeni Rezervasyon — ${activeModalTier.name}`,
+          mesaj: `${pcs.join(", ")} · ${activeModalTier.name} · ${durationLabel} · ₺${total.toLocaleString("tr-TR")} · ${name.trim()} ${surname.trim()} (${phone.trim()})`,
+          pcler: pcs,
+          kampanya: activeModalTier.name,
+          sure: durationLabel,
+          tutar: total,
+          musteri: `${name.trim()} ${surname.trim()}`,
+          telefon: phone.trim(),
+          tarih: new Date().toISOString(),
+          okundu: false,
+        };
+        bildirimler.unshift(yeniBildirim);
+        localStorage.setItem("forzaBildirimler", JSON.stringify(bildirimler.slice(0, 50)));
+
+        // Masaları rezerve durumuna al
+        const rawPc = localStorage.getItem("forzaPcDurumlari");
+        const durumlar = rawPc ? JSON.parse(rawPc) : {};
+        pcs.forEach((pcName) => {
+          const match = pcName.match(/\d+/);
+          if (match) {
+            const pcId = parseInt(match[0], 10);
+            durumlar[pcId] = "rezerve";
+            durumlar[`pc-${pcId}`] = "rezerve";
+          }
+        });
+        localStorage.setItem("forzaPcDurumlari", JSON.stringify(durumlar));
+
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("forzaBildirimGuncellendi", { detail: bildirimler }));
+          window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: durumlar }));
+        }
+      } catch (e) {}
+
       alert(`✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: ${pcs.join(", ")}\nPaket: ${activeModalTier.name}\nTarife: ${durationLabel}\nToplam Tutar: ₺${total}\n\nEn kısa sürede onay iletilecektir.`);
       setModalOpen(false);
       setName("");

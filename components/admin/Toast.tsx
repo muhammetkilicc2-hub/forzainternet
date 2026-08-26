@@ -1,16 +1,52 @@
-﻿"use client";
+"use client";
 
 import React, { createContext, useContext, useState, useCallback } from "react";
 
-interface ToastMessage {
+export interface ToastMessage {
   id: string;
   type: "success" | "error" | "warning" | "info";
   title: string;
-  message: string;
+  message?: string;
 }
 
-interface ToastContextType {
-  showToast: (title: string, message: string, type?: ToastMessage["type"]) => void;
+export interface ToastContextType {
+  showToast: (title: string, message?: string, type?: ToastMessage["type"]) => void;
+}
+
+export function playChimeSound() {
+  if (typeof window === "undefined") return;
+  try {
+    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!AudioContextClass) return;
+    const ctx = new AudioContextClass();
+    if (ctx.state === "suspended") {
+      ctx.resume();
+    }
+
+    const playChimeNote = (freq: number, start: number, dur: number, gainLevel: number) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+
+      gain.gain.setValueAtTime(0, ctx.currentTime + start);
+      gain.gain.linearRampToValueAtTime(gainLevel, ctx.currentTime + start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + dur);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(ctx.currentTime + start);
+      osc.stop(ctx.currentTime + start + dur + 0.05);
+    };
+
+    // Kristal Apple Studio Chime Sesi
+    playChimeNote(659.25, 0, 0.35, 0.18);
+    playChimeNote(880.0, 0.1, 0.45, 0.22);
+    playChimeNote(1318.51, 0.2, 0.65, 0.15);
+  } catch (e) {
+    console.warn("Ses çalınamadı:", e);
+  }
 }
 
 const ToastContext = createContext<ToastContextType>({
@@ -20,9 +56,10 @@ const ToastContext = createContext<ToastContextType>({
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
-  const showToast = useCallback((title: string, message: string, type: ToastMessage["type"] = "success") => {
+  const showToast = useCallback((title: string, message = "", type: ToastMessage["type"] = "success") => {
     const id = `toast-${Date.now()}-${Math.random()}`;
     setToasts((prev) => [...prev, { id, type, title, message }]);
+    playChimeSound();
 
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -59,7 +96,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               <strong style={{ display: "block", fontSize: "13px", color: "#fdfbf7", marginBottom: "2px" }}>
                 {t.title}
               </strong>
-              <span style={{ fontSize: "12px", color: "#94a3b8" }}>{t.message}</span>
+              {t.message && <span style={{ fontSize: "12px", color: "#94a3b8" }}>{t.message}</span>}
             </div>
           </div>
         ))}

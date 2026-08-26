@@ -1408,26 +1408,26 @@ button, input, select { font-family: inherit; }
    9. iOS BOTTOM TAB BAR (NATIVE MOBILE DOCK)
    ========================================================= */
 .ios-tab-bar {
-    position: fixed;
-    bottom: max(12px, env(safe-area-inset-bottom, 12px));
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% - 20px);
-    max-width: 480px;
-    height: 62px;
-    background: rgba(14, 18, 26, 0.94);
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
-    border: 1px solid var(--cream-border-strong);
-    border-radius: var(--a-radius-full);
-    box-shadow: var(--a-shadow-lg), 0 0 30px rgba(245, 238, 219, 0.14);
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 6px;
-    z-index: 99999;
-    box-sizing: border-box;
-    pointer-events: auto;
+    position: fixed !important;
+    bottom: max(12px, env(safe-area-inset-bottom, 12px)) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 20px) !important;
+    max-width: 480px !important;
+    height: 62px !important;
+    background: rgba(14, 18, 26, 0.94) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    border: 1px solid var(--cream-border-strong) !important;
+    border-radius: var(--a-radius-full) !important;
+    box-shadow: var(--a-shadow-lg), 0 0 30px rgba(245, 238, 219, 0.14) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    padding: 0 6px !important;
+    z-index: 99999 !important;
+    box-sizing: border-box !important;
+    pointer-events: auto !important;
 }
 
 .ios-tab-item {

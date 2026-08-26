@@ -16,7 +16,17 @@ export default function AdminTabBar() {
   ];
 
   return (
-    <nav className="ios-tab-bar" aria-label="Yönetim Menüsü">
+    <nav
+      className="ios-tab-bar"
+      aria-label="Yönetim Menüsü"
+      style={{
+        position: "fixed",
+        bottom: "max(12px, env(safe-area-inset-bottom, 12px))",
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 99999,
+      }}
+    >
       {tabs.map((tab) => {
         const isActive = pathname === tab.href;
         return (

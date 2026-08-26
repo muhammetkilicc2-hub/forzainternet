@@ -5860,11 +5860,15 @@ body.login-page {
     }
 
     .ios-tab-bar {
-        bottom: 18px;
-        width: min(580px, calc(100% - 32px));
-        max-width: 580px;
-        height: 68px;
-        padding: 0 14px;
+        position: fixed !important;
+        bottom: 18px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: min(580px, calc(100% - 32px)) !important;
+        max-width: 580px !important;
+        height: 68px !important;
+        padding: 0 14px !important;
+        z-index: 99999 !important;
     }
 
     .ios-tab-item {

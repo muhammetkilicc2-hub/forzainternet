@@ -418,9 +418,16 @@
 
                 kart.addEventListener("forzaYenidenHesapla", toplamFiyatHesapla);
 
+                function triggerHaptic() {
+                    if (typeof navigator !== "undefined" && navigator.vibrate) {
+                        try { navigator.vibrate(12); } catch (e) {}
+                    }
+                }
+
                 // Fiyat Seçimi
                 fiyatlar.forEach(function (fiyat) {
                     function fiyatSec() {
+                        triggerHaptic();
                         // Diğer kartların seçimlerini temizle
                         kartlar.forEach(function (digerKart) {
                             if (digerKart !== kart) {
@@ -454,6 +461,7 @@
                 // Masa Seçimi (Maksimum 3)
                 pcler.forEach(function (pc) {
                     function masaSec() {
+                        triggerHaptic();
                         if (pc.classList.contains("dolu") || pc.classList.contains("rezerveli")) {
                             alert("Bu bilgisayar şu anda müsait değildir.");
                             return;

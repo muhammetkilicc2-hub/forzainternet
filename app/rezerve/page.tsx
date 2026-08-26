@@ -105,11 +105,21 @@ export default function ReservationPage() {
   const [cardCvv, setCardCvv] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const triggerHaptic = () => {
+    if (typeof navigator !== "undefined" && navigator.vibrate) {
+      try {
+        navigator.vibrate(12);
+      } catch {}
+    }
+  };
+
   const handleSelectPrice = (tierId: string, priceObj: { label: string; amount: number }) => {
+    triggerHaptic();
     setSelectedPrices((prev) => ({ ...prev, [tierId]: priceObj }));
   };
 
   const handleTogglePc = (tierId: string, pcName: string) => {
+    triggerHaptic();
     setSelectedPcsByTier((prev) => {
       const current = prev[tierId] || [];
       if (current.includes(pcName)) {
@@ -126,6 +136,7 @@ export default function ReservationPage() {
   };
 
   const handleOpenPayment = (tier: TierData) => {
+    triggerHaptic();
     let pcs = selectedPcsByTier[tier.id] || [];
     if (pcs.length === 0) {
       pcs = [tier.pcs[0]];

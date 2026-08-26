@@ -471,9 +471,16 @@
                         // Diğer kartların seçimlerini temizle
                         kartlar.forEach(function (digerKart) {
                             if (digerKart !== kart) {
+                                digerKart.querySelectorAll(".fiyat.secili").forEach(function (f) { f.classList.remove("secili"); });
                                 digerKart.querySelectorAll(".comp.secili").forEach(function (c) { c.classList.remove("secili"); });
                             }
                         });
+
+                        // Eğer seçili tarife yoksa ilk tarifeyi otomatik seç
+                        const seciliFiyat = kart.querySelector(".fiyat.secili");
+                        if (!seciliFiyat && fiyatlar.length > 0) {
+                            fiyatlar[0].classList.add("secili");
+                        }
 
                         if (pc.classList.contains("secili")) {
                             pc.classList.remove("secili");

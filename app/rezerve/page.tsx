@@ -109,26 +109,35 @@ export default function ReservationPage() {
     triggerHaptic();
     setSelectedPrices((prev) => {
       if (prev[tierId]?.label === priceObj.label) {
-        const next = { ...prev };
-        delete next[tierId];
-        return next;
+        return {};
       }
-      return { ...prev, [tierId]: priceObj };
+      return { [tierId]: priceObj };
     });
   };
 
   const handleTogglePc = (tierId: string, pcName: string) => {
     triggerHaptic();
+    // Otomatik ilk tarifeyi seç (eğer seçili tarife yoksa)
+    setSelectedPrices((prev) => {
+      if (!prev[tierId]) {
+        const tier = TIERS.find((t) => t.id === tierId);
+        return tier ? { [tierId]: tier.prices[0] } : prev;
+      }
+      return prev;
+    });
+
     setSelectedPcsByTier((prev) => {
       const current = prev[tierId] || [];
       if (current.includes(pcName)) {
-        return { ...prev, [tierId]: current.filter((p) => p !== pcName) };
+        const filtered = current.filter((p) => p !== pcName);
+        if (filtered.length === 0) return {};
+        return { [tierId]: filtered };
       } else {
         if (current.length >= 3) {
-          alert("Tek seferde en fazla 3 masa seçebilirsiniz.");
+          alert("Aynı anda en fazla 3 masa seçebilirsiniz.");
           return prev;
         }
-        return { ...prev, [tierId]: [...current, pcName] };
+        return { [tierId]: [...current, pcName] };
       }
     });
   };

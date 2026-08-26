@@ -42,32 +42,55 @@ export default function AyarlarPage() {
   const [fileLabel, setFileLabel] = useState("Dosya Seç");
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("forzaAyarlar");
-      if (raw) {
-        const data = JSON.parse(raw);
-        if (data.adminUser) setAdminUser(data.adminUser);
-        if (data.adminEmail) setAdminEmail(data.adminEmail);
-        if (data.adminPass) setSavedPass(data.adminPass);
-        if (data.cafeName) setCafeName(data.cafeName);
-        if (data.cafePhone) setCafePhone(data.cafePhone);
-        if (data.adminAvatar) setAvatar(data.adminAvatar);
+    async function loadSettings() {
+      try {
+        const res = await fetch("/api/auth/settings");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.settings) {
+            if (data.settings.adminUser) setAdminUser(data.settings.adminUser);
+            if (data.settings.adminEmail) setAdminEmail(data.settings.adminEmail);
+            if (data.settings.cafeName) setCafeName(data.settings.cafeName);
+            if (data.settings.cafePhone) setCafePhone(data.settings.cafePhone);
+            if (data.settings.adminAvatar) setAvatar(data.settings.adminAvatar);
+            if (data.settings.soundEnabled !== undefined) setSoundEnabled(data.settings.soundEnabled);
+            if (data.settings.autoRefresh !== undefined) setAutoRefresh(data.settings.autoRefresh);
+            if (data.settings.refreshInterval !== undefined) setRefreshInterval(data.settings.refreshInterval);
 
-        const lastDate = data.sifreSonDegismeTarihi || new Date().toISOString();
-        const days = Math.floor((Date.now() - new Date(lastDate).getTime()) / (1000 * 60 * 60 * 24));
-        setPasswordAgeDays(days);
-      }
-
-      const galleryRaw = localStorage.getItem("forzaGaleriFotograflar");
-      if (galleryRaw) {
-        const parsedGallery = JSON.parse(galleryRaw);
-        if (Array.isArray(parsedGallery) && parsedGallery.length > 0) {
-          setGalleryPhotos(parsedGallery);
+            const lastDate = data.settings.sifreSonDegismeTarihi || new Date().toISOString();
+            const days = Math.floor((Date.now() - new Date(lastDate).getTime()) / (1000 * 60 * 60 * 24));
+            setPasswordAgeDays(days);
+          }
         }
+      } catch (e) {
+        console.error("Sunucu ayarları alınamadı, yerel bellek kullanılacak:", e);
       }
-    } catch (e) {
-      console.error("Ayarlar yüklenemedi:", e);
+
+      try {
+        const raw = localStorage.getItem("forzaAyarlar");
+        if (raw) {
+          const data = JSON.parse(raw);
+          if (data.adminUser && !adminUser) setAdminUser(data.adminUser);
+          if (data.adminEmail && !adminEmail) setAdminEmail(data.adminEmail);
+          if (data.adminPass) setSavedPass(data.adminPass);
+          if (data.cafeName && !cafeName) setCafeName(data.cafeName);
+          if (data.cafePhone && !cafePhone) setCafePhone(data.cafePhone);
+          if (data.adminAvatar && !avatar) setAvatar(data.adminAvatar);
+        }
+
+        const galleryRaw = localStorage.getItem("forzaGaleriFotograflar");
+        if (galleryRaw) {
+          const parsedGallery = JSON.parse(galleryRaw);
+          if (Array.isArray(parsedGallery) && parsedGallery.length > 0) {
+            setGalleryPhotos(parsedGallery);
+          }
+        }
+      } catch (e) {
+        console.error("Yerel ayarlar yüklenemedi:", e);
+      }
     }
+
+    loadSettings();
   }, []);
 
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,24 +129,22 @@ export default function AyarlarPage() {
 
   const handleAddPhoto = () => {
     if (!newPhotoUrl.trim()) {
-      showToast("Hata", "Lütfen bir fotoğraf dosyası seçin veya görsel URL'si girin.", "warning");
+      showToast("Uyarı", "Lütfen bir fotoğraf dosyası seçin veya geçerli bir görsel bağlantısı girin.", "warning");
       return;
     }
 
-    const newPhotoItem: GalleryPhoto = {
-      id: "foto_" + Date.now(),
+    const newPhoto: GalleryPhoto = {
+      id: "galeri-" + Date.now(),
       src: newPhotoUrl.trim(),
       badge: newPhotoBadge.trim() || "Mekan Fotoğrafı",
     };
 
-    const updated = [...galleryPhotos, newPhotoItem];
-    setGalleryPhotos(updated);
-
+    setGalleryPhotos((prev) => [newPhoto, ...prev]);
     setNewPhotoUrl("");
     setNewPhotoBadge("");
     setFileLabel("Dosya Seç");
 
-    showToast("Fotoğraf Eklendi (Taslak)", `"${newPhotoItem.badge}" listeye eklendi. Yayına almak için aşağıdaki "Değişiklikleri Kaydet" butonuna basmalısınız.`, "warning");
+    showToast("Fotoğraf Taslağa Eklendi", "Fotoğraf galeriye eklendi. Canlı sitede yayınlanması için aşağıdaki 'Değişiklikleri Kaydet' butonuna basmalısınız.", "info");
   };
 
   const handleDeletePhoto = (idOrIndex: string | number) => {
@@ -132,7 +153,7 @@ export default function AyarlarPage() {
     showToast("Fotoğraf Çıkartıldı (Taslak)", "Fotoğraf listeden çıkartıldı. Canlı siteden kaldırmak için aşağıdaki \"Değişiklikleri Kaydet\" butonuna basmalısınız.", "warning");
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!adminUser.trim()) {
@@ -140,11 +161,9 @@ export default function AyarlarPage() {
       return;
     }
 
-    let finalPass = savedPass;
-
     if (newPassword || currentPassword) {
-      if (currentPassword !== savedPass) {
-        showToast("Hata", "Mevcut şifreniz hatalı! Lütfen doğru şifreyi girin.", "error");
+      if (!currentPassword) {
+        showToast("Hata", "Şifre değiştirmek için mevcut şifrenizi girmelisiniz.", "error");
         return;
       }
 
@@ -157,42 +176,70 @@ export default function AyarlarPage() {
         showToast("Hata", "Yeni şifre ile şifre tekrarı uyuşmuyor.", "error");
         return;
       }
-
-      finalPass = newPassword;
-      setSavedPass(newPassword);
     }
 
-    // 1. Galeri fotoğraflarını kalıcı olarak kaydet
-    localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(galleryPhotos));
+    try {
+      const res = await fetch("/api/auth/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          adminUser: adminUser.trim(),
+          adminEmail: adminEmail.trim(),
+          adminAvatar: avatar,
+          cafeName: cafeName.trim(),
+          cafePhone: cafePhone.trim(),
+          soundEnabled,
+          autoRefresh,
+          refreshInterval,
+          currentPassword: currentPassword || undefined,
+          newPassword: newPassword || undefined,
+        }),
+      });
 
-    // 2. Sistem & Yönetici ayarlarını kaydet
-    const isPassChanged = newPassword.trim() !== "";
-    const newConfig = {
-      adminUser: adminUser.trim(),
-      adminEmail: adminEmail.trim() || "admin@forzagaming.com",
-      adminPass: finalPass,
-      adminAvatar: avatar,
-      cafeName: cafeName.trim(),
-      cafePhone: cafePhone.trim(),
-      soundEnabled,
-      autoRefresh,
-      refreshInterval,
-      sifreSonDegismeTarihi: isPassChanged ? new Date().toISOString() : (localStorage.getItem("forzaAyarlar") ? JSON.parse(localStorage.getItem("forzaAyarlar")!).sifreSonDegismeTarihi || new Date().toISOString() : new Date().toISOString()),
-      updatedAt: new Date().toISOString(),
-    };
+      const data = await res.json();
 
-    localStorage.setItem("forzaAyarlar", JSON.stringify(newConfig));
-    if (isPassChanged) setPasswordAgeDays(0);
+      if (!res.ok || !data.success) {
+        showToast("Hata", data.error || "Ayarlar kaydedilemedi.", "error");
+        return;
+      }
 
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+      // 1. Galeri fotoğraflarını kalıcı olarak kaydet
+      localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(galleryPhotos));
 
-    showToast(
-      "Tüm Değişiklikler Kaydedildi",
-      `Profil fotoğrafınız, galeri ve kullanıcı "${adminUser}" ayarları başarıyla kaydedildi!`,
-      "success"
-    );
+      // 2. Sistem & Yönetici ayarlarını yerel depolamaya da eşitle
+      const isPassChanged = newPassword.trim() !== "";
+      const newConfig = {
+        adminUser: adminUser.trim(),
+        adminEmail: adminEmail.trim() || "admin@forzagaming.com",
+        adminPass: newPassword || savedPass,
+        adminAvatar: avatar,
+        cafeName: cafeName.trim(),
+        cafePhone: cafePhone.trim(),
+        soundEnabled,
+        autoRefresh,
+        refreshInterval,
+        sifreSonDegismeTarihi: isPassChanged ? new Date().toISOString() : undefined,
+        updatedAt: new Date().toISOString(),
+      };
+
+      localStorage.setItem("forzaAyarlar", JSON.stringify(newConfig));
+      if (isPassChanged) {
+        setSavedPass(newPassword);
+        setPasswordAgeDays(0);
+      }
+
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+
+      showToast(
+        "Tüm Değişiklikler Kalıcı Olarak Kaydedildi",
+        `Yönetici kullanıcısı "${adminUser}" ve şifre güncellendi. Artık yeni şifrenizle giriş yapabilirsiniz!`,
+        "success"
+      );
+    } catch (err) {
+      showToast("Hata", "Sunucu ile iletişim kurulurken hata oluştu.", "error");
+    }
   };
 
   return (

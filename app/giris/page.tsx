@@ -61,7 +61,7 @@ function LoginForm() {
     });
   };
 
-  const handleConfirmResetPass = () => {
+  const handleConfirmResetPass = async () => {
     if (!verifyCode.trim() || verifyCode.trim() !== generatedCode) {
       setForgotMsg({ text: "Hatalı güvenlik kodu! Lütfen size verilen 6 haneli kodu girin.", type: "error" });
       return;
@@ -78,6 +78,15 @@ function LoginForm() {
     }
 
     try {
+      await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          emailOrPhone: forgotEmail,
+          newPassword: newResetPass,
+        }),
+      });
+
       let ayarlar: Record<string, unknown> = {
         adminUser: "admin",
         adminPass: newResetPass,

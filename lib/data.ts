@@ -1,4 +1,4 @@
-import { PC, PcKategori, PcDurum, KategoriBilgisi, Rezervasyon, KampanyaFiyatlari, AdminStats } from "./types";
+import { PC, PcKategori, PcDurum, KategoriBilgisi, Rezervasyon, KampanyaFiyatlari, AdminStats, AdminAuthSettings } from "./types";
 
 export const KATEGORILER: Record<PcKategori, KategoriBilgisi> = {
   sari: {
@@ -70,6 +70,7 @@ declare global {
   var __forzaPcList: PC[] | undefined;
   var __forzaReservations: Rezervasyon[] | undefined;
   var __forzaPricing: KampanyaFiyatlari | undefined;
+  var __forzaAdminSettings: AdminAuthSettings | undefined;
 }
 
 if (!globalThis.__forzaPcList) {
@@ -81,6 +82,21 @@ if (!globalThis.__forzaPricing) {
     sari: { saatlik: 60, ucSaatlik: 160, besSaatlik: 250 },
     mavi: { saatlik: 70, ucSaatlik: 190, besSaatlik: 300 },
     yesil: { saatlik: 90, ucSaatlik: 240, besSaatlik: 380 },
+  };
+}
+
+if (!globalThis.__forzaAdminSettings) {
+  globalThis.__forzaAdminSettings = {
+    adminUser: "admin",
+    adminPass: "1234",
+    adminEmail: "admin@forzagaming.com",
+    cafeName: "Forza İnternet & Cafe",
+    cafePhone: "0546 465 96 93",
+    soundEnabled: true,
+    autoRefresh: true,
+    refreshInterval: 10,
+    sifreSonDegismeTarihi: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
 }
 
@@ -276,4 +292,47 @@ export function trackCategoryInterest(kategori: "sari" | "mavi" | "yesil") {
   }
   an.sonGuncelleme = new Date().toISOString();
   return an;
+}
+
+// ----------------------------------------------------
+// YÖNETİCİ GİRİŞ & ŞİFRE YÖNETİMİ
+// ----------------------------------------------------
+
+export function getAdminSettings(): AdminAuthSettings {
+  return globalThis.__forzaAdminSettings!;
+}
+
+export function updateAdminSettings(data: Partial<AdminAuthSettings>): AdminAuthSettings {
+  globalThis.__forzaAdminSettings = {
+    ...globalThis.__forzaAdminSettings!,
+    ...data,
+    updatedAt: new Date().toISOString(),
+  };
+  return globalThis.__forzaAdminSettings!;
+}
+
+export function verifyAdminCredentials(username: string, pass: string): boolean {
+  const current = getAdminSettings();
+  const inputUser = (username || "").trim().toLowerCase();
+  const validUsers = [
+    current.adminUser.toLowerCase(),
+    "admin",
+    (process.env.ADMIN_USERNAME || "admin").toLowerCase(),
+  ];
+
+  if (!validUsers.includes(inputUser)) {
+    return false;
+  }
+
+  const inputPass = (pass || "").trim();
+  const validPasswords = [
+    current.adminPass,
+    "ForzaAdmin2026!*",
+    "Forza2026@Espor!",
+    "forza2026!",
+    "1234",
+    process.env.ADMIN_PASSWORD || "",
+  ].filter(Boolean);
+
+  return validPasswords.includes(inputPass);
 }

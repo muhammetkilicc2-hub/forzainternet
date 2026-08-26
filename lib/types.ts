@@ -57,6 +57,20 @@ export interface AdminAyarlar {
   yenilemeAraligi: number;
 }
 
+export interface AdminAuthSettings {
+  adminUser: string;
+  adminPass: string;
+  adminEmail: string;
+  adminAvatar?: string | null;
+  cafeName: string;
+  cafePhone: string;
+  soundEnabled: boolean;
+  autoRefresh: boolean;
+  refreshInterval: number;
+  sifreSonDegismeTarihi: string;
+  updatedAt: string;
+}
+
 export interface AdminStats {
   toplamPc: number;
   aktifPc: number;

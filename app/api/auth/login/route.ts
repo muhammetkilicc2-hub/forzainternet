@@ -1,28 +1,16 @@
 import { NextResponse } from "next/server";
 import { signToken, setSessionCookie } from "@/lib/auth";
+import { verifyAdminCredentials, getAdminSettings } from "@/lib/data";
 
 export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
-    const envUser = process.env.ADMIN_USERNAME || "admin";
-    const envPass = process.env.ADMIN_PASSWORD;
 
-    const strongPasswords = [
-      "ForzaAdmin2026!*",
-      "Forza2026@Espor!",
-      "forza2026!",
-      "1234",
-    ];
+    const isValid = verifyAdminCredentials(username, password);
 
-    if (envPass) {
-      strongPasswords.unshift(envPass);
-    }
-
-    const isValidUser = username.trim().toLowerCase() === envUser.toLowerCase();
-    const isValidPass = strongPasswords.includes(password.trim());
-
-    if (isValidUser && isValidPass) {
-      const token = await signToken({ username: envUser });
+    if (isValid) {
+      const settings = getAdminSettings();
+      const token = await signToken({ username: settings.adminUser });
       await setSessionCookie(token);
       return NextResponse.json({ success: true, message: "Giriş başarılı" });
     }

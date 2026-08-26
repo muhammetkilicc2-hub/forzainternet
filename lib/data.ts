@@ -163,11 +163,28 @@ export function getComputers(): PC[] {
 
 export function updateComputerStatus(id: string, durum: PcDurum): PC | null {
   const list = globalThis.__forzaPcList!;
-  const pc = list.find((p) => p.id === id || p.isim.toLowerCase() === id.toLowerCase());
-  if (!pc) return null;
-  pc.durum = durum;
-  pc.guncellemeTarihi = new Date().toISOString();
-  return pc;
+  const matches = (id || "").match(/\d+/g);
+
+  let lastUpdated: PC | null = null;
+  if (matches && matches.length > 0) {
+    matches.forEach((numStr) => {
+      const num = parseInt(numStr, 10);
+      const target = list.find((p) => p.no === num || p.id === `pc-${num}` || p.isim.toLowerCase() === `pc ${num}`);
+      if (target) {
+        target.durum = durum;
+        target.guncellemeTarihi = new Date().toISOString();
+        lastUpdated = target;
+      }
+    });
+  } else {
+    const pc = list.find((p) => p.id === id || p.isim.toLowerCase() === (id || "").toLowerCase());
+    if (pc) {
+      pc.durum = durum;
+      pc.guncellemeTarihi = new Date().toISOString();
+      lastUpdated = pc;
+    }
+  }
+  return lastUpdated;
 }
 
 export function getReservations(): Rezervasyon[] {

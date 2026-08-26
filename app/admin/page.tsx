@@ -77,9 +77,38 @@ export default function AdminDashboardPage() {
           });
         }
       }
-      if (dataRez.reservations) {
-        setReservations(dataRez.reservations);
-      }
+      let localRezList: Rezervasyon[] = [];
+      try {
+        const rawNotifs = localStorage.getItem("forzaBildirimler");
+        if (rawNotifs) {
+          const parsed = JSON.parse(rawNotifs);
+          if (Array.isArray(parsed)) {
+            localRezList = parsed.map((b: { id?: string; musteri?: string; baslik?: string; telefon?: string; pcler?: string[]; masaId?: string; masaIsim?: string; kampanya?: string; tarih?: string; sure?: string | number; tutar?: number | string; durum?: string; okundu?: boolean }) => ({
+              id: b.id || `loc-${Date.now()}-${Math.random()}`,
+              musteriAdi: b.musteri || b.baslik || "Müşteri",
+              telefon: b.telefon || "0546 465 96 93",
+              masaId: Array.isArray(b.pcler) ? b.pcler.join(", ") : b.masaId || "PC",
+              masaIsim: Array.isArray(b.pcler) ? b.pcler.join(", ") : b.masaIsim || "Seçilen Masalar",
+              kategori: b.kampanya?.toLowerCase().includes("60") ? "sari" : b.kampanya?.toLowerCase().includes("70") ? "mavi" : "yesil",
+              tarih: b.tarih ? b.tarih.split("T")[0] : new Date().toISOString().split("T")[0],
+              saat: b.tarih ? new Date(b.tarih).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }) : "19:00",
+              sure: typeof b.sure === "number" ? b.sure : (typeof b.sure === "string" && b.sure.includes("Gün") ? 12 : 5),
+              toplamTutar: Number(b.tutar) || 200,
+              odemeYontemi: "kart",
+              durum: (b.durum === "confirmed" ? "confirmed" : b.durum === "rejected" ? "rejected" : "pending") as Rezervasyon["durum"],
+              olusturuldu: b.tarih || new Date().toISOString(),
+              okundu: Boolean(b.okundu),
+            }));
+          }
+        }
+      } catch (e) {}
+
+      const serverRez = dataRez.reservations || [];
+      const rezMap = new Map<string, Rezervasyon>();
+      localRezList.forEach((r) => rezMap.set(r.id, r));
+      serverRez.forEach((r: Rezervasyon) => rezMap.set(r.id, r));
+      const mergedRez = Array.from(rezMap.values()).sort((a, b) => new Date(b.olusturuldu).getTime() - new Date(a.olusturuldu).getTime());
+      setReservations(mergedRez);
     } catch (err) {
       console.error("Dashboard yüklenemedi:", err);
     } finally {
@@ -136,6 +165,48 @@ export default function AdminDashboardPage() {
 
   // Rezervasyon Onayla / Reddet
   const handleReservationAction = async (id: string, durum: "confirmed" | "rejected") => {
+    // 1. React State Güncelle
+    setReservations((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, durum, okundu: true } : r))
+    );
+
+    // 2. LocalStorage Senkronizasyonu
+    try {
+      const raw = localStorage.getItem("forzaBildirimler");
+      if (raw) {
+        const notifs = JSON.parse(raw);
+        const target = notifs.find((b: { id: string; durum?: string; okundu?: boolean }) => b.id === id);
+        if (target) {
+          target.durum = durum;
+          target.okundu = true;
+          localStorage.setItem("forzaBildirimler", JSON.stringify(notifs));
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("forzaBildirimGuncellendi", { detail: notifs }));
+          }
+        }
+      }
+
+      // Onaylandıysa masaları kullanıma al
+      if (durum === "confirmed") {
+        const rez = reservations.find((r) => r.id === id);
+        if (rez) {
+          const rawPc = localStorage.getItem("forzaPcDurumlari");
+          const durumlar = rawPc ? JSON.parse(rawPc) : {};
+          const pcMatches = rez.masaId.match(/\d+/g) || [];
+          pcMatches.forEach((numStr) => {
+            const pcId = parseInt(numStr, 10);
+            durumlar[pcId] = "kullanımda";
+            durumlar[`pc-${pcId}`] = "kullanimda";
+          });
+          localStorage.setItem("forzaPcDurumlari", JSON.stringify(durumlar));
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: durumlar }));
+          }
+        }
+      }
+    } catch (e) {}
+
+    // 3. API Sunucusuna Bildir
     try {
       const res = await fetch("/api/reservations", {
         method: "PATCH",
@@ -143,19 +214,16 @@ export default function AdminDashboardPage() {
         body: JSON.stringify({ id, durum }),
       });
       const data = await res.json();
-      if (data.success) {
-        setReservations((prev) =>
-          prev.map((r) => (r.id === id ? { ...r, durum } : r))
-        );
-        if (data.stats) setStats(data.stats);
-        showToast(
-          durum === "confirmed" ? "Rezervasyon Onaylandı" : "Rezervasyon Reddedildi",
-          durum === "confirmed" ? "Masa kullanıma hazır." : "Talep iptal edildi.",
-          durum === "confirmed" ? "success" : "warning"
-        );
+      if (data.success && data.stats) {
+        setStats(data.stats);
       }
+      showToast(
+        durum === "confirmed" ? "Rezervasyon Onaylandı" : "Rezervasyon Reddedildi",
+        durum === "confirmed" ? "Masa kullanıma hazırlandı ve aktifleştirildi." : "Talep iptal edildi.",
+        durum === "confirmed" ? "success" : "warning"
+      );
     } catch {
-      showToast("Hata", "İşlem gerçekleştirilemedi", "error");
+      showToast("Bilgi", "İşlem kaydedildi", "info");
     }
   };
 

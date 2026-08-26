@@ -327,16 +327,46 @@
 
 
         /* =========================================================
-           3. TOAST BİLDİRİM & SES SİSTEMİ
+           3. TOAST BİLDİRİM & SES SİSTEMİ (Apple Studio Chime)
         ========================================================= */
-        function sesBildirimiCal() {
-            try {
+        let globalAudioCtx = null;
+
+        function getAudioContext() {
+            if (!globalAudioCtx && typeof window !== "undefined") {
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContextClass) return;
-                const ctx = new AudioContextClass();
-                if (ctx.state === "suspended") {
-                    ctx.resume();
+                if (AudioContextClass) {
+                    globalAudioCtx = new AudioContextClass();
                 }
+            }
+            if (globalAudioCtx && globalAudioCtx.state === "suspended") {
+                globalAudioCtx.resume().catch(function () {});
+            }
+            return globalAudioCtx;
+        }
+
+        // Tarayıcı autoplay kilidini ilk kullanıcı etkileşiminde aç
+        function unlockAudio() {
+            getAudioContext();
+        }
+        document.addEventListener("click", unlockAudio, { passive: true });
+        document.addEventListener("keydown", unlockAudio, { passive: true });
+        document.addEventListener("touchstart", unlockAudio, { passive: true });
+
+        function sesBildirimiCal() {
+            // Ayarlardan ses kapatılmışsa çalma
+            try {
+                const rawAyar = localStorage.getItem("forzaAyarlar");
+                if (rawAyar) {
+                    const ayarObj = JSON.parse(rawAyar);
+                    if (ayarObj.soundEnabled === false || ayarObj.sesBildirimi === false) {
+                        return;
+                    }
+                }
+            } catch (e) {}
+
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
 
                 const playTone = function (freq, start, dur, gainLevel) {
                     const osc = ctx.createOscillator();
@@ -374,8 +404,8 @@
             return container;
         }
 
-        function toastGoster(baslik, mesaj, tip) {
-            sesBildirimiCal();
+        function toastGoster(baslik, mesaj, tip, sesCal) {
+            if (sesCal) sesBildirimiCal();
             const container = toastKonteynirAl();
             const toast = document.createElement("div");
             toast.className = "toast-item " + (tip || "basarili");
@@ -702,21 +732,52 @@
             });
         }
 
-        let sonBildirimSayisi = pcData && pcData.bildirimleriYukle ? pcData.bildirimleriYukle().length : 0;
+        const bilinenBildirimIdleri = new Set();
+        let ilkYuklemeTamamlandi = false;
+
+        function bildirimleriIsleVeGuncelle(tumBildirimler) {
+            const yeniListe = Array.isArray(tumBildirimler) ? tumBildirimler : (pcData && pcData.bildirimleriYukle ? pcData.bildirimleriYukle() : []);
+
+            if (ilkYuklemeTamamlandi) {
+                const yeniGelenler = yeniListe.filter(function (b) {
+                    return b && b.id && !bilinenBildirimIdleri.has(b.id);
+                });
+
+                if (yeniGelenler.length > 0) {
+                    const enYeni = yeniGelenler[0];
+                    sesBildirimiCal();
+                    toastGoster(enYeni.baslik || "Yeni Rezervasyon Geldi!", enYeni.mesaj || "Rezervasyon talebi iletildi.", "basarili", false);
+                }
+            }
+
+            yeniListe.forEach(function (b) {
+                if (b && b.id) bilinenBildirimIdleri.add(b.id);
+            });
+
+            ilkYuklemeTamamlandi = true;
+            bildirimListesiniRenderla();
+            if (typeof gridRender === "function") gridRender();
+            if (typeof renderDashboardReservations === "function") renderDashboardReservations();
+            if (typeof renderFullReservations === "function") renderFullReservations();
+        }
+
+        // İlk yüklemede mevcut bildirimleri kaydet (ses çalmaz)
+        const mevcutBildirimler = pcData && pcData.bildirimleriYukle ? pcData.bildirimleriYukle() : [];
+        mevcutBildirimler.forEach(function (b) {
+            if (b && b.id) bilinenBildirimIdleri.add(b.id);
+        });
+        ilkYuklemeTamamlandi = true;
 
         if (pcData && pcData.bildirimDegisiklikleriDinle) {
-            pcData.bildirimDegisiklikleriDinle(function (tumBildirimler) {
-                const yeniListe = Array.isArray(tumBildirimler) ? tumBildirimler : (pcData.bildirimleriYukle ? pcData.bildirimleriYukle() : []);
-                if (yeniListe.length > sonBildirimSayisi && yeniListe.length > 0) {
-                    const enYeni = yeniListe[0];
-                    sesBildirimiCal();
-                    toastGoster(enYeni.baslik || "Yeni Rezervasyon Geldi!", enYeni.mesaj || "Rezervasyon talebi iletildi.", "basarili");
-                }
-                sonBildirimSayisi = yeniListe.length;
-                bildirimListesiniRenderla();
-                if (typeof gridRender === "function") gridRender();
+            pcData.bildirimDegisiklikleriDinle(function (tum) {
+                bildirimleriIsleVeGuncelle(tum);
             });
         }
+
+        // Periyodik Senkronizasyon (Her 5 sn)
+        setInterval(function () {
+            bildirimleriIsleVeGuncelle();
+        }, 5000);
 
         bildirimListesiniRenderla();
 

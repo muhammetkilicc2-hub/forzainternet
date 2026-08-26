@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
@@ -9,94 +9,121 @@ export default function HomePage() {
     <>
       <Navbar />
 
-      <main className="home-header">
-        <div className="home-hero-glow"></div>
-        <div className="home-container">
-          <div className="home-badge">
+      <main>
+        {/* HERO SECTION */}
+        <header className="home-header">
+          <div className="hero-pill-badge">
             <span className="badge-dot"></span>
-            <span>Şehrin En Güçlü Espor &amp; Gaming Deneyimi</span>
+            Antalya'nın 1 Numaralı Espor Gaming Merkezi
           </div>
 
-          <h1 className="para1">
-            OYUNDA <span className="gold-text">ZİRVEYİ</span> YAKALA
-          </h1>
+          <h1 className="para1">FORZA GAMING &amp; INTERNET CAFE</h1>
+          <p className="para1">540 Hz Espor Monitörler, RTX Gücü ve Kesintisiz Fiber İnternet Deneyimi.</p>
+          <p className="hero-subtext">Arkadaşlarınla toplan, özel fiyat avantajlarıyla yerini hemen ayırt.</p>
 
-          <p className="home-sub">
-            En yeni nesil <strong>RTX 40 Serisi</strong> ekran kartları, <strong>540 Hz</strong> turnuva sınıfı monitörler ve VIP konfor alanıyla espor heyecanını Forza’da yaşayın.
-          </p>
-
-          <div className="home-cta-group">
-            <Link href="/rezerve" className="btn-primary">
-              ⚡ Hemen Masa Ayırt
+          <div className="hero-actions czr">
+            <Link href="/rezerve" className="rzr-main">
+              <i className="fa-solid fa-calendar-check" aria-hidden="true"></i>
+              Hemen Yerini Ayırt
             </Link>
             <Link href="/hakkimizda" className="btn-secondary">
-              Salonumuzu Keşfet ➔
+              <i className="fa-solid fa-circle-info" aria-hidden="true"></i>
+              Bizi Keşfet
             </Link>
           </div>
+        </header>
 
-          {/* Feature Highlights Grid */}
-          <div className="home-stats-strip">
-            <div className="stat-strip-item">
-              <span className="stat-num">540 Hz</span>
-              <span className="stat-label">Espor Zirvesi</span>
+        {/* FEATURE CARDS TICKER / SLIDER */}
+        <section className="card-slider" aria-label="Öne Çıkan Hizmetlerimiz">
+          <div className="card-track">
+            {/* Group 1 */}
+            <div className="card">
+              <i className="fa-solid fa-gamepad" aria-hidden="true"></i>
+              <h3>Espor Oyunları</h3>
+              <p>En yeni rekabetçi oyunlar en yüksek FPS ve sıfır gecikmeyle hazır.</p>
             </div>
-            <div className="stat-strip-item">
-              <span className="stat-num">RTX 4090</span>
-              <span className="stat-label">Ultra Performans</span>
+
+            <div className="card">
+              <i className="fa-solid fa-clock" aria-hidden="true"></i>
+              <h3>Geniş Hizmet Saatleri</h3>
+              <p>Haftanın 7 günü 08:00 - 02:00 arası kesintisiz açık.</p>
             </div>
-            <div className="stat-strip-item">
-              <span className="stat-num">64 Masa</span>
-              <span className="stat-label">Geniş Salon Kapasitesi</span>
+
+            <div className="card">
+              <i className="fa-solid fa-wifi" aria-hidden="true"></i>
+              <h3>1000 Mbps Fiber</h3>
+              <p>Ultra düşük ping süresi ve yüksek hızlı fiber altyapı.</p>
             </div>
-            <div className="stat-strip-item">
-              <span className="stat-num">08:00–02:00</span>
-              <span className="stat-label">Haftanın Her Günü Açık</span>
+
+            <div className="card">
+              <i className="fa-solid fa-desktop" aria-hidden="true"></i>
+              <h3>540 Hz Ekranlar</h3>
+              <p>Espor standartlarında 144Hz, 240Hz ve 540Hz monitör seçenekleri.</p>
+            </div>
+
+            <div className="card">
+              <i className="fa-solid fa-couch" aria-hidden="true"></i>
+              <h3>Oyuncu Koltukları</h3>
+              <p>Uzun oyun seanslarında maksimum ergonomi ve konfor.</p>
+            </div>
+
+            <div className="card">
+              <i className="fa-solid fa-headphones" aria-hidden="true"></i>
+              <h3>Pro Ekipmanlar</h3>
+              <p>Mekanik klavyeler, hassas gaming kulaklık ve fareler.</p>
+            </div>
+
+            <div className="card">
+              <i className="fa-solid fa-burger" aria-hidden="true"></i>
+              <h3>Cafe &amp; İkramlar</h3>
+              <p>Oyun aralarında taze sıcak tost, kahve ve soğuk içecekler.</p>
+            </div>
+
+            {/* Group 2 (Seamless loop duplicate) */}
+            <div className="card">
+              <i className="fa-solid fa-gamepad" aria-hidden="true"></i>
+              <h3>Espor Oyunları</h3>
+              <p>En yeni rekabetçi oyunlar en yüksek FPS ve sıfır gecikmeyle hazır.</p>
+            </div>
+
+            <div className="card">
+              <i className="fa-solid fa-clock" aria-hidden="true"></i>
+              <h3>Geniş Hizmet Saatleri</h3>
+              <p>Haftanın 7 günü 08:00 - 02:00 arası kesintisiz açık.</p>
+            </div>
+
+            <div className="card">
+              <i className="fa-solid fa-wifi" aria-hidden="true"></i>
+              <h3>1000 Mbps Fiber</h3>
+              <p>Ultra düşük ping süresi ve yüksek hızlı fiber altyapı.</p>
+            </div>
+
+            <div className="card">
+              <i className="fa-solid fa-desktop" aria-hidden="true"></i>
+              <h3>540 Hz Ekranlar</h3>
+              <p>Espor standartlarında 144Hz, 240Hz ve 540Hz monitör seçenekleri.</p>
+            </div>
+
+            <div className="card">
+              <i className="fa-solid fa-couch" aria-hidden="true"></i>
+              <h3>Oyuncu Koltukları</h3>
+              <p>Uzun oyun seanslarında maksimum ergonomi ve konfor.</p>
+            </div>
+
+            <div className="card">
+              <i className="fa-solid fa-headphones" aria-hidden="true"></i>
+              <h3>Pro Ekipmanlar</h3>
+              <p>Mekanik klavyeler, hassas gaming kulaklık ve fareler.</p>
+            </div>
+
+            <div className="card">
+              <i className="fa-solid fa-burger" aria-hidden="true"></i>
+              <h3>Cafe &amp; İkramlar</h3>
+              <p>Oyun aralarında taze sıcak tost, kahve ve soğuk içecekler.</p>
             </div>
           </div>
-        </div>
+        </section>
       </main>
-
-      {/* 540Hz FEATURE SECTION */}
-      <section className="hz-feature-section">
-        <div className="section-container">
-          <div className="feature-card-spotlight">
-            <div className="spotlight-content">
-              <span className="spotlight-tag">540 HZ ESPOR ALANI</span>
-              <h2>Gecikmesiz, Saf Hız ve Kusursuz Akıcılık</h2>
-              <p>
-                Valorant, CS2 ve rekabetçi FPS oyunlarında her pikseli rakiplerinizden milisaniyeler önce görün. Özel turnuva sınıfı monitörler ve profesyonel mekanik çevre birimleri hazır.
-              </p>
-              <Link href="/rezerve" className="btn-primary" style={{ display: "inline-flex", marginTop: "16px" }}>
-                540 Hz Masanı Rezerve Et
-              </Link>
-            </div>
-            <div className="spotlight-image-wrap">
-              <img src="/foto2.jpeg" alt="540Hz Espor Alanı" className="spotlight-img" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* TICKER / CARD SLIDER */}
-      <section className="card-slider">
-        <div className="slider-track">
-          <div className="slider-item">
-            <div className="slider-badge">VIP ODA</div>
-            <p className="slider-title">Özel Akustik Espor Odası</p>
-            <span className="slider-desc">5 kişilik takım antrenmanları ve özel turnuva alanı</span>
-          </div>
-          <div className="slider-item">
-            <div className="slider-badge">TURBO GIDA</div>
-            <p className="slider-title">Sıcak &amp; Soğuk İçecek Barı</p>
-            <span className="slider-desc">Tost, kahve, enerji içecekleri ve atıştırmalıklar masanıza servis</span>
-          </div>
-          <div className="slider-item">
-            <div className="slider-badge">DONANIM</div>
-            <p className="slider-title">Mekanik Ekipmanlar</p>
-            <span className="slider-desc">Hassas optik sensörlü espor fareleri ve 7.1 kulaklıklar</span>
-          </div>
-        </div>
-      </section>
 
       {/* PRICE PREVIEW SECTION */}
       <section className="pricing-preview-section">

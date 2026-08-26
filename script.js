@@ -459,10 +459,10 @@
                             return;
                         }
 
-                        const seciliFiyat = kart.querySelector(".fiyat.secili");
-                        if (!seciliFiyat) {
-                            alert("Lütfen önce yukarıdan bir fiyat tarifesi seçiniz (5 Saat veya Gün Boyu).");
-                            return;
+                        let seciliFiyat = kart.querySelector(".fiyat.secili");
+                        if (!seciliFiyat && fiyatlar.length > 0) {
+                            fiyatlar[0].classList.add("secili");
+                            seciliFiyat = fiyatlar[0];
                         }
 
                         if (pc.classList.contains("secili")) {
@@ -584,8 +584,21 @@
                     const kart = btn.closest(".kart");
                     if (!kart) return;
 
-                    const seciliFiyat = kart.querySelector(".fiyat.secili");
-                    const seciliPcler = Array.from(kart.querySelectorAll(".comp.secili"));
+                    let seciliFiyat = kart.querySelector(".fiyat.secili");
+                    const fiyatlar = kart.querySelectorAll(".fiyat");
+                    if (!seciliFiyat && fiyatlar.length > 0) {
+                        fiyatlar[0].classList.add("secili");
+                        seciliFiyat = fiyatlar[0];
+                    }
+
+                    let seciliPcler = Array.from(kart.querySelectorAll(".comp.secili"));
+                    if (!seciliPcler.length) {
+                        const firstAvailable = kart.querySelector(".comp:not(.dolu):not(.rezerveli)");
+                        if (firstAvailable) {
+                            firstAvailable.classList.add("secili");
+                            seciliPcler = [firstAvailable];
+                        }
+                    }
 
                     if (!seciliFiyat || !seciliPcler.length) {
                         alert("Lütfen bir tarife ve en az bir bilgisayar seçiniz.");

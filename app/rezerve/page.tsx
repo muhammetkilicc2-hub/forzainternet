@@ -126,10 +126,10 @@ export default function ReservationPage() {
   };
 
   const handleOpenPayment = (tier: TierData) => {
-    const pcs = selectedPcsByTier[tier.id] || [];
+    let pcs = selectedPcsByTier[tier.id] || [];
     if (pcs.length === 0) {
-      alert("Lütfen en az 1 adet masa seçin.");
-      return;
+      pcs = [tier.pcs[0]];
+      setSelectedPcsByTier((prev) => ({ ...prev, [tier.id]: pcs }));
     }
     setActiveModalTier(tier);
     setModalOpen(true);
@@ -294,10 +294,22 @@ export default function ReservationPage() {
                     <button
                       type="button"
                       className="odeme-btn"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "10px",
+                        marginTop: "16px",
+                        width: "100%",
+                        cursor: "pointer",
+                      }}
                       aria-label="Ödemeye Geç"
                       onClick={() => handleOpenPayment(tier)}
                     >
-                      <i className="fa-solid fa-credit-card"></i> Ödemeye Geç
+                      <i className="fa-solid fa-credit-card"></i>{" "}
+                      {currentPcs.length > 0
+                        ? `${currentPcs.length} Masa Seçildi (₺${(currentPrice?.amount || 0) * currentPcs.length}) — Ödemeye Geç`
+                        : "Ödemeye Geç"}
                     </button>
                   </div>
                 </div>

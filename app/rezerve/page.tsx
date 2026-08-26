@@ -1,139 +1,206 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
-import { PC, PcKategori, KampanyaFiyatlari } from "@/lib/types";
+
+interface TierData {
+  id: "sari" | "mavi" | "yesil";
+  name: string;
+  badge: string;
+  badgeIcon: string;
+  hz: string;
+  specs: { icon: string; text: string }[];
+  prices: { label: string; amount: number }[];
+  pcs: string[];
+}
+
+const TIERS: TierData[] = [
+  {
+    id: "sari",
+    name: "60 TL Masa",
+    badge: "Standart Gaming",
+    badgeIcon: "fa-solid fa-microchip",
+    hz: "144 Hz Espor Ekran",
+    specs: [
+      { icon: "fa-solid fa-desktop", text: "144 Hz Gaming Espor Monitör" },
+      { icon: "fa-solid fa-microchip", text: "Nvidia GeForce RTX 3060" },
+      { icon: "fa-solid fa-cpu", text: "Intel Core i5 Yüksek Performans" },
+      { icon: "fa-solid fa-memory", text: "16 GB DDR4 Yüksek Hızlı RAM" },
+    ],
+    prices: [
+      { label: "5 Saat Paket", amount: 200 },
+      { label: "Gün Boyu Paket", amount: 400 },
+    ],
+    pcs: ["PC 1", "PC 2", "PC 4", "PC 5", "PC 6", "PC 8", "PC 9", "PC 10"],
+  },
+  {
+    id: "mavi",
+    name: "70 TL Masa",
+    badge: "Pro Espor Gaming",
+    badgeIcon: "fa-solid fa-bolt",
+    hz: "240 Hz Espor Ekran",
+    specs: [
+      { icon: "fa-solid fa-desktop", text: "240 Hz Ultra Espor Monitör" },
+      { icon: "fa-solid fa-microchip", text: "Nvidia GeForce RTX 3060 OC" },
+      { icon: "fa-solid fa-cpu", text: "Intel Core i5 Gaming İşlemci" },
+      { icon: "fa-solid fa-memory", text: "16 GB DDR4 Yüksek Hızlı RAM" },
+    ],
+    prices: [
+      { label: "5 Saat Paket", amount: 250 },
+      { label: "Gün Boyu Paket", amount: 500 },
+    ],
+    pcs: [
+      "PC 11", "PC 12", "PC 14", "PC 15", "PC 16", "PC 17", "PC 18",
+      "PC 20", "PC 22", "PC 24", "PC 25", "PC 26", "PC 27", "PC 28",
+      "PC 29", "PC 31", "PC 32", "PC 33", "PC 34", "PC 36", "PC 37", "PC 42"
+    ],
+  },
+  {
+    id: "yesil",
+    name: "90 TL Masa",
+    badge: "Ultra VIP Espor",
+    badgeIcon: "fa-solid fa-crown",
+    hz: "360 - 540 Hz Espor Ekran",
+    specs: [
+      { icon: "fa-solid fa-desktop", text: "360-540 Hz Turnuva Monitörü" },
+      { icon: "fa-solid fa-microchip", text: "RTX 3070 Ti / RTX 5060" },
+      { icon: "fa-solid fa-cpu", text: "AMD Ryzen 7 7800X3D Canavarı" },
+      { icon: "fa-solid fa-memory", text: "32 GB DDR5 Yüksek Frekans RAM" },
+    ],
+    prices: [
+      { label: "5 Saat Paket", amount: 350 },
+      { label: "Gün Boyu Paket", amount: 700 },
+    ],
+    pcs: [
+      "PC 38", "PC 40", "PC 43", "PC 44", "PC 45", "PC 46", "PC 47",
+      "PC 48", "PC 49", "PC 50", "PC 51", "PC 52", "PC 54", "PC 55",
+      "PC 56", "PC 57", "PC 59", "PC 60"
+    ],
+  },
+];
 
 export default function ReservationPage() {
-  const [computers, setComputers] = useState<PC[]>([]);
-  const [pricing, setPricing] = useState<KampanyaFiyatlari | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [selectedPrices, setSelectedPrices] = useState<Record<string, { label: string; amount: number }>>({
+    sari: TIERS[0].prices[0],
+    mavi: TIERS[1].prices[0],
+    yesil: TIERS[2].prices[0],
+  });
+  const [selectedPcsByTier, setSelectedPcsByTier] = useState<Record<string, string[]>>({
+    sari: ["PC 1"],
+    mavi: ["PC 11"],
+    yesil: ["PC 38"],
+  });
 
-  const [selectedKategori, setSelectedKategori] = useState<PcKategori>("sari");
-  const [selectedPc, setSelectedPc] = useState<PC | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0]);
-  const [selectedTime, setSelectedTime] = useState<string>("18:00");
-  const [selectedDuration, setSelectedDuration] = useState<number>(3);
-
-  // Modal State
   const [modalOpen, setModalOpen] = useState(false);
-  const [customerName, setCustomerName] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<"kart" | "nakit" | "havale">("kart");
+  const [activeModalTier, setActiveModalTier] = useState<TierData>(TIERS[0]);
+  const [paymentMethod, setPaymentMethod] = useState<"card" | "balance">("card");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Verileri Sunucudan Çek
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const [resPc, resPricing] = await Promise.all([
-          fetch("/api/computers"),
-          fetch("/api/pricing"),
-        ]);
-        const dataPc = await resPc.json();
-        const dataPricing = await resPricing.json();
+  const handleSelectPrice = (tierId: string, priceObj: { label: string; amount: number }) => {
+    setSelectedPrices((prev) => ({ ...prev, [tierId]: priceObj }));
+  };
 
-        if (dataPc.computers) setComputers(dataPc.computers);
-        if (dataPricing.pricing) setPricing(dataPricing.pricing);
-      } catch (err) {
-        console.error("Veri yüklenemedi:", err);
-      } finally {
-        setLoading(false);
+  const handleTogglePc = (tierId: string, pcName: string) => {
+    setSelectedPcsByTier((prev) => {
+      const current = prev[tierId] || [];
+      if (current.includes(pcName)) {
+        if (current.length === 1) return prev;
+        return { ...prev, [tierId]: current.filter((p) => p !== pcName) };
+      } else {
+        if (current.length >= 3) {
+          alert("Aynı anda en fazla 3 masa seçebilirsiniz.");
+          return prev;
+        }
+        return { ...prev, [tierId]: [...current, pcName] };
       }
-    }
-    loadData();
-  }, []);
-
-  // Fiyat Hesaplama
-  const calculateTotal = (): number => {
-    if (!pricing) return selectedDuration * 60;
-    const catPrices = pricing[selectedKategori];
-    if (selectedDuration === 3) return catPrices.ucSaatlik;
-    if (selectedDuration === 5) return catPrices.besSaatlik;
-    return catPrices.saatlik * selectedDuration;
+    });
   };
 
-  const filteredPcs = computers.filter((p) => p.kategori === selectedKategori);
-
-  const handlePcSelect = (pc: PC) => {
-    if (pc.durum !== "bos") return;
-    setSelectedPc(pc);
-  };
-
-  const handleOpenModal = () => {
-    if (!selectedPc) {
-      alert("Lütfen rezervasyon yapmak için boş bir masa seçin.");
+  const handleOpenPayment = (tier: TierData) => {
+    const pcs = selectedPcsByTier[tier.id] || [];
+    if (pcs.length === 0) {
+      alert("Lütfen en az 1 adet masa seçin.");
       return;
     }
+    setActiveModalTier(tier);
     setModalOpen(true);
   };
 
-  const handleSubmitReservation = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedPc || !customerName || !customerPhone) {
-      alert("Lütfen adınızı ve telefon numaranızı eksiksiz girin.");
+  const calculateTotal = () => {
+    const price = selectedPrices[activeModalTier.id]?.amount || 0;
+    const count = (selectedPcsByTier[activeModalTier.id] || []).length;
+    return price * count;
+  };
+
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, "").slice(0, 16);
+    let formatted = val.replace(/(.{4})/g, "$1 ").trim();
+    setCardNumber(formatted);
+  };
+
+  const handleCardExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, "").slice(0, 4);
+    if (val.length >= 3) {
+      val = `${val.slice(0, 2)}/${val.slice(2)}`;
+    }
+    setCardExpiry(val);
+  };
+
+  const handleSubmitReservation = async () => {
+    if (!name.trim() || !surname.trim()) {
+      alert("Lütfen ad ve soyadınızı giriniz.");
+      return;
+    }
+    if (!phone.trim() || phone.length < 10) {
+      alert("Lütfen geçerli bir telefon numarası giriniz.");
       return;
     }
 
-    setSubmitting(true);
+    setIsSubmitting(true);
+
+    const pcs = selectedPcsByTier[activeModalTier.id] || [];
+    const total = calculateTotal();
+    const durationLabel = selectedPrices[activeModalTier.id]?.label || "5 Saat Paket";
 
     try {
-      const payload = {
-        musteriAdi: customerName,
-        telefon: customerPhone,
-        masaId: selectedPc.id,
-        masaIsim: selectedPc.isim,
-        kategori: selectedKategori,
-        tarih: selectedDate,
-        saat: selectedTime,
-        sure: selectedDuration,
-        toplamTutar: calculateTotal(),
-        odemeYontemi: paymentMethod,
-      };
-
-      const res = await fetch("/api/reservations", {
+      await fetch("/api/reservations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          musteriAdi: `${name.trim()} ${surname.trim()}`,
+          telefon: phone.trim(),
+          masaId: pcs.join(", "),
+          masaIsim: pcs.join(", "),
+          kategori: activeModalTier.id,
+          tarih: new Date().toISOString().split("T")[0],
+          saat: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }),
+          sure: durationLabel.includes("Gün") ? 12 : 5,
+          toplamTutar: total,
+          odemeYontemi: paymentMethod === "card" ? "kart" : "nakit",
+        }),
       });
 
-      const data = await res.json();
-
-      if (data.success) {
-        setSuccessMessage("🎉 Rezervasyonunuz başarıyla kaydedildi! Masanız sizin için ayrıldı.");
-        // Masayı meşgule al
-        setComputers((prev) =>
-          prev.map((p) => (p.id === selectedPc.id ? { ...p, durum: "rezerve" } : p))
-        );
-
-        // WhatsApp Onay Mesajı Linki
-        const waText = encodeURIComponent(
-          `*FORZA İNTERNET CAFE REZERVASYON TALEBİ*\n` +
-          `👤 Müşteri: ${customerName}\n` +
-          `📞 Tel: ${customerPhone}\n` +
-          `🖥️ Masa: ${selectedPc.isim} (${selectedKategori.toUpperCase()} MASA)\n` +
-          `📅 Tarih/Saat: ${selectedDate} ${selectedTime}\n` +
-          `⏳ Süre: ${selectedDuration} Saat\n` +
-          `💰 Tutar: ${calculateTotal()} ₺\n` +
-          `💳 Ödeme: ${paymentMethod.toUpperCase()}`
-        );
-
-        setTimeout(() => {
-          window.open(`https://wa.me/905464659693?text=${waText}`, "_blank");
-        }, 1200);
-      } else {
-        alert(data.error || "Rezervasyon kaydedilemedi.");
-      }
-    } catch {
-      alert("Bağlantı hatası oluştu.");
+      alert(`✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: ${pcs.join(", ")}\nToplam Tutar: ₺${total}\n\nEn kısa sürede onay iletilecektir.`);
+      setModalOpen(false);
+      setName("");
+      setSurname("");
+      setPhone("");
+      setCardNumber("");
+      setCardExpiry("");
+      setCardCvv("");
+    } catch (err) {
+      alert("Rezervasyon kaydedilirken bir hata oluştu.");
     } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -141,375 +208,306 @@ export default function ReservationPage() {
     <>
       <Navbar />
 
-      <main className="rezerve-page-main" style={{ minHeight: "85vh", padding: "100px 16px 60px" }}>
-        <div className="section-container" style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          
-          <div className="section-header-center" style={{ textAlign: "center", marginBottom: "32px" }}>
-            <span className="about-badge">CANLI MASA SEÇİMİ</span>
-            <h1 className="para1" style={{ fontSize: "36px", margin: "12px 0 8px" }}>
-              Masa <span className="gold-text">Rezervasyonu</span>
-            </h1>
-            <p className="section-subtitle">Kategori seçin, salon krokisinden boş masanıza dokunun ve yerinizi hemen ayırtın.</p>
-          </div>
+      <main>
+        <section className="kampanyalar" id="kampanyalar">
+          <h2>Kampanyalarımız</h2>
+          <p className="kampanya-intro">
+            İhtiyacına en uygun donanım paketini seç, masanı belirle ve anında yerini ayırt.
+          </p>
+          <p className="kampanya-alt">
+            Önce bir fiyat tarifesi (5 Saat / Gün Boyu) seçip ardından dilediğin masaya tıklayın.
+          </p>
 
-          {/* STEP 1: KATEGORİ SEKMELERİ */}
-          <div className="category-select-tabs" style={{ display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap", marginBottom: "28px" }}>
-            <button
-              type="button"
-              className={`cat-tab-btn ${selectedKategori === "sari" ? "active sari" : ""}`}
-              onClick={() => { setSelectedKategori("sari"); setSelectedPc(null); }}
-              style={{
-                padding: "14px 22px",
-                borderRadius: "16px",
-                border: "1px solid rgba(255,215,0,0.3)",
-                background: selectedKategori === "sari" ? "linear-gradient(135deg, #ffd700, #b29400)" : "rgba(14,18,26,0.8)",
-                color: selectedKategori === "sari" ? "#000" : "#fff",
-                fontWeight: 800,
-                cursor: "pointer",
-                transition: "all 0.2s ease"
-              }}
-            >
-              🟡 Standart Gaming ({pricing?.sari?.saatlik ?? 60} ₺/s)
-            </button>
-            <button
-              type="button"
-              className={`cat-tab-btn ${selectedKategori === "mavi" ? "active mavi" : ""}`}
-              onClick={() => { setSelectedKategori("mavi"); setSelectedPc(null); }}
-              style={{
-                padding: "14px 22px",
-                borderRadius: "16px",
-                border: "1px solid rgba(14,165,233,0.3)",
-                background: selectedKategori === "mavi" ? "linear-gradient(135deg, #0ea5e9, #0284c7)" : "rgba(14,18,26,0.8)",
-                color: selectedKategori === "mavi" ? "#fff" : "#fff",
-                fontWeight: 800,
-                cursor: "pointer",
-                transition: "all 0.2s ease"
-              }}
-            >
-              🔵 Pro Gaming 360Hz ({pricing?.mavi?.saatlik ?? 70} ₺/s)
-            </button>
-            <button
-              type="button"
-              className={`cat-tab-btn ${selectedKategori === "yesil" ? "active yesil" : ""}`}
-              onClick={() => { setSelectedKategori("yesil"); setSelectedPc(null); }}
-              style={{
-                padding: "14px 22px",
-                borderRadius: "16px",
-                border: "1px solid rgba(16,185,129,0.3)",
-                background: selectedKategori === "yesil" ? "linear-gradient(135deg, #10b981, #059669)" : "rgba(14,18,26,0.8)",
-                color: selectedKategori === "yesil" ? "#fff" : "#fff",
-                fontWeight: 800,
-                cursor: "pointer",
-                transition: "all 0.2s ease"
-              }}
-            >
-              🟢 Elite 540Hz VIP ({pricing?.yesil?.saatlik ?? 90} ₺/s)
-            </button>
-          </div>
+          <div className="kampanya-kartlari">
+            {TIERS.map((tier) => {
+              const currentPrice = selectedPrices[tier.id];
+              const currentPcs = selectedPcsByTier[tier.id] || [];
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "24px" }}>
-            
-            {/* STEP 2: 64 MASA CANLI IZGARA */}
-            <div className="dashboard-card" style={{ padding: "24px", background: "rgba(14,18,26,0.9)", borderRadius: "24px", border: "1px solid rgba(247,242,232,0.18)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
-                <div>
-                  <h2 style={{ fontSize: "20px", color: "#fdfbf7", margin: 0 }}>
-                    {selectedKategori === "sari" ? "Sarı Masalar (PC 1 - PC 24)" : selectedKategori === "mavi" ? "Mavi Masalar (PC 25 - PC 48)" : "Yeşil Masalar (PC 49 - PC 64)"}
-                  </h2>
-                  <span style={{ fontSize: "12px", color: "#94a3b8" }}>Seçmek istediğiniz boş masaya tıklayın</span>
-                </div>
-                <div style={{ display: "flex", gap: "12px", fontSize: "12px" }}>
-                  <span style={{ color: "#10b981", display: "flex", alignItems: "center", gap: "4px" }}>🟢 Boş</span>
-                  <span style={{ color: "#f43f5e", display: "flex", alignItems: "center", gap: "4px" }}>🔴 Kullanımda</span>
-                  <span style={{ color: "#f59e0b", display: "flex", alignItems: "center", gap: "4px" }}>🟡 Rezerve</span>
-                </div>
-              </div>
-
-              {loading ? (
-                <div style={{ textAlign: "center", padding: "40px", color: "#94a3b8" }}>Masalar yükleniyor...</div>
-              ) : (
-                <div className="pc-container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(68px, 1fr))", gap: "8px", maxHeight: "280px", overflowY: "auto", padding: "8px" }}>
-                  {filteredPcs.map((pc) => {
-                    const isSelected = selectedPc?.id === pc.id;
-                    const isAvailable = pc.durum === "bos";
-                    return (
-                      <button
-                        type="button"
-                        key={pc.id}
-                        onClick={() => handlePcSelect(pc)}
-                        disabled={!isAvailable}
-                        className={`comp ${isSelected ? "selected" : ""} ${pc.durum}`}
-                        style={{
-                          height: "56px",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderRadius: "12px",
-                          border: isSelected ? "2px solid #ffffff" : `1px solid ${pc.durum === "bos" ? "rgba(16,185,129,0.4)" : pc.durum === "kullanimda" ? "rgba(244,63,94,0.4)" : "rgba(245,158,11,0.4)"}`,
-                          background: isSelected ? "linear-gradient(135deg, #ffd700, #cca400)" : pc.durum === "bos" ? "rgba(16,185,129,0.12)" : pc.durum === "kullanimda" ? "rgba(244,63,94,0.12)" : "rgba(245,158,11,0.12)",
-                          color: isSelected ? "#000" : "#fff",
-                          cursor: isAvailable ? "pointer" : "not-allowed",
-                          opacity: isAvailable ? 1 : 0.65,
-                          transition: "all 0.15s ease",
-                        }}
-                      >
-                        <strong style={{ fontSize: "14px" }}>{pc.isim}</strong>
-                        <span style={{ fontSize: "9px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                          {isSelected ? "SEÇİLDİ" : pc.durum}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            {/* STEP 3 & 4: SÜRE SEÇİMİ VE REZERVASYON ÖZETİ */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
-              
-              {/* Tarih / Saat / Süre Formu */}
-              <div className="dashboard-card" style={{ padding: "20px", background: "rgba(14,18,26,0.85)", borderRadius: "20px", border: "1px solid rgba(247,242,232,0.14)" }}>
-                <h3 style={{ fontSize: "16px", color: "#fdfbf7", marginBottom: "14px" }}>📅 Zaman ve Süre Seçimi</h3>
-                
-                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                  <div>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Tarih</label>
-                    <input
-                      type="date"
-                      value={selectedDate}
-                      onChange={(e) => setSelectedDate(e.target.value)}
-                      className="settings-input"
-                      style={{ width: "100%", padding: "10px", borderRadius: "10px", background: "rgba(247,242,232,0.06)", border: "1px solid rgba(247,242,232,0.2)", color: "#fff" }}
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Başlangıç Saati</label>
-                    <select
-                      value={selectedTime}
-                      onChange={(e) => setSelectedTime(e.target.value)}
-                      className="settings-select"
-                      style={{ width: "100%", padding: "10px", borderRadius: "10px", background: "rgba(14,18,26,0.9)", border: "1px solid rgba(247,242,232,0.2)", color: "#fff" }}
-                    >
-                      {["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00"].map((time) => (
-                        <option key={time} value={time}>{time}</option>
+              return (
+                <div key={tier.id} className={`kart ${tier.id}`} data-tier={tier.id}>
+                  <div className="pc-card">
+                    <div className="kart-baslik">
+                      <h3>{tier.name}</h3>
+                    </div>
+                    <div className="analiz-rozeti">
+                      <i className={tier.badgeIcon} aria-hidden="true"></i> {tier.badge}
+                    </div>
+                    <h4 className="hz-baslik">{tier.hz}</h4>
+                    <ul className="donanim-listesi">
+                      {tier.specs.map((spec, sIdx) => (
+                        <li key={sIdx}>
+                          <i className={spec.icon} aria-hidden="true"></i> {spec.text}
+                        </li>
                       ))}
-                    </select>
+                    </ul>
                   </div>
 
-                  <div>
-                    <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Oyun Süresi</label>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" }}>
-                      {[1, 2, 3, 4, 5].map((s) => (
-                        <button
-                          type="button"
-                          key={s}
-                          onClick={() => setSelectedDuration(s)}
+                  <div className="fiyat-bolumu">
+                    <div className="bolum-basligi">
+                      <i className="fa-solid fa-tags" aria-hidden="true"></i> Süreli Tarife Seçin
+                    </div>
+
+                    {tier.prices.map((p, pIdx) => {
+                      const isSelected = currentPrice?.label === p.label;
+                      return (
+                        <div
+                          key={pIdx}
+                          className={`fiyat ${isSelected ? "secili-fiyat" : ""}`}
+                          role="button"
+                          tabIndex={0}
+                          aria-label={`${tier.name} ${p.label}`}
+                          onClick={() => handleSelectPrice(tier.id, p)}
                           style={{
-                            padding: "8px",
-                            borderRadius: "8px",
-                            border: `1px solid ${selectedDuration === s ? "#ffd700" : "rgba(247,242,232,0.15)"}`,
-                            background: selectedDuration === s ? "rgba(255,215,0,0.15)" : "transparent",
-                            color: selectedDuration === s ? "#ffd700" : "#fff",
-                            fontWeight: 700,
                             cursor: "pointer",
+                            borderColor: isSelected ? "var(--cream-gold)" : undefined,
+                            background: isSelected ? "rgba(255, 215, 0, 0.12)" : undefined,
                           }}
                         >
-                          {s} Saat
-                        </button>
-                      ))}
+                          <span>{p.label}</span>
+                          <strong>{p.amount} TL</strong>
+                        </div>
+                      );
+                    })}
+
+                    <div className="bolum-basligi" style={{ marginTop: "14px" }}>
+                      <i className="fa-solid fa-desktop" aria-hidden="true"></i> Masa Seçin (Maks. 3)
                     </div>
+
+                    <div className="pc-container" aria-label={`${tier.name} Bilgisayarları`}>
+                      {tier.pcs.map((pcName) => {
+                        const isSelected = currentPcs.includes(pcName);
+                        return (
+                          <div
+                            key={pcName}
+                            className={`comp ${isSelected ? "secili" : ""}`}
+                            tabIndex={0}
+                            role="button"
+                            aria-label={pcName}
+                            onClick={() => handleTogglePc(tier.id, pcName)}
+                          >
+                            {pcName}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <button
+                      type="button"
+                      className="odeme-btn"
+                      aria-label="Ödemeye Geç"
+                      onClick={() => handleOpenPayment(tier)}
+                    >
+                      <i className="fa-solid fa-credit-card"></i> Ödemeye Geç
+                    </button>
                   </div>
                 </div>
-              </div>
-
-              {/* Rezervasyon Özeti & Aksiyon */}
-              <div className="dashboard-card" style={{ padding: "20px", background: "rgba(14,18,26,0.85)", borderRadius: "20px", border: "1px solid rgba(247,242,232,0.14)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                <div>
-                  <h3 style={{ fontSize: "16px", color: "#fdfbf7", marginBottom: "14px" }}>📋 Rezervasyon Özeti</h3>
-                  
-                  <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px", color: "#94a3b8" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span>Kategori:</span>
-                      <strong style={{ color: "#fff" }}>{selectedKategori === "sari" ? "Sarı Masa (240Hz)" : selectedKategori === "mavi" ? "Mavi Masa (360Hz)" : "Yeşil Masa (540Hz)"}</strong>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span>Seçilen Masa:</span>
-                      <strong style={{ color: selectedPc ? "#ffd700" : "#f43f5e" }}>
-                        {selectedPc ? selectedPc.isim : "Masa Seçilmedi"}
-                      </strong>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span>Tarih &amp; Saat:</span>
-                      <strong style={{ color: "#fff" }}>{selectedDate} {selectedTime}</strong>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span>Süre:</span>
-                      <strong style={{ color: "#fff" }}>{selectedDuration} Saat</strong>
-                    </div>
-                    <hr style={{ borderColor: "rgba(247,242,232,0.12)", margin: "8px 0" }} />
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "18px", alignItems: "center" }}>
-                      <span style={{ color: "#fdfbf7", fontWeight: 700 }}>Toplam Tutar:</span>
-                      <strong style={{ color: "#ffd700", fontSize: "24px" }}>{calculateTotal()} ₺</strong>
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleOpenModal}
-                  disabled={!selectedPc}
-                  className="btn-primary"
-                  style={{
-                    width: "100%",
-                    padding: "16px",
-                    fontSize: "16px",
-                    fontWeight: 800,
-                    marginTop: "16px",
-                    opacity: selectedPc ? 1 : 0.5,
-                    cursor: selectedPc ? "pointer" : "not-allowed",
-                  }}
-                >
-                  {selectedPc ? "💳 Bilgileri Gir ve Ayırt" : "Lütfen Yukarıdan Boş Masa Seçin"}
-                </button>
-              </div>
-
-            </div>
-
+              );
+            })}
           </div>
 
-        </div>
+          <p className="uyari">
+            * Süreli peşin ödemeli kampanyalarda geçerlidir. İptal ve iade koşulları işletme kurallarına tabidir.
+          </p>
+        </section>
       </main>
 
-      {/* CHECKOUT MODAL */}
       {modalOpen && (
-        <div className="payment-modal active" style={{ display: "flex" }}>
-          <div className="payment-box" style={{ maxWidth: "480px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-              <h2 className="payment-title" style={{ fontSize: "20px", margin: 0 }}>
-                Rezervasyon &amp; İletişim
-              </h2>
-              <button
-                type="button"
-                onClick={() => setModalOpen(false)}
-                style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "18px", cursor: "pointer" }}
-              >
-                ✕
-              </button>
+        <div
+          className="payment-modal active"
+          id="paymentModal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="paymentTitle"
+          style={{ display: "flex" }}
+        >
+          <div className="payment-box">
+            <button
+              type="button"
+              className="payment-close"
+              id="paymentClose"
+              aria-label="Ödemeyi Kapat"
+              onClick={() => setModalOpen(false)}
+            >
+              <i className="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+
+            <h2 className="payment-title" id="paymentTitle">
+              Masa Rezervasyonu
+            </h2>
+            <p className="payment-subtitle">
+              Seçtiğiniz bilgisayarlar için rezervasyon detaylarını tamamlayın.
+            </p>
+
+            <div className="payment-summary">
+              <div className="payment-summary-row">
+                <span>Seçilen Bilgisayarlar</span>
+                <strong id="paymentPc">
+                  {(selectedPcsByTier[activeModalTier.id] || []).join(", ") || "PC -"}
+                </strong>
+              </div>
+              <div className="payment-summary-row">
+                <span>Donanım Paketi</span>
+                <strong id="paymentPackage">{activeModalTier.name}</strong>
+              </div>
+              <div className="payment-summary-row">
+                <span>Süre Tarifesi</span>
+                <strong id="paymentDuration">
+                  {selectedPrices[activeModalTier.id]?.label || "-"}
+                </strong>
+              </div>
+              <div className="payment-total">
+                <span>Ödenecek Tutar</span>
+                <strong id="paymentTotal">₺{calculateTotal()}</strong>
+              </div>
             </div>
 
-            {successMessage ? (
-              <div style={{ textAlign: "center", padding: "20px 0" }}>
-                <div style={{ fontSize: "42px", marginBottom: "12px" }}>🎉</div>
-                <h3 style={{ color: "#10b981", fontSize: "18px", marginBottom: "8px" }}>Rezervasyon Alındı!</h3>
-                <p style={{ color: "#94a3b8", fontSize: "13px", marginBottom: "20px" }}>{successMessage}</p>
-                <button
-                  type="button"
-                  onClick={() => { setModalOpen(false); setSuccessMessage(null); setSelectedPc(null); }}
-                  className="btn-primary"
-                  style={{ width: "100%" }}
-                >
-                  Tamam
-                </button>
+            <div className="payment-methods">
+              <div className="payment-method">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  id="cardPayment"
+                  value="card"
+                  checked={paymentMethod === "card"}
+                  onChange={() => setPaymentMethod("card")}
+                />
+                <label htmlFor="cardPayment">
+                  <i className="fa-solid fa-credit-card" aria-hidden="true"></i>
+                  Kredi / Banka Kartı
+                </label>
               </div>
-            ) : (
-              <form onSubmit={handleSubmitReservation} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                <div>
-                  <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Adınız Soyadınız *</label>
+
+              <div className="payment-method">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  id="balancePayment"
+                  value="balance"
+                  checked={paymentMethod === "balance"}
+                  onChange={() => setPaymentMethod("balance")}
+                />
+                <label htmlFor="balancePayment">
+                  <i className="fa-solid fa-wallet" aria-hidden="true"></i>
+                  Forza Bakiye
+                </label>
+              </div>
+            </div>
+
+            <div className="payment-form-row">
+              <div className="payment-form-group">
+                <label htmlFor="paymentName">Ad</label>
+                <input
+                  type="text"
+                  id="paymentName"
+                  placeholder="Adınız"
+                  autoComplete="given-name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="payment-form-group">
+                <label htmlFor="paymentSurname">Soyad</label>
+                <input
+                  type="text"
+                  id="paymentSurname"
+                  placeholder="Soyadınız"
+                  autoComplete="family-name"
+                  value={surname}
+                  onChange={(e) => setSurname(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="payment-form-group">
+              <label htmlFor="paymentPhone">Telefon Numarası</label>
+              <input
+                type="tel"
+                id="paymentPhone"
+                placeholder="05XX XXX XX XX"
+                autoComplete="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+            </div>
+
+            {paymentMethod === "card" && (
+              <div id="cardFields">
+                <div className="payment-form-group">
+                  <label htmlFor="cardName">Kart Üzerindeki İsim</label>
                   <input
                     type="text"
-                    required
-                    placeholder="örn: Ahmet Yılmaz"
-                    value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
-                    style={{ width: "100%", padding: "12px", borderRadius: "10px", background: "rgba(247,242,232,0.08)", border: "1px solid rgba(247,242,232,0.2)", color: "#fff" }}
+                    id="cardName"
+                    placeholder="AD SOYAD"
+                    autoComplete="cc-name"
+                    value={cardName}
+                    onChange={(e) => setCardName(e.target.value)}
                   />
                 </div>
 
-                <div>
-                  <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Telefon Numaranız *</label>
+                <div className="payment-form-group">
+                  <label htmlFor="cardNumber">Kart Numarası</label>
                   <input
-                    type="tel"
-                    required
-                    placeholder="05XX XXX XX XX"
-                    value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
-                    style={{ width: "100%", padding: "12px", borderRadius: "10px", background: "rgba(247,242,232,0.08)", border: "1px solid rgba(247,242,232,0.2)", color: "#fff" }}
+                    type="text"
+                    id="cardNumber"
+                    inputMode="numeric"
+                    maxLength={19}
+                    placeholder="0000 0000 0000 0000"
+                    autoComplete="cc-number"
+                    value={cardNumber}
+                    onChange={handleCardNumberChange}
                   />
                 </div>
 
-                <div>
-                  <label style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Ödeme Yöntemi Tercihi</label>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMethod("kart")}
-                      style={{
-                        padding: "10px 6px",
-                        borderRadius: "8px",
-                        border: `1px solid ${paymentMethod === "kart" ? "#ffd700" : "rgba(247,242,232,0.15)"}`,
-                        background: paymentMethod === "kart" ? "rgba(255,215,0,0.15)" : "transparent",
-                        color: paymentMethod === "kart" ? "#ffd700" : "#fff",
-                        fontWeight: 700,
-                        fontSize: "12px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      💳 Kredi Kartı
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMethod("nakit")}
-                      style={{
-                        padding: "10px 6px",
-                        borderRadius: "8px",
-                        border: `1px solid ${paymentMethod === "nakit" ? "#ffd700" : "rgba(247,242,232,0.15)"}`,
-                        background: paymentMethod === "nakit" ? "rgba(255,215,0,0.15)" : "transparent",
-                        color: paymentMethod === "nakit" ? "#ffd700" : "#fff",
-                        fontWeight: 700,
-                        fontSize: "12px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      💵 Kafede Nakit
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMethod("havale")}
-                      style={{
-                        padding: "10px 6px",
-                        borderRadius: "8px",
-                        border: `1px solid ${paymentMethod === "havale" ? "#ffd700" : "rgba(247,242,232,0.15)"}`,
-                        background: paymentMethod === "havale" ? "rgba(255,215,0,0.15)" : "transparent",
-                        color: paymentMethod === "havale" ? "#ffd700" : "#fff",
-                        fontWeight: 700,
-                        fontSize: "12px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      🏦 Havale / FAST
-                    </button>
+                <div className="payment-form-row">
+                  <div className="payment-form-group">
+                    <label htmlFor="cardExpiry">Son Kullanma</label>
+                    <input
+                      type="text"
+                      id="cardExpiry"
+                      maxLength={5}
+                      placeholder="AA/YY"
+                      autoComplete="cc-exp"
+                      value={cardExpiry}
+                      onChange={handleCardExpiryChange}
+                    />
+                  </div>
+                  <div className="payment-form-group">
+                    <label htmlFor="cardCvv">CVV Güvenlik Kodu</label>
+                    <input
+                      type="password"
+                      id="cardCvv"
+                      inputMode="numeric"
+                      maxLength={4}
+                      placeholder="•••"
+                      autoComplete="cc-csc"
+                      value={cardCvv}
+                      onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                    />
                   </div>
                 </div>
-
-                <div style={{ background: "rgba(247,242,232,0.06)", padding: "12px", borderRadius: "12px", fontSize: "13px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span>Ödenecek Tutar:</span>
-                    <strong style={{ color: "#ffd700", fontSize: "16px" }}>{calculateTotal()} ₺</strong>
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="payment-submit"
-                  style={{ width: "100%", padding: "14px", fontWeight: 800, fontSize: "15px" }}
-                >
-                  {submitting ? "Kaydediliyor..." : "⚡ Rezervasyonu Onayla"}
-                </button>
-              </form>
+              </div>
             )}
+
+            <button
+              type="button"
+              className="payment-submit"
+              id="paymentSubmit"
+              onClick={handleSubmitReservation}
+              disabled={isSubmitting}
+            >
+              <i className="fa-solid fa-lock" aria-hidden="true"></i>
+              <span id="paymentSubmitText">
+                {isSubmitting ? "İşleniyor..." : "Rezervasyonu Tamamla"}
+              </span>
+            </button>
+
+            <p className="payment-security">
+              <i className="fa-solid fa-shield-halved" aria-hidden="true"></i>
+              Demo Rezervasyon &amp; Güvenli Ön Ödeme Alanı
+            </p>
           </div>
         </div>
       )}

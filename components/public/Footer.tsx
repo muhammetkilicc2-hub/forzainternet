@@ -1,90 +1,50 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
 
 export default function Footer() {
   return (
     <footer>
       <div className="footer-container">
-        <div className="footer-col brand-col">
-          <div className="logo-brand footer-logo">
-            <img
-              src="/forzaikon.jpeg"
-              alt="Forza Logo"
-              className="forza-image"
-            />
-            <span className="para2">
-              <span className="logo-forza">FORZA</span>
-              <span className="logo-sub">İnternet&amp;Cafe</span>
-            </span>
-          </div>
-          <p className="footer-desc">
-            En yeni nesil RTX 40 serisi ekran kartları, 540 Hz espor monitörleri
-            ve VIP konfor alanlarıyla şehrin 1 numaralı espor ve internet kafesi.
+        <div className="footer-logo">
+          <h2>Forza İnternet &amp; Cafe</h2>
+          <p>
+            Antalya'nın merkezinde premium oyun deneyimi, yüksek konfigürasyonlu espor donanımları ve keyifli bir sosyal ortam.
           </p>
-          <div className="social-links">
-            <a
-              href="https://www.instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-btn"
-              aria-label="Instagram"
-            >
-              Instagram
-            </a>
-            <a
-              href="https://wa.me/905464659693"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-btn"
-              aria-label="WhatsApp"
-            >
-              WhatsApp
-            </a>
-          </div>
         </div>
 
-        <div className="footer-col">
-          <h4 className="footer-title">Hızlı Menü</h4>
-          <ul className="footer-links">
-            <li>
-              <Link href="/">Anasayfa</Link>
-            </li>
-            <li>
-              <Link href="/hakkimizda">Hakkımızda &amp; Galeri</Link>
-            </li>
-            <li>
-              <Link href="/rezerve">Masa Rezervasyonu</Link>
-            </li>
-            <li>
-              <Link href="/giris" style={{ opacity: 0.6, fontSize: "12px" }}>
-                🔒 Yönetici Girişi
-              </Link>
-            </li>
-          </ul>
+        <div className="footer-links">
+          <h3>Hızlı Menü</h3>
+          <Link href="/">Anasayfa</Link>
+          <Link href="/hakkimizda">Hakkımızda</Link>
+          <Link href="/rezerve">Rezervasyon</Link>
+          <Link href="/rezerve">Fiyat Tarifeleri</Link>
+          <Link href="/giris">Yönetici Girişi</Link>
         </div>
 
-        <div className="footer-col">
-          <h4 className="footer-title">İletişim &amp; Çalışma</h4>
-          <div className="footer-info-item">
-            <strong>Adres:</strong>
-            <span>Cengiz Topel Cad. No: 42 (Merkez)</span>
-          </div>
-          <div className="footer-info-item">
-            <strong>Telefon:</strong>
-            <a href="tel:05464659693">0546 465 96 93</a>
-          </div>
-          <div className="footer-info-item">
-            <strong>Çalışma Saatleri:</strong>
-            <span>Haftanın her günü 08:00 – 02:00</span>
-          </div>
+        <div className="footer-contact">
+          <h3>İletişim &amp; Konum</h3>
+          <p>
+            <i className="fa-solid fa-location-dot" aria-hidden="true"></i> Kültür Mh. 3809 Sk. Muratpaşa, Antalya
+          </p>
+          <p>
+            <i className="fa-solid fa-phone" aria-hidden="true"></i> 0 (546) 465 96 93
+          </p>
+          <p>
+            <i className="fa-solid fa-clock" aria-hidden="true"></i> Her Gün: 09:00 - 04:00
+          </p>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>© 2026 FORZA İnternet &amp; Cafe. Tüm Hakları Saklıdır.</p>
-        <Link href="/giris" className="admin-link-footer">
-          Yönetici Portalı
-        </Link>
+        <small>
+          © 2026 Forza İnternet &amp; Cafe | Tüm Hakları Saklıdır. |{" "}
+          <Link
+            href="/giris"
+            style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none" }}
+          >
+            Yönetici Girişi
+          </Link>
+        </small>
       </div>
     </footer>
   );

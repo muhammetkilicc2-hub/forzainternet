@@ -3,7 +3,6 @@
 import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import Image from "next/image";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -35,126 +34,104 @@ export default function Navbar() {
     }, 400);
   };
 
-  const navLinks = [
-    { href: "/", label: "Anasayfa" },
-    { href: "/hakkimizda", label: "Hakkımızda" },
-    { href: "/rezerve", label: "Rezervasyon" },
-    { href: "/rezerve", label: "Bilgisayarlar" },
-  ];
-
   return (
     <>
-      <nav aria-label="Ana Menü">
-        <div className="nav-container">
-          <Link
-            href="/"
-            className="logo-brand"
-            aria-label="Forza İnternet Cafe Anasayfa"
-            onClick={handleLogoClick}
-          >
-            <div
-              className="forza-image-wrap"
-              style={{
-                display: "inline-block",
-                transform: logoTransform,
-                transition: "transform 0.15s ease",
-              }}
+      <nav>
+        <Link
+          href="/"
+          className="logo-brand"
+          aria-label="Forza İnternet Cafe Anasayfa"
+          onClick={handleLogoClick}
+        >
+          <img
+            src="/forzaikon.jpeg"
+            alt="Forza İnternet &amp; Cafe Logo"
+            className="forza-image"
+            style={{
+              transform: logoTransform,
+              transition: "transform 0.15s ease",
+            }}
+          />
+          <h1 className="para2">
+            <span className="logo-forza">FORZA</span>
+            <span className="logo-sub">İnternet&amp;Cafe</span>
+          </h1>
+        </Link>
+
+        <form
+          className="nav-search"
+          role="search"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const input = document.getElementById("searchInput") as HTMLInputElement;
+            if (input && input.value.trim()) {
+              router.push(`/rezerve?search=${encodeURIComponent(input.value.trim())}`);
+            }
+          }}
+        >
+          <i className="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input
+            id="searchInput"
+            className="searchInput"
+            type="text"
+            placeholder="Hizmet veya oyun ara..."
+            autoComplete="off"
+            aria-label="Arama"
+          />
+        </form>
+
+        <ul id="navMenu" className={mobileOpen ? "active" : ""}>
+          <li>
+            <Link
+              href="/"
+              className={pathname === "/" ? "active" : ""}
+              onClick={() => setMobileOpen(false)}
             >
-              <img
-                src="/forzaikon.jpeg"
-                alt="Forza İnternet & Cafe Logo"
-                className="forza-image"
-              />
-            </div>
-            <h1 className="para2">
-              <span className="logo-forza">FORZA</span>
-              <span className="logo-sub">İnternet&amp;Cafe</span>
-            </h1>
-          </Link>
-
-          {/* Desktop Nav */}
-          <ul className="nav-links">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={isActive ? "active" : ""}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-
-          <div className="nav-actions">
-            <Link href="/rezerve" className="btn-book">
-              Masa Ayırt
+              Anasayfa
             </Link>
-            <button
-              type="button"
-              className={`hamburger ${mobileOpen ? "active" : ""}`}
-              id="hamburgerBtn"
-              aria-label="Menüyü Aç / Kapat"
-              aria-expanded={mobileOpen}
-              onClick={() => setMobileOpen(!mobileOpen)}
+          </li>
+          <li>
+            <Link
+              href="/hakkimizda"
+              className={pathname === "/hakkimizda" ? "active" : ""}
+              onClick={() => setMobileOpen(false)}
             >
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Drawer */}
-      <div className={`nav-menu ${mobileOpen ? "active" : ""}`} id="navMenu">
-        <div className="nav-menu-header">
-          <div className="menu-logo-title">FORZA Menü</div>
-          <button
-            type="button"
-            className="close-menu-btn"
-            id="closeMenuBtn"
-            aria-label="Menüyü Kapat"
-            onClick={() => setMobileOpen(false)}
-          >
-            ✕
-          </button>
-        </div>
-        <ul className="mobile-nav-links">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className={isActive ? "active" : ""}
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            );
-          })}
+              Hakkımızda
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/rezerve"
+              className={pathname === "/rezerve" ? "active" : ""}
+              onClick={() => setMobileOpen(false)}
+            >
+              Rezervasyon
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/rezerve"
+              className={pathname === "/rezerve" ? "active" : ""}
+              onClick={() => setMobileOpen(false)}
+            >
+              Bilgisayarlar
+            </Link>
+          </li>
         </ul>
-        <div className="mobile-menu-footer">
-          <Link
-            href="/rezerve"
-            className="btn-book"
-            style={{ width: "100%", justifyContent: "center" }}
-            onClick={() => setMobileOpen(false)}
-          >
-            Masa Ayırt
-          </Link>
-          <div className="mobile-contact-preview">
-            <span>📍 Cengiz Topel Cad. No: 42</span>
-            <span>📞 0546 465 96 93</span>
-          </div>
-        </div>
-      </div>
+
+        <button
+          className={`hamburger ${mobileOpen ? "active" : ""}`}
+          id="hamburgerBtn"
+          aria-label="Menüyü Aç/Kapat"
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen(!mobileOpen)}
+          type="button"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
 
       <div
         className={`nav-overlay ${mobileOpen ? "active" : ""}`}

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Forza Admin — Rezervasyon Yönetimi</title>
+
+    <!-- Apple iOS Admin Stylesheet -->
+    <link rel="stylesheet" href="admin.css?v=4.0">
+
+    <!-- Google Fonts: SF Pro / Inter / Sora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="ios-app-container">
+
+        <!-- iOS Dynamic Status Bar -->
+        <header class="ios-status-bar">
+            <div class="ios-status-left">
+                <div class="forza-logo-badge">F</div>
+                <div class="forza-logo-title">
+                    <strong>FORZA</strong>
+                    <span>Rezervasyonlar</span>
+                </div>
+            </div>
+
+            <div class="ios-status-right">
+                <div class="ios-live-indicator">
+                    <span class="live-dot"></span>
+                    Canlı
+                </div>
+
+                <div class="notification-wrapper">
+                    <button class="notification-btn" id="notificationBtn" aria-label="Bildirimler" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-bell" aria-hidden="true"></i>
+                        <span class="notification-count" id="notificationCount" style="display:none;">0</span>
+                    </button>
+
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-dropdown-header">
+                            <h4>Bildirimler</h4>
+                            <button type="button" class="notification-clear-btn" id="notificationClearBtn">Tümünü okundu yap</button>
+                        </div>
+                        <div class="notification-list" id="notificationList"></div>
+                        <p class="notification-empty" id="notificationEmpty">Henüz yeni bildirim yok.</p>
+                    </div>
+                </div>
+
+                <a href="giris.html" class="notification-btn" title="Çıkış Yap" style="color: var(--a-danger);">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- iOS Header -->
+        <section class="ios-header">
+            <div class="ios-title-row">
+                <h1 class="ios-large-title">Rezervasyon Talepleri</h1>
+            </div>
+
+            <div class="ios-search-bar">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input type="text" id="panelSearch" placeholder="Rezervasyon veya müşteri ara..." autocomplete="off">
+                <div id="searchResultsDropdown" class="search-results-dropdown"></div>
+            </div>
+        </section>
+
+        <!-- STATS WIDGETS -->
+        <div class="ios-widgets-grid">
+            <div class="ios-stat-widget">
+                <div class="ios-widget-icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <div class="ios-widget-info">
+                    <span>Toplam Talep</span>
+                    <strong id="statToplamRezervasyon">–</strong>
+                </div>
+            </div>
+
+            <div class="ios-stat-widget">
+                <div class="ios-widget-icon icon-available">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="ios-widget-info">
+                    <span>Onaylanan</span>
+                    <strong id="statOnaylananRezervasyon">–</strong>
+                </div>
+            </div>
+
+            <div class="ios-stat-widget">
+                <div class="ios-widget-icon icon-busy">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+                <div class="ios-widget-info">
+                    <span>Bekleyen</span>
+                    <strong id="statBekleyenRezervasyon">–</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- REZERVASYON LİSTESİ KARTI -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title">Gelen Siparişler &amp; Talepler</h2>
+                    <span class="card-subtitle">Müşterilerin web sitesinden ilettiği talepler</span>
+                </div>
+                <button type="button" class="mark-all-read-btn" id="markAllReservationsRead">
+                    <i class="fa-solid fa-check-double"></i> Tümünü Okundu Yap
+                </button>
+            </div>
+
+            <!-- iOS Filter Tabs -->
+            <div class="computer-filter-tabs" id="reservationFilterTabs">
+                <button type="button" class="filter-tab active" data-durum="tumu">Tümü</button>
+                <button type="button" class="filter-tab" data-durum="confirmed">Onaylananlar</button>
+                <button type="button" class="filter-tab" data-durum="pending">Bekleyenler</button>
+            </div>
+
+            <div class="reservation-list" id="reservationsFullList"></div>
+            <p class="empty-state" id="reservationEmptyState">Aramanızla eşleşen rezervasyon bulunamadı.</p>
+        </div>
+
+    </div>
+
+    <!-- iOS BOTTOM TAB BAR -->
+    <nav class="ios-tab-bar" aria-label="Alt Navigasyon Menüsü">
+        <a href="panel.html#anasayfa" class="ios-tab-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Anasayfa</span>
+        </a>
+
+        <a href="bilgi.html" class="ios-tab-item">
+            <i class="fa-solid fa-desktop"></i>
+            <span>Masalar</span>
+        </a>
+
+        <a href="rezervasyon.html" class="ios-tab-item active">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Rezervasyon</span>
+        </a>
+
+        <a href="kampanya.html" class="ios-tab-item">
+            <i class="fa-solid fa-tags"></i>
+            <span>Fiyatlar</span>
+        </a>
+
+        <a href="panel.html#ayarlar" class="ios-tab-item">
+            <i class="fa-solid fa-gear"></i>
+            <span>Ayarlar</span>
+        </a>
+    </nav>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="pc-data.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

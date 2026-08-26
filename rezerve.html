@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Forza İnternet & Cafe Online Masa Rezervasyonu — 60 TL, 70 TL ve 90 TL özel kampanya paketleriyle yerini hemen ayırt.">
+    <title>Online Masa Rezervasyonu — Forza İnternet &amp; Cafe</title>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css?v=3.0">
+    
+    <!-- Google Fonts: Inter, Sora & Racing Sans One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Racing+Sans+One&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        @media (max-width: 768px) {
+            html, body {
+                width: 100% !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+            }
+            .kampanyalar {
+                margin: 75px auto 40px !important;
+                width: calc(100% - 20px) !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+            .kampanyalar h2 {
+                font-size: 26px !important;
+                text-align: center !important;
+                margin-bottom: 6px !important;
+            }
+            .kampanya-intro, .kampanya-alt {
+                font-size: 13.5px !important;
+                text-align: center !important;
+                padding: 0 8px !important;
+            }
+            .kampanya-kartlari {
+                display: flex !important;
+                flex-direction: column !important;
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .kart {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 20px 16px !important;
+                border-radius: 20px !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            .pc-card {
+                width: 100% !important;
+                margin-bottom: 16px !important;
+                padding-bottom: 16px !important;
+                box-sizing: border-box !important;
+            }
+            .fiyat-bolumu {
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+                box-sizing: border-box !important;
+            }
+            .fiyat {
+                width: 100% !important;
+                padding: 12px 14px !important;
+                box-sizing: border-box !important;
+            }
+            .pc-container {
+                width: 100% !important;
+                display: grid !important;
+                grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)) !important;
+                gap: 8px !important;
+                padding: 10px !important;
+                max-height: 190px !important;
+                margin: 12px 0 16px !important;
+                box-sizing: border-box !important;
+            }
+            .comp {
+                height: 42px !important;
+                min-height: 42px !important;
+                font-size: 13px !important;
+                border-radius: 8px !important;
+            }
+            .odeme-btn {
+                width: 100% !important;
+                padding: 16px !important;
+                font-size: 15px !important;
+                border-radius: 12px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav>
+        <a href="index.html" class="logo-brand" aria-label="Forza İnternet Cafe Anasayfa">
+            <img src="forzaikon.jpeg" alt="Forza İnternet &amp; Cafe Logo" class="forza-image">
+            <h1 class="para2">
+                <span class="logo-forza">FORZA</span>
+                <span class="logo-sub">İnternet&amp;Cafe</span>
+            </h1>
+        </a>  
+
+        <form class="nav-search" role="search" onsubmit="event.preventDefault();">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input id="searchInput" class="searchInput" type="text" placeholder="Ara..." autocomplete="off" aria-label="Arama">
+        </form>
+
+        <ul id="navMenu">
+            <li><a href="index.html">Anasayfa</a></li>
+            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li><a href="rezerve.html" class="active">Rezervasyon</a></li>
+            <li><a href="rezerve.html">Bilgisayarlar</a></li>
+        </ul>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menüyü Aç/Kapat" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- MAIN RESERVATION CONTENT -->
+    <main>
+        <section class="kampanyalar" id="kampanyalar"> 
+            <h2>Kampanyalarımız</h2>
+            <p class="kampanya-intro">
+                İhtiyacına en uygun donanım paketini seç, masanı belirle ve anında yerini ayırt.
+            </p>
+            <p class="kampanya-alt">Önce bir fiyat tarifesi (5 Saat / Gün Boyu) seçip ardından dilediğin masaya tıklayın.</p>
+
+            <div class="kampanya-kartlari">
+                
+                <!-- Sarı Kampanya Grubu (60 TL) -->
+                <div class="kart sari" data-tier="sari">
+                    <div class="pc-card">
+                        <div class="kart-baslik">
+                            <h3>60 TL Masa</h3>
+                        </div>
+                        <div class="analiz-rozeti">
+                            <i class="fa-solid fa-microchip" aria-hidden="true"></i> Standart Gaming
+                        </div>
+                        <h4 class="hz-baslik">144 Hz Espor Ekran</h4>
+                        <ul class="donanim-listesi">
+                            <li><i class="fa-solid fa-desktop" aria-hidden="true"></i> 144 Hz Gaming Espor Monitör</li>
+                            <li><i class="fa-solid fa-microchip" aria-hidden="true"></i> Nvidia GeForce RTX 3060</li>
+                            <li><i class="fa-solid fa-cpu" aria-hidden="true"></i> Intel Core i5 Yüksek Performans</li>
+                            <li><i class="fa-solid fa-memory" aria-hidden="true"></i> 16 GB DDR4 Yüksek Hızlı RAM</li>
+                        </ul>
+                    </div>
+
+                    <div class="fiyat-bolumu">
+                        <div class="bolum-basligi">
+                            <i class="fa-solid fa-tags" aria-hidden="true"></i> Süreli Tarife Seçin
+                        </div>
+
+                        <div class="fiyat" role="button" tabindex="0" aria-label="60 TL Masa 5 Saatlik Paket">
+                            <span>5 Saat Paket</span>
+                            <strong>200 TL</strong>
+                        </div>
+
+                        <div class="fiyat" role="button" tabindex="0" aria-label="60 TL Masa Gün Boyu Paket">
+                            <span>Gün Boyu Paket</span>
+                            <strong>400 TL</strong>
+                        </div>
+
+                        <div class="bolum-basligi" style="margin-top: 14px;">
+                            <i class="fa-solid fa-desktop" aria-hidden="true"></i> Masa Seçin (Maks. 3)
+                        </div>
+
+                        <div class="pc-container" aria-label="60 TL Masa Bilgisayarları">
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 1">PC 1</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 2">PC 2</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 4">PC 4</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 5">PC 5</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 6">PC 6</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 8">PC 8</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 9">PC 9</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 10">PC 10</div>
+                        </div>
+
+                        <button class="odeme-btn" aria-label="Ödemeye Geç">
+                            <i class="fa-solid fa-credit-card"></i> Ödemeye Geç
+                        </button>
+                    </div>
+                </div>
+                     
+                <!-- Mavi Kampanya Grubu (70 TL) -->
+                <div class="kart mavi" data-tier="mavi">
+                    <div class="pc-card">
+                        <div class="kart-baslik">
+                            <h3>70 TL Masa</h3>
+                        </div>
+                        <div class="analiz-rozeti">
+                            <i class="fa-solid fa-bolt" aria-hidden="true"></i> Pro Espor Gaming
+                        </div>
+                        <h4 class="hz-baslik">240 Hz Espor Ekran</h4>
+                        <ul class="donanim-listesi">
+                            <li><i class="fa-solid fa-desktop" aria-hidden="true"></i> 240 Hz Ultra Espor Monitör</li>
+                            <li><i class="fa-solid fa-microchip" aria-hidden="true"></i> Nvidia GeForce RTX 3060 OC</li>
+                            <li><i class="fa-solid fa-cpu" aria-hidden="true"></i> Intel Core i5 Gaming İşlemci</li>
+                            <li><i class="fa-solid fa-memory" aria-hidden="true"></i> 16 GB DDR4 Yüksek Hızlı RAM</li>
+                        </ul>
+                    </div>
+
+                    <div class="fiyat-bolumu">
+                        <div class="bolum-basligi">
+                            <i class="fa-solid fa-tags" aria-hidden="true"></i> Süreli Tarife Seçin
+                        </div>
+
+                        <div class="fiyat" role="button" tabindex="0" aria-label="70 TL Masa 5 Saatlik Paket">
+                            <span>5 Saat Paket</span>
+                            <strong>250 TL</strong>
+                        </div>
+
+                        <div class="fiyat" role="button" tabindex="0" aria-label="70 TL Masa Gün Boyu Paket">
+                            <span>Gün Boyu Paket</span>
+                            <strong>500 TL</strong>
+                        </div>
+
+                        <div class="bolum-basligi" style="margin-top: 14px;">
+                            <i class="fa-solid fa-desktop" aria-hidden="true"></i> Masa Seçin (Maks. 3)
+                        </div>
+
+                        <div class="pc-container" aria-label="70 TL Masa Bilgisayarları">
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 11">PC 11</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 12">PC 12</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 14">PC 14</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 15">PC 15</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 16">PC 16</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 17">PC 17</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 18">PC 18</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 20">PC 20</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 22">PC 22</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 24">PC 24</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 25">PC 25</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 26">PC 26</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 27">PC 27</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 28">PC 28</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 29">PC 29</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 31">PC 31</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 32">PC 32</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 33">PC 33</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 34">PC 34</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 36">PC 36</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 37">PC 37</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 42">PC 42</div>
+                        </div>
+
+                        <button class="odeme-btn" aria-label="Ödemeye Geç">
+                            <i class="fa-solid fa-credit-card"></i> Ödemeye Geç
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Yeşil Kampanya Grubu (90 TL) -->
+                <div class="kart yesil" data-tier="yesil">
+                    <div class="pc-card">
+                        <div class="kart-baslik">
+                            <h3>90 TL Masa</h3>
+                        </div>
+                        <div class="analiz-rozeti">
+                            <i class="fa-solid fa-crown" aria-hidden="true"></i> Ultra VIP Espor
+                        </div>
+                        <h4 class="hz-baslik">360 - 540 Hz Espor Ekran</h4>
+                        <ul class="donanim-listesi">
+                            <li><i class="fa-solid fa-desktop" aria-hidden="true"></i> 360-540 Hz Turnuva Monitörü</li>
+                            <li><i class="fa-solid fa-microchip" aria-hidden="true"></i> RTX 3070 Ti / RTX 5060</li>
+                            <li><i class="fa-solid fa-cpu" aria-hidden="true"></i> AMD Ryzen 7 7800X3D Canavarı</li>
+                            <li><i class="fa-solid fa-memory" aria-hidden="true"></i> 32 GB DDR5 Yüksek Frekans RAM</li>
+                        </ul>
+                    </div>
+
+                    <div class="fiyat-bolumu">
+                        <div class="bolum-basligi">
+                            <i class="fa-solid fa-tags" aria-hidden="true"></i> Süreli Tarife Seçin
+                        </div>
+
+                        <div class="fiyat" role="button" tabindex="0" aria-label="90 TL Masa 5 Saatlik Paket">
+                            <span>5 Saat Paket</span>
+                            <strong>350 TL</strong>
+                        </div>
+
+                        <div class="fiyat" role="button" tabindex="0" aria-label="90 TL Masa Gün Boyu Paket">
+                            <span>Gün Boyu Paket</span>
+                            <strong>700 TL</strong>
+                        </div>
+
+                        <div class="bolum-basligi" style="margin-top: 14px;">
+                            <i class="fa-solid fa-desktop" aria-hidden="true"></i> Masa Seçin (Maks. 3)
+                        </div>
+
+                        <div class="pc-container" aria-label="90 TL Masa Bilgisayarları">
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 38">PC 38</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 40">PC 40</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 43">PC 43</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 44">PC 44</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 45">PC 45</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 46">PC 46</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 47">PC 47</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 48">PC 48</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 49">PC 49</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 50">PC 50</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 51">PC 51</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 52">PC 52</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 54">PC 54</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 55">PC 55</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 56">PC 56</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 57">PC 57</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 59">PC 59</div>
+                            <div class="comp" tabindex="0" role="button" aria-label="PC 60">PC 60</div>
+                        </div>
+
+                        <button class="odeme-btn" aria-label="Ödemeye Geç">
+                            <i class="fa-solid fa-credit-card"></i> Ödemeye Geç
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <p class="uyari">
+                * Süreli peşin ödemeli kampanyalarda geçerlidir. İptal ve iade koşulları işletme kurallarına tabidir.
+            </p>
+        </section>
+    </main>
+
+    <!-- STICKY CONTACT WIDGET -->
+    <div class="sticky-contact">
+        <div class="sticky-contact-options">
+            <a href="https://wa.me/905464659693?text=Merhaba,%20Forza%20İnternet%20%26%20Cafe%20hakkında%20bilgi%20almak%20istiyorum."
+               target="_blank"
+               rel="noopener noreferrer"
+               class="contact-option whatsapp"
+               aria-label="WhatsApp İletişim">
+                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                <span>WhatsApp</span>
+            </a>
+            <a href="https://www.instagram.com/forza_internet_bilgisayar/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="contact-option instagram"
+               aria-label="Instagram Sayfamız">
+                <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+                <span>Instagram</span>
+            </a>
+        </div>
+        <button class="sticky-contact-button" aria-label="Canlı İletişim Menüsü">
+            <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- =========================================================
+         PAYMENT MODAL DIALOG
+    ========================================================= -->
+    <div class="payment-modal" id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle">
+        <div class="payment-box">
+            <!-- Close Button -->
+            <button type="button" class="payment-close" id="paymentClose" aria-label="Ödemeyi Kapat">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+
+            <h2 class="payment-title" id="paymentTitle">Masa Rezervasyonu</h2>
+            <p class="payment-subtitle">Seçtiğiniz bilgisayarlar için rezervasyon detaylarını tamamlayın.</p>
+
+            <!-- Order Summary Card -->
+            <div class="payment-summary">
+                <div class="payment-summary-row">
+                    <span>Seçilen Bilgisayarlar</span>
+                    <strong id="paymentPc">PC -</strong>
+                </div>
+                <div class="payment-summary-row">
+                    <span>Donanım Paketi</span>
+                    <strong id="paymentPackage">-</strong>
+                </div>
+                <div class="payment-summary-row">
+                    <span>Süre Tarifesi</span>
+                    <strong id="paymentDuration">-</strong>
+                </div>
+                <div class="payment-total">
+                    <span>Ödenecek Tutar</span>
+                    <strong id="paymentTotal">₺0</strong>
+                </div>
+            </div>
+
+            <!-- Payment Method Segmented Tabs -->
+            <div class="payment-methods">
+                <div class="payment-method">
+                    <input type="radio" name="paymentMethod" id="cardPayment" value="card" checked>
+                    <label for="cardPayment">
+                        <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
+                        Kredi / Banka Kartı
+                    </label>
+                </div>
+
+                <div class="payment-method">
+                    <input type="radio" name="paymentMethod" id="balancePayment" value="balance">
+                    <label for="balancePayment">
+                        <i class="fa-solid fa-wallet" aria-hidden="true"></i>
+                        Forza Bakiye
+                    </label>
+                </div>
+            </div>
+
+            <!-- Customer Details -->
+            <div class="payment-form-row">
+                <div class="payment-form-group">
+                    <label for="paymentName">Ad</label>
+                    <input type="text" id="paymentName" placeholder="Adınız" autocomplete="given-name" required>
+                </div>
+                <div class="payment-form-group">
+                    <label for="paymentSurname">Soyad</label>
+                    <input type="text" id="paymentSurname" placeholder="Soyadınız" autocomplete="family-name" required>
+                </div>
+            </div>
+
+            <div class="payment-form-group">
+                <label for="paymentPhone">Telefon Numarası</label>
+                <input type="tel" id="paymentPhone" placeholder="05XX XXX XX XX" autocomplete="tel" required>
+            </div>
+
+            <!-- Card Details (Only shown for card payment) -->
+            <div id="cardFields">
+                <div class="payment-form-group">
+                    <label for="cardName">Kart Üzerindeki İsim</label>
+                    <input type="text" id="cardName" placeholder="AD SOYAD" autocomplete="cc-name">
+                </div>
+
+                <div class="payment-form-group">
+                    <label for="cardNumber">Kart Numarası</label>
+                    <input type="text" id="cardNumber" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" autocomplete="cc-number">
+                </div>
+
+                <div class="payment-form-row">
+                    <div class="payment-form-group">
+                        <label for="cardExpiry">Son Kullanma</label>
+                        <input type="text" id="cardExpiry" maxlength="5" placeholder="AA/YY" autocomplete="cc-exp">
+                    </div>
+                    <div class="payment-form-group">
+                        <label for="cardCvv">CVV Güvenlik Kodu</label>
+                        <input type="password" id="cardCvv" inputmode="numeric" maxlength="4" placeholder="•••" autocomplete="cc-csc">
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="payment-submit" id="paymentSubmit">
+                <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                <span id="paymentSubmitText">Rezervasyonu Tamamla</span>
+            </button>
+
+            <p class="payment-security">
+                <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                Demo Rezervasyon &amp; Güvenli Ön Ödeme Alanı
+            </p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>Forza İnternet &amp; Cafe</h2>
+                <p>Antalya'nın merkezinde premium oyun deneyimi, yüksek konfigürasyonlu espor donanımları ve keyifli bir sosyal ortam.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Hızlı Menü</h3>
+                <a href="index.html">Anasayfa</a>
+                <a href="hakkimizda.html">Hakkımızda</a>
+                <a href="rezerve.html">Rezervasyon</a>
+                <a href="rezerve.html">Fiyat Tarifeleri</a>
+                <a href="giris.html">Yönetici Girişi</a>
+            </div>
+
+            <div class="footer-contact">
+                <h3>İletişim &amp; Konum</h3>
+                <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Kültür Mh. 3809 Sk. Muratpaşa, Antalya</p>
+                <p><i class="fa-solid fa-phone" aria-hidden="true"></i> 0 (546) 465 96 93</p>
+                <p><i class="fa-solid fa-clock" aria-hidden="true"></i> Her Gün: 09:00 - 04:00</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <small>© 2026 Forza İnternet &amp; Cafe | Tüm Hakları Saklıdır. | <a href="giris.html" style="color: rgba(255,255,255,0.4); text-decoration: none;">Yönetici Girişi</a></small>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="pc-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

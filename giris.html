@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Forza Admin — Yönetici Girişi</title>
+
+    <!-- Admin Stylesheet -->
+    <link rel="stylesheet" href="admin.css?v=4.0">
+
+    <!-- Google Fonts: SF Pro / Inter / Sora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="login-page">
+
+    <div class="login-box">
+        <div class="forza-logo-badge">F</div>
+
+        <h2>FORZA STUDIO</h2>
+        <p>Yönetici Paneli Girişi</p>
+
+        <form id="loginForm" autocomplete="on">
+            <input
+                type="text"
+                id="username"
+                placeholder="Kullanıcı Adı"
+                autocomplete="username"
+                required
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Şifre"
+                autocomplete="current-password"
+                required
+            >
+
+            <div style="display: flex; justify-content: flex-end; margin-top: -4px; margin-bottom: 6px;">
+                <button type="button" id="forgotPasswordBtn" class="forgot-pass-btn">Şifremi Unuttum?</button>
+            </div>
+
+            <button type="submit">
+                <i class="fa-solid fa-lock" style="margin-right: 6px;"></i> Giriş Yap
+            </button>
+        </form>
+
+        <p id="message" aria-live="polite"></p>
+    </div>
+
+    <!-- E-POSTA / TELEFON İLE ŞİFRE SIFIRLAMA MODALI -->
+    <div class="modal-overlay" id="forgotPasswordModal" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <h3 style="font-size: 17px; font-weight: 800; color: #fdfbf7; margin: 0;">🔐 Şifre Sıfırlama</h3>
+                    <span style="font-size: 12px; color: #94a3b8;">E-posta veya telefon numaranıza kod gönderilir</span>
+                </div>
+                <button type="button" class="modal-close" id="closeForgotModal" aria-label="Kapat">&times;</button>
+            </div>
+            
+            <!-- Aşama 1: E-Posta / Telefon Girişi -->
+            <div id="forgotStep1">
+                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; text-align: left;">
+                    <label for="forgotEmailInput" style="font-size: 12px; font-weight: 700; color: var(--cream-300);">Kayıtlı E-Posta veya Telefon</label>
+                    <input type="text" id="forgotEmailInput" placeholder="örn: admin@forzagaming.com veya 0546 465 96 93">
+                </div>
+                <button type="button" id="sendResetCodeBtn" class="primary-btn" style="width: 100%;">
+                    📩 Doğrulama Kodu Üret &amp; Gönder
+                </button>
+            </div>
+
+            <!-- Aşama 2: Kod ve Yeni Şifre Girişi -->
+            <div id="forgotStep2" style="display: none;">
+                <div id="whatsappDirectBox" style="margin-bottom: 12px; display: none;">
+                    <a id="whatsappSendLink" href="#" target="_blank" class="primary-btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #25D366; color: #fff; text-decoration: none; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 13px;">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> WhatsApp ile Kodu Telefona İlet
+                    </a>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; text-align: left;">
+                    <label for="verificationCodeInput" style="font-size: 12px; font-weight: 700; color: var(--cream-300);">6 Haneli Güvenlik Kodu</label>
+                    <input type="text" id="verificationCodeInput" placeholder="Örn: 849201" maxlength="6">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; text-align: left;">
+                    <label for="resetNewPassInput" style="font-size: 12px; font-weight: 700; color: var(--cream-300);">Yeni Şifre</label>
+                    <input type="password" id="resetNewPassInput" placeholder="En az 3 karakter">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; text-align: left;">
+                    <label for="resetConfirmPassInput" style="font-size: 12px; font-weight: 700; color: var(--cream-300);">Yeni Şifre (Tekrar)</label>
+                    <input type="password" id="resetConfirmPassInput" placeholder="Yeni şifreyi tekrar yazın">
+                </div>
+                <button type="button" id="confirmResetPassBtn" class="primary-btn" style="width: 100%;">
+                    ✓ Şifreyi Güncelle &amp; Kaydet
+                </button>
+            </div>
+
+            <p id="forgotMessage" style="font-size: 12px; font-weight: 600; margin-top: 14px; text-align: center; min-height: 16px;"></p>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

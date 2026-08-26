@@ -1,0 +1,292 @@
+{
+    "bilgisayarlar": [
+        {
+            "id": 1,
+            "isim": "PC 1",
+            "kategori": "sari",
+            "durum": "boş"
+        },
+        {
+            "id": 2,
+            "isim": "PC 2",
+            "kategori": "sari",
+            "durum": "boş"
+        },
+        {
+            "id": 4,
+            "isim": "PC 4",
+            "kategori": "sari",
+            "durum": "boş"
+        },
+        {
+            "id": 5,
+            "isim": "PC 5",
+            "kategori": "sari",
+            "durum": "boş"
+        },
+        {
+            "id": 6,
+            "isim": "PC 6",
+            "kategori": "sari",
+            "durum": "boş"
+        },
+        {
+            "id": 8,
+            "isim": "PC 8",
+            "kategori": "sari",
+            "durum": "boş"
+        },
+        {
+            "id": 9,
+            "isim": "PC 9",
+            "kategori": "sari",
+            "durum": "boş"
+        },
+        {
+            "id": 10,
+            "isim": "PC 10",
+            "kategori": "sari",
+            "durum": "boş"
+        },
+        {
+            "id": 11,
+            "isim": "PC 11",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 12,
+            "isim": "PC 12",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 14,
+            "isim": "PC 14",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 15,
+            "isim": "PC 15",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 16,
+            "isim": "PC 16",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 17,
+            "isim": "PC 17",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 18,
+            "isim": "PC 18",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 20,
+            "isim": "PC 20",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 22,
+            "isim": "PC 22",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 24,
+            "isim": "PC 24",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 25,
+            "isim": "PC 25",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 26,
+            "isim": "PC 26",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 27,
+            "isim": "PC 27",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 28,
+            "isim": "PC 28",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 29,
+            "isim": "PC 29",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 31,
+            "isim": "PC 31",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 32,
+            "isim": "PC 32",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 33,
+            "isim": "PC 33",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 34,
+            "isim": "PC 34",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 36,
+            "isim": "PC 36",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 37,
+            "isim": "PC 37",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 38,
+            "isim": "PC 38",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 40,
+            "isim": "PC 40",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 42,
+            "isim": "PC 42",
+            "kategori": "mavi",
+            "durum": "boş"
+        },
+        {
+            "id": 43,
+            "isim": "PC 43",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 44,
+            "isim": "PC 44",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 45,
+            "isim": "PC 45",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 46,
+            "isim": "PC 46",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 47,
+            "isim": "PC 47",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 48,
+            "isim": "PC 48",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 49,
+            "isim": "PC 49",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 50,
+            "isim": "PC 50",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 51,
+            "isim": "PC 51",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 52,
+            "isim": "PC 52",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 54,
+            "isim": "PC 54",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 55,
+            "isim": "PC 55",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 56,
+            "isim": "PC 56",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 57,
+            "isim": "PC 57",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 59,
+            "isim": "PC 59",
+            "kategori": "yesil",
+            "durum": "boş"
+        },
+        {
+            "id": 60,
+            "isim": "PC 60",
+            "kategori": "yesil",
+            "durum": "boş"
+        }
+    ]
+} 

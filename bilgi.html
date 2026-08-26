@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Forza Admin — Masa Yönetimi</title>
+
+    <!-- Apple iOS Admin Stylesheet -->
+    <link rel="stylesheet" href="admin.css?v=4.0">
+
+    <!-- Google Fonts: SF Pro / Inter / Sora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="ios-app-container">
+
+        <!-- iOS Dynamic Status Bar -->
+        <header class="ios-status-bar">
+            <div class="ios-status-left">
+                <div class="forza-logo-badge">F</div>
+                <div class="forza-logo-title">
+                    <strong>FORZA</strong>
+                    <span>Masa Yönetimi</span>
+                </div>
+            </div>
+
+            <div class="ios-status-right">
+                <div class="ios-live-indicator">
+                    <span class="live-dot"></span>
+                    Canlı
+                </div>
+
+                <div class="notification-wrapper">
+                    <button class="notification-btn" id="notificationBtn" aria-label="Bildirimler" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-bell" aria-hidden="true"></i>
+                        <span class="notification-count" id="notificationCount" style="display:none;">0</span>
+                    </button>
+
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-dropdown-header">
+                            <h4>Bildirimler</h4>
+                            <button type="button" class="notification-clear-btn" id="notificationClearBtn">Tümünü okundu yap</button>
+                        </div>
+                        <div class="notification-list" id="notificationList"></div>
+                        <p class="notification-empty" id="notificationEmpty">Henüz yeni bildirim yok.</p>
+                    </div>
+                </div>
+
+                <a href="giris.html" class="notification-btn" title="Çıkış Yap" style="color: var(--a-danger);">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- iOS Header -->
+        <section class="ios-header">
+            <div class="ios-title-row">
+                <h1 class="ios-large-title">Tüm Masalar</h1>
+            </div>
+
+            <div class="ios-search-bar">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input type="text" id="panelSearch" placeholder="Masa ara (örn: PC 12)..." autocomplete="off">
+                <div id="searchResultsDropdown" class="search-results-dropdown"></div>
+            </div>
+        </section>
+
+        <!-- STATS WIDGETS -->
+        <div class="ios-widgets-grid">
+            <div class="ios-stat-widget">
+                <div class="ios-widget-icon">
+                    <i class="fa-solid fa-desktop"></i>
+                </div>
+                <div class="ios-widget-info">
+                    <span>Toplam Masa</span>
+                    <strong id="statToplamPc">–</strong>
+                </div>
+            </div>
+
+            <div class="ios-stat-widget">
+                <div class="ios-widget-icon icon-busy">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <div class="ios-widget-info">
+                    <span>Kullanımda</span>
+                    <strong id="statAktifPc">–</strong>
+                </div>
+            </div>
+
+            <div class="ios-stat-widget">
+                <div class="ios-widget-icon icon-available">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="ios-widget-info">
+                    <span>Boş Masa</span>
+                    <strong id="statBosPc">–</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPUTER GRID CARD -->
+        <div class="dashboard-card" id="computer-section">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title">Masa Listesi &amp; Durum Değiştirme</h2>
+                    <span class="card-subtitle">Boş / Kullanımda / Rezerve geçişi için karta dokunun</span>
+                </div>
+            </div>
+
+            <!-- iOS Segmented Control -->
+            <div class="computer-filter-tabs" id="computerFilterTabs">
+                <button type="button" class="filter-tab active" data-kategori="tumu">Tümü</button>
+                <button type="button" class="filter-tab" data-kategori="sari">60 TL</button>
+                <button type="button" class="filter-tab" data-kategori="mavi">70 TL</button>
+                <button type="button" class="filter-tab" data-kategori="yesil">90 TL</button>
+            </div>
+
+            <div class="computer-status-grid" id="computerStatusGrid"></div>
+            <p class="empty-state" id="computerEmptyState">Eşleşen masa bulunamadı.</p>
+        </div>
+
+    </div>
+
+    <!-- iOS BOTTOM TAB BAR -->
+    <nav class="ios-tab-bar" aria-label="Alt Navigasyon Menüsü">
+        <a href="panel.html#anasayfa" class="ios-tab-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Anasayfa</span>
+        </a>
+
+        <a href="bilgi.html" class="ios-tab-item active">
+            <i class="fa-solid fa-desktop"></i>
+            <span>Masalar</span>
+        </a>
+
+        <a href="rezervasyon.html" class="ios-tab-item">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Rezervasyon</span>
+        </a>
+
+        <a href="kampanya.html" class="ios-tab-item">
+            <i class="fa-solid fa-tags"></i>
+            <span>Fiyatlar</span>
+        </a>
+
+        <a href="panel.html#ayarlar" class="ios-tab-item">
+            <i class="fa-solid fa-gear"></i>
+            <span>Ayarlar</span>
+        </a>
+    </nav>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="pc-data.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Forza İnternet & Cafe Hakkımızda — Antalya'nın en modern oyun merkezi, espor ortamı ve fiber altyapısı.">
+    <title>Hakkımızda — Forza İnternet &amp; Cafe</title>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Fonts: Inter, Sora & Racing Sans One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Racing+Sans+One&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav>
+        <a href="index.html" class="logo-brand" aria-label="Forza İnternet Cafe Anasayfa">
+            <img src="forzaikon.jpeg" alt="Forza İnternet &amp; Cafe Logo" class="forza-image">
+            <h1 class="para2">
+                <span class="logo-forza">FORZA</span>
+                <span class="logo-sub">İnternet&amp;Cafe</span>
+            </h1>
+        </a>
+
+        <form class="nav-search" role="search" onsubmit="event.preventDefault();">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input id="searchInput" class="searchInput" type="text" placeholder="Ara..." autocomplete="off" aria-label="Arama">
+        </form>
+
+        <ul id="navMenu">
+            <li><a href="index.html">Anasayfa</a></li>
+            <li><a href="hakkimizda.html" class="active">Hakkımızda</a></li>
+            <li><a href="rezerve.html">Rezervasyon</a></li>
+            <li><a href="rezerve.html">Bilgisayarlar</a></li>
+        </ul>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menüyü Aç/Kapat" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- MAIN ABOUT CONTENT -->
+    <main class="about">
+        <!-- ABOUT HERO -->
+        <section class="about-hero">
+            <div class="about-left">
+                <h1>FORZA</h1>
+                <h2>HAKKIMIZDA</h2>
+                <div class="gold-line"></div>
+                <p>
+                    Antalya'nın Premium Gaming Merkezi olarak, yüksek performanslı espor bilgisayarlarımız, 540 Hz monitörlerimiz ve konforlu ortamımızla oyunculara benzersiz bir deneyim sunuyoruz.
+                </p>
+                <p>
+                    Arkadaşlarınızla takım kurup rekabet edebileceğiniz, turnuva heyecanını yaşayabileceğiniz ve kesintisiz fiber hızında oyunun tadını çıkarabileceğiniz modern bir buluşma noktasıyız.
+                </p>
+            </div>
+
+            <div class="about-right">
+                <img src="foto1.jpeg" alt="Forza İnternet Cafe Salonu">
+            </div>
+        </section>
+
+        <!-- WHO WE ARE SECTION -->
+        <section class="about-info">
+            <h2>BİZ KİMİZ?</h2>
+            <div class="gold-line"></div>
+            <p>
+                Forza İnternet &amp; Cafe olarak oyun tutkusunu, en son donanım teknolojilerini ve sıcak bir cafe ortamını bir araya getiriyoruz.
+            </p>
+            <p>
+                En yeni nesil RTX ekran kartlı sistemlerimiz, yüksek hızlı simetrik fiber internetimiz ve profesyonel oyuncu koltuklarımız sayesinde espor tutkunlarına en yüksek kare hızı (FPS) ve minimum gecikmeyi garanti ediyoruz.
+            </p>
+            <p>
+                Sadece oyun oynanan bir mekan değil; turnuvalarla topluluğun birleştiği, dostlukların pekiştiği ve keyifli anıların biriktiği Antalya'nın en sevilen dijital yaşam alanıyız.
+            </p>
+        </section>
+
+        <!-- PHOTO GALLERY SLIDER -->
+        <section class="fotogaleri" aria-label="Mekan Fotoğrafları Galerisi">
+            <button class="photo-nav prev" id="prev" aria-label="Önceki Fotoğraf">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            </button>
+
+            <div class="photo-window">
+                <div class="photo-track">
+                    <img src="foto2.jpeg" alt="Forza Gaming Alanı 1">
+                    <img src="foto3.jpeg" alt="Forza Gaming Alanı 2">
+                    <img src="foto4.jpeg" alt="Forza Gaming Alanı 3">
+                    <img src="foto6.jpeg" alt="Forza Gaming Alanı 4">
+                    <img src="foto5.jpeg" alt="Forza Gaming Alanı 5">
+                </div>
+            </div>
+
+            <button class="photo-nav next" id="next" aria-label="Sonraki Fotoğraf">
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </button>
+        </section>
+
+        <!-- LIGHTBOX MODAL -->
+        <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Büyütülmüş Fotoğraf Görüntüleyici">
+            <button class="close-lightbox" id="closeLightbox" aria-label="Fotoğrafı Kapat">×</button>
+            <img src="" alt="Büyütülmüş mekan fotoğrafı" id="lightboxImage">
+        </div>
+    </main>
+
+    <!-- STICKY CONTACT WIDGET -->
+    <div class="sticky-contact">
+        <div class="sticky-contact-options">
+            <a href="https://wa.me/905464659693?text=Merhaba,%20Forza%20İnternet%20%26%20Cafe%20hakkında%20bilgi%20almak%20istiyorum."
+               target="_blank"
+               rel="noopener noreferrer"
+               class="contact-option whatsapp"
+               aria-label="WhatsApp İletişim">
+                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                <span>WhatsApp</span>
+            </a>
+
+            <a href="https://www.instagram.com/forza_internet_bilgisayar/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="contact-option instagram"
+               aria-label="Instagram Sayfamız">
+                <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+                <span>Instagram</span>
+            </a>
+        </div>
+
+        <button class="sticky-contact-button" aria-label="Canlı İletişim Menüsü">
+            <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>Forza İnternet &amp; Cafe</h2>
+                <p>Antalya'nın merkezinde premium oyun deneyimi, yüksek konfigürasyonlu espor donanımları ve keyifli bir sosyal ortam.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Hızlı Menü</h3>
+                <a href="index.html">Anasayfa</a>
+                <a href="hakkimizda.html">Hakkımızda</a>
+                <a href="rezerve.html">Rezervasyon</a>
+                <a href="rezerve.html">Fiyat Tarifeleri</a>
+                <a href="giris.html">Yönetici Girişi</a>
+            </div>
+
+            <div class="footer-contact">
+                <h3>İletişim &amp; Konum</h3>
+                <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Kültür Mh. 3809 Sk. Muratpaşa, Antalya</p>
+                <p><i class="fa-solid fa-phone" aria-hidden="true"></i> 0 (546) 465 96 93</p>
+                <p><i class="fa-solid fa-clock" aria-hidden="true"></i> Her Gün: 09:00 - 04:00</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <small>© 2026 Forza İnternet &amp; Cafe | Tüm Hakları Saklıdır. | <a href="giris.html" style="color: rgba(255,255,255,0.4); text-decoration: none;">Yönetici Girişi</a></small>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="pc-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

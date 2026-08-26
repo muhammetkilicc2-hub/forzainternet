@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Forza İnternet & Cafe — Antalya'nın premium espor ve gaming merkezi. Yüksek performanslı bilgisayarlar, 540Hz espor monitörler ve fiber internet.">
+    <title>Forza İnternet &amp; Cafe — Premium Gaming Merkezi</title>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css?v=3.0">
+    
+    <!-- Google Fonts: Inter, Sora & Racing Sans One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Racing+Sans+One&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav>
+        <a href="index.html" class="logo-brand" aria-label="Forza İnternet Cafe Anasayfa">
+            <img src="forzaikon.jpeg" alt="Forza İnternet &amp; Cafe Logo" class="forza-image">
+            <h1 class="para2">
+                <span class="logo-forza">FORZA</span>
+                <span class="logo-sub">İnternet&amp;Cafe</span>
+            </h1>
+        </a>  
+
+        <form class="nav-search" role="search" onsubmit="event.preventDefault();">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input id="searchInput" class="searchInput" type="text" placeholder="Hizmet veya oyun ara..." autocomplete="off" aria-label="Arama">
+        </form>
+
+        <ul id="navMenu">
+            <li><a href="index.html" class="active">Anasayfa</a></li>
+            <li><a href="hakkimizda.html">Hakkımızda</a></li>
+            <li><a href="rezerve.html">Rezervasyon</a></li>
+            <li><a href="rezerve.html">Bilgisayarlar</a></li>
+        </ul>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menüyü Aç/Kapat" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <!-- HERO SECTION -->
+        <header class="home-header">
+            <div class="hero-pill-badge">
+                <span class="badge-dot"></span>
+                Antalya'nın 1 Numaralı Espor Gaming Merkezi
+            </div>
+
+            <h1 class="para1">FORZA GAMING &amp; INTERNET CAFE</h1>
+            <p class="para1">540 Hz Espor Espor Monitörler, RTX Gücü ve Kesintisiz Fiber İnternet Deneyimi.</p>
+            <p class="hero-subtext">Arkadaşlarınla toplan, özel fiyat avantajlarıyla yerini hemen ayırt.</p>
+            
+            <div class="hero-actions czr">
+                <a href="rezerve.html" class="rzr-main">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Hemen Yerini Ayırt
+                </a>
+                <a href="hakkimizda.html" class="btn-secondary">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Bizi Keşfet
+                </a>
+            </div>
+        </header>
+
+        <!-- FEATURE CARDS TICKER / SLIDER -->
+        <section class="card-slider" aria-label="Öne Çıkan Hizmetlerimiz">
+            <div class="card-track">
+                <!-- Group 1 -->
+                <div class="card">
+                    <i class="fa-solid fa-gamepad" aria-hidden="true"></i>
+                    <h3>Espor Oyunları</h3>
+                    <p>En yeni rekabetçi oyunlar en yüksek FPS ve sıfır gecikmeyle hazır.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                    <h3>Geniş Hizmet Saatleri</h3>
+                    <p>Haftanın 7 günü 09:00 - 04:00 arası kesintisiz açık.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-wifi" aria-hidden="true"></i>
+                    <h3>1000 Mbps Fiber</h3>
+                    <p>Ultra düşük ping süresi ve yüksek hızlı fiber altyapı.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-desktop" aria-hidden="true"></i>
+                    <h3>540 Hz Ekranlar</h3>
+                    <p>Espor standartlarında 144Hz, 240Hz ve 540Hz monitör seçenekleri.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-couch" aria-hidden="true"></i>
+                    <h3>Oyuncu Koltukları</h3>
+                    <p>Uzun oyun seanslarında maksimum ergonomi ve konfor.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-headphones" aria-hidden="true"></i>
+                    <h3>Pro Ekipmanlar</h3>
+                    <p>Mekanik klavyeler, hassas gaming kulaklık ve fareler.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-burger" aria-hidden="true"></i>
+                    <h3>Cafe &amp; İkramlar</h3>
+                    <p>Oyun aralarında taze sıcak tost, kahve ve soğuk içecekler.</p>
+                </div>
+
+                <!-- Group 2 (Seamless loop duplicate) -->
+                <div class="card">
+                    <i class="fa-solid fa-gamepad" aria-hidden="true"></i>
+                    <h3>Espor Oyunları</h3>
+                    <p>En yeni rekabetçi oyunlar en yüksek FPS ve sıfır gecikmeyle hazır.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                    <h3>Geniş Hizmet Saatleri</h3>
+                    <p>Haftanın 7 günü 09:00 - 04:00 arası kesintisiz açık.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-wifi" aria-hidden="true"></i>
+                    <h3>1000 Mbps Fiber</h3>
+                    <p>Ultra düşük ping süresi ve yüksek hızlı fiber altyapı.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-desktop" aria-hidden="true"></i>
+                    <h3>540 Hz Ekranlar</h3>
+                    <p>Espor standartlarında 144Hz, 240Hz ve 540Hz monitör seçenekleri.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-couch" aria-hidden="true"></i>
+                    <h3>Oyuncu Koltukları</h3>
+                    <p>Uzun oyun seanslarında maksimum ergonomi ve konfor.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-headphones" aria-hidden="true"></i>
+                    <h3>Pro Ekipmanlar</h3>
+                    <p>Mekanik klavyeler, hassas gaming kulaklık ve fareler.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-burger" aria-hidden="true"></i>
+                    <h3>Cafe &amp; İkramlar</h3>
+                    <p>Oyun aralarında taze sıcak tost, kahve ve soğuk içecekler.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- STICKY CONTACT WIDGET -->
+    <div class="sticky-contact">
+        <div class="sticky-contact-options">
+            <a href="https://wa.me/905464659693?text=Merhaba,%20Forza%20İnternet%20%26%20Cafe%20hakkında%20bilgi%20almak%20istiyorum."
+               target="_blank"
+               rel="noopener noreferrer"
+               class="contact-option whatsapp"
+               aria-label="WhatsApp İletişim">
+                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                <span>WhatsApp</span>
+            </a>
+
+            <a href="https://www.instagram.com/forza_internet_bilgisayar/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="contact-option instagram"
+               aria-label="Instagram Sayfamız">
+                <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+                <span>Instagram</span>
+            </a>
+        </div>
+
+        <button class="sticky-contact-button" aria-label="Canlı İletişim Menüsü">
+            <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>Forza İnternet &amp; Cafe</h2>
+                <p>Antalya'nın merkezinde premium oyun deneyimi, yüksek konfigürasyonlu espor donanımları ve keyifli bir sosyal ortam.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Hızlı Menü</h3>
+                <a href="index.html">Anasayfa</a>
+                <a href="hakkimizda.html">Hakkımızda</a>
+                <a href="rezerve.html">Rezervasyon</a>
+                <a href="rezerve.html">Fiyat Tarifeleri</a>
+                <a href="giris.html">Yönetici Girişi</a>
+            </div>
+
+            <div class="footer-contact">
+                <h3>İletişim &amp; Konum</h3>
+                <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Kültür Mh. 3809 Sk. Muratpaşa, Antalya</p>
+                <p><i class="fa-solid fa-phone" aria-hidden="true"></i> 0 (546) 465 96 93</p>
+                <p><i class="fa-solid fa-clock" aria-hidden="true"></i> Her Gün: 09:00 - 04:00</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <small>© 2026 Forza İnternet &amp; Cafe | Tüm Hakları Saklıdır. | <a href="giris.html" style="color: rgba(255,255,255,0.4); text-decoration: none;">Yönetici Girişi</a></small>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="pc-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

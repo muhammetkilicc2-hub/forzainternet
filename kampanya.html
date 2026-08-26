@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Forza Admin — Fiyat Yönetimi</title>
+
+    <!-- Google Fonts: Inter / SF Pro / Sora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Apple iOS Admin Stylesheet -->
+    <link rel="stylesheet" href="admin.css?v=4.0">
+</head>
+<body>
+
+    <div class="ios-app-container">
+
+        <!-- iOS Dynamic Status Bar -->
+        <header class="ios-status-bar">
+            <div class="ios-status-left">
+                <div class="forza-logo-badge">F</div>
+                <div class="forza-logo-title">
+                    <strong>FORZA</strong>
+                    <span>Fiyat Yönetimi</span>
+                </div>
+            </div>
+
+            <div class="ios-status-right">
+                <div class="ios-live-indicator">
+                    <span class="live-dot"></span>
+                    Canlı
+                </div>
+
+                <a href="giris.html" class="notification-btn" title="Çıkış Yap" style="color: var(--a-danger);">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- iOS Header -->
+        <section class="ios-header">
+            <div class="ios-title-row">
+                <h1 class="ios-large-title">Kampanya Fiyatları</h1>
+            </div>
+        </section>
+
+        <!-- DASHBOARD CARD -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title">Masa Tarifeleri &amp; Paket Ücretleri</h2>
+                    <span class="card-subtitle">Saatlik ve paket ücretlerini dilediğiniz gibi güncelleyebilirsiniz (Değişiklikler anında web sitesine yansır)</span>
+                </div>
+            </div>
+
+            <div class="fiyat-yonetim-grid" id="fiyatYonetimGrid">
+                <!-- Sarı Kategori -->
+                <div class="fiyat-yonetim-karti" data-kategori="sari">
+                    <div class="fiyat-yonetim-baslik">
+                        <span class="fiyat-renk-etiketi sari"></span>
+                        <h4 class="kategori-baslik">60 TL Masa Grubu</h4>
+                    </div>
+                    <div class="fiyat-yonetim-alanlari">
+                        <label>
+                            <span>Saatlik Ücret (TL)</span>
+                            <input type="number" min="1" step="1" data-alan="bazSaatlik" placeholder="60">
+                        </label>
+                        <label>
+                            <span>5 Saat Paket (TL)</span>
+                            <input type="number" min="1" step="1" data-alan="saatlik" placeholder="200">
+                        </label>
+                        <label>
+                            <span>Gün Boyu Paket (TL)</span>
+                            <input type="number" min="1" step="1" data-alan="gunluk" placeholder="400">
+                        </label>
+                    </div>
+                    <div class="fiyat-yonetim-aksiyonlar">
+                        <button type="button" class="fiyat-kaydet-btn">Kaydet</button>
+                        <button type="button" class="fiyat-sifirla-btn">Sıfırla</button>
+                    </div>
+                    <p class="fiyat-durum-metni" aria-live="polite"></p>
+                </div>
+
+                <!-- Mavi Kategori -->
+                <div class="fiyat-yonetim-karti" data-kategori="mavi">
+                    <div class="fiyat-yonetim-baslik">
+                        <span class="fiyat-renk-etiketi mavi"></span>
+                        <h4 class="kategori-baslik">70 TL Masa Grubu</h4>
+                    </div>
+                    <div class="fiyat-yonetim-alanlari">
+                        <label>
+                            <span>Saatlik Ücret (TL)</span>
+                            <input type="number" min="1" step="1" data-alan="bazSaatlik" placeholder="70">
+                        </label>
+                        <label>
+                            <span>5 Saat Paket (TL)</span>
+                            <input type="number" min="1" step="1" data-alan="saatlik" placeholder="250">
+                        </label>
+                        <label>
+                            <span>Gün Boyu Paket (TL)</span>
+                            <input type="number" min="1" step="1" data-alan="gunluk" placeholder="500">
+                        </label>
+                    </div>
+                    <div class="fiyat-yonetim-aksiyonlar">
+                        <button type="button" class="fiyat-kaydet-btn">Kaydet</button>
+                        <button type="button" class="fiyat-sifirla-btn">Sıfırla</button>
+                    </div>
+                    <p class="fiyat-durum-metni" aria-live="polite"></p>
+                </div>
+
+                <!-- Yeşil Kategori -->
+                <div class="fiyat-yonetim-karti" data-kategori="yesil">
+                    <div class="fiyat-yonetim-baslik">
+                        <span class="fiyat-renk-etiketi yesil"></span>
+                        <h4 class="kategori-baslik">90 TL Masa Grubu</h4>
+                    </div>
+                    <div class="fiyat-yonetim-alanlari">
+                        <label>
+                            <span>Saatlik Ücret (TL)</span>
+                            <input type="number" min="1" step="1" data-alan="bazSaatlik" placeholder="90">
+                        </label>
+                        <label>
+                            <span>5 Saat Paket (TL)</span>
+                            <input type="number" min="1" step="1" data-alan="saatlik" placeholder="350">
+                        </label>
+                        <label>
+                            <span>Gün Boyu Paket (TL)</span>
+                            <input type="number" min="1" step="1" data-alan="gunluk" placeholder="700">
+                        </label>
+                    </div>
+                    <div class="fiyat-yonetim-aksiyonlar">
+                        <button type="button" class="fiyat-kaydet-btn">Kaydet</button>
+                        <button type="button" class="fiyat-sifirla-btn">Sıfırla</button>
+                    </div>
+                    <p class="fiyat-durum-metni" aria-live="polite"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- iOS BOTTOM TAB BAR -->
+    <nav class="ios-tab-bar" aria-label="Alt Navigasyon Menüsü">
+        <a href="panel.html#anasayfa" class="ios-tab-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Anasayfa</span>
+        </a>
+
+        <a href="bilgi.html" class="ios-tab-item">
+            <i class="fa-solid fa-desktop"></i>
+            <span>Masalar</span>
+        </a>
+
+        <a href="rezervasyon.html" class="ios-tab-item">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Rezervasyon</span>
+        </a>
+
+        <a href="kampanya.html" class="ios-tab-item active">
+            <i class="fa-solid fa-tags"></i>
+            <span>Fiyatlar</span>
+        </a>
+
+        <a href="panel.html#ayarlar" class="ios-tab-item">
+            <i class="fa-solid fa-gear"></i>
+            <span>Ayarlar</span>
+        </a>
+    </nav>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="pc-data.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const pcData = window.ForzaPcData;
+            if (!pcData || !pcData.fiyatlariYukle || !pcData.tekFiyatGuncelle) return;
+
+            const kartlar = document.querySelectorAll(".fiyat-yonetim-karti");
+
+            function doldur() {
+                const fiyatlar = pcData.fiyatlariYukle();
+                kartlar.forEach(function (kart) {
+                    const kat = kart.dataset.kategori;
+                    const veri = fiyatlar[kat];
+                    if (!veri) return;
+
+                    const baslik = kart.querySelector(".kategori-baslik");
+                    if (baslik) {
+                        const saatUcret = veri.bazSaatlik || (kat === "sari" ? 60 : kat === "mavi" ? 70 : 90);
+                        baslik.textContent = saatUcret + " TL Masa Grubu";
+                    }
+
+                    const bInput = kart.querySelector('[data-alan="bazSaatlik"]');
+                    const sInput = kart.querySelector('[data-alan="saatlik"]');
+                    const gInput = kart.querySelector('[data-alan="gunluk"]');
+                    if (bInput && document.activeElement !== bInput) bInput.value = veri.bazSaatlik || (kat === "sari" ? 60 : kat === "mavi" ? 70 : 90);
+                    if (sInput && document.activeElement !== sInput) sInput.value = veri.saatlik;
+                    if (gInput && document.activeElement !== gInput) gInput.value = veri.gunluk;
+                });
+            }
+
+            function mesajGoster(kart, txt, ok) {
+                const p = kart.querySelector(".fiyat-durum-metni");
+                if (!p) return;
+                p.textContent = txt;
+                p.classList.toggle("hata", !ok);
+                p.classList.add("gorunur");
+                setTimeout(() => p.classList.remove("gorunur"), 2500);
+            }
+
+            kartlar.forEach(function (kart) {
+                const kat = kart.dataset.kategori;
+                const bInput = kart.querySelector('[data-alan="bazSaatlik"]');
+                const sInput = kart.querySelector('[data-alan="saatlik"]');
+                const gInput = kart.querySelector('[data-alan="gunluk"]');
+                const saveBtn = kart.querySelector(".fiyat-kaydet-btn");
+                const resetBtn = kart.querySelector(".fiyat-sifirla-btn");
+
+                if (saveBtn) {
+                    saveBtn.addEventListener("click", function () {
+                        const b = parseInt(bInput.value, 10);
+                        const s = parseInt(sInput.value, 10);
+                        const g = parseInt(gInput.value, 10);
+                        if (!b || !s || !g || b <= 0 || s <= 0 || g <= 0) {
+                            mesajGoster(kart, "Lütfen geçerli pozitif fiyatlar giriniz.", false);
+                            return;
+                        }
+                        pcData.tekFiyatGuncelle(kat, { bazSaatlik: b, saatlik: s, gunluk: g });
+                        doldur();
+                        mesajGoster(kart, "Fiyatlar güncellendi ve web sitesine yansıtıldı!", true);
+                    });
+                }
+
+                if (resetBtn) {
+                    resetBtn.addEventListener("click", function () {
+                        const def = pcData.KATEGORILER[kat];
+                        if (!def) return;
+                        pcData.tekFiyatGuncelle(kat, { bazSaatlik: def.bazSaatlik, saatlik: def.saatlik, gunluk: def.gunluk });
+                        doldur();
+                        mesajGoster(kart, "Varsayılana sıfırlandı.", true);
+                    });
+                }
+            });
+
+            doldur();
+            if (pcData.fiyatDegisiklikleriDinle) pcData.fiyatDegisiklikleriDinle(doldur);
+        });
+    </script>
+</body>
+</html>

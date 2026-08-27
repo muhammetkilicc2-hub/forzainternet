@@ -112,8 +112,69 @@
         const durumlar = durumlariYukle();
         durumlar[id] = yeniDurum;
         durumlariKaydet(durumlar);
+
+        // Sunucu API'sini de anında güncelle
+        try {
+            const apiDurum = yeniDurum === DURUM.KULLANIMDA ? "kullanimda" : yeniDurum === DURUM.REZERVE ? "rezerve" : "bos";
+            fetch("/api/computers", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: "pc-" + id, durum: apiDurum })
+            }).catch(function () {});
+        } catch (e) {}
+
         return durumlar;
     }
+
+    // -----------------------------------------------------
+    // MERKEZİ SUNUCU SENKRONİZASYONU (Single Source of Truth)
+    // -----------------------------------------------------
+    function sunucudanSenkronizeEt(callback) {
+        if (typeof fetch === "undefined") return;
+
+        fetch("/api/computers", { cache: "no-store" })
+            .then(function (res) {
+                if (!res.ok) throw new Error("Masa verisi alınamadı");
+                return res.json();
+            })
+            .then(function (data) {
+                if (data && data.computers && Array.isArray(data.computers)) {
+                    const durumlar = durumlariYukle();
+                    let degisti = false;
+
+                    data.computers.forEach(function (pc) {
+                        const num = pc.no || idCikar(pc.id) || idCikar(pc.isim);
+                        if (num !== null) {
+                            const sunucuDurum = pc.durum === "kullanimda" ? DURUM.KULLANIMDA : pc.durum === "rezerve" ? DURUM.REZERVE : DURUM.BOS;
+                            if (durumlar[num] !== sunucuDurum) {
+                                durumlar[num] = sunucuDurum;
+                                degisti = true;
+                            }
+                        }
+                    });
+
+                    if (degisti) {
+                        durumlariKaydet(durumlar);
+                    }
+
+                    if (typeof callback === "function") {
+                        callback(durumlar);
+                    }
+                }
+            })
+            .catch(function () {});
+    }
+
+    // İlk yüklemede ve 3 saniyede bir merkezi API'den senkronize et
+    if (typeof global !== "undefined" && global.addEventListener) {
+        global.addEventListener("DOMContentLoaded", function () {
+            sunucudanSenkronizeEt();
+        });
+    }
+    sunucudanSenkronizeEt();
+    setInterval(function () {
+        sunucudanSenkronizeEt();
+    }, 3000);
 
     // -----------------------------------------------------
     // Değişiklikleri dinlemek için yardımcı fonksiyon
@@ -533,6 +594,7 @@
         durumlariYukle: durumlariYukle,
         durumlariKaydet: durumlariKaydet,
         tekDurumGuncelle: tekDurumGuncelle,
+        sunucudanSenkronizeEt: sunucudanSenkronizeEt,
         degisiklikleriDinle: degisiklikleriDinle,
         idCikar: idCikar,
         fiyatlariYukle: fiyatlariYukle,

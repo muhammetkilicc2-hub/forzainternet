@@ -14,39 +14,29 @@ export default function MasalarManagementPage() {
 
   useEffect(() => {
     loadData();
+    const interval = setInterval(loadData, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   async function loadData() {
     try {
-      let localStatuses: Record<string, string> = {};
-      try {
-        const raw = localStorage.getItem("forzaPcDurumlari");
-        if (raw) localStatuses = JSON.parse(raw);
-      } catch (e) {}
-
       const [resPc, resPricing] = await Promise.all([
-        fetch("/api/computers"),
-        fetch("/api/pricing"),
+        fetch("/api/computers", { cache: "no-store" }),
+        fetch("/api/pricing", { cache: "no-store" }),
       ]);
       const dataPc = await resPc.json();
       const dataPricing = await resPricing.json();
 
-      if (dataPc.computers) {
-        const merged = dataPc.computers.map((pc: PC) => {
-          const numId = pc.no || (pc.isim.match(/\d+/) ? parseInt(pc.isim.match(/\d+/)![0], 10) : pc.id);
-          const localDurum = localStatuses[numId] || localStatuses[pc.id];
-          if (localDurum) {
-            const mappedDurum =
-              localDurum === "kullanımda" || localDurum === "kullanimda"
-                ? "kullanimda"
-                : localDurum === "rezerve"
-                ? "rezerve"
-                : "bos";
-            return { ...pc, durum: mappedDurum };
-          }
-          return pc;
-        });
-        setComputers(merged);
+      if (dataPc.computers && Array.isArray(dataPc.computers)) {
+        setComputers(dataPc.computers);
+
+        try {
+          const locMap: Record<string, string> = {};
+          dataPc.computers.forEach((pc: PC) => {
+            locMap[pc.no] = pc.durum === "kullanimda" ? "kullanımda" : pc.durum;
+          });
+          localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
+        } catch (e) {}
       }
       if (dataPricing.pricing) setPricing(dataPricing.pricing);
     } catch (err) {

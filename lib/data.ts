@@ -158,7 +158,26 @@ if (!globalThis.__forzaReservations) {
 // ----------------------------------------------------
 
 export function getComputers(): PC[] {
-  return globalThis.__forzaPcList!;
+  const pcList = globalThis.__forzaPcList!;
+  const resList = globalThis.__forzaReservations || [];
+
+  resList.forEach((rez) => {
+    if (rez.durum === "pending" || rez.durum === "confirmed") {
+      const targetDurum: PcDurum = rez.durum === "pending" ? "rezerve" : "kullanimda";
+      const matches = (rez.masaId || "").match(/\d+/g);
+      if (matches) {
+        matches.forEach((numStr) => {
+          const num = parseInt(numStr, 10);
+          const target = pcList.find((p) => p.no === num || p.id === `pc-${num}`);
+          if (target && target.durum === "bos") {
+            target.durum = targetDurum;
+          }
+        });
+      }
+    }
+  });
+
+  return pcList;
 }
 
 export function updateComputerStatus(id: string, durum: PcDurum): PC | null {

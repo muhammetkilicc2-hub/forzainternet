@@ -377,7 +377,16 @@
                 pcData.fiyatDegisiklikleriDinle(function () {
                     pcFiyatlariniUygula();
                     kartlar.forEach(function (kart) {
-                        kart.dispatchEvent(new Event("forzaYenidenHesapla"))            // Her kart için seçim ve hesaplama mekanizması
+                        kart.dispatchEvent(new Event("forzaYenidenHesapla"));
+                    });
+                });
+            }
+
+            if (pcData && pcData.sunucudanSenkronizeEt) {
+                pcData.sunucudanSenkronizeEt(pcDurumlariniUygula);
+            }
+
+            // Her kart için seçim ve hesaplama mekanizması
             kartlar.forEach(function (kart) {
                 const fiyatlar = kart.querySelectorAll(".fiyat");
                 const pcler = kart.querySelectorAll(".comp");

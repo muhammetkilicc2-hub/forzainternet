@@ -37,43 +37,31 @@ export default function AdminDashboardPage() {
 
   async function loadData() {
     try {
-      let localStatuses: Record<string, string> = {};
-      try {
-        const raw = localStorage.getItem("forzaPcDurumlari");
-        if (raw) localStatuses = JSON.parse(raw);
-      } catch (e) {}
-
       const [resPc, resRez] = await Promise.all([
-        fetch("/api/computers"),
-        fetch("/api/reservations"),
+        fetch("/api/computers", { cache: "no-store" }),
+        fetch("/api/reservations", { cache: "no-store" }),
       ]);
       const dataPc = await resPc.json();
       const dataRez = await resRez.json();
 
-      if (dataPc.computers) {
-        const merged = dataPc.computers.map((pc: PC) => {
-          const numId = pc.no || (pc.isim.match(/\d+/) ? parseInt(pc.isim.match(/\d+/)![0], 10) : pc.id);
-          const localDurum = localStatuses[numId] || localStatuses[pc.id];
-          if (localDurum) {
-            const mappedDurum =
-              localDurum === "kullanımda" || localDurum === "kullanimda"
-                ? "kullanimda"
-                : localDurum === "rezerve"
-                ? "rezerve"
-                : "bos";
-            return { ...pc, durum: mappedDurum };
-          }
-          return pc;
-        });
+      if (dataPc.computers && Array.isArray(dataPc.computers)) {
+        setComputers(dataPc.computers);
 
-        setComputers(merged);
+        try {
+          const locMap: Record<string, string> = {};
+          dataPc.computers.forEach((pc: PC) => {
+            locMap[pc.no] = pc.durum === "kullanimda" ? "kullanımda" : pc.durum;
+          });
+          localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
+        } catch (e) {}
+
         if (dataPc.stats) {
           setStats({
             ...dataPc.stats,
-            toplamPc: merged.length,
-            aktifPc: merged.filter((p: PC) => p.durum === "kullanimda").length,
-            bosPc: merged.filter((p: PC) => p.durum === "bos").length,
-            rezervePc: merged.filter((p: PC) => p.durum === "rezerve").length,
+            toplamPc: dataPc.computers.length,
+            aktifPc: dataPc.computers.filter((p: PC) => p.durum === "kullanimda").length,
+            bosPc: dataPc.computers.filter((p: PC) => p.durum === "bos").length,
+            rezervePc: dataPc.computers.filter((p: PC) => p.durum === "rezerve").length,
           });
         }
       }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
@@ -82,6 +82,7 @@ const TIERS: TierData[] = [
 ];
 
 export default function ReservationPage() {
+  const [tableStatuses, setTableStatuses] = useState<Record<string, "bos" | "rezerve" | "kullanimda">>({});
   const [selectedPrices, setSelectedPrices] = useState<Record<string, { label: string; amount: number }>>({});
   const [selectedPcsByTier, setSelectedPcsByTier] = useState<Record<string, string[]>>({});
 
@@ -107,6 +108,56 @@ export default function ReservationPage() {
     }
   };
 
+  const loadCentralStatuses = async () => {
+    try {
+      const res = await fetch("/api/computers", { cache: "no-store" });
+      const data = await res.json();
+      if (data && data.computers && Array.isArray(data.computers)) {
+        const map: Record<string, "bos" | "rezerve" | "kullanimda"> = {};
+        data.computers.forEach((pc: { id: string; no: number; isim: string; durum: "bos" | "rezerve" | "kullanimda" }) => {
+          const num = pc.no || (pc.isim.match(/\d+/) ? parseInt(pc.isim.match(/\d+/)![0], 10) : pc.id);
+          map[`PC ${num}`] = pc.durum;
+          map[`${num}`] = pc.durum;
+          map[pc.isim] = pc.durum;
+          map[pc.id] = pc.durum;
+        });
+        setTableStatuses(map);
+
+        try {
+          const locMap: Record<string, string> = {};
+          data.computers.forEach((pc: { no: number; durum: string }) => {
+            locMap[pc.no] = pc.durum === "kullanimda" ? "kullanımda" : pc.durum;
+          });
+          localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
+        } catch (e) {}
+      }
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    loadCentralStatuses();
+    const interval = setInterval(loadCentralStatuses, 3000);
+
+    const handleCustomEvent = (e: any) => {
+      if (e.detail) {
+        const map: Record<string, "bos" | "rezerve" | "kullanimda"> = {};
+        Object.keys(e.detail).forEach((k) => {
+          const v = e.detail[k];
+          const trStatus = v === "kullanımda" || v === "kullanimda" ? "kullanimda" : v === "rezerve" ? "rezerve" : "bos";
+          map[`PC ${k}`] = trStatus;
+          map[k] = trStatus;
+        });
+        setTableStatuses((prev) => ({ ...prev, ...map }));
+      }
+    };
+
+    window.addEventListener("forzaPcDurumGuncellendi", handleCustomEvent);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("forzaPcDurumGuncellendi", handleCustomEvent);
+    };
+  }, []);
+
   const handleSelectPrice = (tierId: string, priceObj: { label: string; amount: number }) => {
     triggerHaptic();
     setSelectedPrices((prev) => {
@@ -118,6 +169,13 @@ export default function ReservationPage() {
   };
 
   const handleTogglePc = (tierId: string, pcName: string) => {
+    const status = tableStatuses[pcName] || "bos";
+    if (status === "rezerve" || status === "kullanimda") {
+      triggerHaptic();
+      alert(`${pcName} şu anda ${status === "rezerve" ? "rezerve edilmiştir" : "kullanımdadır"}. Lütfen boş bir masa seçiniz.`);
+      return;
+    }
+
     triggerHaptic();
     // Otomatik ilk tarifeyi seç (eğer seçili tarife yoksa)
     setSelectedPrices((prev) => {
@@ -280,6 +338,9 @@ export default function ReservationPage() {
         }
       } catch (e) {}
 
+      await loadCentralStatuses();
+      setSelectedPcsByTier({});
+
       alert(`✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: ${pcs.join(", ")}\nPaket: ${activeModalTier.name}\nTarife: ${durationLabel}\nRandevu Saati: ${appointmentDate} Saat ${appointmentTime}\nToplam Tutar: ₺${total}\n\nİşletmemize geldiğinizde adınızı belirterek masanıza geçebilirsiniz.`);
       setModalOpen(false);
       setName("");
@@ -364,15 +425,22 @@ export default function ReservationPage() {
                     </div>
 
                     <div className="pc-container" aria-label={`${tier.name} Bilgisayarları`}>
-                      {(selectedPcsByTier[tier.id] || []) && tier.pcs.map((pcName) => {
+                      {tier.pcs.map((pcName) => {
+                        const status = tableStatuses[pcName] || "bos";
+                        const isOccupied = status === "kullanimda";
+                        const isReserved = status === "rezerve";
+                        const isUnavailable = isOccupied || isReserved;
                         const isSelected = (selectedPcsByTier[tier.id] || []).includes(pcName);
+
                         return (
                           <div
                             key={pcName}
-                            className={`comp ${isSelected ? "secili" : ""}`}
-                            tabIndex={0}
+                            className={`comp ${isSelected ? "secili" : ""} ${isOccupied ? "dolu" : ""} ${isReserved ? "dolu rezerveli" : ""}`}
+                            tabIndex={isUnavailable ? -1 : 0}
                             role="button"
                             aria-label={pcName}
+                            aria-disabled={isUnavailable}
+                            title={isReserved ? "Bu masa rezerve edildi" : isOccupied ? "Bu masa kullanımda" : ""}
                             onClick={() => handleTogglePc(tier.id, pcName)}
                           >
                             {pcName}

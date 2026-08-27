@@ -83,22 +83,21 @@ export default function RezervasyonlarManagementPage() {
         }
       }
 
-      // Onaylandıysa masaları kullanıma al
-      if (durum === "confirmed") {
-        const rez = reservations.find((r) => r.id === id);
-        if (rez) {
-          const rawPc = localStorage.getItem("forzaPcDurumlari");
-          const durumlar = rawPc ? JSON.parse(rawPc) : {};
-          const pcMatches = rez.masaId.match(/\d+/g) || [];
-          pcMatches.forEach((numStr) => {
-            const pcId = parseInt(numStr, 10);
-            durumlar[pcId] = "kullanımda";
-            durumlar[`pc-${pcId}`] = "kullanimda";
-          });
-          localStorage.setItem("forzaPcDurumlari", JSON.stringify(durumlar));
-          if (typeof window !== "undefined") {
-            window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: durumlar }));
-          }
+      // Masaların durumunu güncelle (Onaylandı -> kullanımda / Reddedildi -> boş)
+      const rez = reservations.find((r) => r.id === id);
+      if (rez) {
+        const rawPc = localStorage.getItem("forzaPcDurumlari");
+        const durumlar = rawPc ? JSON.parse(rawPc) : {};
+        const pcMatches = rez.masaId.match(/\d+/g) || [];
+        pcMatches.forEach((numStr) => {
+          const pcId = parseInt(numStr, 10);
+          const newSt = durum === "confirmed" ? "kullanımda" : "boş";
+          durumlar[pcId] = newSt;
+          durumlar[`pc-${pcId}`] = durum === "confirmed" ? "kullanimda" : "bos";
+        });
+        localStorage.setItem("forzaPcDurumlari", JSON.stringify(durumlar));
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: durumlar }));
         }
       }
     } catch (e) {}

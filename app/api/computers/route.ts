@@ -1,11 +1,20 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getComputers, updateComputerStatus, getStats } from "@/lib/data";
 import { getSession } from "@/lib/auth";
 
 export async function GET() {
   const computers = getComputers();
   const stats = getStats();
-  return NextResponse.json({ success: true, computers, stats });
+  return NextResponse.json(
+    { success: true, computers, stats },
+    {
+      headers: {
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+    }
+  );
 }
 
 export async function PATCH(request: Request) {

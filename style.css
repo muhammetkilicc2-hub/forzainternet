@@ -2227,18 +2227,48 @@ footer {
     }
 
     .fotogaleri {
-        gap: 10px;
+        gap: 8px;
+        position: relative;
     }
 
     .photo-track img {
         flex: 0 0 100%;
-        height: 220px;
+        height: 240px;
+        border-radius: var(--radius-md);
     }
 
     .photo-nav {
-        width: 40px;
-        height: 40px;
-        font-size: 13px;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        background: rgba(15, 23, 42, 0.9) !important;
+        border: 1.5px solid var(--gold) !important;
+        color: var(--gold) !important;
+        z-index: 15;
+    }
+
+    .lightbox-nav {
+        width: 48px !important;
+        height: 48px !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        background: rgba(10, 15, 28, 0.85) !important;
+        border: 1.5px solid var(--gold) !important;
+        color: #ffffff !important;
+        z-index: 3050 !important;
+    }
+
+    .lightbox-nav.prev {
+        left: 12px !important;
+    }
+
+    .lightbox-nav.next {
+        right: 12px !important;
     }
 
     /* Sticky Contact Button: Safe-Area KorumalÄ± */

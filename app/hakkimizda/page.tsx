@@ -16,15 +16,36 @@ const PHOTOS = [
 
 export default function AboutPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(3);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
+  // Responsively calculate visible slide count
+  useEffect(() => {
+    const updateVisible = () => {
+      if (typeof window !== "undefined") {
+        if (window.innerWidth <= 768) {
+          setVisibleCount(1);
+        } else if (window.innerWidth <= 1024) {
+          setVisibleCount(2);
+        } else {
+          setVisibleCount(3);
+        }
+      }
+    };
+    updateVisible();
+    window.addEventListener("resize", updateVisible);
+    return () => window.removeEventListener("resize", updateVisible);
+  }, []);
+
+  const maxIndex = Math.max(0, PHOTOS.length - visibleCount);
+
   const prevSlide = () => {
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
+    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev >= PHOTOS.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
   };
 
   const lightboxPrev = (e?: React.MouseEvent) => {
@@ -58,10 +79,27 @@ export default function AboutPage() {
     if (touchStart === null) return;
     const touchEnd = e.changedTouches[0].clientX;
     const diff = touchStart - touchEnd;
-    if (diff > 45) lightboxNext();
-    if (diff < -45) lightboxPrev();
+    if (diff > 40) lightboxNext();
+    if (diff < -40) lightboxPrev();
     setTouchStart(null);
   };
+
+  // Slider touch swipe for mobile gallery
+  const [sliderTouchStart, setSliderTouchStart] = useState<number | null>(null);
+
+  const handleSliderTouchStart = (e: React.TouchEvent) => {
+    setSliderTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleSliderTouchEnd = (e: React.TouchEvent) => {
+    if (sliderTouchStart === null) return;
+    const diff = sliderTouchStart - e.changedTouches[0].clientX;
+    if (diff > 40) nextSlide();
+    if (diff < -40) prevSlide();
+    setSliderTouchStart(null);
+  };
+
+  const shiftPercent = currentIndex * (100 / visibleCount);
 
   return (
     <>
@@ -110,17 +148,22 @@ export default function AboutPage() {
             id="prev"
             aria-label="Önceki Fotoğraf"
             onClick={prevSlide}
-            disabled={currentIndex === 0}
           >
-            <i className="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
           </button>
 
-          <div className="photo-window">
+          <div
+            className="photo-window"
+            onTouchStart={handleSliderTouchStart}
+            onTouchEnd={handleSliderTouchEnd}
+          >
             <div
               className="photo-track"
               style={{
-                transform: `translateX(-${currentIndex * 33.333}%)`,
-                transition: "transform 0.35s ease",
+                transform: `translateX(-${shiftPercent}%)`,
+                transition: "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             >
               {PHOTOS.map((photo, index) => (
@@ -129,6 +172,9 @@ export default function AboutPage() {
                   src={photo.src}
                   alt={photo.alt}
                   onClick={() => setLightboxIndex(index)}
+                  style={{
+                    flex: `0 0 calc(${100 / visibleCount}% - ${visibleCount > 1 ? 11 : 0}px)`,
+                  }}
                 />
               ))}
             </div>
@@ -140,9 +186,10 @@ export default function AboutPage() {
             id="next"
             aria-label="Sonraki Fotoğraf"
             onClick={nextSlide}
-            disabled={currentIndex >= PHOTOS.length - 3}
           >
-            <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
           </button>
         </section>
 
@@ -175,7 +222,9 @@ export default function AboutPage() {
             aria-label="Önceki Fotoğraf"
             onClick={lightboxPrev}
           >
-            <i className="fa-solid fa-chevron-left" aria-hidden="true"></i>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
           </button>
 
           {/* Image & Caption */}
@@ -234,7 +283,9 @@ export default function AboutPage() {
             aria-label="Sonraki Fotoğraf"
             onClick={lightboxNext}
           >
-            <i className="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
           </button>
 
           {/* Index Counter */}

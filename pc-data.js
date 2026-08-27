@@ -176,7 +176,15 @@
 
             Object.keys(varsayilan).forEach(function (kategori) {
                 if (kayitli[kategori]) {
-                    varsayilan[kategori] = Object.assign({}, varsayilan[kategori], kayitli[kategori]);
+                    let saatlik = kayitli[kategori].besSaatlik || kayitli[kategori].saatlik;
+                    if (saatlik === 160) saatlik = 200;
+                    if (saatlik === 190) saatlik = 250;
+                    if (saatlik === 240) saatlik = 350;
+
+                    varsayilan[kategori] = Object.assign({}, varsayilan[kategori], kayitli[kategori], {
+                        saatlik: saatlik,
+                        besSaatlik: saatlik
+                    });
                 }
             });
 
@@ -354,7 +362,7 @@
             canliAktiviteler: [
                 { id: "a1", metin: "Antalya / Muratpaşa'dan yeni bir ziyaretçi bağlandı", zaman: "1 dk önce", ikon: "fa-location-dot" },
                 { id: "a2", metin: "Yeşil VIP 540Hz Espor Masaları inceleniyor", zaman: "3 dk önce", ikon: "fa-eye" },
-                { id: "a3", metin: "PC 18 için 3 Saatlik Rezervasyon yapıldı", zaman: "6 dk önce", ikon: "fa-circle-check" },
+                { id: "a3", metin: "PC 18 için 5 Saatlik Rezervasyon yapıldı", zaman: "6 dk önce", ikon: "fa-circle-check" },
                 { id: "a4", metin: "Mavi Pro Masalar inceleniyor", zaman: "9 dk önce", ikon: "fa-fire" }
             ],
             fiyatModu: "standart",

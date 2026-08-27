@@ -343,21 +343,21 @@
                         baslikEl.textContent = guncelSaatlik + " TL Masa";
                     }
 
-                    // Paket Fiyatlarını Güncelle
-                    kart.querySelectorAll(".fiyat").forEach(function (fiyatEl) {
-                        const span = fiyatEl.querySelector("span");
-                        const strong = fiyatEl.querySelector("strong");
-                        if (!span || !strong) return;
+                    // Paket Fiyatlarını Güncelle (1. Tarife: 5 Saat / 2. Tarife: Gün Boyu)
+                    const fiyatList = kart.querySelectorAll(".fiyat");
+                    if (fiyatList.length >= 2) {
+                        const f1Span = fiyatList[0].querySelector("span");
+                        const f1Strong = fiyatList[0].querySelector("strong");
+                        if (f1Span) f1Span.textContent = "5 Saat Paket";
+                        if (f1Strong) f1Strong.textContent = (veri.besSaatlik || veri.saatlik || 200) + " TL";
+                        fiyatList[0].setAttribute("aria-label", `${guncelSaatlik} TL Masa 5 Saatlik Paket (${veri.besSaatlik || veri.saatlik} TL)`);
 
-                        const metin = span.textContent.toLowerCase();
-                        if (metin.includes("saat")) {
-                            strong.textContent = veri.saatlik + " TL";
-                            fiyatEl.setAttribute("aria-label", `${guncelSaatlik} TL Masa 5 Saatlik Paket (${veri.saatlik} TL)`);
-                        } else if (metin.includes("gün") || metin.includes("gun")) {
-                            strong.textContent = veri.gunluk + " TL";
-                            fiyatEl.setAttribute("aria-label", `${guncelSaatlik} TL Masa Gün Boyu Paket (${veri.gunluk} TL)`);
-                        }
-                    });
+                        const f2Span = fiyatList[1].querySelector("span");
+                        const f2Strong = fiyatList[1].querySelector("strong");
+                        if (f2Span) f2Span.textContent = "Gün Boyu Paket";
+                        if (f2Strong) f2Strong.textContent = (veri.gunluk || 400) + " TL";
+                        fiyatList[1].setAttribute("aria-label", `${guncelSaatlik} TL Masa Gün Boyu Paket (${veri.gunluk} TL)`);
+                    }
                 });
             }
 

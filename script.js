@@ -248,27 +248,62 @@
 
             updateButtons();
 
-            // Lightbox Modal
-            function openLightbox(src, alt) {
-                if (!lightbox || !lightboxImg) return;
-                lightboxImg.src = src;
-                lightboxImg.alt = alt || "Büyütülmüş mekan fotoğrafı";
+            // Lightbox Modal with Sliding & Gesture Controls
+            const lightboxCaption = document.getElementById("lightboxCaption");
+            const lightboxCounter = document.getElementById("lightboxCounter");
+            const lightboxPrevBtn = document.getElementById("lightboxPrev");
+            const lightboxNextBtn = document.getElementById("lightboxNext");
+            let lightboxCurrentIndex = 0;
+
+            function renderLightboxPhoto(index) {
+                if (!lightboxImg) return;
+                lightboxCurrentIndex = (index + fotoListesi.length) % fotoListesi.length;
+                const photo = fotoListesi[lightboxCurrentIndex];
+                
+                lightboxImg.src = photo.src;
+                lightboxImg.alt = photo.alt || photo.badge || "Forza Gaming Alanı";
+                
+                if (lightboxCaption) {
+                    lightboxCaption.textContent = photo.alt || photo.badge || "Forza Gaming Alanı";
+                }
+                if (lightboxCounter) {
+                    lightboxCounter.textContent = (lightboxCurrentIndex + 1) + " / " + fotoListesi.length;
+                }
+            }
+
+            function openLightbox(index) {
+                if (!lightbox) return;
+                renderLightboxPhoto(index);
                 lightbox.classList.add("active");
                 document.body.style.overflow = "hidden";
             }
 
             function closeLightbox() {
-                if (!lightbox || !lightboxImg) return;
+                if (!lightbox) return;
                 lightbox.classList.remove("active");
-                lightboxImg.src = "";
+                if (lightboxImg) lightboxImg.src = "";
                 document.body.style.overflow = "";
             }
 
-            slides.forEach(function (img) {
+            slides.forEach(function (img, idx) {
                 img.addEventListener("click", function () {
-                    openLightbox(img.src, img.alt);
+                    openLightbox(idx);
                 });
             });
+
+            if (lightboxPrevBtn) {
+                lightboxPrevBtn.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    renderLightboxPhoto(lightboxCurrentIndex - 1);
+                });
+            }
+
+            if (lightboxNextBtn) {
+                lightboxNextBtn.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    renderLightboxPhoto(lightboxCurrentIndex + 1);
+                });
+            }
 
             if (closeLightboxBtn) {
                 closeLightboxBtn.addEventListener("click", closeLightbox);
@@ -278,11 +313,28 @@
                 lightbox.addEventListener("click", function (e) {
                     if (e.target === lightbox) closeLightbox();
                 });
+
+                // Touch Swipe inside Lightbox
+                let touchStartX = null;
+                lightbox.addEventListener("touchstart", function (e) {
+                    touchStartX = e.touches[0].clientX;
+                }, { passive: true });
+
+                lightbox.addEventListener("touchend", function (e) {
+                    if (touchStartX === null) return;
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const diff = touchStartX - touchEndX;
+                    if (diff > 45) renderLightboxPhoto(lightboxCurrentIndex + 1);
+                    if (diff < -45) renderLightboxPhoto(lightboxCurrentIndex - 1);
+                    touchStartX = null;
+                }, { passive: true });
             }
 
             document.addEventListener("keydown", function (e) {
-                if (e.key === "Escape" && lightbox && lightbox.classList.contains("active")) {
-                    closeLightbox();
+                if (lightbox && lightbox.classList.contains("active")) {
+                    if (e.key === "Escape") closeLightbox();
+                    if (e.key === "ArrowLeft") renderLightboxPhoto(lightboxCurrentIndex - 1);
+                    if (e.key === "ArrowRight") renderLightboxPhoto(lightboxCurrentIndex + 1);
                 }
             });
         }());

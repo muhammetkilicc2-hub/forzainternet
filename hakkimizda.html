@@ -94,11 +94,12 @@
 
             <div class="photo-window">
                 <div class="photo-track">
-                    <img src="foto2.jpeg" alt="Forza Gaming Alanı 1">
-                    <img src="foto3.jpeg" alt="Forza Gaming Alanı 2">
-                    <img src="foto4.jpeg" alt="Forza Gaming Alanı 3">
-                    <img src="foto6.jpeg" alt="Forza Gaming Alanı 4">
-                    <img src="foto5.jpeg" alt="Forza Gaming Alanı 5">
+                    <img src="foto1.jpeg" alt="Forza Gaming Salonu - Ana Espor Alanı">
+                    <img src="foto2.jpeg" alt="540Hz BenQ Espor Turnuva Masaları">
+                    <img src="foto3.jpeg" alt="Pro Gaming RTX 4070 Setup">
+                    <img src="foto4.jpeg" alt="VIP Espor Akustik Alanı">
+                    <img src="foto5.jpeg" alt="Ergonomik Espor Koltukları &amp; Ekipmanlar">
+                    <img src="foto6.jpeg" alt="Forza Turnuva ve Takım Odası">
                 </div>
             </div>
 
@@ -107,10 +108,24 @@
             </button>
         </section>
 
-        <!-- LIGHTBOX MODAL -->
+        <!-- LIGHTBOX SLIDING MODAL -->
         <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Büyütülmüş Fotoğraf Görüntüleyici">
             <button class="close-lightbox" id="closeLightbox" aria-label="Fotoğrafı Kapat">×</button>
-            <img src="" alt="Büyütülmüş mekan fotoğrafı" id="lightboxImage">
+            
+            <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Önceki Fotoğraf">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="lightbox-container">
+                <img src="" alt="Büyütülmüş mekan fotoğrafı" id="lightboxImage">
+                <div id="lightboxCaption" style="margin-top: 12px; color: #fdfbf7; font-size: 14px; font-weight: 600; text-align: center; background: rgba(0,0,0,0.6); padding: 6px 16px; border-radius: 20px; backdrop-filter: blur(8px);"></div>
+            </div>
+
+            <button class="lightbox-nav next" id="lightboxNext" aria-label="Sonraki Fotoğraf">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+            <div class="lightbox-counter" id="lightboxCounter">1 / 6</div>
         </div>
     </main>
 

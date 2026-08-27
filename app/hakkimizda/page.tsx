@@ -1,21 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
 
 const PHOTOS = [
-  { src: "/foto2.jpeg", alt: "Forza Gaming Alanı 1" },
-  { src: "/foto3.jpeg", alt: "Forza Gaming Alanı 2" },
-  { src: "/foto4.jpeg", alt: "Forza Gaming Alanı 3" },
-  { src: "/foto6.jpeg", alt: "Forza Gaming Alanı 4" },
-  { src: "/foto5.jpeg", alt: "Forza Gaming Alanı 5" },
+  { src: "/foto1.jpeg", alt: "Forza Gaming Salonu - Ana Espor Alanı" },
+  { src: "/foto2.jpeg", alt: "540Hz BenQ Espor Turnuva Masaları" },
+  { src: "/foto3.jpeg", alt: "Pro Gaming RTX 4070 Setup" },
+  { src: "/foto4.jpeg", alt: "VIP Espor Akustik Alanı" },
+  { src: "/foto5.jpeg", alt: "Ergonomik Espor Koltukları & Ekipmanlar" },
+  { src: "/foto6.jpeg", alt: "Forza Turnuva ve Takım Odası" },
 ];
 
 export default function AboutPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
   const prevSlide = () => {
     setCurrentIndex((prev) => Math.max(0, prev - 1));
@@ -23,6 +25,42 @@ export default function AboutPage() {
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev >= PHOTOS.length - 1 ? 0 : prev + 1));
+  };
+
+  const lightboxPrev = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setLightboxIndex((prev) => (prev === null || prev <= 0 ? PHOTOS.length - 1 : prev - 1));
+  };
+
+  const lightboxNext = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setLightboxIndex((prev) => (prev === null || prev >= PHOTOS.length - 1 ? 0 : prev + 1));
+  };
+
+  // Keyboard navigation inside lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (lightboxIndex === null) return;
+      if (e.key === "ArrowLeft") lightboxPrev();
+      if (e.key === "ArrowRight") lightboxNext();
+      if (e.key === "Escape") setLightboxIndex(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxIndex]);
+
+  // Touch swipe handling
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStart - touchEnd;
+    if (diff > 45) lightboxNext();
+    if (diff < -45) lightboxPrev();
+    setTouchStart(null);
   };
 
   return (
@@ -81,7 +119,7 @@ export default function AboutPage() {
             <div
               className="photo-track"
               style={{
-                transform: `translateX(-${currentIndex * (100 / 3)}%)`,
+                transform: `translateX(-${currentIndex * 33.333}%)`,
                 transition: "transform 0.35s ease",
               }}
             >
@@ -90,7 +128,7 @@ export default function AboutPage() {
                   key={index}
                   src={photo.src}
                   alt={photo.alt}
-                  onClick={() => setLightboxSrc(photo.src)}
+                  onClick={() => setLightboxIndex(index)}
                 />
               ))}
             </div>
@@ -108,31 +146,88 @@ export default function AboutPage() {
           </button>
         </section>
 
-        {/* LIGHTBOX MODAL */}
+        {/* LIGHTBOX SLIDING MODAL */}
         <div
-          className={`lightbox ${lightboxSrc ? "active" : ""}`}
+          className={`lightbox ${lightboxIndex !== null ? "active" : ""}`}
           id="lightbox"
           role="dialog"
           aria-modal="true"
           aria-label="Büyütülmüş Fotoğraf Görüntüleyici"
-          onClick={() => setLightboxSrc(null)}
+          onClick={() => setLightboxIndex(null)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
+          {/* Close Button */}
           <button
             type="button"
             className="close-lightbox"
             id="closeLightbox"
             aria-label="Fotoğrafı Kapat"
-            onClick={() => setLightboxSrc(null)}
+            onClick={() => setLightboxIndex(null)}
           >
             ×
           </button>
-          {lightboxSrc && (
-            <img
-              src={lightboxSrc}
-              alt="Büyütülmüş mekan fotoğrafı"
-              id="lightboxImage"
-              onClick={(e) => e.stopPropagation()}
-            />
+
+          {/* Previous Arrow */}
+          <button
+            type="button"
+            className="lightbox-nav prev"
+            aria-label="Önceki Fotoğraf"
+            onClick={lightboxPrev}
+          >
+            <i className="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          </button>
+
+          {/* Image & Caption */}
+          {lightboxIndex !== null && (
+            <div className="lightbox-container" onClick={(e) => e.stopPropagation()}>
+              <img
+                src={PHOTOS[lightboxIndex].src}
+                alt={PHOTOS[lightboxIndex].alt}
+                id="lightboxImage"
+                style={{
+                  maxWidth: "88vw",
+                  maxHeight: "80vh",
+                  objectFit: "contain",
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  boxShadow: "0 10px 40px rgba(0,0,0,0.8)",
+                  animation: "fadeIn 0.25s ease-out",
+                }}
+              />
+              <div
+                style={{
+                  marginTop: "12px",
+                  color: "#fdfbf7",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  textAlign: "center",
+                  background: "rgba(0,0,0,0.6)",
+                  padding: "6px 16px",
+                  borderRadius: "20px",
+                  backdropFilter: "blur(8px)",
+                }}
+              >
+                {PHOTOS[lightboxIndex].alt}
+              </div>
+            </div>
+          )}
+
+          {/* Next Arrow */}
+          <button
+            type="button"
+            className="lightbox-nav next"
+            aria-label="Sonraki Fotoğraf"
+            onClick={lightboxNext}
+          >
+            <i className="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+
+          {/* Index Counter */}
+          {lightboxIndex !== null && (
+            <div className="lightbox-counter">
+              {lightboxIndex + 1} / {PHOTOS.length}
+            </div>
           )}
         </div>
       </main>

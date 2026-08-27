@@ -106,11 +106,14 @@
 
         <!-- COMPUTER GRID CARD -->
         <div class="dashboard-card" id="computer-section">
-            <div class="card-header">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                 <div>
                     <h2 class="card-title">Masa Listesi &amp; Durum Değiştirme</h2>
                     <span class="card-subtitle">Boş / Kullanımda / Rezerve geçişi için karta dokunun</span>
                 </div>
+                <button type="button" id="saveAllComputersBtn" class="primary-btn" style="padding: 10px 20px; font-size: 13.5px; font-weight: 800; border-radius: 12px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; background: var(--gold-gradient); color: #000; border: none;">
+                    <i class="fa-solid fa-floppy-disk"></i> Masaları Veritabanına Kaydet
+                </button>
             </div>
 
             <!-- iOS Segmented Control -->

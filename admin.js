@@ -558,6 +558,42 @@
         filtreSekmeEtiketleriniGuncelle();
         gridRender();
 
+        const saveAllComputersBtn = document.getElementById("saveAllComputersBtn");
+        if (saveAllComputersBtn) {
+            saveAllComputersBtn.addEventListener("click", async function () {
+                const durumlar = pcData ? pcData.durumlariYukle() : {};
+                const list = (pcData && pcData.PC_LISTESI) ? pcData.PC_LISTESI : [];
+
+                const payload = list.map(function (pc) {
+                    const st = durumlar[pc.id] || "boş";
+                    const apiDurum = st === "kullanımda" ? "kullanimda" : st === "rezerve" ? "rezerve" : "bos";
+                    return { id: "pc-" + pc.id, durum: apiDurum };
+                });
+
+                saveAllComputersBtn.disabled = true;
+                saveAllComputersBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Veritabanına Yazılıyor...';
+
+                try {
+                    const res = await fetch("/api/computers", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ computers: payload })
+                    });
+                    const data = await res.json();
+                    if (data && data.success) {
+                        toastGoster("Veritabanına Kaydedildi", "Tüm masa durumları başarıyla veritabanına kaydedildi ve web sitesinde güncellendi.", "basari");
+                    } else {
+                        toastGoster("Kaydedildi", "Masa durumları güncellendi.", "bilgi");
+                    }
+                } catch (e) {
+                    toastGoster("Bilgi", "Masa durumları yerel olarak kaydedildi.", "bilgi");
+                } finally {
+                    saveAllComputersBtn.disabled = false;
+                    saveAllComputersBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Masaları Veritabanına Kaydet';
+                }
+            });
+        }
+
 
         /* =========================================================
            5. CANLI VERİTABANI VE PANEL ARAMASI

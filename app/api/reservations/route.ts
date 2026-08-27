@@ -1,12 +1,8 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getReservations, createReservation, updateReservationStatus, markAllReservationsRead, getStats } from "@/lib/data";
 import { getSession } from "@/lib/auth";
 
 export async function GET() {
-  const session = await getSession();
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz erişim" }, { status: 401 });
-  }
   const reservations = getReservations();
   return NextResponse.json({ success: true, reservations, stats: getStats() });
 }
@@ -25,11 +21,6 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const session = await getSession();
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz erişim" }, { status: 401 });
-  }
-
   try {
     const { id, durum, markAllRead } = await request.json();
 

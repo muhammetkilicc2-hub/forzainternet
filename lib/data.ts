@@ -101,56 +101,7 @@ if (!globalThis.__forzaAdminSettings) {
 }
 
 if (!globalThis.__forzaReservations) {
-  globalThis.__forzaReservations = [
-    {
-      id: "rez-101",
-      musteriAdi: "Ahmet Yılmaz",
-      telefon: "05464659693",
-      masaId: "pc-12",
-      masaIsim: "PC 12",
-      kategori: "sari",
-      tarih: new Date().toISOString().split("T")[0],
-      saat: "19:00",
-      sure: 3,
-      toplamTutar: 160,
-      odemeYontemi: "kart",
-      durum: "pending",
-      olusturuldu: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-      okundu: false,
-    },
-    {
-      id: "rez-102",
-      musteriAdi: "Caner Özkan",
-      telefon: "05321112233",
-      masaId: "pc-52",
-      masaIsim: "PC 52",
-      kategori: "yesil",
-      tarih: new Date().toISOString().split("T")[0],
-      saat: "20:30",
-      sure: 5,
-      toplamTutar: 380,
-      odemeYontemi: "nakit",
-      durum: "confirmed",
-      olusturuldu: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
-      okundu: true,
-    },
-    {
-      id: "rez-103",
-      musteriAdi: "Mert Demir",
-      telefon: "05554443322",
-      masaId: "pc-30",
-      masaIsim: "PC 30",
-      kategori: "mavi",
-      tarih: new Date().toISOString().split("T")[0],
-      saat: "21:00",
-      sure: 3,
-      toplamTutar: 190,
-      odemeYontemi: "havale",
-      durum: "pending",
-      olusturuldu: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-      okundu: false,
-    },
-  ];
+  globalThis.__forzaReservations = [];
 }
 
 // ----------------------------------------------------
@@ -158,30 +109,12 @@ if (!globalThis.__forzaReservations) {
 // ----------------------------------------------------
 
 export function getComputers(): PC[] {
-  const pcList = globalThis.__forzaPcList!;
-  const resList = globalThis.__forzaReservations || [];
-
-  resList.forEach((rez) => {
-    if (rez.durum === "pending" || rez.durum === "confirmed") {
-      const targetDurum: PcDurum = rez.durum === "pending" ? "rezerve" : "kullanimda";
-      const matches = (rez.masaId || "").match(/\d+/g);
-      if (matches) {
-        matches.forEach((numStr) => {
-          const num = parseInt(numStr, 10);
-          const target = pcList.find((p) => p.no === num || p.id === `pc-${num}`);
-          if (target && target.durum === "bos") {
-            target.durum = targetDurum;
-          }
-        });
-      }
-    }
-  });
-
-  return pcList;
+  return globalThis.__forzaPcList!;
 }
 
 export function updateComputerStatus(id: string, durum: PcDurum): PC | null {
   const list = globalThis.__forzaPcList!;
+  const resList = globalThis.__forzaReservations || [];
   const matches = (id || "").match(/\d+/g);
 
   let lastUpdated: PC | null = null;
@@ -193,6 +126,16 @@ export function updateComputerStatus(id: string, durum: PcDurum): PC | null {
         target.durum = durum;
         target.guncellemeTarihi = new Date().toISOString();
         lastUpdated = target;
+      }
+
+      // Eğer masa boşa çekildiyse, bu masaya ait bekleyen eski rezervasyonları sonlandır
+      if (durum === "bos") {
+        resList.forEach((r) => {
+          const rMatches: string[] = (r.masaId || "").match(/\d+/g) || [];
+          if (rMatches.includes(numStr) && r.durum === "pending") {
+            r.durum = "rejected";
+          }
+        });
       }
     });
   } else {

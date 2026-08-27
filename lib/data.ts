@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { PC, PcKategori, PcDurum, KategoriBilgisi, Rezervasyon, KampanyaFiyatlari, AdminStats, AdminAuthSettings } from "./types";
 
 export const KATEGORILER: Record<PcKategori, KategoriBilgisi> = {
@@ -65,6 +67,62 @@ function createInitialPcList(): PC[] {
   return list.sort((a, b) => a.no - b.no);
 }
 
+function getPcFilePath(): string {
+  try {
+    if (fs.existsSync("/tmp")) return "/tmp/forza_pc_state.json";
+  } catch {}
+  return path.join(process.cwd(), "bilgisayar_state.json");
+}
+
+function getRezFilePath(): string {
+  try {
+    if (fs.existsSync("/tmp")) return "/tmp/forza_rez_state.json";
+  } catch {}
+  return path.join(process.cwd(), "rezervasyon_state.json");
+}
+
+function loadPersistedPcList(): PC[] | null {
+  try {
+    const p = getPcFilePath();
+    if (fs.existsSync(p)) {
+      const content = fs.readFileSync(p, "utf-8");
+      const parsed = JSON.parse(content);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
+function persistPcList(list: PC[]) {
+  try {
+    const p = getPcFilePath();
+    fs.writeFileSync(p, JSON.stringify(list, null, 2), "utf-8");
+  } catch (e) {}
+}
+
+function loadPersistedReservations(): Rezervasyon[] | null {
+  try {
+    const p = getRezFilePath();
+    if (fs.existsSync(p)) {
+      const content = fs.readFileSync(p, "utf-8");
+      const parsed = JSON.parse(content);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
+function persistReservations(list: Rezervasyon[]) {
+  try {
+    const p = getRezFilePath();
+    fs.writeFileSync(p, JSON.stringify(list, null, 2), "utf-8");
+  } catch (e) {}
+}
+
 // Global Singletons (Hot reload korumalı)
 declare global {
   var __forzaPcList: PC[] | undefined;
@@ -74,7 +132,8 @@ declare global {
 }
 
 if (!globalThis.__forzaPcList) {
-  globalThis.__forzaPcList = createInitialPcList();
+  const persisted = loadPersistedPcList();
+  globalThis.__forzaPcList = persisted || createInitialPcList();
 }
 
 if (!globalThis.__forzaPricing) {
@@ -101,7 +160,8 @@ if (!globalThis.__forzaAdminSettings) {
 }
 
 if (!globalThis.__forzaReservations) {
-  globalThis.__forzaReservations = [];
+  const persistedRez = loadPersistedReservations();
+  globalThis.__forzaReservations = persistedRez || [];
 }
 
 // ----------------------------------------------------
@@ -109,6 +169,10 @@ if (!globalThis.__forzaReservations) {
 // ----------------------------------------------------
 
 export function getComputers(): PC[] {
+  const diskList = loadPersistedPcList();
+  if (diskList && Array.isArray(diskList) && diskList.length > 0) {
+    globalThis.__forzaPcList = diskList;
+  }
   return globalThis.__forzaPcList!;
 }
 
@@ -146,15 +210,21 @@ export function updateComputerStatus(id: string, durum: PcDurum): PC | null {
       lastUpdated = pc;
     }
   }
+  persistPcList(list);
+  persistReservations(resList);
   return lastUpdated;
 }
 
 export function getReservations(): Rezervasyon[] {
+  const diskRez = loadPersistedReservations();
+  if (diskRez && Array.isArray(diskRez)) {
+    globalThis.__forzaReservations = diskRez;
+  }
   return globalThis.__forzaReservations!;
 }
 
 export function createReservation(data: Omit<Rezervasyon, "id" | "olusturuldu" | "durum">): Rezervasyon {
-  const list = globalThis.__forzaReservations!;
+  const list = getReservations();
   const newRez: Rezervasyon = {
     ...data,
     id: `rez-${Date.now().toString().slice(-6)}`,
@@ -166,12 +236,13 @@ export function createReservation(data: Omit<Rezervasyon, "id" | "olusturuldu" |
 
   // Masanın durumunu rezerve yap
   updateComputerStatus(data.masaId, "rezerve");
+  persistReservations(list);
 
   return newRez;
 }
 
 export function updateReservationStatus(id: string, durum: "confirmed" | "rejected"): Rezervasyon | null {
-  const list = globalThis.__forzaReservations!;
+  const list = getReservations();
   const rez = list.find((r) => r.id === id);
   if (!rez) return null;
   rez.durum = durum;
@@ -182,6 +253,7 @@ export function updateReservationStatus(id: string, durum: "confirmed" | "reject
   } else if (durum === "rejected") {
     updateComputerStatus(rez.masaId, "bos");
   }
+  persistReservations(list);
 
   return rez;
 }

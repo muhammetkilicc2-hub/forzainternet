@@ -20,16 +20,9 @@ export default function MasalarManagementPage() {
 
   useEffect(() => {
     loadData();
-    // Yalnızca kaydedilmemiş taslak değişiklik yokken arka planda yoklama yap (gel-git yapmasını engeller)
-    const interval = setInterval(() => {
-      if (unsavedRef.current === 0) {
-        loadData(true);
-      }
-    }, 4000);
-    return () => clearInterval(interval);
   }, []);
 
-  async function loadData(silent = false) {
+  async function loadData() {
     try {
       const [resPc, resPricing] = await Promise.all([
         fetch("/api/computers", { cache: "no-store" }),
@@ -39,11 +32,9 @@ export default function MasalarManagementPage() {
       const dataPricing = await resPricing.json();
 
       if (dataPc.computers && Array.isArray(dataPc.computers)) {
-        if (!silent || unsavedRef.current === 0) {
-          setComputers(dataPc.computers);
-          setServerSnapshot(JSON.parse(JSON.stringify(dataPc.computers)));
-          setUnsavedCount(0);
-        }
+        setComputers(dataPc.computers);
+        setServerSnapshot(JSON.parse(JSON.stringify(dataPc.computers)));
+        setUnsavedCount(0);
 
         try {
           const locMap: Record<string, string> = {};
@@ -55,9 +46,9 @@ export default function MasalarManagementPage() {
       }
       if (dataPricing.pricing) setPricing(dataPricing.pricing);
     } catch (err) {
-      if (!silent) console.error("Masalar yüklenemedi:", err);
+      console.error("Masalar yüklenemedi:", err);
     } finally {
-      if (!silent) setLoading(false);
+      setLoading(false);
     }
   }
 

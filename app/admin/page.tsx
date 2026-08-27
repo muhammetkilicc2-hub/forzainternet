@@ -347,7 +347,7 @@ export default function AdminDashboardPage() {
                 Henüz rezervasyon bulunmuyor.
               </p>
             ) : (
-              reservations.slice(0, 2).map((rez) => (
+              reservations.slice(0, 6).map((rez) => (
                 <div key={rez.id} className={`reservation-item ${rez.durum === "pending" ? "highlight" : ""}`}>
                   <div className="reservation-icon">🖥️</div>
                   <div className="reservation-info">
@@ -356,9 +356,11 @@ export default function AdminDashboardPage() {
                       <span className="res-price-pill">₺{rez.toplamTutar}</span>
                     </div>
                     <div className="res-card-meta">
-                      <span className="res-meta-item">👤 {rez.musteriAdi}</span>
-                      <span className="res-meta-item">⏱️ {rez.sure} Saat</span>
-                      <span className="res-meta-item res-time">📅 {rez.tarih} {rez.saat}</span>
+                      <span className="res-meta-item">👤 {rez.musteriAdi} ({rez.telefon})</span>
+                      <span className="res-meta-item">⏱️ {rez.sure >= 12 ? "Gün Boyu" : "5 Saat"}</span>
+                      <span className="res-meta-item res-time" style={{ color: "var(--cream-gold)", fontWeight: 700 }}>
+                        🕒 Randevu: {rez.tarih} {rez.saat}
+                      </span>
                     </div>
                   </div>
                   {rez.durum === "pending" ? (

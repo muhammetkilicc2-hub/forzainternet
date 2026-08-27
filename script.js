@@ -540,6 +540,13 @@
                 if (paymentDuration) paymentDuration.textContent = data.duration;
                 if (paymentTotal) paymentTotal.textContent = "₺" + data.price.toLocaleString("tr-TR");
 
+                const dateInput = document.getElementById("paymentDate");
+                if (dateInput) {
+                    const todayStr = new Date().toISOString().split("T")[0];
+                    if (!dateInput.value) dateInput.value = todayStr;
+                    dateInput.min = todayStr;
+                }
+
                 paymentModal.classList.add("active");
                 document.body.style.overflow = "hidden";
 
@@ -710,6 +717,9 @@
                         }
                     }
 
+                    const appointmentDate = (document.getElementById("paymentDate") && document.getElementById("paymentDate").value) || new Date().toISOString().split("T")[0];
+                    const appointmentTime = (document.getElementById("paymentTime") && document.getElementById("paymentTime").value) || "18:00";
+
                     // Sipariş İşleniyor Gösterimi
                     paymentSubmit.disabled = true;
                     paymentSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Rezervasyon İşleniyor...';
@@ -725,10 +735,12 @@
                                 tur: "siparis",
                                 durum: "pending",
                                 baslik: "Yeni Rezervasyon — " + currentReservation.package,
-                                mesaj: (currentReservation.pcs ? currentReservation.pcs.join(", ") : "") + " · " + currentReservation.package + " · " + currentReservation.duration + " · ₺" + currentReservation.price.toLocaleString("tr-TR") + " · " + name + " " + surname + " (" + phone + ")",
+                                mesaj: (currentReservation.pcs ? currentReservation.pcs.join(", ") : "") + " · " + currentReservation.package + " · " + currentReservation.duration + " · 🕒 Randevu: " + appointmentDate + " Saat " + appointmentTime + " · ₺" + currentReservation.price.toLocaleString("tr-TR") + " · " + name + " " + surname + " (" + phone + ")",
                                 pcler: currentReservation.pcs,
                                 kampanya: currentReservation.package,
                                 sure: currentReservation.duration,
+                                randevuTarihi: appointmentDate,
+                                randevuSaati: appointmentTime,
                                 tutar: currentReservation.price,
                                 musteri: name + " " + surname,
                                 telefon: phone
@@ -756,8 +768,8 @@
                                     masaId: (currentReservation.pcs || []).join(", "),
                                     masaIsim: (currentReservation.pcs || []).join(", ") + " (" + currentReservation.package + ")",
                                     kategori: currentReservation.package.toLowerCase().includes("60") ? "sari" : currentReservation.package.toLowerCase().includes("70") ? "mavi" : "yesil",
-                                    tarih: new Date().toISOString().split("T")[0],
-                                    saat: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }),
+                                    tarih: appointmentDate,
+                                    saat: appointmentTime,
                                     sure: currentReservation.duration.includes("Gün") ? 12 : 5,
                                     toplamTutar: currentReservation.price,
                                     odemeYontemi: (cardPayment && cardPayment.checked) ? "kart" : "nakit"
@@ -765,7 +777,7 @@
                             }).catch(function () {});
                         } catch (e) {}
 
-                        alert("✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: " + (currentReservation.pcs ? currentReservation.pcs.join(", ") : "-") + "\nPaket: " + currentReservation.package + "\nTarife: " + currentReservation.duration + "\nTutar: ₺" + currentReservation.price.toLocaleString("tr-TR") + "\n\nİşletmemize geldiğinizde adınızı belirterek masanıza geçebilirsiniz.");
+                        alert("✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: " + (currentReservation.pcs ? currentReservation.pcs.join(", ") : "-") + "\nPaket: " + currentReservation.package + "\nTarife: " + currentReservation.duration + "\nRandevu Saati: " + appointmentDate + " Saat " + appointmentTime + "\nTutar: ₺" + currentReservation.price.toLocaleString("tr-TR") + "\n\nİşletmemize geldiğinizde adınızı belirterek masanıza geçebilirsiniz.");
 
                         // Seçimleri sıfırla
                         document.querySelectorAll(".comp.secili").forEach(function (c) { c.classList.remove("secili"); });

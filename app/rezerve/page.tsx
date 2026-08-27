@@ -91,6 +91,8 @@ export default function ReservationPage() {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [phone, setPhone] = useState("");
+  const [appointmentDate, setAppointmentDate] = useState(() => new Date().toISOString().split("T")[0]);
+  const [appointmentTime, setAppointmentTime] = useState("18:00");
   const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
@@ -206,8 +208,8 @@ export default function ReservationPage() {
       alert("Lütfen ad ve soyadınızı giriniz.");
       return;
     }
-    if (!phone.trim() || phone.length < 10) {
-      alert("Lütfen geçerli bir telefon numarası giriniz.");
+    if (!appointmentTime) {
+      alert("Lütfen kafeye geliş / randevu saatinizi belirtiniz.");
       return;
     }
 
@@ -227,8 +229,8 @@ export default function ReservationPage() {
           masaId: pcs.join(", "),
           masaIsim: `${pcs.join(", ")} (${activeModalTier.name})`,
           kategori: activeModalTier.id,
-          tarih: new Date().toISOString().split("T")[0],
-          saat: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }),
+          tarih: appointmentDate,
+          saat: appointmentTime,
           sure: durationLabel.includes("Gün") ? 12 : 5,
           toplamTutar: total,
           odemeYontemi: paymentMethod === "card" ? "kart" : "nakit",
@@ -244,10 +246,12 @@ export default function ReservationPage() {
           tur: "siparis",
           durum: "pending",
           baslik: `Yeni Rezervasyon — ${activeModalTier.name}`,
-          mesaj: `${pcs.join(", ")} · ${activeModalTier.name} · ${durationLabel} · ₺${total.toLocaleString("tr-TR")} · ${name.trim()} ${surname.trim()} (${phone.trim()})`,
+          mesaj: `${pcs.join(", ")} · ${activeModalTier.name} · ${durationLabel} · 🕒 Randevu: ${appointmentDate} Saat ${appointmentTime} · ₺${total.toLocaleString("tr-TR")} · ${name.trim()} ${surname.trim()} (${phone.trim()})`,
           pcler: pcs,
           kampanya: activeModalTier.name,
           sure: durationLabel,
+          randevuTarihi: appointmentDate,
+          randevuSaati: appointmentTime,
           tutar: total,
           musteri: `${name.trim()} ${surname.trim()}`,
           telefon: phone.trim(),
@@ -276,7 +280,7 @@ export default function ReservationPage() {
         }
       } catch (e) {}
 
-      alert(`✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: ${pcs.join(", ")}\nPaket: ${activeModalTier.name}\nTarife: ${durationLabel}\nToplam Tutar: ₺${total}\n\nEn kısa sürede onay iletilecektir.`);
+      alert(`✅ Rezervasyon Talebiniz Alındı!\n\nSeçilen Masalar: ${pcs.join(", ")}\nPaket: ${activeModalTier.name}\nTarife: ${durationLabel}\nRandevu Saati: ${appointmentDate} Saat ${appointmentTime}\nToplam Tutar: ₺${total}\n\nİşletmemize geldiğinizde adınızı belirterek masanıza geçebilirsiniz.`);
       setModalOpen(false);
       setName("");
       setSurname("");
@@ -459,6 +463,12 @@ export default function ReservationPage() {
                   {selectedPrices[activeModalTier.id]?.label || "-"}
                 </strong>
               </div>
+              <div className="payment-summary-row">
+                <span>Randevu Saati</span>
+                <strong id="paymentAppointment" style={{ color: "var(--gold)" }}>
+                  {appointmentDate} · Saat {appointmentTime}
+                </strong>
+              </div>
               <div className="payment-total">
                 <span>Ödenecek Tutar</span>
                 <strong id="paymentTotal">₺{calculateTotal()}</strong>
@@ -535,6 +545,61 @@ export default function ReservationPage() {
                 onChange={handlePhoneChange}
                 required
               />
+            </div>
+
+            {/* Randevu Tarihi ve Başlangıç Saati */}
+            <div className="payment-form-row" style={{ marginTop: "4px" }}>
+              <div className="payment-form-group">
+                <label htmlFor="paymentDate" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-calendar-day" style={{ color: "var(--gold)" }}></i>
+                  Randevu Tarihi
+                </label>
+                <input
+                  type="date"
+                  id="paymentDate"
+                  value={appointmentDate}
+                  min={new Date().toISOString().split("T")[0]}
+                  onChange={(e) => setAppointmentDate(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="payment-form-group">
+                <label htmlFor="paymentTime" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <i className="fa-solid fa-clock" style={{ color: "var(--gold)" }}></i>
+                  Geliş / Randevu Saati
+                </label>
+                <input
+                  type="time"
+                  id="paymentTime"
+                  value={appointmentTime}
+                  onChange={(e) => setAppointmentTime(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Hızlı Saat Butonları */}
+            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", margin: "-2px 0 6px" }}>
+              {["12:00", "14:00", "16:00", "18:00", "20:00", "22:00"].map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setAppointmentTime(t)}
+                  style={{
+                    padding: "4px 8px",
+                    borderRadius: "6px",
+                    border: `1px solid ${appointmentTime === t ? "var(--gold)" : "rgba(247,242,232,0.15)"}`,
+                    background: appointmentTime === t ? "rgba(255,215,0,0.18)" : "rgba(255,255,255,0.04)",
+                    color: appointmentTime === t ? "var(--gold)" : "var(--cream-100)",
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  {t}
+                </button>
+              ))}
             </div>
 
             {paymentMethod === "card" && (

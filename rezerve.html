@@ -428,7 +428,23 @@
 
             <div class="payment-form-group">
                 <label for="paymentPhone">Telefon Numarası</label>
-                <input type="tel" id="paymentPhone" placeholder="05XX XXX XX XX" autocomplete="tel" required>
+                <input type="tel" id="paymentPhone" placeholder="0 (5XX) XXX XX XX" autocomplete="tel" required>
+            </div>
+
+            <!-- Randevu Tarihi ve Başlangıç Saati -->
+            <div class="payment-form-row">
+                <div class="payment-form-group">
+                    <label for="paymentDate">
+                        <i class="fa-solid fa-calendar-day" style="color: var(--gold);"></i> Randevu Tarihi
+                    </label>
+                    <input type="date" id="paymentDate" required>
+                </div>
+                <div class="payment-form-group">
+                    <label for="paymentTime">
+                        <i class="fa-solid fa-clock" style="color: var(--gold);"></i> Geliş / Randevu Saati
+                    </label>
+                    <input type="time" id="paymentTime" value="18:00" required>
+                </div>
             </div>
 
             <!-- Card Details (Only shown for card payment) -->

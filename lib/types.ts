@@ -40,8 +40,8 @@ export interface Rezervasyon {
 
 export interface KategoriFiyatPaket {
   saatlik: number;
-  ucSaatlik: number;
   besSaatlik: number;
+  gunluk: number;
 }
 
 export interface KampanyaFiyatlari {

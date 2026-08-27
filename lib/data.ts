@@ -79,9 +79,9 @@ if (!globalThis.__forzaPcList) {
 
 if (!globalThis.__forzaPricing) {
   globalThis.__forzaPricing = {
-    sari: { saatlik: 60, ucSaatlik: 160, besSaatlik: 250 },
-    mavi: { saatlik: 70, ucSaatlik: 190, besSaatlik: 300 },
-    yesil: { saatlik: 90, ucSaatlik: 240, besSaatlik: 380 },
+    sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
+    mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
+    yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
   };
 }
 

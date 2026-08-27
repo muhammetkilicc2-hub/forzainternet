@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { KampanyaFiyatlari, PcKategori } from "@/lib/types";
@@ -7,9 +7,9 @@ import { useToast } from "@/components/admin/Toast";
 export default function KampanyaManagementPage() {
   const { showToast } = useToast();
   const [pricing, setPricing] = useState<KampanyaFiyatlari>({
-    sari: { saatlik: 60, ucSaatlik: 160, besSaatlik: 250 },
-    mavi: { saatlik: 70, ucSaatlik: 190, besSaatlik: 300 },
-    yesil: { saatlik: 90, ucSaatlik: 240, besSaatlik: 380 },
+    sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
+    mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
+    yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -29,7 +29,7 @@ export default function KampanyaManagementPage() {
     loadPricing();
   }, []);
 
-  const handlePriceChange = (kategori: PcKategori, alan: "saatlik" | "ucSaatlik" | "besSaatlik", value: number) => {
+  const handlePriceChange = (kategori: PcKategori, alan: "saatlik" | "besSaatlik" | "gunluk", value: number) => {
     setPricing((prev) => ({
       ...prev,
       [kategori]: {
@@ -105,7 +105,7 @@ export default function KampanyaManagementPage() {
 
             <div className="fiyat-yonetim-alanlari">
               <div className="form-group">
-                <label>1 Saatlik Ücret (₺)</label>
+                <label>Saatlik Ücret (₺)</label>
                 <input
                   type="number"
                   className="settings-input"
@@ -115,22 +115,22 @@ export default function KampanyaManagementPage() {
               </div>
 
               <div className="form-group">
-                <label>3 Saatlik Paket (₺)</label>
-                <input
-                  type="number"
-                  className="settings-input"
-                  value={pricing[cat.id].ucSaatlik}
-                  onChange={(e) => handlePriceChange(cat.id, "ucSaatlik", parseInt(e.target.value) || 0)}
-                />
-              </div>
-
-              <div className="form-group">
-                <label>5 Saatlik VIP Paket (₺)</label>
+                <label>5 Saat Paket (₺)</label>
                 <input
                   type="number"
                   className="settings-input"
                   value={pricing[cat.id].besSaatlik}
                   onChange={(e) => handlePriceChange(cat.id, "besSaatlik", parseInt(e.target.value) || 0)}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Gün Boyu Paket (₺)</label>
+                <input
+                  type="number"
+                  className="settings-input"
+                  value={pricing[cat.id].gunluk}
+                  onChange={(e) => handlePriceChange(cat.id, "gunluk", parseInt(e.target.value) || 0)}
                 />
               </div>
             </div>

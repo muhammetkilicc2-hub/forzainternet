@@ -305,6 +305,21 @@
                 });
             }
 
+            if (lightboxImg) {
+                lightboxImg.style.cursor = "pointer";
+                lightboxImg.title = "Sol tarafa dokunarak geri, sağ tarafa dokunarak ileri gidebilirsiniz";
+                lightboxImg.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    const rect = lightboxImg.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    if (clickX < rect.width / 2) {
+                        renderLightboxPhoto(lightboxCurrentIndex - 1);
+                    } else {
+                        renderLightboxPhoto(lightboxCurrentIndex + 1);
+                    }
+                });
+            }
+
             if (closeLightboxBtn) {
                 closeLightboxBtn.addEventListener("click", closeLightbox);
             }

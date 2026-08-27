@@ -181,20 +181,34 @@ export default function AboutPage() {
           {/* Image & Caption */}
           {lightboxIndex !== null && (
             <div className="lightbox-container" onClick={(e) => e.stopPropagation()}>
-              <img
-                src={PHOTOS[lightboxIndex].src}
-                alt={PHOTOS[lightboxIndex].alt}
-                id="lightboxImage"
-                style={{
-                  maxWidth: "88vw",
-                  maxHeight: "80vh",
-                  objectFit: "contain",
-                  borderRadius: "16px",
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  boxShadow: "0 10px 40px rgba(0,0,0,0.8)",
-                  animation: "fadeIn 0.25s ease-out",
-                }}
-              />
+              <div style={{ position: "relative", display: "inline-block", cursor: "pointer" }}>
+                <img
+                  src={PHOTOS[lightboxIndex].src}
+                  alt={PHOTOS[lightboxIndex].alt}
+                  id="lightboxImage"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    if (clickX < rect.width / 2) {
+                      lightboxPrev();
+                    } else {
+                      lightboxNext();
+                    }
+                  }}
+                  style={{
+                    maxWidth: "88vw",
+                    maxHeight: "80vh",
+                    objectFit: "contain",
+                    borderRadius: "16px",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    boxShadow: "0 10px 40px rgba(0,0,0,0.8)",
+                    animation: "fadeIn 0.25s ease-out",
+                    userSelect: "none",
+                  }}
+                  title="Sol tarafa dokunarak geri, sağ tarafa dokunarak ileri gidebilirsiniz"
+                />
+              </div>
               <div
                 style={{
                   marginTop: "12px",

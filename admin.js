@@ -474,6 +474,13 @@
                 function durumDegistir() {
                     const yeni = durum === pcData.DURUM.BOS ? pcData.DURUM.KULLANIMDA : durum === pcData.DURUM.KULLANIMDA ? pcData.DURUM.REZERVE : pcData.DURUM.BOS;
                     pcData.tekDurumGuncelle(pc.id, yeni);
+                    try {
+                        fetch("/api/computers", {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ id: "pc-" + pc.id, durum: yeni === "kullanımda" ? "kullanimda" : yeni })
+                        }).catch(function () {});
+                    } catch (e) {}
                 }
 
                 kart.addEventListener("click", durumDegistir);
@@ -860,9 +867,26 @@
                     if (Array.isArray(bildirim.pcler)) {
                         bildirim.pcler.forEach(pcName => {
                             const id = pcData.idCikar(pcName);
-                            if (id !== null) pcData.tekDurumGuncelle(id, pcData.DURUM.KULLANIMDA);
+                            if (id !== null) {
+                                pcData.tekDurumGuncelle(id, pcData.DURUM.KULLANIMDA);
+                                try {
+                                    fetch("/api/computers", {
+                                        method: "PATCH",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ id: "pc-" + id, durum: "kullanimda" })
+                                    }).catch(function () {});
+                                } catch (e) {}
+                            }
                         });
                     }
+
+                    try {
+                        fetch("/api/reservations", {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ id: bildirim.id, durum: "confirmed" })
+                        }).catch(function () {});
+                    } catch (e) {}
 
                     toastGoster("Rezervasyon Onaylandı", (bildirim.baslik || "Sipariş") + " onaylandı ve masalar aktifleştirildi.", "basarili");
                 });
@@ -884,9 +908,26 @@
                     if (Array.isArray(bildirim.pcler)) {
                         bildirim.pcler.forEach(pcName => {
                             const id = pcData.idCikar(pcName);
-                            if (id !== null) pcData.tekDurumGuncelle(id, pcData.DURUM.BOS);
+                            if (id !== null) {
+                                pcData.tekDurumGuncelle(id, pcData.DURUM.BOS);
+                                try {
+                                    fetch("/api/computers", {
+                                        method: "PATCH",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ id: "pc-" + id, durum: "bos" })
+                                    }).catch(function () {});
+                                } catch (e) {}
+                            }
                         });
                     }
+
+                    try {
+                        fetch("/api/reservations", {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ id: bildirim.id, durum: "rejected" })
+                        }).catch(function () {});
+                    } catch (e) {}
 
                     toastGoster("Rezervasyon Reddedildi", (bildirim.baslik || "Sipariş") + " iptal edildi.", "hata");
                 });
@@ -909,7 +950,7 @@
         const resEmpty = document.getElementById("reservationEmptyState");
         if (dashboardResList && pcData) {
             function renderDashboardReservations() {
-                const bildirimler = pcData.bildirimleriYukle().slice(0, 2);
+                const bildirimler = pcData.bildirimleriYukle().slice(0, 6);
                 dashboardResList.innerHTML = "";
                 if (resEmpty) {
                     resEmpty.classList.toggle("visible", bildirimler.length === 0);

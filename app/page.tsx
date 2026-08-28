@@ -321,64 +321,43 @@ export default function HomePage() {
 
           <div className="home-faq-list" style={{ display: "flex", flexDirection: "column", gap: "14px", width: "100%", margin: "0 auto", textAlign: "left" }}>
             {/* Soru 1 */}
-            <div className={`home-faq-item ${openFaq === 0 ? "active" : ""}`}>
-              <button
-                type="button"
-                className="home-faq-header"
-                onClick={() => toggleFaq(0)}
-                aria-expanded={openFaq === 0}
-              >
+            <details className="home-faq-item" name="forza-faq-group">
+              <summary className="home-faq-summary">
                 <span className="home-faq-question-text">Rezervasyon yaptırdıktan sonra ne zaman gelmeliyim?</span>
                 <span className="home-faq-icon" aria-hidden="true">
                   <i className="fa-solid fa-play"></i>
                 </span>
-              </button>
-              <div className="home-faq-collapse">
-                <div className="home-faq-body">
-                  Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek doğrudan yerinize geçebilirsiniz.
-                </div>
+              </summary>
+              <div className="home-faq-body">
+                Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek doğrudan yerinize geçebilirsiniz.
               </div>
-            </div>
+            </details>
 
             {/* Soru 2 */}
-            <div className={`home-faq-item ${openFaq === 1 ? "active" : ""}`}>
-              <button
-                type="button"
-                className="home-faq-header"
-                onClick={() => toggleFaq(1)}
-                aria-expanded={openFaq === 1}
-              >
+            <details className="home-faq-item" name="forza-faq-group">
+              <summary className="home-faq-summary">
                 <span className="home-faq-question-text">Bilgisayarlarda hangi oyunlar ve programlar hazır?</span>
                 <span className="home-faq-icon" aria-hidden="true">
                   <i className="fa-solid fa-play"></i>
                 </span>
-              </button>
-              <div className="home-faq-collapse">
-                <div className="home-faq-body">
-                  Valorant, CS2, League of Legends, GTA V, FC24 (FIFA), PUBG, Call of Duty Warzone, Apex Legends, Rust, Dota 2, R6 Siege ve Steam kütüphanesindeki yüzlerce oyun en son güncellemeleriyle hazır olarak yüklüdür.
-                </div>
+              </summary>
+              <div className="home-faq-body">
+                Valorant, CS2, League of Legends, GTA V, FC24 (FIFA), PUBG, Call of Duty Warzone, Apex Legends, Rust, Dota 2, R6 Siege ve Steam kütüphanesindeki yüzlerce oyun en son güncellemeleriyle hazır olarak yüklüdür.
               </div>
-            </div>
+            </details>
 
             {/* Soru 3 */}
-            <div className={`home-faq-item ${openFaq === 2 ? "active" : ""}`}>
-              <button
-                type="button"
-                className="home-faq-header"
-                onClick={() => toggleFaq(2)}
-                aria-expanded={openFaq === 2}
-              >
+            <details className="home-faq-item" name="forza-faq-group">
+              <summary className="home-faq-summary">
                 <span className="home-faq-question-text">5 Saatlik ve Gün Boyu paketler nasıl çalışır?</span>
                 <span className="home-faq-icon" aria-hidden="true">
                   <i className="fa-solid fa-play"></i>
                 </span>
-              </button>
-              <div className="home-faq-collapse">
-                <div className="home-faq-body">
-                  5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz oturumunuzu açtığınız andan itibaren başlar.
-                </div>
+              </summary>
+              <div className="home-faq-body">
+                5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz oturumunuzu açtığınız andan itibaren başlar.
               </div>
-            </div>
+            </details>
           </div>
         </section>
 

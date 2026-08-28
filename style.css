@@ -4579,35 +4579,41 @@ summary::marker {
     gap: 4px;
 }
 
-/* FAQ Accordion (Smooth Expanding & Animated Indicator) */
+/* FAQ Accordion (Universal Native Details + Smooth Animation) */
 .home-faq-list {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    max-width: 800px;
+    max-width: 820px;
     width: 100%;
     margin: 0 auto;
 }
 
 .home-faq-item {
-    background: rgba(18, 24, 38, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
+    background: rgba(18, 24, 38, 0.88);
+    border: 1px solid rgba(255, 215, 0, 0.22);
+    border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.home-faq-item:hover,
+.home-faq-item:hover {
+    border-color: rgba(255, 215, 0, 0.45);
+    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.12);
+}
+
+.home-faq-item[open],
 .home-faq-item.active {
-    border-color: rgba(255, 215, 0, 0.35);
-    background: rgba(22, 30, 48, 0.95);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 215, 0, 0.55);
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.06) 0%, rgba(18, 24, 38, 0.96) 100%);
+    box-shadow: 0 10px 32px rgba(255, 215, 0, 0.15);
 }
 
-.home-faq-header {
+.home-faq-header,
+.home-faq-summary {
     width: 100%;
-    padding: 20px 22px;
+    padding: 20px 24px;
     font-family: 'Sora', sans-serif;
     font-size: 15.5px;
     font-weight: 700;
@@ -4621,10 +4627,19 @@ summary::marker {
     text-align: left;
     user-select: none;
     gap: 16px;
+    list-style: none;
     transition: color 0.25s ease;
 }
 
+.home-faq-header::-webkit-details-marker,
+.home-faq-summary::-webkit-details-marker {
+    display: none;
+}
+
 .home-faq-header:hover,
+.home-faq-summary:hover,
+.home-faq-item[open] .home-faq-summary,
+.home-faq-item[open] .home-faq-header,
 .home-faq-item.active .home-faq-header {
     color: var(--gold, #ffd700);
 }
@@ -4635,8 +4650,8 @@ summary::marker {
 }
 
 .home-faq-icon {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: rgba(255, 215, 0, 0.08);
     border: 1px solid rgba(255, 215, 0, 0.25);
@@ -4646,42 +4661,37 @@ summary::marker {
     justify-content: center;
     font-size: 11px;
     flex-shrink: 0;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     transform: rotate(0deg);
 }
 
 /* Kapalıyken sağa bakar (0deg / ▶), Açıkken aşağı döner (90deg / ▼) */
+.home-faq-item[open] .home-faq-icon,
 .home-faq-item.active .home-faq-icon {
     transform: rotate(90deg);
     background: var(--gold, #ffd700);
     color: #000000;
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
-}
-
-/* Smooth Height Grid Animation (Variable Height) */
-.home-faq-collapse {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.home-faq-item.active .home-faq-collapse {
-    grid-template-rows: 1fr;
+    box-shadow: 0 0 14px rgba(255, 215, 0, 0.5);
 }
 
 .home-faq-body {
-    overflow: hidden;
-    padding: 0 22px;
-    font-size: 14px;
-    color: #94a3b8;
-    line-height: 1.7;
-    transition: padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 10px 24px 22px;
+    font-size: 14.5px;
+    color: #cbd5e1;
+    line-height: 1.75;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    animation: faqFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.home-faq-item.active .home-faq-body {
-    padding-bottom: 22px;
-    padding-top: 6px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+@keyframes faqFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Contact & Map Banner (Centered & Rich Glass) */

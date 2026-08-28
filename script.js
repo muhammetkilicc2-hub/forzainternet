@@ -912,44 +912,48 @@
            - Başka bir soru açıldığında açık olan soru otomatik kapanır (tekil açık).
            - Sağdaki gösterge (▶) kapalıyken sağa bakar, açılınca (▼) aşağı döner.
         ===================================================== */
-        window.toggleHomeFaq = function(headerBtn) {
-            const item = headerBtn.closest(".home-faq-item");
-            if (!item) return;
-            const isCurrentlyActive = item.classList.contains("active");
-            const allItems = document.querySelectorAll(".home-faq-item");
-
-            // 1. Önce diğer tüm soruları kapat
-            allItems.forEach(function (otherItem) {
-                if (otherItem !== item) {
-                    otherItem.classList.remove("active");
-                    const otherBtn = otherItem.querySelector(".home-faq-header");
-                    if (otherBtn) otherBtn.setAttribute("aria-expanded", "false");
-                }
-            });
-
-            // 2. Tıklanan soruyu aç / kapat
-            if (isCurrentlyActive) {
-                item.classList.remove("active");
-                headerBtn.setAttribute("aria-expanded", "false");
-            } else {
-                item.classList.add("active");
-                headerBtn.setAttribute("aria-expanded", "true");
-            }
-        };
-
         (function initFaqAccordion() {
             const faqItems = document.querySelectorAll(".home-faq-item");
             if (!faqItems.length) return;
 
             faqItems.forEach(function (item) {
-                const header = item.querySelector(".home-faq-header");
-                if (!header) return;
+                // If it is a native <details> element
+                if (item.tagName === "DETAILS") {
+                    item.addEventListener("toggle", function () {
+                        if (item.open) {
+                            faqItems.forEach(function (otherItem) {
+                                if (otherItem !== item && otherItem.tagName === "DETAILS") {
+                                    otherItem.removeAttribute("open");
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    const header = item.querySelector(".home-faq-header, .home-faq-summary");
+                    if (!header) return;
 
-                header.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    window.toggleHomeFaq(header);
-                });
+                    header.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const isCurrentlyActive = item.classList.contains("active");
+
+                        faqItems.forEach(function (otherItem) {
+                            if (otherItem !== item) {
+                                otherItem.classList.remove("active");
+                                const otherBtn = otherItem.querySelector(".home-faq-header, .home-faq-summary");
+                                if (otherBtn) otherBtn.setAttribute("aria-expanded", "false");
+                            }
+                        });
+
+                        if (isCurrentlyActive) {
+                            item.classList.remove("active");
+                            header.setAttribute("aria-expanded", "false");
+                        } else {
+                            item.classList.add("active");
+                            header.setAttribute("aria-expanded", "true");
+                        }
+                    });
+                }
             });
         }());
 

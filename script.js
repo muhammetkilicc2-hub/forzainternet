@@ -898,6 +898,12 @@
                 });
             }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
 
+            targets.forEach(function (el) {
+                observer.observe(el);
+            });
+        }());
+
+
         /* =====================================================
            9. SSS / MERAK EDİLENLER AKORDİYON SİSTEMİ
            - Başlangıçta tüm sorular kapalıdır.
@@ -906,6 +912,31 @@
            - Başka bir soru açıldığında açık olan soru otomatik kapanır (tekil açık).
            - Sağdaki gösterge (▶) kapalıyken sağa bakar, açılınca (▼) aşağı döner.
         ===================================================== */
+        window.toggleHomeFaq = function(headerBtn) {
+            const item = headerBtn.closest(".home-faq-item");
+            if (!item) return;
+            const isCurrentlyActive = item.classList.contains("active");
+            const allItems = document.querySelectorAll(".home-faq-item");
+
+            // 1. Önce diğer tüm soruları kapat
+            allItems.forEach(function (otherItem) {
+                if (otherItem !== item) {
+                    otherItem.classList.remove("active");
+                    const otherBtn = otherItem.querySelector(".home-faq-header");
+                    if (otherBtn) otherBtn.setAttribute("aria-expanded", "false");
+                }
+            });
+
+            // 2. Tıklanan soruyu aç / kapat
+            if (isCurrentlyActive) {
+                item.classList.remove("active");
+                headerBtn.setAttribute("aria-expanded", "false");
+            } else {
+                item.classList.add("active");
+                headerBtn.setAttribute("aria-expanded", "true");
+            }
+        };
+
         (function initFaqAccordion() {
             const faqItems = document.querySelectorAll(".home-faq-item");
             if (!faqItems.length) return;
@@ -916,25 +947,8 @@
 
                 header.addEventListener("click", function (e) {
                     e.preventDefault();
-                    const isCurrentlyActive = item.classList.contains("active");
-
-                    // 1. Önce diğer tüm açık soruları kapat (Aynı anda yalnızca bir soru açık kalsın)
-                    faqItems.forEach(function (otherItem) {
-                        if (otherItem !== item) {
-                            otherItem.classList.remove("active");
-                            const otherBtn = otherItem.querySelector(".home-faq-header");
-                            if (otherBtn) otherBtn.setAttribute("aria-expanded", "false");
-                        }
-                    });
-
-                    // 2. Tıklanan sorunun durumunu değiştir (açıksa kapat, kapalıysa aç)
-                    if (isCurrentlyActive) {
-                        item.classList.remove("active");
-                        header.setAttribute("aria-expanded", "false");
-                    } else {
-                        item.classList.add("active");
-                        header.setAttribute("aria-expanded", "true");
-                    }
+                    e.stopPropagation();
+                    window.toggleHomeFaq(header);
                 });
             });
         }());

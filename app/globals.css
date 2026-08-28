@@ -7211,11 +7211,64 @@ body.login-page {
     gap: 24px;
 }
 
-/* --- 5. RESPONSIVE BREAKPOINTS --- */
+/* --- 5. RESPONSIVE BREAKPOINTS & DESKTOP GRID RULES --- */
 @media (min-width: 1024px) {
-    /* Hide mobile bottom tab bar on desktop screens */
-    .ios-tab-bar {
+    /* Hide mobile bottom tab bar completely on desktop screens */
+    .ios-tab-bar,
+    .mobile-only-dock {
         display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    /* 4-column horizontal stats widgets on desktop */
+    .ios-widgets-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 18px !important;
+        flex-direction: row !important;
+        width: 100% !important;
+    }
+
+    .ios-stat-widget {
+        padding: 18px 20px !important;
+        background: rgba(14, 18, 26, 0.88) !important;
+        border: 1px solid rgba(247, 242, 232, 0.1) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .ios-widget-info strong {
+        font-size: 24px !important;
+    }
+
+    /* 3-column pricing cards on desktop */
+    .fiyat-yonetim-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 22px !important;
+        width: 100% !important;
+    }
+
+    /* Responsive PC grids on desktop */
+    .computer-status-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)) !important;
+        gap: 10px !important;
+    }
+
+    .media-gallery-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 18px !important;
+    }
+
+    .dashboard-card {
+        padding: 24px 28px !important;
+        background: rgba(14, 18, 26, 0.85) !important;
+        border: 1px solid rgba(247, 242, 232, 0.09) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
     }
 }
 
@@ -7275,6 +7328,18 @@ body.login-page {
 
     .admin-page-content-area {
         padding: 14px 14px calc(90px + env(safe-area-inset-bottom, 14px)) !important;
+        gap: 16px !important;
+    }
+
+    .ios-widgets-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .fiyat-yonetim-grid {
+        display: flex !important;
+        flex-direction: column !important;
         gap: 16px !important;
     }
 }

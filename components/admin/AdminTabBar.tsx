@@ -17,19 +17,7 @@ export default function AdminTabBar() {
   ];
 
   return (
-    <nav
-      className="ios-tab-bar"
-      aria-label="Yönetim Menüsü"
-      style={{
-        position: "fixed",
-        bottom: "max(16px, env(safe-area-inset-bottom, 16px))",
-        top: "auto",
-        left: "50%",
-        transform: "translateX(-50%)",
-        borderRadius: "9999px",
-        zIndex: 999999,
-      }}
-    >
+    <nav className="ios-tab-bar mobile-only-dock" aria-label="Mobil Yönetim Menüsü">
       {tabs.map((tab) => {
         const IconComponent = tab.icon;
         const isActive = pathname === tab.href;

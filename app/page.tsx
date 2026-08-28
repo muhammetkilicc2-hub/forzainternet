@@ -1,12 +1,56 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
+import { KampanyaFiyatlari } from "@/lib/types";
 
 export default function HomePage() {
+  const [pricing, setPricing] = useState<KampanyaFiyatlari>({
+    sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
+    mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
+    yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
+  });
+
+  useEffect(() => {
+    async function loadPricingData() {
+      try {
+        const raw = localStorage.getItem("forzaFiyatlar");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.sari) setPricing(parsed);
+        }
+      } catch (e) {}
+
+      try {
+        const res = await fetch("/api/pricing", { cache: "no-store" });
+        const data = await res.json();
+        if (data.pricing) {
+          setPricing(data.pricing);
+          try {
+            localStorage.setItem("forzaFiyatlar", JSON.stringify(data.pricing));
+          } catch (e) {}
+        }
+      } catch (e) {}
+    }
+
+    loadPricingData();
+
+    const handleFiyatUpdate = (e: CustomEvent<KampanyaFiyatlari>) => {
+      if (e.detail && e.detail.sari) setPricing(e.detail);
+      else loadPricingData();
+    };
+
+    window.addEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
+    window.addEventListener("storage", loadPricingData);
+
+    return () => {
+      window.removeEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
+      window.removeEventListener("storage", loadPricingData);
+    };
+  }, []);
   return (
     <>
       <Navbar />
@@ -165,6 +209,124 @@ export default function HomePage() {
               <i className="fa-solid fa-burger" aria-hidden="true"></i>
               <h3>Cafe &amp; İkramlar</h3>
               <p>Kavurmalı kaşarlı tost, taze kahve çeşitleri ve soğuk enerji içecekleri.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* PRICING & CAMPAIGN PACKAGES SECTION */}
+        <section className="home-section" id="fiyatlar" style={{ maxWidth: "1200px", margin: "0 auto 80px", width: "min(1200px, calc(100% - 32px))", textAlign: "center" }}>
+          <div className="home-section-header" style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginBottom: "36px" }}>
+            <span className="home-section-tag" style={{ margin: "0 auto 12px" }}>
+              <i className="fa-solid fa-tags"></i> Fiyat Tarifeleri &amp; Avantajlı Paketler
+            </span>
+            <h2 className="home-section-title" style={{ textAlign: "center", margin: "0 auto 10px" }}>Şehrin En Avantajlı Espor Paketleri</h2>
+            <p className="home-section-desc" style={{ textAlign: "center", margin: "0 auto", maxWidth: "620px" }}>
+              İster saatlik oyna, ister 5 saatlik ve gün boyu özel indirimli espor paketlerimizle kesintisiz rekabetin tadını çıkar.
+            </p>
+          </div>
+
+          <div className="kampanya-kartlari" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "24px", textAlign: "left" }}>
+            {/* Sarı Kart */}
+            <div className="kampanya-karti sari" style={{ background: "rgba(14, 18, 26, 0.88)", border: "1px solid rgba(255, 215, 0, 0.3)", borderRadius: "24px", padding: "28px 24px", display: "flex", flexDirection: "column", justifyContent: "space-between", position: "relative", backdropFilter: "blur(20px)", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                  <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(255, 215, 0, 0.15)", color: "#ffd700", border: "1px solid rgba(255, 215, 0, 0.3)" }}>
+                    STANDART GAMING
+                  </span>
+                  <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600 }}>144 Hz Espor</span>
+                </div>
+                <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Sarı Masalar</h3>
+                <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "20px" }}>Nvidia RTX 3060 • Intel i5 • 16GB RAM • 144Hz Monitör</p>
+                
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", marginBottom: "24px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>Saatlik Ücret</span>
+                    <strong style={{ fontSize: "18px", color: "#ffffff", fontWeight: 800 }}>₺{pricing.sari.saatlik} <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 500 }}>/ saat</span></strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>5 Saatlik Paket</span>
+                    <strong style={{ fontSize: "18px", color: "#ffd700", fontWeight: 800 }}>₺{pricing.sari.besSaatlik}</strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>Gün Boyu Paket</span>
+                    <strong style={{ fontSize: "18px", color: "#ffd700", fontWeight: 800 }}>₺{pricing.sari.gunluk}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <Link href="/rezerve" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>
+                Masa Seç &amp; Yerini Ayırt ➔
+              </Link>
+            </div>
+
+            {/* Mavi Kart */}
+            <div className="kampanya-karti mavi" style={{ background: "rgba(14, 18, 26, 0.88)", border: "1px solid rgba(56, 189, 248, 0.35)", borderRadius: "24px", padding: "28px 24px", display: "flex", flexDirection: "column", justifyContent: "space-between", position: "relative", backdropFilter: "blur(20px)", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                  <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.35)" }}>
+                    PRO GAMING
+                  </span>
+                  <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600 }}>240 Hz Espor</span>
+                </div>
+                <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Mavi Masalar</h3>
+                <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "20px" }}>RTX 3060 OC • Intel i5 Gaming • 16GB RAM • 240Hz Monitör</p>
+                
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", marginBottom: "24px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>Saatlik Ücret</span>
+                    <strong style={{ fontSize: "18px", color: "#ffffff", fontWeight: 800 }}>₺{pricing.mavi.saatlik} <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 500 }}>/ saat</span></strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>5 Saatlik Paket</span>
+                    <strong style={{ fontSize: "18px", color: "#38bdf8", fontWeight: 800 }}>₺{pricing.mavi.besSaatlik}</strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>Gün Boyu Paket</span>
+                    <strong style={{ fontSize: "18px", color: "#38bdf8", fontWeight: 800 }}>₺{pricing.mavi.gunluk}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <Link href="/rezerve" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>
+                Masa Seç &amp; Yerini Ayırt ➔
+              </Link>
+            </div>
+
+            {/* Yeşil Kart (VIP) */}
+            <div className="kampanya-karti yesil" style={{ background: "rgba(14, 18, 26, 0.88)", border: "2px solid rgba(52, 211, 153, 0.45)", borderRadius: "24px", padding: "28px 24px", display: "flex", flexDirection: "column", justifyContent: "space-between", position: "relative", backdropFilter: "blur(20px)", boxShadow: "0 10px 30px rgba(52, 211, 153, 0.15)" }}>
+              <div style={{ position: "absolute", top: "-13px", right: "24px", background: "linear-gradient(135deg, #10b981, #059669)", color: "#ffffff", padding: "3px 12px", borderRadius: "12px", fontSize: "11px", fontWeight: 800, letterSpacing: "0.5px" }}>
+                ⭐ EN POPÜLER
+              </div>
+
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                  <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(52, 211, 153, 0.15)", color: "#34d399", border: "1px solid rgba(52, 211, 153, 0.35)" }}>
+                    ULTRA VIP ESPOR
+                  </span>
+                  <span style={{ fontSize: "12px", color: "#34d399", fontWeight: 700 }}>360 - 540 Hz</span>
+                </div>
+                <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Yeşil Masalar</h3>
+                <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "20px" }}>RTX 3070 Ti / 5060 • Ryzen 7 7800X3D • 32GB DDR5 • 540Hz</p>
+                
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", marginBottom: "24px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>Saatlik Ücret</span>
+                    <strong style={{ fontSize: "18px", color: "#ffffff", fontWeight: 800 }}>₺{pricing.yesil.saatlik} <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 500 }}>/ saat</span></strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>5 Saatlik Paket</span>
+                    <strong style={{ fontSize: "18px", color: "#34d399", fontWeight: 800 }}>₺{pricing.yesil.besSaatlik}</strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>Gün Boyu Paket</span>
+                    <strong style={{ fontSize: "18px", color: "#34d399", fontWeight: 800 }}>₺{pricing.yesil.gunluk}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <Link href="/rezerve" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>
+                Masa Seç &amp; Yerini Ayırt ➔
+              </Link>
             </div>
           </div>
         </section>

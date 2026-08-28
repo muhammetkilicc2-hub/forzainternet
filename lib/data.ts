@@ -92,6 +92,34 @@ function getSettingsFilePath(): string {
   return path.join(process.cwd(), "ayarlar_state.json");
 }
 
+function getPricingFilePath(): string {
+  return path.join(process.cwd(), "kampanya_state.json");
+}
+
+function loadPersistedPricing(): KampanyaFiyatlari | null {
+  try {
+    const p = getPricingFilePath();
+    if (fs.existsSync(p)) {
+      const content = fs.readFileSync(p, "utf-8");
+      const parsed = JSON.parse(content);
+      if (parsed && typeof parsed === "object" && parsed.sari) {
+        return parsed;
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
+function persistPricing(pricing: KampanyaFiyatlari) {
+  try {
+    const p = getPricingFilePath();
+    fs.writeFileSync(p, JSON.stringify(pricing, null, 2), "utf-8");
+    try {
+      fs.writeFileSync(path.join(process.cwd(), "kampanya.json"), JSON.stringify(pricing, null, 2), "utf-8");
+    } catch (e) {}
+  } catch (e) {}
+}
+
 function loadPersistedPcList(): PC[] | null {
   try {
     const p = getPcFilePath();
@@ -191,7 +219,8 @@ if (!globalThis.__forzaPcList) {
 }
 
 if (!globalThis.__forzaPricing) {
-  globalThis.__forzaPricing = {
+  const persistedPricing = loadPersistedPricing();
+  globalThis.__forzaPricing = persistedPricing || {
     sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
     mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
     yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
@@ -342,6 +371,10 @@ export function markAllReservationsRead(): void {
 }
 
 export function getPricing(): KampanyaFiyatlari {
+  const diskPricing = loadPersistedPricing();
+  if (diskPricing && typeof diskPricing === "object" && diskPricing.sari) {
+    globalThis.__forzaPricing = diskPricing;
+  }
   return globalThis.__forzaPricing!;
 }
 
@@ -350,6 +383,7 @@ export function updatePricing(newPricing: Partial<KampanyaFiyatlari>): KampanyaF
     ...globalThis.__forzaPricing!,
     ...newPricing,
   };
+  persistPricing(globalThis.__forzaPricing!);
   return globalThis.__forzaPricing!;
 }
 

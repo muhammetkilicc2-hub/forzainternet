@@ -1,7 +1,7 @@
 {
   "adminUser": "admin",
-  "adminPass": "1234",
-  "adminEmail": "admin@forzagaming.com",
+  "adminPass": "forza123",
+  "adminEmail": "muhammetkilicc2@gmail.com",
   "adminAvatar": null,
   "aboutCoverPhoto": "/foto1.jpeg",
   "cafeName": "Forza İnternet & Cafe",
@@ -9,6 +9,6 @@
   "soundEnabled": true,
   "autoRefresh": true,
   "refreshInterval": 10,
-  "sifreSonDegismeTarihi": "2026-08-28T19:28:20.762Z",
-  "updatedAt": "2026-08-28T19:28:20.762Z"
+  "sifreSonDegismeTarihi": "2026-08-28T20:24:40.538Z",
+  "updatedAt": "2026-08-28T20:24:40.540Z"
 }

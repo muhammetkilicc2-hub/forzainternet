@@ -49,6 +49,12 @@ export default function KampanyaManagementPage() {
       });
       const data = await res.json();
       if (data.success) {
+        try {
+          localStorage.setItem("forzaFiyatlar", JSON.stringify(pricing));
+          window.dispatchEvent(new CustomEvent("forzaFiyatlarGuncellendi", { detail: pricing }));
+          window.dispatchEvent(new Event("storage"));
+        } catch (e) {}
+
         showToast(
           "Fiyatlar Güncellendi",
           kategori ? `${kategori.toUpperCase()} masa fiyatları kaydedildi.` : "Tüm fiyat tarifeleri güncellendi.",

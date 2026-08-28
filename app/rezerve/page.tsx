@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
+import { KampanyaFiyatlari } from "@/lib/types";
 
 interface TierData {
   id: "sari" | "mavi" | "yesil";
@@ -16,10 +17,10 @@ interface TierData {
   pcs: string[];
 }
 
-const TIERS: TierData[] = [
+const getTiers = (pricing: KampanyaFiyatlari): TierData[] => [
   {
     id: "sari",
-    name: "60 TL Masa",
+    name: `${pricing.sari.saatlik} TL Masa`,
     badge: "Standart Gaming",
     badgeIcon: "fa-solid fa-microchip",
     hz: "144 Hz Espor Ekran",
@@ -30,14 +31,14 @@ const TIERS: TierData[] = [
       { icon: "fa-solid fa-memory", text: "16 GB DDR4 Yüksek Hızlı RAM" },
     ],
     prices: [
-      { label: "5 Saat Paket", amount: 200 },
-      { label: "Gün Boyu Paket", amount: 400 },
+      { label: "5 Saat Paket", amount: pricing.sari.besSaatlik },
+      { label: "Gün Boyu Paket", amount: pricing.sari.gunluk },
     ],
     pcs: ["PC 1", "PC 2", "PC 4", "PC 5", "PC 6", "PC 8", "PC 9", "PC 10"],
   },
   {
     id: "mavi",
-    name: "70 TL Masa",
+    name: `${pricing.mavi.saatlik} TL Masa`,
     badge: "Pro Espor Gaming",
     badgeIcon: "fa-solid fa-bolt",
     hz: "240 Hz Espor Ekran",
@@ -48,8 +49,8 @@ const TIERS: TierData[] = [
       { icon: "fa-solid fa-memory", text: "16 GB DDR4 Yüksek Hızlı RAM" },
     ],
     prices: [
-      { label: "5 Saat Paket", amount: 250 },
-      { label: "Gün Boyu Paket", amount: 500 },
+      { label: "5 Saat Paket", amount: pricing.mavi.besSaatlik },
+      { label: "Gün Boyu Paket", amount: pricing.mavi.gunluk },
     ],
     pcs: [
       "PC 11", "PC 12", "PC 14", "PC 15", "PC 16", "PC 17", "PC 18",
@@ -59,7 +60,7 @@ const TIERS: TierData[] = [
   },
   {
     id: "yesil",
-    name: "90 TL Masa",
+    name: `${pricing.yesil.saatlik} TL Masa`,
     badge: "Ultra VIP Espor",
     badgeIcon: "fa-solid fa-crown",
     hz: "360 - 540 Hz Espor Ekran",
@@ -70,8 +71,8 @@ const TIERS: TierData[] = [
       { icon: "fa-solid fa-memory", text: "32 GB DDR5 Yüksek Frekans RAM" },
     ],
     prices: [
-      { label: "5 Saat Paket", amount: 350 },
-      { label: "Gün Boyu Paket", amount: 700 },
+      { label: "5 Saat Paket", amount: pricing.yesil.besSaatlik },
+      { label: "Gün Boyu Paket", amount: pricing.yesil.gunluk },
     ],
     pcs: [
       "PC 38", "PC 40", "PC 43", "PC 44", "PC 45", "PC 46", "PC 47",
@@ -82,12 +83,19 @@ const TIERS: TierData[] = [
 ];
 
 export default function ReservationPage() {
+  const [pricing, setPricing] = useState<KampanyaFiyatlari>({
+    sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
+    mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
+    yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
+  });
+
+  const tiers = getTiers(pricing);
   const [tableStatuses, setTableStatuses] = useState<Record<string, "bos" | "rezerve" | "kullanimda">>({});
   const [selectedPrices, setSelectedPrices] = useState<Record<string, { label: string; amount: number }>>({});
   const [selectedPcsByTier, setSelectedPcsByTier] = useState<Record<string, string[]>>({});
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [activeModalTier, setActiveModalTier] = useState<TierData>(TIERS[0]);
+  const [activeModalTier, setActiveModalTier] = useState<TierData>(tiers[0]);
   const [paymentMethod, setPaymentMethod] = useState<"card" | "balance">("card");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -134,8 +142,30 @@ export default function ReservationPage() {
     } catch (e) {}
   };
 
+  const loadPricingData = async () => {
+    try {
+      const raw = localStorage.getItem("forzaFiyatlar");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.sari) setPricing(parsed);
+      }
+    } catch (e) {}
+
+    try {
+      const res = await fetch("/api/pricing", { cache: "no-store" });
+      const data = await res.json();
+      if (data.pricing) {
+        setPricing(data.pricing);
+        try {
+          localStorage.setItem("forzaFiyatlar", JSON.stringify(data.pricing));
+        } catch (e) {}
+      }
+    } catch (e) {}
+  };
+
   useEffect(() => {
     loadCentralStatuses();
+    loadPricingData();
     const interval = setInterval(loadCentralStatuses, 3000);
 
     const handleCustomEvent = (e: any) => {
@@ -151,10 +181,22 @@ export default function ReservationPage() {
       }
     };
 
+    const handleFiyatUpdate = (e: CustomEvent<KampanyaFiyatlari>) => {
+      if (e.detail && e.detail.sari) setPricing(e.detail);
+      else loadPricingData();
+    };
+
     window.addEventListener("forzaPcDurumGuncellendi", handleCustomEvent);
+    window.addEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
+    window.addEventListener("storage", () => {
+      loadCentralStatuses();
+      loadPricingData();
+    });
+
     return () => {
       clearInterval(interval);
       window.removeEventListener("forzaPcDurumGuncellendi", handleCustomEvent);
+      window.removeEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
     };
   }, []);
 
@@ -180,7 +222,7 @@ export default function ReservationPage() {
     // Otomatik ilk tarifeyi seç (eğer seçili tarife yoksa)
     setSelectedPrices((prev) => {
       if (!prev[tierId]) {
-        const tier = TIERS.find((t) => t.id === tierId);
+        const tier = tiers.find((t) => t.id === tierId);
         return tier ? { [tierId]: tier.prices[0] } : prev;
       }
       return prev;
@@ -371,7 +413,7 @@ export default function ReservationPage() {
           </p>
 
           <div className="kampanya-kartlari">
-            {TIERS.map((tier) => {
+            {tiers.map((tier) => {
               const currentPrice = selectedPrices[tier.id];
 
               return (

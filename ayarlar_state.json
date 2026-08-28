@@ -2,7 +2,7 @@
   "adminUser": "admin",
   "adminPass": "forza123",
   "adminEmail": "muhammetkilicc2@gmail.com",
-  "adminAvatar": null,
+  "adminAvatar": "/uploads/img_1787952607506_qvxif.png",
   "aboutCoverPhoto": "/foto1.jpeg",
   "cafeName": "Forza İnternet & Cafe",
   "cafePhone": "0546 465 96 93",
@@ -10,5 +10,5 @@
   "autoRefresh": true,
   "refreshInterval": 10,
   "sifreSonDegismeTarihi": "2026-08-28T20:24:40.538Z",
-  "updatedAt": "2026-08-28T20:24:40.540Z"
+  "updatedAt": "2026-08-28T21:30:07.521Z"
 }

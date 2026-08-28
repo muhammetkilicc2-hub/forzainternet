@@ -275,28 +275,28 @@ export default function MasalarManagementPage() {
           className={`filter-tab ${filterCat === "tumu" ? "active" : ""}`}
           onClick={() => setFilterCat("tumu")}
         >
-          Tümü (64)
+          Tümü ({computers.length || 48})
         </button>
         <button
           type="button"
           className={`filter-tab ${filterCat === "sari" ? "active" : ""}`}
           onClick={() => setFilterCat("sari")}
         >
-          Sarı ({pricing?.sari?.saatlik || 60} TL)
+          🟡 Sarı Masalar ({pricing?.sari?.saatlik || 60} TL)
         </button>
         <button
           type="button"
           className={`filter-tab ${filterCat === "mavi" ? "active" : ""}`}
           onClick={() => setFilterCat("mavi")}
         >
-          Mavi ({pricing?.mavi?.saatlik || 70} TL)
+          🔵 Mavi Masalar ({pricing?.mavi?.saatlik || 70} TL)
         </button>
         <button
           type="button"
           className={`filter-tab ${filterCat === "yesil" ? "active" : ""}`}
           onClick={() => setFilterCat("yesil")}
         >
-          Yeşil VIP ({pricing?.yesil?.saatlik || 90} TL)
+          🟢 Yeşil VIP ({pricing?.yesil?.saatlik || 90} TL)
         </button>
       </div>
 

@@ -50,6 +50,8 @@ export interface KampanyaFiyatlari {
   yesil: KategoriFiyatPaket;
 }
 
+export type PricingConfig = KampanyaFiyatlari;
+
 export interface GalleryPhoto {
   id?: string;
   src: string;

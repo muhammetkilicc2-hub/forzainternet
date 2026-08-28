@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { KampanyaFiyatlari, PcKategori } from "@/lib/types";
 import { useToast } from "@/components/admin/Toast";
+import { PricingConfig, PcKategori } from "@/lib/types";
 
 export default function KampanyaManagementPage() {
   const { showToast } = useToast();
-  const [pricing, setPricing] = useState<KampanyaFiyatlari>({
+  const [pricing, setPricing] = useState<PricingConfig>({
     sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
     mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
     yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
@@ -17,9 +17,13 @@ export default function KampanyaManagementPage() {
   useEffect(() => {
     async function loadPricing() {
       try {
-        const res = await fetch("/api/pricing");
-        const data = await res.json();
-        if (data.pricing) setPricing(data.pricing);
+        const res = await fetch("/api/pricing", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.pricing) {
+            setPricing(data.pricing);
+          }
+        }
       } catch (err) {
         console.error("Fiyatlar yüklenemedi:", err);
       } finally {
@@ -29,12 +33,12 @@ export default function KampanyaManagementPage() {
     loadPricing();
   }, []);
 
-  const handlePriceChange = (kategori: PcKategori, alan: "saatlik" | "besSaatlik" | "gunluk", value: number) => {
+  const handlePriceChange = (kategori: PcKategori, field: "saatlik" | "besSaatlik" | "gunluk", value: number) => {
     setPricing((prev) => ({
       ...prev,
       [kategori]: {
         ...prev[kategori],
-        [alan]: value,
+        [field]: value,
       },
     }));
   };
@@ -45,10 +49,10 @@ export default function KampanyaManagementPage() {
       const res = await fetch("/api/pricing", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(pricing),
+        body: JSON.stringify({ pricing }),
       });
-      const data = await res.json();
-      if (data.success) {
+
+      if (res.ok) {
         try {
           localStorage.setItem("forzaFiyatlar", JSON.stringify(pricing));
           window.dispatchEvent(new CustomEvent("forzaFiyatlarGuncellendi", { detail: pricing }));
@@ -56,7 +60,7 @@ export default function KampanyaManagementPage() {
         } catch (e) {}
 
         showToast(
-          "Fiyatlar Güncellendi",
+          "Fiyatlar Güncellendi 🎉",
           kategori ? `${kategori.toUpperCase()} masa fiyatları kaydedildi.` : "Tüm fiyat tarifeleri güncellendi.",
           "success"
         );
@@ -68,21 +72,43 @@ export default function KampanyaManagementPage() {
     }
   };
 
-  const categories: { id: PcKategori; title: string; subtitle: string; color: string }[] = [
-    { id: "sari", title: "Standart Gaming (Sarı Masalar)", subtitle: "RTX 4060 • 240 Hz Fast IPS", color: "var(--cream-gold)" },
-    { id: "mavi", title: "Pro Gaming (Mavi Masalar)", subtitle: "RTX 4070 Super • 360 Hz Espor", color: "var(--cyber-blue)" },
-    { id: "yesil", title: "Elite VIP 540Hz (Yeşil Masalar)", subtitle: "RTX 4090 / 4080 • 540 Hz Zirve", color: "var(--neon-green)" },
+  const categories: { id: PcKategori; badgeName: string; title: string; subtitle: string }[] = [
+    {
+      id: "sari",
+      badgeName: "SARI MASALAR",
+      title: "Standart Gaming (Sarı Masalar)",
+      subtitle: "RTX 4060 • 240 Hz Fast IPS Monitör",
+    },
+    {
+      id: "mavi",
+      badgeName: "MAVİ MASALAR",
+      title: "Pro Gaming (Mavi Masalar)",
+      subtitle: "RTX 4070 Super • 360 Hz Espor Monitör",
+    },
+    {
+      id: "yesil",
+      badgeName: "YEŞİL VIP MASALAR",
+      title: "Elite VIP 540Hz (Yeşil Masalar)",
+      subtitle: "RTX 4090 / 4080 • 540 Hz Zirve DyAc+",
+    },
   ];
 
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "60px 20px", color: "#ffffff", fontSize: "15px" }}>
+        Fiyat tarifeleri yükleniyor...
+      </div>
+    );
+  }
+
   return (
-    <main className="dashboard-content" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-      
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+    <main className="dashboard-content" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "14px" }}>
         <div>
-          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#fdfbf7", margin: 0 }}>
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", margin: 0, letterSpacing: "-0.3px" }}>
             Fiyat &amp; Kampanya Yönetimi
           </h1>
-          <span style={{ fontSize: "12px", color: "#94a3b8" }}>
+          <span style={{ fontSize: "13px", color: "#cbd5e1", marginTop: "3px", display: "block" }}>
             Saatlik ve avantajlı paket ücretlerini anlık olarak belirleyin
           </span>
         </div>
@@ -92,7 +118,7 @@ export default function KampanyaManagementPage() {
           onClick={() => handleSave()}
           disabled={saving}
           className="save-settings-btn"
-          style={{ padding: "10px 20px" }}
+          style={{ padding: "12px 24px", fontSize: "14px", fontWeight: 900 }}
         >
           {saving ? "Kaydediliyor..." : "💾 Tüm Fiyatları Kaydet"}
         </button>
@@ -103,10 +129,14 @@ export default function KampanyaManagementPage() {
           <div key={cat.id} className="fiyat-yonetim-karti">
             <div className="fiyat-yonetim-baslik">
               <div>
-                <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#fdfbf7", margin: 0 }}>{cat.title}</h3>
-                <span style={{ fontSize: "11px", color: "#94a3b8" }}>{cat.subtitle}</span>
+                <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#ffffff", margin: 0 }}>
+                  {cat.title}
+                </h3>
+                <span style={{ fontSize: "12px", color: "#cbd5e1", marginTop: "3px", display: "block" }}>
+                  {cat.subtitle}
+                </span>
               </div>
-              <span className={`fiyat-renk-etiketi ${cat.id}`}>{cat.id.toUpperCase()}</span>
+              <span className={`fiyat-renk-etiketi ${cat.id}`}>{cat.badgeName}</span>
             </div>
 
             <div className="fiyat-yonetim-alanlari">
@@ -154,7 +184,6 @@ export default function KampanyaManagementPage() {
           </div>
         ))}
       </div>
-
     </main>
   );
 }

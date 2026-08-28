@@ -10,6 +10,7 @@ export default function AdminDashboardPage() {
   const [computers, setComputers] = useState<PC[]>([]);
   const [reservations, setReservations] = useState<Rezervasyon[]>([]);
   const [stats, setStats] = useState<AdminStats | null>(null);
+  const [pricing, setPricing] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [galleryPhotos, setGalleryPhotos] = useState<Array<{ src: string; badge?: string }>>([
     { src: "/foto1.jpeg", badge: "Ana Salon" },
@@ -50,14 +51,20 @@ export default function AdminDashboardPage() {
 
   async function loadData() {
     try {
-      const [resPc, resRez, resGal] = await Promise.all([
+      const [resPc, resRez, resGal, resPricing] = await Promise.all([
         fetch("/api/computers", { cache: "no-store" }),
         fetch("/api/reservations", { cache: "no-store" }),
         fetch("/api/gallery", { cache: "no-store" }),
+        fetch("/api/pricing", { cache: "no-store" }),
       ]);
       const dataPc = await resPc.json();
       const dataRez = await resRez.json();
       const dataGal = await resGal.json();
+      const dataPricing = await resPricing.json();
+
+      if (dataPricing && dataPricing.pricing) {
+        setPricing(dataPricing.pricing);
+      }
 
       if (dataGal.photos && Array.isArray(dataGal.photos) && dataGal.photos.length > 0) {
         setGalleryPhotos(dataGal.photos);
@@ -296,21 +303,21 @@ export default function AdminDashboardPage() {
               className={`filter-tab ${filterCat === "sari" ? "active" : ""}`}
               onClick={() => setFilterCat("sari")}
             >
-              60 TL
+              🟡 Sarı ({pricing?.sari?.saatlik || 60} TL)
             </button>
             <button
               type="button"
               className={`filter-tab ${filterCat === "mavi" ? "active" : ""}`}
               onClick={() => setFilterCat("mavi")}
             >
-              70 TL
+              🔵 Mavi ({pricing?.mavi?.saatlik || 70} TL)
             </button>
             <button
               type="button"
               className={`filter-tab ${filterCat === "yesil" ? "active" : ""}`}
               onClick={() => setFilterCat("yesil")}
             >
-              90 TL
+              🟢 Yeşil ({pricing?.yesil?.saatlik || 90} TL)
             </button>
           </div>
 

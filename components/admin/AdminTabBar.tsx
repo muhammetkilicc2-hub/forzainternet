@@ -3,21 +3,23 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Home, Monitor, Tag, CalendarCheck, Settings } from "lucide-react";
 
 export default function AdminTabBar() {
   const pathname = usePathname();
 
   const tabs = [
-    { href: "/admin", label: "Ana Sayfa", iconClass: "fa-solid fa-house" },
-    { href: "/admin/masalar", label: "Masalar", iconClass: "fa-solid fa-desktop" },
-    { href: "/admin/kampanya", label: "Fiyatlar", iconClass: "fa-solid fa-tags" },
-    { href: "/admin/rezervasyonlar", label: "Talepler", iconClass: "fa-solid fa-calendar-check" },
-    { href: "/admin/ayarlar", label: "Ayarlar", iconClass: "fa-solid fa-gear" },
+    { href: "/admin", label: "Ana Sayfa", icon: Home },
+    { href: "/admin/masalar", label: "Masalar", icon: Monitor },
+    { href: "/admin/kampanya", label: "Fiyatlar", icon: Tag },
+    { href: "/admin/rezervasyonlar", label: "Talepler", icon: CalendarCheck },
+    { href: "/admin/ayarlar", label: "Ayarlar", icon: Settings },
   ];
 
   return (
     <nav className="ios-tab-bar" aria-label="Yönetim Menüsü">
       {tabs.map((tab) => {
+        const IconComponent = tab.icon;
         const isActive = pathname === tab.href;
         return (
           <Link
@@ -26,7 +28,7 @@ export default function AdminTabBar() {
             className={`ios-tab-item ${isActive ? "active" : ""}`}
             title={tab.label}
           >
-            <i className={tab.iconClass} aria-hidden="true"></i>
+            <IconComponent size={20} strokeWidth={isActive ? 2.5 : 2} aria-hidden="true" />
             <span className="ios-tab-label">{tab.label}</span>
           </Link>
         );

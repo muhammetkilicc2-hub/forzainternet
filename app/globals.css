@@ -6532,3 +6532,107 @@ body.login-page {
 .avatar-remove-btn:hover {
     text-decoration: underline;
 }
+
+/* =========================================================
+   FORZA ADMIN NATIVE MOBILE BOTTOM TAB BAR & DESKTOP DOCK
+   ========================================================= */
+.ios-tab-bar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    background: rgba(10, 14, 22, 0.96) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    border-top: 1px solid rgba(247, 242, 232, 0.16) !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(255, 215, 0, 0.08) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    z-index: 999999 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+}
+
+.ios-tab-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    flex: 1 !important;
+    height: 100% !important;
+    color: #94a3b8 !important;
+    text-decoration: none !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+}
+
+.ios-tab-item svg,
+.ios-tab-item i {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 18px !important;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease !important;
+}
+
+.ios-tab-item:hover {
+    color: #ffffff !important;
+}
+
+.ios-tab-item:hover svg,
+.ios-tab-item:hover i {
+    transform: translateY(-2px) !important;
+}
+
+.ios-tab-item.active {
+    color: #ffd700 !important;
+}
+
+.ios-tab-item.active svg,
+.ios-tab-item.active i {
+    color: #ffd700 !important;
+    transform: scale(1.15) !important;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4)) !important;
+}
+
+@media (min-width: 769px) {
+    .ios-tab-bar {
+        bottom: 18px !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: min(580px, calc(100% - 32px)) !important;
+        max-width: 580px !important;
+        height: 68px !important;
+        padding-bottom: 0 !important;
+        border: 1px solid var(--cream-border-strong) !important;
+        border-radius: var(--a-radius-full) !important;
+        box-shadow: var(--a-shadow-lg), 0 0 30px rgba(245, 238, 219, 0.14) !important;
+    }
+
+    .ios-tab-item {
+        font-size: 11px !important;
+    }
+
+    .ios-tab-item svg,
+    .ios-tab-item i {
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 20px !important;
+    }
+}

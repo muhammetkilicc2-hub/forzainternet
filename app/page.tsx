@@ -361,41 +361,57 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* LOCATION & QUICK CONTACT BANNER */}
+        {/* LOCATION & QUICK CONTACT ACCORDION BANNER */}
         <section className="home-section" id="iletisim" style={{ maxWidth: "820px", margin: "0 auto 80px", width: "min(820px, calc(100% - 32px))", textAlign: "center" }}>
-          <div className="home-contact-banner" style={{ background: "linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(14, 165, 233, 0.08) 50%, rgba(18, 24, 38, 0.95) 100%)", border: "1px solid rgba(255, 215, 0, 0.35)", borderRadius: "28px", padding: "44px 32px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", width: "100%", boxShadow: "0 12px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.1)", gap: "24px" }}>
-            <div className="home-contact-info" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", width: "100%" }}>
-              <h3 style={{ fontFamily: "'Sora', sans-serif", fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: 800, color: "#ffffff", marginBottom: "16px", textAlign: "center" }}>Forza Gaming &amp; İnternet Cafe'ye Bekleriz</h3>
-              <p style={{ fontSize: "15px", color: "#cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "10px", textAlign: "center" }}>
-                <i className="fa-solid fa-location-dot" style={{ color: "#ffd700", fontSize: "16px" }}></i> Kültür Mh. 3809 Sk. No:14 Muratpaşa / Antalya
-              </p>
-              <p style={{ fontSize: "15px", color: "#cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "10px", textAlign: "center" }}>
-                <i className="fa-solid fa-clock" style={{ color: "#ffd700", fontSize: "16px" }}></i> 7 Gün 24 Saat Kesintisiz Açık
-              </p>
-              <p style={{ fontSize: "15px", color: "#cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "6px", textAlign: "center" }}>
-                <i className="fa-solid fa-phone" style={{ color: "#ffd700", fontSize: "16px" }}></i> 0 (546) 465 96 93
-              </p>
-            </div>
+          <details className="home-contact-accordion" open>
+            <summary className="home-contact-summary">
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "linear-gradient(135deg, #ffd700, #b8860b)", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", flexShrink: 0, boxShadow: "0 0 14px rgba(255,215,0,0.4)" }}>
+                  <i className="fa-solid fa-location-dot"></i>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "2px", textAlign: "left" }}>
+                  <h3 style={{ fontFamily: "'Sora', sans-serif", fontSize: "clamp(17px, 2.8vw, 22px)", fontWeight: 800, color: "#ffffff", margin: 0 }}>Forza Gaming &amp; İnternet Cafe'ye Bekleriz</h3>
+                  <span style={{ fontSize: "12.5px", color: "#ffd700", fontWeight: 600 }}>Adres, Çalışma Saatleri &amp; Yol Tarifi İçin Dokunun</span>
+                </div>
+              </div>
+              <div className="home-contact-icon">
+                <i className="fa-solid fa-play"></i>
+              </div>
+            </summary>
 
-            <div className="home-contact-actions" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "16px", flexWrap: "wrap", marginTop: "10px", width: "100%" }}>
-              <a
-                href="https://maps.google.com/?q=Forza+Internet+Cafe+Muratpasa+Antalya"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary"
-                style={{ background: "rgba(255,255,255,0.12)", color: "#fff", padding: "14px 26px", borderRadius: "12px", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "8px" }}
-              >
-                <i className="fa-solid fa-map-location-dot"></i> Haritada Aç &amp; Yol Tarifi
-              </a>
-              <a
-                href="tel:05464659693"
-                className="rzr-main"
-                style={{ padding: "14px 30px", borderRadius: "12px", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "8px" }}
-              >
-                <i className="fa-solid fa-phone"></i> Hemen Ara
-              </a>
+            <div className="home-contact-content">
+              <div className="home-contact-info">
+                <p>
+                  <i className="fa-solid fa-location-dot" style={{ color: "#ffd700", fontSize: "16px" }}></i> Kültür Mh. 3809 Sk. No:14 Muratpaşa / Antalya
+                </p>
+                <p>
+                  <i className="fa-solid fa-clock" style={{ color: "#ffd700", fontSize: "16px" }}></i> 7 Gün 24 Saat Kesintisiz Açık
+                </p>
+                <p>
+                  <i className="fa-solid fa-phone" style={{ color: "#ffd700", fontSize: "16px" }}></i> 0 (546) 465 96 93
+                </p>
+              </div>
+
+              <div className="home-contact-actions">
+                <a
+                  href="https://maps.google.com/?q=Forza+Internet+Cafe+Muratpasa+Antalya"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary"
+                  style={{ background: "rgba(255,255,255,0.12)", color: "#fff", padding: "14px 26px", borderRadius: "12px", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "8px" }}
+                >
+                  <i className="fa-solid fa-map-location-dot"></i> Haritada Aç &amp; Yol Tarifi
+                </a>
+                <a
+                  href="tel:05464659693"
+                  className="rzr-main"
+                  style={{ padding: "14px 30px", borderRadius: "12px", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "8px" }}
+                >
+                  <i className="fa-solid fa-phone"></i> Hemen Ara
+                </a>
+              </div>
             </div>
-          </div>
+          </details>
         </section>
       </main>
 

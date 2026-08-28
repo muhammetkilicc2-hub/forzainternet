@@ -7,7 +7,7 @@
     <title>Forza İnternet &amp; Cafe — Premium Gaming Merkezi</title>
 
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="style.css?v=3.0">
+    <link rel="stylesheet" href="style.css?v=4.0">
     
     <!-- Google Fonts: Inter, Sora & Racing Sans One -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -333,8 +333,8 @@
         </section>
 
         <!-- PLAYER REVIEWS & RATINGS ACCORDION -->
-        <section class="home-section" id="yorumlar">
-            <div class="home-section-header" style="text-align: center;">
+        <section class="home-section" id="yorumlar" style="max-width: 800px; margin: 0 auto 80px; width: min(800px, calc(100% - 32px)); text-align: center;">
+            <div class="home-section-header" style="text-align: center; margin-bottom: 30px;">
                 <span class="home-section-tag">
                     <i class="fa-solid fa-star"></i> Oyuncu Değerlendirmeleri
                 </span>
@@ -344,135 +344,119 @@
                 </p>
             </div>
 
-            <div class="home-reviews-accordion-list">
+            <div class="home-reviews-accordion-list" style="display: flex; flex-direction: column; gap: 14px; width: 100%; margin: 0 auto; text-align: left;">
                 <!-- Review 1 -->
-                <details class="home-review-accordion" open>
-                    <summary class="home-review-summary">
-                        <div class="home-review-header-left">
-                            <div class="home-reviewer-avatar">BK</div>
-                            <div class="home-reviewer-info">
-                                <strong>Batuhan K.</strong>
-                                <span>Espor Takım Kaptanı</span>
+                <details class="home-review-accordion" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 215, 0, 0.25); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);" open>
+                    <summary class="home-review-summary" style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; list-style: none; user-select: none; gap: 12px; background: rgba(255, 255, 255, 0.02);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0;">BK</div>
+                            <div style="display: flex; flex-direction: column; gap: 2px; text-align: left;">
+                                <strong style="font-size: 14.5px; color: #ffffff; font-weight: 700;">Batuhan K.</strong>
+                                <span style="font-size: 11.5px; color: #ffd700; font-weight: 600;">Espor Takım Kaptanı</span>
                             </div>
                         </div>
-                        <div class="home-review-header-right">
-                            <div class="home-review-stars">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="color: #f59e0b; font-size: 13px; display: flex; gap: 2px;">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                             </div>
                         </div>
                     </summary>
-                    <div class="home-review-body">
-                        <p class="home-review-quote">
+                    <div class="home-review-body" style="padding: 14px 20px 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">
+                        <p style="font-size: 14px; color: #94a3b8; line-height: 1.7; font-style: italic; margin-bottom: 12px;">
                             "540Hz BenQ ZOWIE ekranlar ve RTX 4090 sistemler gerçekten başka bir seviye. Turnuvamızda sıfır ping ve 500+ FPS aldık. Akustik düzeni, kulaklıkları ve atmosferi Antalya'da tek geçerim."
                         </p>
-                        <div class="home-review-tags">
-                            <span class="home-review-verified"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
-                            <span class="home-review-tag-item">540 Hz Espor</span>
-                            <span class="home-review-tag-item">RTX 4090</span>
-                            <span class="home-review-tag-item">Valorant Turnuva</span>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">540 Hz Espor</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">RTX 4090</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">Valorant Turnuva</span>
                         </div>
                     </div>
                 </details>
 
                 <!-- Review 2 -->
-                <details class="home-review-accordion">
-                    <summary class="home-review-summary">
-                        <div class="home-review-header-left">
-                            <div class="home-reviewer-avatar">EY</div>
-                            <div class="home-reviewer-info">
-                                <strong>Emre Yılmaz</strong>
-                                <span>Düzenli Ziyaretçi</span>
+                <details class="home-review-accordion" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 215, 0, 0.25); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                    <summary class="home-review-summary" style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; list-style: none; user-select: none; gap: 12px; background: rgba(255, 255, 255, 0.02);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0;">EY</div>
+                            <div style="display: flex; flex-direction: column; gap: 2px; text-align: left;">
+                                <strong style="font-size: 14.5px; color: #ffffff; font-weight: 700;">Emre Yılmaz</strong>
+                                <span style="font-size: 11.5px; color: #ffd700; font-weight: 600;">Düzenli Ziyaretçi</span>
                             </div>
                         </div>
-                        <div class="home-review-header-right">
-                            <div class="home-review-stars">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="color: #f59e0b; font-size: 13px; display: flex; gap: 2px;">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                             </div>
                         </div>
                     </summary>
-                    <div class="home-review-body">
-                        <p class="home-review-quote">
+                    <div class="home-review-body" style="padding: 14px 20px 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">
+                        <p style="font-size: 14px; color: #94a3b8; line-height: 1.7; font-style: italic; margin-bottom: 12px;">
                             "Online rezervasyon sistemi çok pratik, hafta sonları bile sıra beklemeden yerimi ayırtıp geliyorum. Koltuklar aşırı rahat, ortam ferah ve sıcak kaşarlı tostları çok lezzetli."
                         </p>
-                        <div class="home-review-tags">
-                            <span class="home-review-verified"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
-                            <span class="home-review-tag-item">Hızlı Rezervasyon</span>
-                            <span class="home-review-tag-item">Ergonomik Koltuk</span>
-                            <span class="home-review-tag-item">Zengin Cafe Menüsü</span>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">Hızlı Rezervasyon</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">Ergonomik Koltuk</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">Zengin Cafe Menüsü</span>
                         </div>
                     </div>
                 </details>
 
                 <!-- Review 3 -->
-                <details class="home-review-accordion">
-                    <summary class="home-review-summary">
-                        <div class="home-review-header-left">
-                            <div class="home-reviewer-avatar">SD</div>
-                            <div class="home-reviewer-info">
-                                <strong>Serkan Demir</strong>
-                                <span>CS2 Oyuncusu</span>
+                <details class="home-review-accordion" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 215, 0, 0.25); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                    <summary class="home-review-summary" style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; list-style: none; user-select: none; gap: 12px; background: rgba(255, 255, 255, 0.02);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0;">SD</div>
+                            <div style="display: flex; flex-direction: column; gap: 2px; text-align: left;">
+                                <strong style="font-size: 14.5px; color: #ffffff; font-weight: 700;">Serkan Demir</strong>
+                                <span style="font-size: 11.5px; color: #ffd700; font-weight: 600;">CS2 Oyuncusu</span>
                             </div>
                         </div>
-                        <div class="home-review-header-right">
-                            <div class="home-review-stars">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="color: #f59e0b; font-size: 13px; display: flex; gap: 2px;">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                             </div>
                         </div>
                     </summary>
-                    <div class="home-review-body">
-                        <p class="home-review-quote">
+                    <div class="home-review-body" style="padding: 14px 20px 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">
+                        <p style="font-size: 14px; color: #94a3b8; line-height: 1.7; font-style: italic; margin-bottom: 12px;">
                             "Kliması, havalandırması ve ortamı tertemiz. Personel çok ilgili, ekipmanlar sıfır ayarında. 1000 Mbps fiber altyapı ile 3ms sabit ping alıyoruz. Kesinlikle tavsiye ederim."
                         </p>
-                        <div class="home-review-tags">
-                            <span class="home-review-verified"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
-                            <span class="home-review-tag-item">1000 Mbps Fiber</span>
-                            <span class="home-review-tag-item">3ms Ping</span>
-                            <span class="home-review-tag-item">CS2 Turnuva</span>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">1000 Mbps Fiber</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">3ms Ping</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">CS2 Turnuva</span>
                         </div>
                     </div>
                 </details>
 
                 <!-- Review 4 -->
-                <details class="home-review-accordion">
-                    <summary class="home-review-summary">
-                        <div class="home-review-header-left">
-                            <div class="home-reviewer-avatar">CA</div>
-                            <div class="home-reviewer-info">
-                                <strong>Caner Aydın</strong>
-                                <span>Espor Yayıncısı &amp; Oyuncu</span>
+                <details class="home-review-accordion" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 215, 0, 0.25); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                    <summary class="home-review-summary" style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; list-style: none; user-select: none; gap: 12px; background: rgba(255, 255, 255, 0.02);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0;">CA</div>
+                            <div style="display: flex; flex-direction: column; gap: 2px; text-align: left;">
+                                <strong style="font-size: 14.5px; color: #ffffff; font-weight: 700;">Caner Aydın</strong>
+                                <span style="font-size: 11.5px; color: #ffd700; font-weight: 600;">Espor Yayıncısı &amp; Oyuncu</span>
                             </div>
                         </div>
-                        <div class="home-review-header-right">
-                            <div class="home-review-stars">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="color: #f59e0b; font-size: 13px; display: flex; gap: 2px;">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                             </div>
                         </div>
                     </summary>
-                    <div class="home-review-body">
-                        <p class="home-review-quote">
+                    <div class="home-review-body" style="padding: 14px 20px 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: left;">
+                        <p style="font-size: 14px; color: #94a3b8; line-height: 1.7; font-style: italic; margin-bottom: 12px;">
                             "Arkadaşlarla 5'li takım olarak geldik. SteelSeries Nova kulaklıklar ve Logitech G Pro fareler ile kusursuz bir rekabetçi ortam sağlanmış. 5 saatlik paket avantajı da çok cazip."
                         </p>
-                        <div class="home-review-tags">
-                            <span class="home-review-verified"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
-                            <span class="home-review-tag-item">5v5 Takım Oyunu</span>
-                            <span class="home-review-tag-item">Pro Ekipmanlar</span>
-                            <span class="home-review-tag-item">Avantajlı Paket</span>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">5v5 Takım Oyunu</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">Pro Ekipmanlar</span>
+                            <span style="font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;">Avantajlı Paket</span>
                         </div>
                     </div>
                 </details>
@@ -480,8 +464,8 @@
         </section>
 
         <!-- FAQ ACCORDION SECTION -->
-        <section class="home-section" id="sss">
-            <div class="home-section-header">
+        <section class="home-section" id="sss" style="max-width: 800px; margin: 0 auto 80px; width: min(800px, calc(100% - 32px)); text-align: center;">
+            <div class="home-section-header" style="text-align: center; margin-bottom: 30px;">
                 <span class="home-section-tag">
                     <i class="fa-solid fa-circle-question"></i> Sıkça Sorulan Sorular
                 </span>
@@ -491,31 +475,39 @@
                 </p>
             </div>
 
-            <div class="home-faq-list">
-                <details class="home-faq-item" open>
-                    <summary class="home-faq-summary">Rezervasyon yaptırdıktan sonra ne zaman gelmeliyim?</summary>
-                    <div class="home-faq-body">
+            <div class="home-faq-list" style="display: flex; flex-direction: column; gap: 12px; width: 100%; margin: 0 auto; text-align: left;">
+                <details class="home-faq-item" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);" open>
+                    <summary class="home-faq-summary" style="padding: 18px 20px; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: #ffffff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; user-select: none;">
+                        <span>Rezervasyon yaptırdıktan sonra ne zaman gelmeliyim?</span>
+                    </summary>
+                    <div class="home-faq-body" style="padding: 0 20px 18px; font-size: 13.5px; color: #94a3b8; line-height: 1.6;">
                         Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek seçtiğiniz masaya anında oturabilirsiniz.
                     </div>
                 </details>
 
-                <details class="home-faq-item">
-                    <summary class="home-faq-summary">Bilgisayarlarda hangi oyunlar ve programlar hazır?</summary>
-                    <div class="home-faq-body">
+                <details class="home-faq-item" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
+                    <summary class="home-faq-summary" style="padding: 18px 20px; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: #ffffff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; user-select: none;">
+                        <span>Bilgisayarlarda hangi oyunlar ve programlar hazır?</span>
+                    </summary>
+                    <div class="home-faq-body" style="padding: 0 20px 18px; font-size: 13.5px; color: #94a3b8; line-height: 1.6;">
                         Valorant, CS2, League of Legends, GTA V, FC24 (FIFA), PUBG, Call of Duty Warzone, Apex Legends, Rust, Dota 2, R6 Siege ve Steam kütüphanesindeki yüzlerce oyun en son güncellemeleriyle hazır olarak yüklüdür.
                     </div>
                 </details>
 
-                <details class="home-faq-item">
-                    <summary class="home-faq-summary">5 Saatlik ve Gün Boyu paketler nasıl çalışır?</summary>
-                    <div class="home-faq-body">
+                <details class="home-faq-item" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
+                    <summary class="home-faq-summary" style="padding: 18px 20px; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: #ffffff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; user-select: none;">
+                        <span>5 Saatlik ve Gün Boyu paketler nasıl çalışır?</span>
+                    </summary>
+                    <div class="home-faq-body" style="padding: 0 20px 18px; font-size: 13.5px; color: #94a3b8; line-height: 1.6;">
                         5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz masaya giriş yaptığınız andan itibaren başlar.
                     </div>
                 </details>
 
-                <details class="home-faq-item">
-                    <summary class="home-faq-summary">Kendi mouse, kulaklık veya klavyemi getirebilir miyim?</summary>
-                    <div class="home-faq-body">
+                <details class="home-faq-item" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
+                    <summary class="home-faq-summary" style="padding: 18px 20px; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: #ffffff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; user-select: none;">
+                        <span>Kendi mouse, kulaklık veya klavyemi getirebilir miyim?</span>
+                    </summary>
+                    <div class="home-faq-body" style="padding: 0 20px 18px; font-size: 13.5px; color: #94a3b8; line-height: 1.6;">
                         Elbette! Tüm masalarımızda yüksek kaliteli profesyonel ekipmanlar bulunmaktadır ancak dileyen oyuncularımız kendi özel mouse, mousepad veya kulaklıklarını takıp kullanabilirler.
                     </div>
                 </details>

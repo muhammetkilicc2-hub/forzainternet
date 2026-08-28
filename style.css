@@ -4230,6 +4230,17 @@ body.login-page {
 .home-section {
     width: min(var(--container-max), calc(100% - 40px));
     margin: 0 auto 90px;
+    scroll-margin-top: 110px;
+}
+
+summary {
+    list-style: none !important;
+}
+
+summary::-webkit-details-marker,
+summary::marker {
+    display: none !important;
+    content: "" !important;
 }
 
 .home-section-header {

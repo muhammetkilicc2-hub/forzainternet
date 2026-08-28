@@ -1,30 +1,31 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
 
 const PHOTOS = [
-  { src: "/foto1.jpeg", alt: "Forza Gaming Salonu - Ana Espor Alanı" },
-  { src: "/foto2.jpeg", alt: "540Hz BenQ Espor Turnuva Masaları" },
-  { src: "/foto3.jpeg", alt: "Pro Gaming RTX 4070 Setup" },
-  { src: "/foto4.jpeg", alt: "VIP Espor Akustik Alanı" },
-  { src: "/foto5.jpeg", alt: "Ergonomik Espor Koltukları & Ekipmanlar" },
-  { src: "/foto6.jpeg", alt: "Forza Turnuva ve Takım Odası" },
+  { src: "/foto1.jpeg", alt: "Forza Gaming Salonu - Ana Espor Alanı", caption: "Forza Gaming Salonu - Ana Espor Alanı" },
+  { src: "/foto2.jpeg", alt: "540Hz BenQ Espor Turnuva Masaları", caption: "540Hz BenQ Espor Turnuva Masaları" },
+  { src: "/foto3.jpeg", alt: "Pro Gaming RTX 4070 Setup", caption: "Pro Gaming RTX 4070 Setup" },
+  { src: "/foto4.jpeg", alt: "VIP Espor Akustik Alanı", caption: "VIP Espor Akustik Alanı" },
+  { src: "/foto5.jpeg", alt: "Ergonomik Espor Koltukları & Ekipmanlar", caption: "Ergonomik Espor Koltukları & Ekipmanlar" },
+  { src: "/foto6.jpeg", alt: "Forza Turnuva ve Takım Odası", caption: "Forza Turnuva ve Takım Odası" },
 ];
 
 export default function AboutPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
+  
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
-  // Responsively calculate visible slide count
   useEffect(() => {
     const updateVisible = () => {
       if (typeof window !== "undefined") {
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 640) {
           setVisibleCount(1);
         } else if (window.innerWidth <= 1024) {
           setVisibleCount(2);
@@ -39,6 +40,12 @@ export default function AboutPage() {
   }, []);
 
   const maxIndex = Math.max(0, PHOTOS.length - visibleCount);
+
+  useEffect(() => {
+    if (currentIndex > maxIndex) {
+      setCurrentIndex(maxIndex);
+    }
+  }, [visibleCount, maxIndex, currentIndex]);
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
@@ -58,7 +65,6 @@ export default function AboutPage() {
     setLightboxIndex((prev) => (prev === null || prev >= PHOTOS.length - 1 ? 0 : prev + 1));
   };
 
-  // Keyboard navigation inside lightbox
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (lightboxIndex === null) return;
@@ -70,231 +76,134 @@ export default function AboutPage() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [lightboxIndex]);
 
-  // Touch swipe handling
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
+    touchStartX.current = e.targetTouches[0].clientX;
+    touchEndX.current = null;
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart === null) return;
-    const touchEnd = e.changedTouches[0].clientX;
-    const diff = touchStart - touchEnd;
-    if (diff > 40) lightboxNext();
-    if (diff < -40) lightboxPrev();
-    setTouchStart(null);
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
   };
 
-  // Slider touch swipe for mobile gallery
-  const [sliderTouchStart, setSliderTouchStart] = useState<number | null>(null);
-
-  const handleSliderTouchStart = (e: React.TouchEvent) => {
-    setSliderTouchStart(e.targetTouches[0].clientX);
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const diff = touchStartX.current - touchEndX.current;
+    if (diff > 45) nextSlide();
+    else if (diff < -45) prevSlide();
+    touchStartX.current = null;
+    touchEndX.current = null;
   };
 
-  const handleSliderTouchEnd = (e: React.TouchEvent) => {
-    if (sliderTouchStart === null) return;
-    const diff = sliderTouchStart - e.changedTouches[0].clientX;
-    if (diff > 40) nextSlide();
-    if (diff < -40) prevSlide();
-    setSliderTouchStart(null);
+  const lbTouchStartX = useRef<number | null>(null);
+  const handleLbTouchStart = (e: React.TouchEvent) => {
+    lbTouchStartX.current = e.targetTouches[0].clientX;
   };
 
-  const shiftPercent = currentIndex * (100 / visibleCount);
+  const handleLbTouchEnd = (e: React.TouchEvent) => {
+    if (lbTouchStartX.current === null) return;
+    const diff = lbTouchStartX.current - e.changedTouches[0].clientX;
+    if (diff > 50) lightboxNext();
+    else if (diff < -50) lightboxPrev();
+    lbTouchStartX.current = null;
+  };
 
   return (
     <>
       <Navbar />
 
-      <main className="about">
-        {/* ABOUT HERO */}
-        <section className="about-hero">
-          <div className="about-left">
-            <h1>FORZA</h1>
-            <h2>HAKKIMIZDA</h2>
-            <div className="gold-line"></div>
-            <p>
+      <main className="about" style={{ maxWidth: "1100px", margin: "100px auto 60px", padding: "0 20px", display: "flex", flexDirection: "column", gap: "48px" }}>
+        <section className="about-hero" style={{ display: "grid", gridTemplateColumns: visibleCount === 1 ? "1fr" : "1.2fr 1fr", gap: "36px", alignItems: "center" }}>
+          <div className="about-left" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(255, 215, 0, 0.1)", border: "1px solid rgba(255, 215, 0, 0.3)", padding: "6px 14px", borderRadius: "20px", width: "fit-content", color: "#ffd700", fontSize: "13px", fontWeight: 700 }}>
+              Antalya'nın Espor &amp; Gaming Merkezi
+            </div>
+            <h1 style={{ fontFamily: "'Racing Sans One', sans-serif", fontSize: "clamp(32px, 5vw, 48px)", color: "#ffd700", margin: 0, letterSpacing: "1px", lineHeight: 1.1 }}>
+              FORZA GAMING
+            </h1>
+            <h2 style={{ fontFamily: "'Sora', sans-serif", fontSize: "clamp(20px, 3.5vw, 28px)", color: "#ffffff", fontWeight: 800, margin: 0 }}>
+              HAKKIMIZDA
+            </h2>
+            <div className="gold-line" style={{ width: "64px", height: "4px", background: "#ffd700", borderRadius: "4px", boxShadow: "0 0 12px rgba(255,215,0,0.4)" }}></div>
+            <p style={{ fontSize: "15.5px", color: "#cbd5e1", lineHeight: 1.7, margin: 0 }}>
               Antalya'nın Premium Gaming Merkezi olarak, yüksek performanslı espor bilgisayarlarımız, 540 Hz monitörlerimiz ve konforlu ortamımızla oyunculara benzersiz bir deneyim sunuyoruz.
             </p>
-            <p>
+            <p style={{ fontSize: "15.5px", color: "#94a3b8", lineHeight: 1.7, margin: 0 }}>
               Arkadaşlarınızla takım kurup rekabet edebileceğiniz, turnuva heyecanını yaşayabileceğiniz ve kesintisiz fiber hızında oyunun tadını çıkarabileceğiniz modern bir buluşma noktasıyız.
             </p>
           </div>
 
-          <div className="about-right">
-            <img src="/foto1.jpeg" alt="Forza İnternet Cafe Salonu" />
+          <div className="about-right" style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "20px", border: "1px solid rgba(255, 215, 0, 0.25)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
+            <img src="/foto1.jpeg" alt="Forza İnternet Cafe Salonu" style={{ width: "100%", height: visibleCount === 1 ? "240px" : "380px", objectFit: "cover", display: "block" }} />
           </div>
         </section>
 
-        {/* WHO WE ARE SECTION */}
-        <section className="about-info">
-          <h2>BİZ KİMİZ?</h2>
-          <div className="gold-line"></div>
-          <p>
-            Forza İnternet &amp; Cafe olarak oyun tutkusunu, en son donanım teknolojilerini ve sıcak bir cafe ortamını bir araya getiriyoruz.
-          </p>
-          <p>
-            En yeni nesil RTX ekran kartlı sistemlerimiz, yüksek hızlı simetrik fiber internetimiz ve profesyonel oyuncu koltuklarımız sayesinde espor tutkunlarına en yüksek kare hızı (FPS) ve minimum gecikmeyi garanti ediyoruz.
-          </p>
-          <p>
-            Sadece oyun oynanan bir mekan değil; turnuvalarla topluluğun birleştiği, dostlukların pekiştiği ve keyifli anıların biriktiği Antalya'nın en sevilen dijital yaşam alanıyız.
-          </p>
+        <section className="about-info" style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "24px", padding: visibleCount === 1 ? "28px 20px" : "40px 36px", display: "flex", flexDirection: "column", gap: "16px", backdropFilter: "blur(20px)", boxShadow: "0 12px 36px rgba(0,0,0,0.35)" }}>
+          <h2 style={{ fontFamily: "'Sora', sans-serif", fontSize: "24px", fontWeight: 800, color: "#ffffff", margin: 0 }}>BİZ KİMİZ?</h2>
+          <div className="gold-line" style={{ width: "48px", height: "3px", background: "#ffd700", borderRadius: "3px" }}></div>
+          <p style={{ fontSize: "15px", color: "#cbd5e1", lineHeight: 1.75, margin: 0 }}>Forza İnternet &amp; Cafe olarak oyun tutkusunu, en son donanım teknolojilerini ve sıcak bir cafe ortamını bir araya getiriyoruz.</p>
+          <p style={{ fontSize: "15px", color: "#cbd5e1", lineHeight: 1.75, margin: 0 }}>En yeni nesil RTX ekran kartlı sistemlerimiz, yüksek hızlı simetrik fiber internetimiz ve profesyonel espor koltuklarımız sayesinde rekabetçi oyunculara en yüksek kare hızı (FPS) ve minimum gecikmeyi garanti ediyoruz.</p>
+          <p style={{ fontSize: "15px", color: "#94a3b8", lineHeight: 1.75, margin: 0 }}>Sadece oyun oynanan bir mekan değil; turnuvalarla espor topluluğunun birleştiği, dostlukların pekiştiği ve keyifli anıların biriktiği Antalya'nın en sevilen dijital yaşam alanıyız.</p>
         </section>
 
-        {/* PHOTO GALLERY SLIDER */}
-        <section className="fotogaleri" aria-label="Mekan Fotoğrafları Galerisi">
-          <button
-            type="button"
-            className="photo-nav prev"
-            id="prev"
-            aria-label="Önceki Fotoğraf"
-            onClick={prevSlide}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
+        <section style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "12px" }}>
+            <div>
+              <span style={{ fontSize: "12px", color: "#ffd700", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px" }}>Galeri</span>
+              <h2 style={{ fontFamily: "'Sora', sans-serif", fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: 800, color: "#ffffff", margin: "4px 0 0" }}>Mekan Fotoğrafları</h2>
+            </div>
+            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <button type="button" onClick={prevSlide} aria-label="Önceki" style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(18, 24, 38, 0.9)", border: "1px solid rgba(255, 215, 0, 0.35)", color: "#ffd700", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>&lt;</button>
+              <button type="button" onClick={nextSlide} aria-label="Sonraki" style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(18, 24, 38, 0.9)", border: "1px solid rgba(255, 215, 0, 0.35)", color: "#ffd700", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>&gt;</button>
+            </div>
+          </div>
 
-          <div
-            className="photo-window"
-            onTouchStart={handleSliderTouchStart}
-            onTouchEnd={handleSliderTouchEnd}
-          >
-            <div
-              className="photo-track"
-              style={{
-                transform: `translateX(-${shiftPercent}%)`,
-                transition: "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
-              }}
-            >
+          <div style={{ width: "100%", overflow: "hidden", borderRadius: "20px", position: "relative", touchAction: "pan-y" }} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+            <div style={{ display: "flex", transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`, transition: "transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)", willChange: "transform" }}>
               {PHOTOS.map((photo, index) => (
-                <img
-                  key={index}
-                  src={photo.src}
-                  alt={photo.alt}
-                  onClick={() => setLightboxIndex(index)}
-                  style={{
-                    flex: `0 0 calc(${100 / visibleCount}% - ${visibleCount > 1 ? 11 : 0}px)`,
-                  }}
-                />
+                <div key={index} style={{ flex: `0 0 ${100 / visibleCount}%`, padding: "0 8px", boxSizing: "border-box" }}>
+                  <div onClick={() => setLightboxIndex(index)} style={{ position: "relative", borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(255, 215, 0, 0.2)", cursor: "pointer" }}>
+                    <img src={photo.src} alt={photo.alt} style={{ width: "100%", height: visibleCount === 1 ? "240px" : "220px", objectFit: "cover", display: "block" }} />
+                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "10px 14px", background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)", color: "#f8fafc", fontSize: "13px", fontWeight: 600 }}>{photo.caption}</div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
 
-          <button
-            type="button"
-            className="photo-nav next"
-            id="next"
-            aria-label="Sonraki Fotoğraf"
-            onClick={nextSlide}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
+          {/* Pagination Indicators */}
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", marginTop: "8px" }}>
+            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setCurrentIndex(i)}
+                aria-label={`Fotoğraf ${i + 1}`}
+                style={{
+                  width: currentIndex === i ? "24px" : "8px",
+                  height: "8px",
+                  borderRadius: "4px",
+                  background: currentIndex === i ? "#ffd700" : "rgba(255, 255, 255, 0.2)",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  padding: 0,
+                }}
+              />
+            ))}
+          </div>
         </section>
 
-        {/* LIGHTBOX SLIDING MODAL */}
-        <div
-          className={`lightbox ${lightboxIndex !== null ? "active" : ""}`}
-          id="lightbox"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Büyütülmüş Fotoğraf Görüntüleyici"
-          onClick={() => setLightboxIndex(null)}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {/* Close Button */}
-          <button
-            type="button"
-            className="close-lightbox"
-            id="closeLightbox"
-            aria-label="Fotoğrafı Kapat"
-            onClick={() => setLightboxIndex(null)}
-          >
-            ×
-          </button>
-
-          {/* Previous Arrow */}
-          <button
-            type="button"
-            className="lightbox-nav prev"
-            aria-label="Önceki Fotoğraf"
-            onClick={lightboxPrev}
-          >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-
-          {/* Image & Caption */}
-          {lightboxIndex !== null && (
-            <div className="lightbox-container" onClick={(e) => e.stopPropagation()}>
-              <div style={{ position: "relative", display: "inline-block", cursor: "pointer" }}>
-                <img
-                  src={PHOTOS[lightboxIndex].src}
-                  alt={PHOTOS[lightboxIndex].alt}
-                  id="lightboxImage"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const clickX = e.clientX - rect.left;
-                    if (clickX < rect.width / 2) {
-                      lightboxPrev();
-                    } else {
-                      lightboxNext();
-                    }
-                  }}
-                  style={{
-                    maxWidth: "88vw",
-                    maxHeight: "80vh",
-                    objectFit: "contain",
-                    borderRadius: "16px",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    boxShadow: "0 10px 40px rgba(0,0,0,0.8)",
-                    animation: "fadeIn 0.25s ease-out",
-                    userSelect: "none",
-                  }}
-                  title="Sol tarafa dokunarak geri, sağ tarafa dokunarak ileri gidebilirsiniz"
-                />
-              </div>
-              <div
-                style={{
-                  marginTop: "12px",
-                  color: "#fdfbf7",
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  textAlign: "center",
-                  background: "rgba(0,0,0,0.6)",
-                  padding: "6px 16px",
-                  borderRadius: "20px",
-                  backdropFilter: "blur(8px)",
-                }}
-              >
-                {PHOTOS[lightboxIndex].alt}
-              </div>
+        {lightboxIndex !== null && (
+          <div role="dialog" aria-modal="true" onClick={() => setLightboxIndex(null)} onTouchStart={handleLbTouchStart} onTouchEnd={handleLbTouchEnd} style={{ position: "fixed", inset: 0, background: "rgba(3, 7, 18, 0.95)", backdropFilter: "blur(20px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+            <button type="button" onClick={() => setLightboxIndex(null)} style={{ position: "absolute", top: "20px", right: "20px", background: "none", border: "none", color: "#fff", fontSize: "32px", cursor: "pointer" }}>&times;</button>
+            <button type="button" onClick={lightboxPrev} style={{ position: "absolute", left: "20px", background: "none", border: "1px solid #ffd700", borderRadius: "50%", color: "#ffd700", width: "50px", height: "50px", cursor: "pointer" }}>&lt;</button>
+            <div onClick={(e) => e.stopPropagation()} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <img src={PHOTOS[lightboxIndex].src} alt={PHOTOS[lightboxIndex].alt} style={{ maxWidth: "90vw", maxHeight: "75vh", borderRadius: "16px" }} />
+              <div style={{ color: "#fff", marginTop: "12px" }}>{PHOTOS[lightboxIndex].caption} ({lightboxIndex + 1} / {PHOTOS.length})</div>
             </div>
-          )}
-
-          {/* Next Arrow */}
-          <button
-            type="button"
-            className="lightbox-nav next"
-            aria-label="Sonraki Fotoğraf"
-            onClick={lightboxNext}
-          >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
-
-          {/* Index Counter */}
-          {lightboxIndex !== null && (
-            <div className="lightbox-counter">
-              {lightboxIndex + 1} / {PHOTOS.length}
-            </div>
-          )}
-        </div>
+            <button type="button" onClick={lightboxNext} style={{ position: "absolute", right: "20px", background: "none", border: "1px solid #ffd700", borderRadius: "50%", color: "#ffd700", width: "50px", height: "50px", cursor: "pointer" }}>&gt;</button>
+          </div>
+        )}
       </main>
 
       <Footer />

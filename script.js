@@ -242,6 +242,23 @@
                 });
             }
 
+            // Touch Swipe for Mobile Photo Track
+            const photoWindow = document.querySelector(".photo-window");
+            if (photoWindow) {
+                let trackTouchStartX = null;
+                photoWindow.addEventListener("touchstart", function (e) {
+                    trackTouchStartX = e.touches[0].clientX;
+                }, { passive: true });
+
+                photoWindow.addEventListener("touchend", function (e) {
+                    if (trackTouchStartX === null) return;
+                    const diff = trackTouchStartX - e.changedTouches[0].clientX;
+                    if (diff > 45) moveToSlide(currentIndex + 1);
+                    else if (diff < -45) moveToSlide(currentIndex - 1);
+                    trackTouchStartX = null;
+                }, { passive: true });
+            }
+
             window.addEventListener("resize", function () {
                 moveToSlide(currentIndex);
             });

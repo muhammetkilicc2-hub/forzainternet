@@ -2,11 +2,21 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  Menu,
+  Bell,
+  LogOut,
+  CalendarCheck,
+  CheckCheck,
+  Globe,
+  ShieldCheck,
+} from "lucide-react";
 
 interface AdminTopBarProps {
   title?: string;
   subtitle?: string;
+  onToggleSidebar?: () => void;
 }
 
 interface NotificationItem {
@@ -17,12 +27,27 @@ interface NotificationItem {
   okundu?: boolean;
 }
 
-export default function AdminTopBar({ subtitle = "Forza Studio" }: AdminTopBarProps) {
+export default function AdminTopBar({
+  subtitle = "Forza Studio",
+  onToggleSidebar,
+}: AdminTopBarProps) {
+  const pathname = usePathname();
   const router = useRouter();
   const [avatar, setAvatar] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const getPageTitle = () => {
+    if (pathname === "/admin") return { title: "Genel Bakış", tag: "Panel" };
+    if (pathname === "/admin/masalar") return { title: "Masa & PC Yönetimi", tag: "Masalar" };
+    if (pathname === "/admin/kampanya") return { title: "Fiyat & Kampanyalar", tag: "Tarifeler" };
+    if (pathname === "/admin/rezervasyonlar") return { title: "Rezervasyon Talepleri", tag: "Talepler" };
+    if (pathname === "/admin/ayarlar") return { title: "Sistem & Güvenlik Ayarları", tag: "Ayarlar" };
+    return { title: "Yönetim Paneli", tag: "Admin" };
+  };
+
+  const currentInfo = getPageTitle();
 
   const loadNotifications = async () => {
     let localList: NotificationItem[] = [];
@@ -52,7 +77,9 @@ export default function AdminTopBar({ subtitle = "Forza Studio" }: AdminTopBarPr
         localList.forEach((n) => map.set(n.id, n));
         serverNotifs.forEach((n) => map.set(n.id, n));
 
-        const merged = Array.from(map.values()).sort((a, b) => new Date(b.tarih).getTime() - new Date(a.tarih).getTime());
+        const merged = Array.from(map.values()).sort(
+          (a, b) => new Date(b.tarih).getTime() - new Date(a.tarih).getTime()
+        );
         setNotifications(merged.slice(0, 15));
         return;
       }
@@ -150,37 +177,58 @@ export default function AdminTopBar({ subtitle = "Forza Studio" }: AdminTopBarPr
   };
 
   return (
-    <header className="ios-status-bar">
-      <div className="ios-status-left">
-        <div className="forza-logo-badge">
-          {avatar ? <img src={avatar} alt="Admin Avatar" /> : "F"}
-        </div>
-        <div className="forza-logo-title">
-          <span style={{ fontSize: "14px", fontWeight: 800, color: "var(--cream-50)" }}>
-            FORZA <span style={{ color: "var(--cream-gold)", fontWeight: 700 }}>STUDIO</span>
-          </span>
-          <span style={{ fontSize: "11px", color: "var(--cream-300)" }}>{subtitle}</span>
+    <header className="admin-top-navbar">
+      <div className="admin-top-left">
+        {/* Mobile Hamburger Toggle Button */}
+        {onToggleSidebar && (
+          <button
+            type="button"
+            className="admin-hamburger-btn"
+            onClick={onToggleSidebar}
+            aria-label="Menüyü Aç/Kapat"
+            title="Kenar Menüsü"
+          >
+            <Menu size={22} />
+          </button>
+        )}
+
+        <div className="admin-page-breadcrumb">
+          <div className="admin-page-tag">{currentInfo.tag}</div>
+          <h1 className="admin-page-title">{currentInfo.title}</h1>
         </div>
       </div>
 
-      <div className="ios-status-right" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <div className="ios-live-indicator">
-          <span className="live-dot"></span>
-          <span className="live-text">Canlı</span>
+      <div className="admin-top-right">
+        {/* Live Indicator */}
+        <div className="admin-live-badge" title="Sistem Aktif ve Bağlı">
+          <span className="live-dot-pulse"></span>
+          <span className="live-text-desktop">Sistem Canlı</span>
         </div>
 
+        {/* View Main Website Button */}
+        <Link
+          href="/"
+          target="_blank"
+          className="admin-quick-web-btn"
+          title="Ana Sayfayı Gör"
+        >
+          <Globe size={16} />
+          <span>Siteyi Gör</span>
+        </Link>
+
         {/* BİLDİRİM KUTUSU & DROPDOWN */}
-        <div className="notification-wrapper" ref={dropdownRef} style={{ position: "relative" }}>
+        <div className="notification-wrapper" ref={dropdownRef}>
           <button
             type="button"
-            className="notification-btn"
+            className={`admin-icon-btn ${unreadCount > 0 ? "has-unread" : ""}`}
             id="notificationBtn"
             aria-label="Bildirimler"
             onClick={() => setDropdownOpen((prev) => !prev)}
+            title="Bildirimler"
           >
-            <i className="fa-solid fa-bell" aria-hidden="true"></i>
+            <Bell size={18} />
             {unreadCount > 0 && (
-              <span className="notification-count" id="notificationCount">
+              <span className="notification-badge-count">
                 {unreadCount > 99 ? "99+" : unreadCount}
               </span>
             )}
@@ -189,21 +237,28 @@ export default function AdminTopBar({ subtitle = "Forza Studio" }: AdminTopBarPr
           {dropdownOpen && (
             <div className="notification-dropdown visible" id="notificationDropdown">
               <div className="notification-dropdown-header">
-                <h4>Bildirimler</h4>
-                <button
-                  type="button"
-                  className="notification-clear-btn"
-                  onClick={handleMarkAllRead}
-                >
-                  Tümünü okundu yap
-                </button>
+                <div className="dropdown-title-row">
+                  <h4>Bildirimler</h4>
+                  {unreadCount > 0 && <span className="unread-pill">{unreadCount} Yeni</span>}
+                </div>
+                {unreadCount > 0 && (
+                  <button
+                    type="button"
+                    className="notification-clear-btn"
+                    onClick={handleMarkAllRead}
+                  >
+                    <CheckCheck size={13} />
+                    Tümünü oku
+                  </button>
+                )}
               </div>
 
               <div className="notification-list" id="notificationList">
                 {notifications.length === 0 ? (
-                  <p className="notification-empty" id="notificationEmpty">
-                    Henüz yeni bildirim yok.
-                  </p>
+                  <div className="notification-empty">
+                    <ShieldCheck size={28} style={{ opacity: 0.3, marginBottom: "8px" }} />
+                    <p>Henüz yeni bildirim bulunmuyor.</p>
+                  </div>
                 ) : (
                   notifications.map((item) => (
                     <button
@@ -213,12 +268,16 @@ export default function AdminTopBar({ subtitle = "Forza Studio" }: AdminTopBarPr
                       onClick={() => handleItemClick(item)}
                     >
                       <span className="notification-item-icon">
-                        <i className="fa-solid fa-calendar-check" aria-hidden="true"></i>
+                        <CalendarCheck size={16} />
                       </span>
                       <span className="notification-item-body">
                         <strong>{item.baslik}</strong>
-                        {item.mesaj && <span className="notification-item-mesaj">{item.mesaj}</span>}
-                        <span className="notification-item-zaman">{formatRelativeTime(item.tarih)}</span>
+                        {item.mesaj && (
+                          <span className="notification-item-mesaj">{item.mesaj}</span>
+                        )}
+                        <span className="notification-item-zaman">
+                          {formatRelativeTime(item.tarih)}
+                        </span>
                       </span>
                     </button>
                   ))
@@ -228,15 +287,23 @@ export default function AdminTopBar({ subtitle = "Forza Studio" }: AdminTopBarPr
           )}
         </div>
 
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="ios-logout-btn"
-          title="Yönetici Oturumunu Kapat"
-          aria-label="Güvenli Çıkış"
-        >
-          Çıkış ⎋
-        </button>
+        {/* User Mini Profile Avatar & Logout */}
+        <div className="admin-user-profile-menu">
+          <div className="admin-mini-avatar" title="Yönetici">
+            {avatar ? <img src={avatar} alt="Admin" /> : "F"}
+          </div>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="admin-logout-action-btn"
+            title="Güvenli Çıkış Yap"
+            aria-label="Çıkış"
+          >
+            <LogOut size={16} />
+            <span className="logout-text-desktop">Çıkış</span>
+          </button>
+        </div>
       </div>
     </header>
   );

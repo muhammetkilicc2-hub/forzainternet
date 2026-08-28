@@ -437,7 +437,7 @@ export default function HomePage() {
             </span>
             <h2 className="home-section-title">Merak Edilenler</h2>
             <p className="home-section-desc">
-              Rezervasyon, masa kiralama ve cafe hizmetlerimiz hakkında en çok sorulan sorular.
+              Rezervasyon, espor oyunları ve cafe hizmetlerimiz hakkında en çok sorulan sorular.
             </p>
           </div>
 
@@ -457,7 +457,7 @@ export default function HomePage() {
               </button>
               <div className="home-faq-collapse">
                 <div className="home-faq-body">
-                  Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek seçtiğiniz masaya anında oturabilirsiniz.
+                  Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek doğrudan yerinize geçebilirsiniz.
                 </div>
               </div>
             </div>
@@ -497,27 +497,7 @@ export default function HomePage() {
               </button>
               <div className="home-faq-collapse">
                 <div className="home-faq-body">
-                  5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz masaya giriş yaptığınız andan itibaren başlar.
-                </div>
-              </div>
-            </div>
-
-            {/* Soru 4 */}
-            <div className={`home-faq-item ${openFaq === 3 ? "active" : ""}`}>
-              <button
-                type="button"
-                className="home-faq-header"
-                onClick={() => toggleFaq(3)}
-                aria-expanded={openFaq === 3}
-              >
-                <span className="home-faq-question-text">Kendi mouse, kulaklık veya klavyemi getirebilir miyim?</span>
-                <span className="home-faq-icon" aria-hidden="true">
-                  <i className="fa-solid fa-play"></i>
-                </span>
-              </button>
-              <div className="home-faq-collapse">
-                <div className="home-faq-body">
-                  Elbette! Tüm masalarımızda yüksek kaliteli profesyonel ekipmanlar bulunmaktadır ancak dileyen oyuncularımız kendi özel mouse, mousepad veya kulaklıklarını takıp kullanabilirler.
+                  5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz oturumunuzu açtığınız andan itibaren başlar.
                 </div>
               </div>
             </div>

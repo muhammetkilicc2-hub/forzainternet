@@ -177,130 +177,130 @@ export default function HomePage() {
 
 
         {/* PLAYER REVIEWS & RATINGS ACCORDION */}
-        <section className="home-section" id="yorumlar" style={{ maxWidth: "800px", margin: "0 auto 80px", width: "min(800px, calc(100% - 32px))", textAlign: "center" }}>
-          <div className="home-section-header" style={{ textAlign: "center", marginBottom: "30px" }}>
-            <span className="home-section-tag">
+        <section className="home-section" id="yorumlar" style={{ maxWidth: "820px", margin: "0 auto 80px", width: "min(820px, calc(100% - 32px))", textAlign: "center" }}>
+          <div className="home-section-header" style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginBottom: "32px" }}>
+            <span className="home-section-tag" style={{ margin: "0 auto 12px" }}>
               <i className="fa-solid fa-star"></i> Oyuncu Değerlendirmeleri
             </span>
-            <h2 className="home-section-title">Antalya'nın Esporcuları Ne Diyor?</h2>
-            <p className="home-section-desc">
-              Google Maps üzerinde 4.9 ★★★★★ puan ile Antalya'nın en yüksek memnuniyet oranına sahip oyun merkezi.
+            <h2 className="home-section-title" style={{ textAlign: "center", margin: "0 auto 10px" }}>Antalya'nın Esporcuları Ne Diyor?</h2>
+            <p className="home-section-desc" style={{ textAlign: "center", margin: "0 auto", maxWidth: "600px" }}>
+              Google Maps üzerinde 4.9 ★★★★★ puan ile Antalya'nın en yüksek memnuniyet oranına sahip espor &amp; gaming merkezi.
             </p>
           </div>
 
           <div className="home-reviews-accordion-list" style={{ display: "flex", flexDirection: "column", gap: "14px", width: "100%", margin: "0 auto", textAlign: "left" }}>
             {/* Review 1 */}
-            <details className="home-review-accordion" style={{ background: "rgba(18, 24, 38, 0.85)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }} open>
-              <summary className="home-review-summary" style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "12px", background: "rgba(255, 255, 255, 0.02)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "linear-gradient(135deg, #ffd700, #b8860b)", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14px", flexShrink: 0 }}>BK</div>
+            <details className="home-review-accordion" style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "18px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }} open>
+              <summary className="home-review-summary" style={{ padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "14px", background: "rgba(255, 255, 255, 0.02)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "42px", height: "42px", borderRadius: "50%", background: "linear-gradient(135deg, #ffd700, #b8860b)", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14.5px", flexShrink: 0, boxShadow: "0 0 12px rgba(255,215,0,0.4)" }}>BK</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "2px", textAlign: "left" }}>
-                    <strong style={{ fontSize: "14.5px", color: "#ffffff", fontWeight: 700 }}>Batuhan K.</strong>
-                    <span style={{ fontSize: "11.5px", color: "#ffd700", fontWeight: 600 }}>Espor Takım Kaptanı</span>
+                    <strong style={{ fontSize: "15px", color: "#ffffff", fontWeight: 700 }}>Batuhan K.</strong>
+                    <span style={{ fontSize: "12px", color: "#ffd700", fontWeight: 600 }}>Espor Takım Kaptanı</span>
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ color: "#f59e0b", fontSize: "13px", display: "flex", gap: "2px" }}>
+                  <div style={{ color: "#f59e0b", fontSize: "13.5px", display: "flex", gap: "3px" }}>
                     <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
                   </div>
                 </div>
               </summary>
-              <div className="home-review-body" style={{ padding: "14px 20px 20px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", textAlign: "left" }}>
-                <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: 1.7, fontStyle: "italic", marginBottom: "12px" }}>
+              <div className="home-review-body" style={{ padding: "16px 22px 22px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", textAlign: "left" }}>
+                <p style={{ fontSize: "14px", color: "#cbd5e1", lineHeight: 1.75, fontStyle: "italic", marginBottom: "14px" }}>
                   "540Hz BenQ ZOWIE ekranlar ve RTX 4090 sistemler gerçekten başka bir seviye. Turnuvamızda sıfır ping ve 500+ FPS aldık. Akustik düzeni, kulaklıkları ve atmosferi Antalya'da tek geçerim."
                 </p>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.3)", color: "#34d399" }}><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>540 Hz Espor</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>RTX 4090</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>Valorant Turnuva</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(16, 185, 129, 0.18)", border: "1px solid rgba(16, 185, 129, 0.35)", color: "#34d399" }}><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>540 Hz Espor</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>RTX 4090</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>Valorant Turnuva</span>
                 </div>
               </div>
             </details>
 
             {/* Review 2 */}
-            <details className="home-review-accordion" style={{ background: "rgba(18, 24, 38, 0.85)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}>
-              <summary className="home-review-summary" style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "12px", background: "rgba(255, 255, 255, 0.02)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "linear-gradient(135deg, #ffd700, #b8860b)", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14px", flexShrink: 0 }}>EY</div>
+            <details className="home-review-accordion" style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "18px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }}>
+              <summary className="home-review-summary" style={{ padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "14px", background: "rgba(255, 255, 255, 0.02)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "42px", height: "42px", borderRadius: "50%", background: "linear-gradient(135deg, #ffd700, #b8860b)", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14.5px", flexShrink: 0, boxShadow: "0 0 12px rgba(255,215,0,0.4)" }}>EY</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "2px", textAlign: "left" }}>
-                    <strong style={{ fontSize: "14.5px", color: "#ffffff", fontWeight: 700 }}>Emre Yılmaz</strong>
-                    <span style={{ fontSize: "11.5px", color: "#ffd700", fontWeight: 600 }}>Düzenli Ziyaretçi</span>
+                    <strong style={{ fontSize: "15px", color: "#ffffff", fontWeight: 700 }}>Emre Yılmaz</strong>
+                    <span style={{ fontSize: "12px", color: "#ffd700", fontWeight: 600 }}>Düzenli Ziyaretçi</span>
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ color: "#f59e0b", fontSize: "13px", display: "flex", gap: "2px" }}>
+                  <div style={{ color: "#f59e0b", fontSize: "13.5px", display: "flex", gap: "3px" }}>
                     <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
                   </div>
                 </div>
               </summary>
-              <div className="home-review-body" style={{ padding: "14px 20px 20px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", textAlign: "left" }}>
-                <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: 1.7, fontStyle: "italic", marginBottom: "12px" }}>
+              <div className="home-review-body" style={{ padding: "16px 22px 22px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", textAlign: "left" }}>
+                <p style={{ fontSize: "14px", color: "#cbd5e1", lineHeight: 1.75, fontStyle: "italic", marginBottom: "14px" }}>
                   "Online rezervasyon sistemi çok pratik, hafta sonları bile sıra beklemeden yerimi ayırtıp geliyorum. Koltuklar aşırı rahat, ortam ferah ve sıcak kaşarlı tostları çok lezzetli."
                 </p>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.3)", color: "#34d399" }}><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>Hızlı Rezervasyon</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>Ergonomik Koltuk</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>Zengin Cafe Menüsü</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(16, 185, 129, 0.18)", border: "1px solid rgba(16, 185, 129, 0.35)", color: "#34d399" }}><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>Hızlı Rezervasyon</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>Ergonomik Koltuk</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>Zengin Cafe Menüsü</span>
                 </div>
               </div>
             </details>
 
             {/* Review 3 */}
-            <details className="home-review-accordion" style={{ background: "rgba(18, 24, 38, 0.85)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}>
-              <summary className="home-review-summary" style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "12px", background: "rgba(255, 255, 255, 0.02)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "linear-gradient(135deg, #ffd700, #b8860b)", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14px", flexShrink: 0 }}>SD</div>
+            <details className="home-review-accordion" style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "18px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }}>
+              <summary className="home-review-summary" style={{ padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "14px", background: "rgba(255, 255, 255, 0.02)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "42px", height: "42px", borderRadius: "50%", background: "linear-gradient(135deg, #ffd700, #b8860b)", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14.5px", flexShrink: 0, boxShadow: "0 0 12px rgba(255,215,0,0.4)" }}>SD</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "2px", textAlign: "left" }}>
-                    <strong style={{ fontSize: "14.5px", color: "#ffffff", fontWeight: 700 }}>Serkan Demir</strong>
-                    <span style={{ fontSize: "11.5px", color: "#ffd700", fontWeight: 600 }}>CS2 Oyuncusu</span>
+                    <strong style={{ fontSize: "15px", color: "#ffffff", fontWeight: 700 }}>Serkan Demir</strong>
+                    <span style={{ fontSize: "12px", color: "#ffd700", fontWeight: 600 }}>CS2 Oyuncusu</span>
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ color: "#f59e0b", fontSize: "13px", display: "flex", gap: "2px" }}>
+                  <div style={{ color: "#f59e0b", fontSize: "13.5px", display: "flex", gap: "3px" }}>
                     <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
                   </div>
                 </div>
               </summary>
-              <div className="home-review-body" style={{ padding: "14px 20px 20px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", textAlign: "left" }}>
-                <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: 1.7, fontStyle: "italic", marginBottom: "12px" }}>
+              <div className="home-review-body" style={{ padding: "16px 22px 22px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", textAlign: "left" }}>
+                <p style={{ fontSize: "14px", color: "#cbd5e1", lineHeight: 1.75, fontStyle: "italic", marginBottom: "14px" }}>
                   "Kliması, havalandırması ve ortamı tertemiz. Personel çok ilgili, ekipmanlar sıfır ayarında. 1000 Mbps fiber altyapı ile 3ms sabit ping alıyoruz. Kesinlikle tavsiye ederim."
                 </p>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.3)", color: "#34d399" }}><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>1000 Mbps Fiber</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>3ms Ping</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>CS2 Turnuva</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(16, 185, 129, 0.18)", border: "1px solid rgba(16, 185, 129, 0.35)", color: "#34d399" }}><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>1000 Mbps Fiber</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>3ms Ping</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>CS2 Turnuva</span>
                 </div>
               </div>
             </details>
 
             {/* Review 4 */}
-            <details className="home-review-accordion" style={{ background: "rgba(18, 24, 38, 0.85)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}>
-              <summary className="home-review-summary" style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "12px", background: "rgba(255, 255, 255, 0.02)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "linear-gradient(135deg, #ffd700, #b8860b)", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14px", flexShrink: 0 }}>CA</div>
+            <details className="home-review-accordion" style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "18px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }}>
+              <summary className="home-review-summary" style={{ padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "14px", background: "rgba(255, 255, 255, 0.02)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "42px", height: "42px", borderRadius: "50%", background: "linear-gradient(135deg, #ffd700, #b8860b)", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14.5px", flexShrink: 0, boxShadow: "0 0 12px rgba(255,215,0,0.4)" }}>CA</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "2px", textAlign: "left" }}>
-                    <strong style={{ fontSize: "14.5px", color: "#ffffff", fontWeight: 700 }}>Caner Aydın</strong>
-                    <span style={{ fontSize: "11.5px", color: "#ffd700", fontWeight: 600 }}>Espor Yayıncısı &amp; Oyuncu</span>
+                    <strong style={{ fontSize: "15px", color: "#ffffff", fontWeight: 700 }}>Caner Aydın</strong>
+                    <span style={{ fontSize: "12px", color: "#ffd700", fontWeight: 600 }}>Espor Yayıncısı &amp; Oyuncu</span>
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ color: "#f59e0b", fontSize: "13px", display: "flex", gap: "2px" }}>
+                  <div style={{ color: "#f59e0b", fontSize: "13.5px", display: "flex", gap: "3px" }}>
                     <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
                   </div>
                 </div>
               </summary>
-              <div className="home-review-body" style={{ padding: "14px 20px 20px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", textAlign: "left" }}>
-                <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: 1.7, fontStyle: "italic", marginBottom: "12px" }}>
+              <div className="home-review-body" style={{ padding: "16px 22px 22px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", textAlign: "left" }}>
+                <p style={{ fontSize: "14px", color: "#cbd5e1", lineHeight: 1.75, fontStyle: "italic", marginBottom: "14px" }}>
                   "Arkadaşlarla 5'li takım olarak geldik. SteelSeries Nova kulaklıklar ve Logitech G Pro fareler ile kusursuz bir rekabetçi ortam sağlanmış. 5 saatlik paket avantajı da çok cazip."
                 </p>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.3)", color: "#34d399" }}><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>5v5 Takım Oyunu</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>Pro Ekipmanlar</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8" }}>Avantajlı Paket</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(16, 185, 129, 0.18)", border: "1px solid rgba(16, 185, 129, 0.35)", color: "#34d399" }}><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>5v5 Takım Oyunu</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>Pro Ekipmanlar</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>Avantajlı Paket</span>
                 </div>
               </div>
             </details>
@@ -308,18 +308,18 @@ export default function HomePage() {
         </section>
 
         {/* FAQ ACCORDION SECTION */}
-        <section className="home-section" id="sss" style={{ maxWidth: "800px", margin: "0 auto 80px", width: "min(800px, calc(100% - 32px))", textAlign: "center" }}>
-          <div className="home-section-header" style={{ textAlign: "center", marginBottom: "30px" }}>
-            <span className="home-section-tag">
+        <section className="home-section" id="sss" style={{ maxWidth: "820px", margin: "0 auto 80px", width: "min(820px, calc(100% - 32px))", textAlign: "center" }}>
+          <div className="home-section-header" style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginBottom: "32px" }}>
+            <span className="home-section-tag" style={{ margin: "0 auto 12px" }}>
               <i className="fa-solid fa-circle-question"></i> Sıkça Sorulan Sorular
             </span>
-            <h2 className="home-section-title">Merak Edilenler</h2>
-            <p className="home-section-desc">
+            <h2 className="home-section-title" style={{ textAlign: "center", margin: "0 auto 10px" }}>Merak Edilenler</h2>
+            <p className="home-section-desc" style={{ textAlign: "center", margin: "0 auto", maxWidth: "600px" }}>
               Rezervasyon, espor oyunları ve cafe hizmetlerimiz hakkında en çok sorulan sorular.
             </p>
           </div>
 
-          <div className="home-faq-list">
+          <div className="home-faq-list" style={{ display: "flex", flexDirection: "column", gap: "14px", width: "100%", margin: "0 auto", textAlign: "left" }}>
             {/* Soru 1 */}
             <div className={`home-faq-item ${openFaq === 0 ? "active" : ""}`}>
               <button
@@ -383,29 +383,35 @@ export default function HomePage() {
         </section>
 
         {/* LOCATION & QUICK CONTACT BANNER */}
-        <section className="home-section" id="iletisim">
-          <div className="home-contact-banner">
-            <div className="home-contact-info">
-              <h3>Forza Gaming &amp; İnternet Cafe'ye Bekleriz</h3>
-              <p><i className="fa-solid fa-location-dot" style={{ color: "#ffd700" }}></i> Kültür Mh. 3809 Sk. No:14 Muratpaşa / Antalya</p>
-              <p><i className="fa-solid fa-clock" style={{ color: "#ffd700" }}></i> 7 Gün 24 Saat Kesintisiz Açık</p>
-              <p><i className="fa-solid fa-phone" style={{ color: "#ffd700" }}></i> 0 (546) 465 96 93</p>
+        <section className="home-section" id="iletisim" style={{ maxWidth: "820px", margin: "0 auto 80px", width: "min(820px, calc(100% - 32px))", textAlign: "center" }}>
+          <div className="home-contact-banner" style={{ background: "linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(14, 165, 233, 0.08) 50%, rgba(18, 24, 38, 0.95) 100%)", border: "1px solid rgba(255, 215, 0, 0.35)", borderRadius: "28px", padding: "44px 32px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", width: "100%", boxShadow: "0 12px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.1)", gap: "24px" }}>
+            <div className="home-contact-info" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", width: "100%" }}>
+              <h3 style={{ fontFamily: "'Sora', sans-serif", fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: 800, color: "#ffffff", marginBottom: "16px", textAlign: "center" }}>Forza Gaming &amp; İnternet Cafe'ye Bekleriz</h3>
+              <p style={{ fontSize: "15px", color: "#cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "10px", textAlign: "center" }}>
+                <i className="fa-solid fa-location-dot" style={{ color: "#ffd700", fontSize: "16px" }}></i> Kültür Mh. 3809 Sk. No:14 Muratpaşa / Antalya
+              </p>
+              <p style={{ fontSize: "15px", color: "#cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "10px", textAlign: "center" }}>
+                <i className="fa-solid fa-clock" style={{ color: "#ffd700", fontSize: "16px" }}></i> 7 Gün 24 Saat Kesintisiz Açık
+              </p>
+              <p style={{ fontSize: "15px", color: "#cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "6px", textAlign: "center" }}>
+                <i className="fa-solid fa-phone" style={{ color: "#ffd700", fontSize: "16px" }}></i> 0 (546) 465 96 93
+              </p>
             </div>
 
-            <div className="home-contact-actions">
+            <div className="home-contact-actions" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "16px", flexWrap: "wrap", marginTop: "10px", width: "100%" }}>
               <a
                 href="https://maps.google.com/?q=Forza+Internet+Cafe+Muratpasa+Antalya"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-secondary"
-                style={{ background: "rgba(255,255,255,0.12)", color: "#fff" }}
+                style={{ background: "rgba(255,255,255,0.12)", color: "#fff", padding: "14px 26px", borderRadius: "12px", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "8px" }}
               >
                 <i className="fa-solid fa-map-location-dot"></i> Haritada Aç &amp; Yol Tarifi
               </a>
               <a
                 href="tel:05464659693"
                 className="rzr-main"
-                style={{ padding: "14px 28px" }}
+                style={{ padding: "14px 30px", borderRadius: "12px", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "8px" }}
               >
                 <i className="fa-solid fa-phone"></i> Hemen Ara
               </a>

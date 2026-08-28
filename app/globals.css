@@ -2015,7 +2015,8 @@ footer,
 
 /* --- 2. TABLET EKRANLARI (769px - 1024px) --- */
 @media (min-width: 769px) and (max-width: 1024px) {
-    nav {
+    nav.public-navbar,
+    nav:not(.ios-tab-bar) {
         width: calc(100% - 40px);
     }
     .kampanya-kartlari {
@@ -2040,14 +2041,15 @@ footer,
     }
 }
 
-/* --- 3. MOBÄ°L DÃ–NÃœÅžÃœM: TAM APPLE iOS TELEFON ARAYÃœZÃœ (@media max-width: 768px) --- */
+/* --- 3. MOBİL DÖNÜŞÜM: TAM APPLE iOS TELEFON ARAYÜZÜ (@media max-width: 768px) --- */
 @media (max-width: 768px) {
     body {
         padding-bottom: 0;
     }
 
     /* Top Nav: Kompakt iOS Status Header */
-    nav {
+    nav.public-navbar,
+    nav:not(.ios-tab-bar) {
         top: 8px;
         left: 50%;
         transform: translateX(-50%);
@@ -6538,30 +6540,27 @@ body.login-page {
    ========================================================= */
 .ios-tab-bar {
     position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
-    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
-    background: rgba(10, 14, 22, 0.96) !important;
+    bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
+    top: auto !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 24px) !important;
+    max-width: 460px !important;
+    height: 64px !important;
+    padding: 0 10px !important;
+    background: rgba(14, 18, 26, 0.94) !important;
     backdrop-filter: blur(30px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-    border-top: 1px solid rgba(247, 242, 232, 0.16) !important;
-    border-bottom: none !important;
-    border-left: none !important;
-    border-right: none !important;
-    border-radius: 0 !important;
-    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(255, 215, 0, 0.08) !important;
+    border: 1px solid rgba(247, 242, 232, 0.22) !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(245, 238, 219, 0.12) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-around !important;
-    padding-left: 6px !important;
-    padding-right: 6px !important;
     z-index: 999999 !important;
-    transform: none !important;
     box-sizing: border-box !important;
+    pointer-events: auto !important;
 }
 
 .ios-tab-item {
@@ -6612,17 +6611,17 @@ body.login-page {
 
 @media (min-width: 769px) {
     .ios-tab-bar {
-        bottom: 18px !important;
+        bottom: 20px !important;
+        top: auto !important;
         left: 50% !important;
         right: auto !important;
         transform: translateX(-50%) !important;
         width: min(580px, calc(100% - 32px)) !important;
         max-width: 580px !important;
         height: 68px !important;
-        padding-bottom: 0 !important;
-        border: 1px solid var(--cream-border-strong) !important;
-        border-radius: var(--a-radius-full) !important;
-        box-shadow: var(--a-shadow-lg), 0 0 30px rgba(245, 238, 219, 0.14) !important;
+        padding: 0 14px !important;
+        border-radius: 9999px !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(245, 238, 219, 0.14) !important;
     }
 
     .ios-tab-item {

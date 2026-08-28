@@ -9,19 +9,19 @@
    ========================================================= */
 :root {
     /* =========================================================
-       1. DEEP OBSIDIAN SURFACES & BACKGROUNDS
+       1. DEEP OBSIDIAN SURFACES & BACKGROUNDS (CAMPAIGN AROMA)
        ========================================================= */
-    --a-bg: #07090d;
-    --bg-main: #07090d;
-    --a-surface: #0e121a;
-    --bg-surface: #0e121a;
-    --a-surface-soft: #141924;
-    --bg-surface-elevated: #151a24;
-    --a-surface-card: rgba(16, 21, 30, 0.94);
-    --bg-surface-card: rgba(16, 21, 30, 0.94);
-    --a-surface-glass: rgba(14, 18, 26, 0.88);
-    --bg-glass: rgba(14, 18, 26, 0.88);
-    --bg-glass-heavy: rgba(10, 13, 19, 0.95);
+    --a-bg: #0c111d;
+    --bg-main: #0c111d;
+    --a-surface: #141c2e;
+    --bg-surface: #141c2e;
+    --a-surface-soft: #182238;
+    --bg-surface-elevated: #1a253d;
+    --a-surface-card: rgba(22, 30, 48, 0.92);
+    --bg-surface-card: rgba(22, 30, 48, 0.92);
+    --a-surface-glass: rgba(20, 28, 44, 0.88);
+    --bg-glass: rgba(18, 25, 40, 0.9);
+    --bg-glass-heavy: rgba(14, 20, 34, 0.96);
 
     /* =========================================================
        2. APPLE RICH WARM CREAM & CHAMPAGNE PALETTE
@@ -162,7 +162,11 @@ html {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: var(--bg-main);
+    background: radial-gradient(circle at 15% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 85% 15%, rgba(255, 215, 0, 0.07) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 80% 85%, rgba(52, 211, 153, 0.05) 0%, transparent 45%),
+                #0c111d;
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
@@ -628,16 +632,16 @@ p.para1 {
 
 .card {
     flex: 0 0 280px;
-    background: var(--bg-surface-card);
-    border: 1px solid var(--border-subtle);
+    background: rgba(22, 30, 48, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: var(--radius-lg);
     padding: 32px 24px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 14px;
-    backdrop-filter: blur(16px);
-    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(24px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     transition: transform var(--duration-normal) var(--spring-bounce), 
                 border-color var(--duration-normal) ease, 
                 box-shadow var(--duration-normal) ease;
@@ -645,8 +649,8 @@ p.para1 {
 
 .card:hover {
     transform: translateY(-8px);
-    border-color: var(--border-highlight);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 30px var(--gold-dim);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 30px rgba(255, 215, 0, 0.16);
 }
 
 .card i {
@@ -655,30 +659,32 @@ p.para1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--gold-dim);
-    color: var(--gold);
+    background: rgba(255, 215, 0, 0.15);
+    color: #ffd700;
     font-size: 22px;
     border-radius: var(--radius-md);
-    border: 1px solid var(--border-highlight);
+    border: 1px solid rgba(255, 215, 0, 0.35);
     margin-bottom: 6px;
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.2);
     transition: transform var(--duration-normal) var(--spring-bounce);
 }
 
 .card:hover i {
     transform: scale(1.12) rotate(4deg);
+    box-shadow: 0 0 24px rgba(255, 215, 0, 0.4);
 }
 
 .card h3 {
     font-family: 'Sora', sans-serif;
     font-size: 18px;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-weight: 800;
+    color: #ffffff;
 }
 
 .card p {
     font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.5;
+    color: #cbd5e1;
+    line-height: 1.55;
 }
 
 /* =========================================================
@@ -706,7 +712,7 @@ p.para1 {
 
 .kampanya-intro {
     font-size: clamp(16px, 2vw, 18px);
-    color: var(--text-secondary);
+    color: #cbd5e1;
     text-align: center;
     max-width: 600px;
     margin-bottom: 6px;
@@ -714,8 +720,8 @@ p.para1 {
 
 .kampanya-alt {
     font-size: 14px;
-    color: var(--gold);
-    font-weight: 600;
+    color: #ffd700;
+    font-weight: 700;
     text-align: center;
     margin-bottom: 48px;
 }
@@ -735,12 +741,12 @@ p.para1 {
     position: relative;
     display: flex;
     flex-direction: column;
-    background: var(--bg-surface-card);
-    border: 1px solid var(--border-subtle);
+    background: rgba(22, 30, 48, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: var(--radius-xl);
     padding: 32px 24px;
-    backdrop-filter: blur(20px);
-    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(24px);
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     transition: transform var(--duration-normal) var(--spring-smooth), 
                 border-color var(--duration-normal) ease, 
                 box-shadow var(--duration-normal) ease;
@@ -751,36 +757,42 @@ p.para1 {
     content: "";
     position: absolute;
     top: 0;
-    left: 20%;
-    right: 20%;
+    left: 15%;
+    right: 15%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--border-highlight), transparent);
-    opacity: 0.8;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    opacity: 0.9;
 }
 
 /* Tier Variants */
 .kart.sari {
-    border-top: 2px solid var(--gold);
+    border-top: 2px solid #ffd700;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45), 0 0 25px rgba(255, 215, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 .kart.sari:hover {
-    border-color: rgba(255, 215, 0, 0.4);
-    box-shadow: var(--shadow-lg), 0 0 35px var(--gold-dim);
+    transform: translateY(-6px);
+    border-color: rgba(255, 215, 0, 0.55);
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 215, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .kart.mavi {
-    border-top: 2px solid var(--cyber-blue);
+    border-top: 2px solid #38bdf8;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45), 0 0 25px rgba(56, 189, 248, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 .kart.mavi:hover {
-    border-color: rgba(14, 165, 233, 0.4);
-    box-shadow: var(--shadow-lg), 0 0 35px var(--cyber-blue-dim);
+    transform: translateY(-6px);
+    border-color: rgba(56, 189, 248, 0.55);
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 35px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .kart.yesil {
-    border-top: 2px solid var(--neon-green);
+    border-top: 2px solid #34d399;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45), 0 0 25px rgba(52, 211, 153, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 .kart.yesil:hover {
-    border-color: rgba(16, 185, 129, 0.4);
-    box-shadow: var(--shadow-lg), 0 0 35px var(--neon-green-dim);
+    transform: translateY(-6px);
+    border-color: rgba(52, 211, 153, 0.55);
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 35px rgba(52, 211, 153, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .pc-card {
@@ -1628,8 +1640,9 @@ p.para1 {
 footer,
 .public-footer {
     position: relative;
-    background: linear-gradient(180deg, rgba(14, 18, 26, 0.98) 0%, rgba(7, 9, 13, 1) 100%);
-    border-top: 1px solid rgba(247, 242, 232, 0.12);
+    background: linear-gradient(180deg, rgba(14, 20, 32, 0.98) 0%, rgba(10, 14, 22, 1) 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
     padding: 56px 24px 0;
     margin-top: auto;
     margin-bottom: 0;

@@ -50,6 +50,16 @@ export interface KampanyaFiyatlari {
   yesil: KategoriFiyatPaket;
 }
 
+export interface GalleryPhoto {
+  id?: string;
+  src: string;
+  badge?: string;
+  alt?: string;
+  caption?: string;
+  isCover?: boolean;
+  order?: number;
+}
+
 export interface AdminAyarlar {
   adminUser: string;
   sesBildirimi: boolean;
@@ -62,6 +72,7 @@ export interface AdminAuthSettings {
   adminPass: string;
   adminEmail: string;
   adminAvatar?: string | null;
+  aboutCoverPhoto?: string | null;
   cafeName: string;
   cafePhone: string;
   soundEnabled: boolean;

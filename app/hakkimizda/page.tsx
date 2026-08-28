@@ -5,16 +5,20 @@ import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
 
-const PHOTOS = [
-  { src: "/foto1.jpeg", alt: "Forza Gaming Salonu - Ana Espor Alanı", caption: "Forza Gaming Salonu - Ana Espor Alanı" },
-  { src: "/foto2.jpeg", alt: "540Hz BenQ Espor Turnuva Masaları", caption: "540Hz BenQ Espor Turnuva Masaları" },
-  { src: "/foto3.jpeg", alt: "Pro Gaming RTX 4070 Setup", caption: "Pro Gaming RTX 4070 Setup" },
-  { src: "/foto4.jpeg", alt: "VIP Espor Akustik Alanı", caption: "VIP Espor Akustik Alanı" },
-  { src: "/foto5.jpeg", alt: "Ergonomik Espor Koltukları & Ekipmanlar", caption: "Ergonomik Espor Koltukları & Ekipmanlar" },
-  { src: "/foto6.jpeg", alt: "Forza Turnuva ve Takım Odası", caption: "Forza Turnuva ve Takım Odası" },
+import { GalleryPhoto } from "@/lib/types";
+
+const DEFAULT_PHOTOS: GalleryPhoto[] = [
+  { id: "f1", src: "/foto1.jpeg", alt: "Forza Gaming Salonu - Ana Espor Alanı", caption: "Forza Gaming Salonu - Ana Espor Alanı", badge: "Ana Salon" },
+  { id: "f2", src: "/foto2.jpeg", alt: "540Hz BenQ Espor Turnuva Masaları", caption: "540Hz BenQ Espor Turnuva Masaları", badge: "540 Hz Alan" },
+  { id: "f3", src: "/foto3.jpeg", alt: "Pro Gaming RTX 4070 Setup", caption: "Pro Gaming RTX 4070 Setup", badge: "Pro Setup" },
+  { id: "f4", src: "/foto4.jpeg", alt: "VIP Espor Akustik Alanı", caption: "VIP Espor Akustik Alanı", badge: "VIP Lounge" },
+  { id: "f5", src: "/foto5.jpeg", alt: "Ergonomik Espor Koltukları & Ekipmanlar", caption: "Ergonomik Espor Koltukları & Ekipmanlar", badge: "Ekipman" },
+  { id: "f6", src: "/foto6.jpeg", alt: "Forza Turnuva ve Takım Odası", caption: "Forza Turnuva ve Takım Odası", badge: "Turnuva" },
 ];
 
 export default function AboutPage() {
+  const [photos, setPhotos] = useState<GalleryPhoto[]>(DEFAULT_PHOTOS);
+  const [coverPhoto, setCoverPhoto] = useState<string>("/foto1.jpeg");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -23,6 +27,70 @@ export default function AboutPage() {
   const touchEndX = useRef<number | null>(null);
 
   useEffect(() => {
+    // 1. Yerel Depolamadan Hızlı Yükleme
+    try {
+      const savedCover = localStorage.getItem("forzaAboutCoverPhoto");
+      if (savedCover) {
+        setCoverPhoto(savedCover);
+      }
+
+      const raw = localStorage.getItem("forzaGaleriFotograflar");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setPhotos(parsed);
+          if (!savedCover) {
+            const coverItem = parsed.find((p: GalleryPhoto) => p.isCover);
+            if (coverItem) setCoverPhoto(coverItem.src);
+          }
+        }
+      }
+    } catch (e) {}
+
+    // 2. Sunucu API'sinden Canlı Senkronizasyon (Galeri & Ayarlar)
+    async function fetchGalleryAndSettings() {
+      try {
+        const [resGal, resSettings] = await Promise.all([
+          fetch("/api/gallery", { cache: "no-store" }),
+          fetch("/api/auth/settings", { cache: "no-store" }).catch(() => null),
+        ]);
+
+        if (resGal && resGal.ok) {
+          const data = await resGal.json();
+          if (data.success && Array.isArray(data.photos) && data.photos.length > 0) {
+            setPhotos(data.photos);
+          }
+        }
+
+        if (resSettings && resSettings.ok) {
+          const sData = await resSettings.json();
+          if (sData.settings?.aboutCoverPhoto) {
+            setCoverPhoto(sData.settings.aboutCoverPhoto);
+          }
+        }
+      } catch (e) {}
+    }
+    fetchGalleryAndSettings();
+
+    // 3. Canlı Değişiklikleri Dinleme
+    const handleGalleryUpdate = (e: CustomEvent<GalleryPhoto[]>) => {
+      if (e.detail && Array.isArray(e.detail) && e.detail.length > 0) {
+        setPhotos(e.detail);
+      } else {
+        fetchGalleryAndSettings();
+      }
+    };
+
+    const handleSettingsUpdate = (e: CustomEvent<{ aboutCoverPhoto?: string }>) => {
+      if (e.detail?.aboutCoverPhoto) {
+        setCoverPhoto(e.detail.aboutCoverPhoto);
+      }
+    };
+
+    window.addEventListener("forzaGaleriGuncellendi" as any, handleGalleryUpdate);
+    window.addEventListener("forzaAyarlarGuncellendi" as any, handleSettingsUpdate);
+    window.addEventListener("storage", fetchGalleryAndSettings);
+
     const updateVisible = () => {
       if (typeof window !== "undefined") {
         if (window.innerWidth <= 640) {
@@ -36,10 +104,16 @@ export default function AboutPage() {
     };
     updateVisible();
     window.addEventListener("resize", updateVisible);
-    return () => window.removeEventListener("resize", updateVisible);
+
+    return () => {
+      window.removeEventListener("forzaGaleriGuncellendi" as any, handleGalleryUpdate);
+      window.removeEventListener("forzaAyarlarGuncellendi" as any, handleSettingsUpdate);
+      window.removeEventListener("storage", fetchGalleryAndSettings);
+      window.removeEventListener("resize", updateVisible);
+    };
   }, []);
 
-  const maxIndex = Math.max(0, PHOTOS.length - visibleCount);
+  const maxIndex = Math.max(0, photos.length - visibleCount);
 
   useEffect(() => {
     if (currentIndex > maxIndex) {
@@ -57,12 +131,12 @@ export default function AboutPage() {
 
   const lightboxPrev = (e?: React.MouseEvent) => {
     e?.stopPropagation();
-    setLightboxIndex((prev) => (prev === null || prev <= 0 ? PHOTOS.length - 1 : prev - 1));
+    setLightboxIndex((prev) => (prev === null || prev <= 0 ? photos.length - 1 : prev - 1));
   };
 
   const lightboxNext = (e?: React.MouseEvent) => {
     e?.stopPropagation();
-    setLightboxIndex((prev) => (prev === null || prev >= PHOTOS.length - 1 ? 0 : prev + 1));
+    setLightboxIndex((prev) => (prev === null || prev >= photos.length - 1 ? 0 : prev + 1));
   };
 
   useEffect(() => {
@@ -133,7 +207,7 @@ export default function AboutPage() {
           </div>
 
           <div className="about-right" style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "20px", border: "1px solid rgba(255, 215, 0, 0.25)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
-            <img src="/foto1.jpeg" alt="Forza İnternet Cafe Salonu" style={{ width: "100%", height: visibleCount === 1 ? "240px" : "380px", objectFit: "cover", display: "block" }} />
+            <img src={coverPhoto || "/foto1.jpeg"} alt="Forza Gaming Espor Salonu" style={{ width: "100%", height: visibleCount === 1 ? "240px" : "380px", objectFit: "cover", display: "block" }} />
           </div>
         </section>
 
@@ -159,11 +233,11 @@ export default function AboutPage() {
 
           <div style={{ width: "100%", overflow: "hidden", borderRadius: "20px", position: "relative", touchAction: "pan-y" }} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
             <div style={{ display: "flex", transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`, transition: "transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)", willChange: "transform" }}>
-              {PHOTOS.map((photo, index) => (
-                <div key={index} style={{ flex: `0 0 ${100 / visibleCount}%`, padding: "0 8px", boxSizing: "border-box" }}>
+              {photos.map((photo, index) => (
+                <div key={photo.id || index} style={{ flex: `0 0 ${100 / visibleCount}%`, padding: "0 8px", boxSizing: "border-box" }}>
                   <div onClick={() => setLightboxIndex(index)} style={{ position: "relative", borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(255, 215, 0, 0.2)", cursor: "pointer" }}>
-                    <img src={photo.src} alt={photo.alt} style={{ width: "100%", height: visibleCount === 1 ? "240px" : "220px", objectFit: "cover", display: "block" }} />
-                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "10px 14px", background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)", color: "#f8fafc", fontSize: "13px", fontWeight: 600 }}>{photo.caption}</div>
+                    <img src={photo.src} alt={photo.alt || photo.caption || photo.badge || "Mekan Fotoğrafı"} style={{ width: "100%", height: visibleCount === 1 ? "240px" : "220px", objectFit: "cover", display: "block" }} />
+                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "10px 14px", background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)", color: "#f8fafc", fontSize: "13px", fontWeight: 600 }}>{photo.caption || photo.badge || "Forza Espor Alanı"}</div>
                   </div>
                 </div>
               ))}
@@ -193,13 +267,13 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {lightboxIndex !== null && (
+        {lightboxIndex !== null && photos[lightboxIndex] && (
           <div role="dialog" aria-modal="true" onClick={() => setLightboxIndex(null)} onTouchStart={handleLbTouchStart} onTouchEnd={handleLbTouchEnd} style={{ position: "fixed", inset: 0, background: "rgba(3, 7, 18, 0.95)", backdropFilter: "blur(20px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
             <button type="button" onClick={() => setLightboxIndex(null)} style={{ position: "absolute", top: "20px", right: "20px", background: "none", border: "none", color: "#fff", fontSize: "32px", cursor: "pointer" }}>&times;</button>
             <button type="button" onClick={lightboxPrev} style={{ position: "absolute", left: "20px", background: "none", border: "1px solid #ffd700", borderRadius: "50%", color: "#ffd700", width: "50px", height: "50px", cursor: "pointer" }}>&lt;</button>
             <div onClick={(e) => e.stopPropagation()} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <img src={PHOTOS[lightboxIndex].src} alt={PHOTOS[lightboxIndex].alt} style={{ maxWidth: "90vw", maxHeight: "75vh", borderRadius: "16px" }} />
-              <div style={{ color: "#fff", marginTop: "12px" }}>{PHOTOS[lightboxIndex].caption} ({lightboxIndex + 1} / {PHOTOS.length})</div>
+              <img src={photos[lightboxIndex].src} alt={photos[lightboxIndex].alt || photos[lightboxIndex].caption || "Mekan Fotoğrafı"} style={{ maxWidth: "90vw", maxHeight: "75vh", borderRadius: "16px" }} />
+              <div style={{ color: "#fff", marginTop: "12px" }}>{photos[lightboxIndex].caption || photos[lightboxIndex].badge || "Mekan"} ({lightboxIndex + 1} / {photos.length})</div>
             </div>
             <button type="button" onClick={lightboxNext} style={{ position: "absolute", right: "20px", background: "none", border: "1px solid #ffd700", borderRadius: "50%", color: "#ffd700", width: "50px", height: "50px", cursor: "pointer" }}>&gt;</button>
           </div>

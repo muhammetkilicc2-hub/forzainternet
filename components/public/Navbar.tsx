@@ -105,16 +105,15 @@ export default function Navbar() {
               className={pathname === "/rezerve" ? "active" : ""}
               onClick={() => setMobileOpen(false)}
             >
-              Rezervasyon
+              Rezervasyon &amp; Masalar
             </Link>
           </li>
           <li>
             <Link
-              href="/rezerve"
-              className={pathname === "/rezerve" ? "active" : ""}
+              href="/#iletisim"
               onClick={() => setMobileOpen(false)}
             >
-              Bilgisayarlar
+              İletişim
             </Link>
           </li>
         </ul>

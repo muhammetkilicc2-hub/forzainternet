@@ -1,0 +1,14 @@
+{
+  "adminUser": "admin",
+  "adminPass": "1234",
+  "adminEmail": "admin@forzagaming.com",
+  "adminAvatar": null,
+  "aboutCoverPhoto": "/foto1.jpeg",
+  "cafeName": "Forza İnternet & Cafe",
+  "cafePhone": "0546 465 96 93",
+  "soundEnabled": true,
+  "autoRefresh": true,
+  "refreshInterval": 10,
+  "sifreSonDegismeTarihi": "2026-08-28T19:28:20.762Z",
+  "updatedAt": "2026-08-28T19:28:20.762Z"
+}

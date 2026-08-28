@@ -11,6 +11,8 @@ function LoginForm() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -22,6 +24,8 @@ function LoginForm() {
   const [verifyCode, setVerifyCode] = useState("");
   const [newResetPass, setNewResetPass] = useState("");
   const [confirmResetPass, setConfirmResetPass] = useState("");
+  const [showResetPass, setShowResetPass] = useState(false);
+  const [showConfirmResetPass, setShowConfirmResetPass] = useState(false);
   const [forgotMsg, setForgotMsg] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
   const handleSendResetCode = () => {
@@ -229,26 +233,57 @@ function LoginForm() {
           <label style={{ fontSize: "11.5px", color: "#94a3b8", display: "block", marginBottom: "4px", fontWeight: 700 }}>
             ŞİFRE
           </label>
-          <input
-            type="password"
-            required
-            placeholder="••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "12px 14px",
-              borderRadius: "12px",
-              background: "rgba(247, 242, 232, 0.06)",
-              border: "1px solid rgba(247, 242, 232, 0.18)",
-              color: "#ffffff",
-              fontSize: "14px",
-              outline: "none",
-            }}
-          />
+          <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+            <input
+              type={showPass ? "text" : "password"}
+              required
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "12px 42px 12px 14px",
+                borderRadius: "12px",
+                background: "rgba(247, 242, 232, 0.06)",
+                border: "1px solid rgba(247, 242, 232, 0.18)",
+                color: "#ffffff",
+                fontSize: "14px",
+                outline: "none",
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPass(!showPass)}
+              style={{
+                position: "absolute",
+                right: "12px",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: showPass ? "#ffd700" : "#94a3b8",
+                fontSize: "15px",
+                padding: "4px",
+                display: "flex",
+                alignItems: "center",
+              }}
+              title={showPass ? "Şifreyi Gizle" : "Şifreyi Göster"}
+            >
+              {showPass ? "👁️" : "🔒"}
+            </button>
+          </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "-6px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "-2px" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "#94a3b8", cursor: "pointer", userSelect: "none" }}>
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              style={{ accentColor: "#ffd700", cursor: "pointer" }}
+            />
+            Beni Hatırla
+          </label>
+
           <button
             type="button"
             onClick={() => setShowForgotModal(true)}
@@ -392,41 +427,81 @@ function LoginForm() {
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "10px", textAlign: "left" }}>
                   <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--cream-300)" }}>Yeni Şifre</label>
-                  <input
-                    type="password"
-                    placeholder="En az 3 karakter"
-                    value={newResetPass}
-                    onChange={(e) => setNewResetPass(e.target.value)}
-                    style={{
-                      width: "100%",
-                      padding: "12px 14px",
-                      borderRadius: "12px",
-                      background: "rgba(247, 242, 232, 0.06)",
-                      border: "1px solid rgba(247, 242, 232, 0.18)",
-                      color: "#ffffff",
-                      fontSize: "14px",
-                      outline: "none",
-                    }}
-                  />
+                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                    <input
+                      type={showResetPass ? "text" : "password"}
+                      placeholder="En az 3 karakter"
+                      value={newResetPass}
+                      onChange={(e) => setNewResetPass(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "12px 42px 12px 14px",
+                        borderRadius: "12px",
+                        background: "rgba(247, 242, 232, 0.06)",
+                        border: "1px solid rgba(247, 242, 232, 0.18)",
+                        color: "#ffffff",
+                        fontSize: "14px",
+                        outline: "none",
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowResetPass(!showResetPass)}
+                      style={{
+                        position: "absolute",
+                        right: "12px",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: showResetPass ? "#ffd700" : "#94a3b8",
+                        fontSize: "15px",
+                        padding: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      {showResetPass ? "👁️" : "🔒"}
+                    </button>
+                  </div>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "14px", textAlign: "left" }}>
                   <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--cream-300)" }}>Yeni Şifre (Tekrar)</label>
-                  <input
-                    type="password"
-                    placeholder="Yeni şifreyi tekrar yazın"
-                    value={confirmResetPass}
-                    onChange={(e) => setConfirmResetPass(e.target.value)}
-                    style={{
-                      width: "100%",
-                      padding: "12px 14px",
-                      borderRadius: "12px",
-                      background: "rgba(247, 242, 232, 0.06)",
-                      border: "1px solid rgba(247, 242, 232, 0.18)",
-                      color: "#ffffff",
-                      fontSize: "14px",
-                      outline: "none",
-                    }}
-                  />
+                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                    <input
+                      type={showConfirmResetPass ? "text" : "password"}
+                      placeholder="Yeni şifreyi tekrar yazın"
+                      value={confirmResetPass}
+                      onChange={(e) => setConfirmResetPass(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "12px 42px 12px 14px",
+                        borderRadius: "12px",
+                        background: "rgba(247, 242, 232, 0.06)",
+                        border: "1px solid rgba(247, 242, 232, 0.18)",
+                        color: "#ffffff",
+                        fontSize: "14px",
+                        outline: "none",
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmResetPass(!showConfirmResetPass)}
+                      style={{
+                        position: "absolute",
+                        right: "12px",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: showConfirmResetPass ? "#ffd700" : "#94a3b8",
+                        fontSize: "15px",
+                        padding: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      {showConfirmResetPass ? "👁️" : "🔒"}
+                    </button>
+                  </div>
                 </div>
                 <button
                   type="button"

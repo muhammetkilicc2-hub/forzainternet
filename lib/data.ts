@@ -1,6 +1,15 @@
 import fs from "fs";
 import path from "path";
-import { PC, PcKategori, PcDurum, KategoriBilgisi, Rezervasyon, KampanyaFiyatlari, AdminStats, AdminAuthSettings } from "./types";
+import { PC, PcKategori, PcDurum, KategoriBilgisi, Rezervasyon, KampanyaFiyatlari, AdminStats, AdminAuthSettings, GalleryPhoto } from "./types";
+
+export const DEFAULT_GALLERY_PHOTOS: GalleryPhoto[] = [
+  { id: "f1", src: "/foto1.jpeg", badge: "Ana Salon", alt: "Forza Gaming Salonu - Ana Espor Alanı", caption: "Forza Gaming Salonu - Ana Espor Alanı", isCover: true, order: 1 },
+  { id: "f2", src: "/foto2.jpeg", badge: "540 Hz Alan", alt: "540Hz BenQ Espor Turnuva Masaları", caption: "540Hz BenQ Espor Turnuva Masaları", isCover: false, order: 2 },
+  { id: "f3", src: "/foto3.jpeg", badge: "Pro Setup", alt: "Pro Gaming RTX 4070 Setup", caption: "Pro Gaming RTX 4070 Setup", isCover: false, order: 3 },
+  { id: "f4", src: "/foto4.jpeg", badge: "VIP Lounge", alt: "VIP Espor Akustik Alanı", caption: "VIP Espor Akustik Alanı", isCover: false, order: 4 },
+  { id: "f5", src: "/foto5.jpeg", badge: "Ekipman", alt: "Ergonomik Espor Koltukları & Ekipmanlar", caption: "Ergonomik Espor Koltukları & Ekipmanlar", isCover: false, order: 5 },
+  { id: "f6", src: "/foto6.jpeg", badge: "Turnuva", alt: "Forza Turnuva ve Takım Odası", caption: "Forza Turnuva ve Takım Odası", isCover: false, order: 6 },
+];
 
 export const KATEGORILER: Record<PcKategori, KategoriBilgisi> = {
   sari: {
@@ -68,17 +77,19 @@ function createInitialPcList(): PC[] {
 }
 
 function getPcFilePath(): string {
-  try {
-    if (fs.existsSync("/tmp")) return "/tmp/forza_pc_state.json";
-  } catch {}
   return path.join(process.cwd(), "bilgisayar_state.json");
 }
 
 function getRezFilePath(): string {
-  try {
-    if (fs.existsSync("/tmp")) return "/tmp/forza_rez_state.json";
-  } catch {}
   return path.join(process.cwd(), "rezervasyon_state.json");
+}
+
+function getGaleriFilePath(): string {
+  return path.join(process.cwd(), "galeri_state.json");
+}
+
+function getSettingsFilePath(): string {
+  return path.join(process.cwd(), "ayarlar_state.json");
 }
 
 function loadPersistedPcList(): PC[] | null {
@@ -123,12 +134,55 @@ function persistReservations(list: Rezervasyon[]) {
   } catch (e) {}
 }
 
+function loadPersistedGalleryPhotos(): GalleryPhoto[] | null {
+  try {
+    const p = getGaleriFilePath();
+    if (fs.existsSync(p)) {
+      const content = fs.readFileSync(p, "utf-8");
+      const parsed = JSON.parse(content);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
+function persistGalleryPhotos(list: GalleryPhoto[]) {
+  try {
+    const p = getGaleriFilePath();
+    fs.writeFileSync(p, JSON.stringify(list, null, 2), "utf-8");
+  } catch (e) {}
+}
+
+function loadPersistedAdminSettings(): AdminAuthSettings | null {
+  try {
+    const p = getSettingsFilePath();
+    if (fs.existsSync(p)) {
+      const content = fs.readFileSync(p, "utf-8");
+      const parsed = JSON.parse(content);
+      if (parsed && typeof parsed === "object") {
+        return parsed;
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
+function persistAdminSettings(settings: AdminAuthSettings) {
+  try {
+    const p = getSettingsFilePath();
+    fs.writeFileSync(p, JSON.stringify(settings, null, 2), "utf-8");
+  } catch (e) {}
+}
+
 // Global Singletons (Hot reload korumalı)
 declare global {
   var __forzaPcList: PC[] | undefined;
   var __forzaReservations: Rezervasyon[] | undefined;
   var __forzaPricing: KampanyaFiyatlari | undefined;
   var __forzaAdminSettings: AdminAuthSettings | undefined;
+  var __forzaGalleryPhotos: GalleryPhoto[] | undefined;
 }
 
 if (!globalThis.__forzaPcList) {
@@ -145,10 +199,13 @@ if (!globalThis.__forzaPricing) {
 }
 
 if (!globalThis.__forzaAdminSettings) {
-  globalThis.__forzaAdminSettings = {
+  const persistedAdmin = loadPersistedAdminSettings();
+  globalThis.__forzaAdminSettings = persistedAdmin || {
     adminUser: "admin",
     adminPass: "1234",
     adminEmail: "admin@forzagaming.com",
+    adminAvatar: null,
+    aboutCoverPhoto: "/foto1.jpeg",
     cafeName: "Forza İnternet & Cafe",
     cafePhone: "0546 465 96 93",
     soundEnabled: true,
@@ -164,9 +221,28 @@ if (!globalThis.__forzaReservations) {
   globalThis.__forzaReservations = persistedRez || [];
 }
 
+if (!globalThis.__forzaGalleryPhotos) {
+  const persistedGal = loadPersistedGalleryPhotos();
+  globalThis.__forzaGalleryPhotos = persistedGal || DEFAULT_GALLERY_PHOTOS;
+}
+
 // ----------------------------------------------------
 // VERİ ERİŞİM FONKSİYONLARI
 // ----------------------------------------------------
+
+export function getGalleryPhotos(): GalleryPhoto[] {
+  const diskList = loadPersistedGalleryPhotos();
+  if (diskList && Array.isArray(diskList) && diskList.length > 0) {
+    globalThis.__forzaGalleryPhotos = diskList;
+  }
+  return globalThis.__forzaGalleryPhotos!;
+}
+
+export function updateGalleryPhotos(photos: GalleryPhoto[]): GalleryPhoto[] {
+  globalThis.__forzaGalleryPhotos = photos;
+  persistGalleryPhotos(photos);
+  return globalThis.__forzaGalleryPhotos!;
+}
 
 export function getComputers(): PC[] {
   const diskList = loadPersistedPcList();
@@ -350,6 +426,10 @@ export function trackCategoryInterest(kategori: "sari" | "mavi" | "yesil") {
 // ----------------------------------------------------
 
 export function getAdminSettings(): AdminAuthSettings {
+  const diskSettings = loadPersistedAdminSettings();
+  if (diskSettings && typeof diskSettings === "object") {
+    globalThis.__forzaAdminSettings = diskSettings;
+  }
   return globalThis.__forzaAdminSettings!;
 }
 
@@ -359,16 +439,18 @@ export function updateAdminSettings(data: Partial<AdminAuthSettings>): AdminAuth
     ...data,
     updatedAt: new Date().toISOString(),
   };
+  persistAdminSettings(globalThis.__forzaAdminSettings!);
   return globalThis.__forzaAdminSettings!;
 }
 
 export function verifyAdminCredentials(username: string, pass: string): boolean {
   const current = getAdminSettings();
   const inputUser = (username || "").trim().toLowerCase();
+  const currentAdminUser = (current.adminUser || "admin").trim().toLowerCase();
+
   const validUsers = [
-    current.adminUser.toLowerCase(),
+    currentAdminUser,
     "admin",
-    (process.env.ADMIN_USERNAME || "admin").toLowerCase(),
   ];
 
   if (!validUsers.includes(inputUser)) {
@@ -376,14 +458,8 @@ export function verifyAdminCredentials(username: string, pass: string): boolean 
   }
 
   const inputPass = (pass || "").trim();
-  const validPasswords = [
-    current.adminPass,
-    "ForzaAdmin2026!*",
-    "Forza2026@Espor!",
-    "forza2026!",
-    "1234",
-    process.env.ADMIN_PASSWORD || "",
-  ].filter(Boolean);
+  const currentPass = (current.adminPass || "1234").trim();
 
-  return validPasswords.includes(inputPass);
+  // Aktif yönetici şifresi doğrulaması
+  return inputPass === currentPass;
 }

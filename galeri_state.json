@@ -1,0 +1,50 @@
+[
+  {
+    "id": "f1",
+    "src": "/foto1.jpeg",
+    "badge": "Ana Salon",
+    "alt": "Forza Gaming Salonu - Ana Espor Alanı",
+    "caption": "Forza Gaming Salonu - Ana Espor Alanı",
+    "order": 1
+  },
+  {
+    "id": "f2",
+    "src": "/foto2.jpeg",
+    "badge": "540 Hz Alan",
+    "alt": "540Hz BenQ Espor Turnuva Masaları",
+    "caption": "540Hz BenQ Espor Turnuva Masaları",
+    "order": 2
+  },
+  {
+    "id": "f3",
+    "src": "/foto3.jpeg",
+    "badge": "Pro Setup",
+    "alt": "Pro Gaming RTX 4070 Setup",
+    "caption": "Pro Gaming RTX 4070 Setup",
+    "order": 3
+  },
+  {
+    "id": "f4",
+    "src": "/foto4.jpeg",
+    "badge": "VIP Lounge",
+    "alt": "VIP Espor Akustik Alanı",
+    "caption": "VIP Espor Akustik Alanı",
+    "order": 4
+  },
+  {
+    "id": "f6",
+    "src": "/foto6.jpeg",
+    "badge": "Turnuva",
+    "alt": "Forza Turnuva ve Takım Odası",
+    "caption": "Forza Turnuva ve Takım Odası",
+    "order": 5
+  },
+  {
+    "id": "f5",
+    "src": "/foto5.jpeg",
+    "badge": "Ekipman",
+    "alt": "Ergonomik Espor Koltukları & Ekipmanlar",
+    "caption": "Ergonomik Espor Koltukları & Ekipmanlar",
+    "order": 6
+  }
+]

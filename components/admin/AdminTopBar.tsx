@@ -24,16 +24,41 @@ export default function AdminTopBar({ subtitle = "Forza Studio" }: AdminTopBarPr
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const loadNotifications = () => {
+  const loadNotifications = async () => {
+    let localList: NotificationItem[] = [];
     try {
       const raw = localStorage.getItem("forzaBildirimler");
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) {
-          setNotifications(parsed.slice(0, 15));
+          localList = parsed;
         }
       }
     } catch (e) {}
+
+    try {
+      const res = await fetch("/api/reservations", { cache: "no-store" });
+      const data = await res.json();
+      if (data.success && Array.isArray(data.reservations)) {
+        const serverNotifs: NotificationItem[] = data.reservations.map((r: any) => ({
+          id: r.id,
+          baslik: `Yeni Rezervasyon — ${r.masaIsim || r.masaId}`,
+          mesaj: `${r.musteriAdi} (${r.telefon}) · 🕒 Randevu: ${r.tarih} ${r.saat} · ₺${r.toplamTutar}`,
+          tarih: r.olusturuldu || new Date().toISOString(),
+          okundu: Boolean(r.okundu),
+        }));
+
+        const map = new Map<string, NotificationItem>();
+        localList.forEach((n) => map.set(n.id, n));
+        serverNotifs.forEach((n) => map.set(n.id, n));
+
+        const merged = Array.from(map.values()).sort((a, b) => new Date(b.tarih).getTime() - new Date(a.tarih).getTime());
+        setNotifications(merged.slice(0, 15));
+        return;
+      }
+    } catch (e) {}
+
+    setNotifications(localList.slice(0, 15));
   };
 
   useEffect(() => {

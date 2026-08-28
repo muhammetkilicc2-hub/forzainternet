@@ -31,18 +31,37 @@ export default function AdminDashboardPage() {
         if (Array.isArray(parsed) && parsed.length > 0) setGalleryPhotos(parsed);
       }
     } catch (e) {}
+
+    const handleGalUpdate = (e: CustomEvent<any[]>) => {
+      if (e.detail && Array.isArray(e.detail)) setGalleryPhotos(e.detail);
+      else loadData();
+    };
+
+    window.addEventListener("forzaGaleriGuncellendi" as any, handleGalUpdate);
+    window.addEventListener("storage", loadData);
+
     const interval = setInterval(loadData, 10000); // 10 sn otomatik yenileme
-    return () => clearInterval(interval);
+    return () => {
+      window.removeEventListener("forzaGaleriGuncellendi" as any, handleGalUpdate);
+      window.removeEventListener("storage", loadData);
+      clearInterval(interval);
+    };
   }, []);
 
   async function loadData() {
     try {
-      const [resPc, resRez] = await Promise.all([
+      const [resPc, resRez, resGal] = await Promise.all([
         fetch("/api/computers", { cache: "no-store" }),
         fetch("/api/reservations", { cache: "no-store" }),
+        fetch("/api/gallery", { cache: "no-store" }),
       ]);
       const dataPc = await resPc.json();
       const dataRez = await resRez.json();
+      const dataGal = await resGal.json();
+
+      if (dataGal.photos && Array.isArray(dataGal.photos) && dataGal.photos.length > 0) {
+        setGalleryPhotos(dataGal.photos);
+      }
 
       if (dataPc.computers && Array.isArray(dataPc.computers)) {
         setComputers(dataPc.computers);

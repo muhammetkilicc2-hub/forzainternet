@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAdminSettings, updateAdminSettings } from "@/lib/data";
+import { getAdminSettings, updateAdminSettings, getGalleryPhotos, updateGalleryPhotos } from "@/lib/data";
 import { getSession } from "@/lib/auth";
 
 export async function GET() {
@@ -15,6 +15,7 @@ export async function GET() {
       adminUser: settings.adminUser,
       adminEmail: settings.adminEmail,
       adminAvatar: settings.adminAvatar,
+      aboutCoverPhoto: settings.aboutCoverPhoto,
       cafeName: settings.cafeName,
       cafePhone: settings.cafePhone,
       soundEnabled: settings.soundEnabled,
@@ -22,6 +23,7 @@ export async function GET() {
       refreshInterval: settings.refreshInterval,
       sifreSonDegismeTarihi: settings.sifreSonDegismeTarihi,
       updatedAt: settings.updatedAt,
+      galleryPhotos: getGalleryPhotos(),
     },
   });
 }
@@ -45,18 +47,16 @@ export async function POST(request: Request) {
         );
       }
 
-      const validMasterPasswords = [
-        current.adminPass,
-        "ForzaAdmin2026!*",
-        "Forza2026@Espor!",
-        "forza2026!",
-        "1234",
-        process.env.ADMIN_PASSWORD || "",
-      ].filter(Boolean);
+      const activePassword = (current.adminPass || "1234").trim();
+      const inputCurrentPassword = body.currentPassword.trim();
 
-      if (!validMasterPasswords.includes(body.currentPassword.trim())) {
+      const isCurrentValid =
+        inputCurrentPassword === activePassword ||
+        (process.env.ADMIN_PASSWORD && inputCurrentPassword === process.env.ADMIN_PASSWORD.trim());
+
+      if (!isCurrentValid) {
         return NextResponse.json(
-          { error: "Mevcut şifre hatalı!" },
+          { error: "Mevcut şifreniz hatalı!" },
           { status: 400 }
         );
       }
@@ -75,18 +75,26 @@ export async function POST(request: Request) {
     if (body.adminUser) current.adminUser = body.adminUser.trim();
     if (body.adminEmail) current.adminEmail = body.adminEmail.trim();
     if (body.adminAvatar !== undefined) current.adminAvatar = body.adminAvatar;
+    if (body.aboutCoverPhoto !== undefined) current.aboutCoverPhoto = body.aboutCoverPhoto;
     if (body.cafeName) current.cafeName = body.cafeName.trim();
     if (body.cafePhone) current.cafePhone = body.cafePhone.trim();
     if (body.soundEnabled !== undefined) current.soundEnabled = Boolean(body.soundEnabled);
     if (body.autoRefresh !== undefined) current.autoRefresh = Boolean(body.autoRefresh);
     if (body.refreshInterval !== undefined) current.refreshInterval = Number(body.refreshInterval);
 
+    if (Array.isArray(body.galleryPhotos)) {
+      updateGalleryPhotos(body.galleryPhotos);
+    }
+
     const updated = updateAdminSettings(current);
 
     return NextResponse.json({
       success: true,
       message: "Yönetici ayarları ve şifresi başarıyla güncellendi!",
-      settings: updated,
+      settings: {
+        ...updated,
+        galleryPhotos: getGalleryPhotos(),
+      },
     });
   } catch (error) {
     return NextResponse.json(

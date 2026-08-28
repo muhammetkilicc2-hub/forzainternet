@@ -130,8 +130,8 @@
 
                 <div class="card">
                     <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                    <h3>Gece Boyu Açık</h3>
-                    <p>Haftanın 7 günü 09:00 - 04:00 arası kesintisiz espor keyfi.</p>
+                    <h3>7/24 Kesintisiz Açık</h3>
+                    <p>Haftanın 7 günü 24 saat kesintisiz espor keyfi.</p>
                 </div>
 
                 <div class="card">
@@ -173,8 +173,8 @@
 
                 <div class="card">
                     <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                    <h3>Gece Boyu Açık</h3>
-                    <p>Haftanın 7 günü 09:00 - 04:00 arası kesintisiz espor keyfi.</p>
+                    <h3>7/24 Kesintisiz Açık</h3>
+                    <p>Haftanın 7 günü 24 saat kesintisiz espor keyfi.</p>
                 </div>
 
                 <div class="card">
@@ -332,9 +332,9 @@
             </div>
         </section>
 
-        <!-- PLAYER REVIEWS & RATINGS -->
+        <!-- PLAYER REVIEWS & RATINGS ACCORDION -->
         <section class="home-section" id="yorumlar">
-            <div class="home-section-header">
+            <div class="home-section-header" style="text-align: center;">
                 <span class="home-section-tag">
                     <i class="fa-solid fa-star"></i> Oyuncu Değerlendirmeleri
                 </span>
@@ -344,66 +344,138 @@
                 </p>
             </div>
 
-            <div class="home-reviews-grid">
-                <div class="home-review-card">
-                    <div class="home-review-stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="home-review-text">
-                        "540Hz ekranlar ve RTX 4090 sistemler gerçekten başka bir seviye. Valorant turnuvamız için Yeşil masaları kapattık, sıfır ping ve muazzam FPS aldık. Antalya'da tek geçerim."
-                    </p>
-                    <div class="home-reviewer">
-                        <div class="home-reviewer-avatar">BK</div>
-                        <div class="home-reviewer-info">
-                            <strong>Batuhan K.</strong>
-                            <span>Espor Takım Kaptanı</span>
+            <div class="home-reviews-accordion-list">
+                <!-- Review 1 -->
+                <details class="home-review-accordion" open>
+                    <summary class="home-review-summary">
+                        <div class="home-review-header-left">
+                            <div class="home-reviewer-avatar">BK</div>
+                            <div class="home-reviewer-info">
+                                <strong>Batuhan K.</strong>
+                                <span>Espor Takım Kaptanı</span>
+                            </div>
+                        </div>
+                        <div class="home-review-header-right">
+                            <div class="home-review-stars">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </summary>
+                    <div class="home-review-body">
+                        <p class="home-review-quote">
+                            "540Hz BenQ ZOWIE ekranlar ve RTX 4090 sistemler gerçekten başka bir seviye. Turnuvamızda sıfır ping ve 500+ FPS aldık. Akustik düzeni, kulaklıkları ve atmosferi Antalya'da tek geçerim."
+                        </p>
+                        <div class="home-review-tags">
+                            <span class="home-review-verified"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                            <span class="home-review-tag-item">540 Hz Espor</span>
+                            <span class="home-review-tag-item">RTX 4090</span>
+                            <span class="home-review-tag-item">Valorant Turnuva</span>
                         </div>
                     </div>
-                </div>
+                </details>
 
-                <div class="home-review-card">
-                    <div class="home-review-stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="home-review-text">
-                        "Online rezervasyon sistemi çok pratik, akşam saatlerinde yer kalmıyordu artık önceden masamı seçip geliyorum. Koltuklar aşırı rahat ve tostları çok lezzetli."
-                    </p>
-                    <div class="home-reviewer">
-                        <div class="home-reviewer-avatar">EY</div>
-                        <div class="home-reviewer-info">
-                            <strong>Emre Yılmaz</strong>
-                            <span>Düzenli Ziyaretçi</span>
+                <!-- Review 2 -->
+                <details class="home-review-accordion">
+                    <summary class="home-review-summary">
+                        <div class="home-review-header-left">
+                            <div class="home-reviewer-avatar">EY</div>
+                            <div class="home-reviewer-info">
+                                <strong>Emre Yılmaz</strong>
+                                <span>Düzenli Ziyaretçi</span>
+                            </div>
+                        </div>
+                        <div class="home-review-header-right">
+                            <div class="home-review-stars">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </summary>
+                    <div class="home-review-body">
+                        <p class="home-review-quote">
+                            "Online rezervasyon sistemi çok pratik, hafta sonları bile sıra beklemeden yerimi ayırtıp geliyorum. Koltuklar aşırı rahat, ortam ferah ve sıcak kaşarlı tostları çok lezzetli."
+                        </p>
+                        <div class="home-review-tags">
+                            <span class="home-review-verified"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                            <span class="home-review-tag-item">Hızlı Rezervasyon</span>
+                            <span class="home-review-tag-item">Ergonomik Koltuk</span>
+                            <span class="home-review-tag-item">Zengin Cafe Menüsü</span>
                         </div>
                     </div>
-                </div>
+                </details>
 
-                <div class="home-review-card">
-                    <div class="home-review-stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="home-review-text">
-                        "Kliması, havalandırması ve ortamı tertemiz. Personel çok ilgili, ekipmanlar sıfır ayarında. 5 saatlik paket fiyatı da çok uygun. Kesinlikle tavsiye ederim."
-                    </p>
-                    <div class="home-reviewer">
-                        <div class="home-reviewer-avatar">SD</div>
-                        <div class="home-reviewer-info">
-                            <strong>Serkan Demir</strong>
-                            <span>CS2 Oyuncusu</span>
+                <!-- Review 3 -->
+                <details class="home-review-accordion">
+                    <summary class="home-review-summary">
+                        <div class="home-review-header-left">
+                            <div class="home-reviewer-avatar">SD</div>
+                            <div class="home-reviewer-info">
+                                <strong>Serkan Demir</strong>
+                                <span>CS2 Oyuncusu</span>
+                            </div>
+                        </div>
+                        <div class="home-review-header-right">
+                            <div class="home-review-stars">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </summary>
+                    <div class="home-review-body">
+                        <p class="home-review-quote">
+                            "Kliması, havalandırması ve ortamı tertemiz. Personel çok ilgili, ekipmanlar sıfır ayarında. 1000 Mbps fiber altyapı ile 3ms sabit ping alıyoruz. Kesinlikle tavsiye ederim."
+                        </p>
+                        <div class="home-review-tags">
+                            <span class="home-review-verified"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                            <span class="home-review-tag-item">1000 Mbps Fiber</span>
+                            <span class="home-review-tag-item">3ms Ping</span>
+                            <span class="home-review-tag-item">CS2 Turnuva</span>
                         </div>
                     </div>
-                </div>
+                </details>
+
+                <!-- Review 4 -->
+                <details class="home-review-accordion">
+                    <summary class="home-review-summary">
+                        <div class="home-review-header-left">
+                            <div class="home-reviewer-avatar">CA</div>
+                            <div class="home-reviewer-info">
+                                <strong>Caner Aydın</strong>
+                                <span>Espor Yayıncısı &amp; Oyuncu</span>
+                            </div>
+                        </div>
+                        <div class="home-review-header-right">
+                            <div class="home-review-stars">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </summary>
+                    <div class="home-review-body">
+                        <p class="home-review-quote">
+                            "Arkadaşlarla 5'li takım olarak geldik. SteelSeries Nova kulaklıklar ve Logitech G Pro fareler ile kusursuz bir rekabetçi ortam sağlanmış. 5 saatlik paket avantajı da çok cazip."
+                        </p>
+                        <div class="home-review-tags">
+                            <span class="home-review-verified"><i class="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                            <span class="home-review-tag-item">5v5 Takım Oyunu</span>
+                            <span class="home-review-tag-item">Pro Ekipmanlar</span>
+                            <span class="home-review-tag-item">Avantajlı Paket</span>
+                        </div>
+                    </div>
+                </details>
             </div>
         </section>
 
@@ -456,7 +528,7 @@
                 <div class="home-contact-info">
                     <h3>Forza Gaming &amp; İnternet Cafe'ye Bekleriz</h3>
                     <p><i class="fa-solid fa-location-dot" style="color: #ffd700;"></i> Kültür Mh. 3809 Sk. No:14 Muratpaşa / Antalya</p>
-                    <p><i class="fa-solid fa-clock" style="color: #ffd700;"></i> Haftanın Her Günü: 09:00 - 04:00 Kesintisiz Açık</p>
+                    <p><i class="fa-solid fa-clock" style="color: #ffd700;"></i> 7 Gün 24 Saat Kesintisiz Açık</p>
                     <p><i class="fa-solid fa-phone" style="color: #ffd700;"></i> 0 (546) 465 96 93</p>
                 </div>
 
@@ -520,7 +592,7 @@
                 <h3>İletişim &amp; Konum</h3>
                 <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Kültür Mh. 3809 Sk. Muratpaşa, Antalya</p>
                 <p><i class="fa-solid fa-phone" aria-hidden="true"></i> 0 (546) 465 96 93</p>
-                <p><i class="fa-solid fa-clock" aria-hidden="true"></i> Her Gün: 09:00 - 04:00</p>
+                <p><i class="fa-solid fa-clock" aria-hidden="true"></i> 7/24 Kesintisiz Açık</p>
             </div>
         </div>
 

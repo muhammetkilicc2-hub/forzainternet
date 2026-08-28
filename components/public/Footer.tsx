@@ -30,7 +30,7 @@ export default function Footer() {
             <i className="fa-solid fa-phone" aria-hidden="true"></i> 0 (546) 465 96 93
           </p>
           <p>
-            <i className="fa-solid fa-clock" aria-hidden="true"></i> Her Gün: 09:00 - 04:00
+            <i className="fa-solid fa-clock" aria-hidden="true"></i> 7/24 Kesintisiz Açık
           </p>
         </div>
       </div>

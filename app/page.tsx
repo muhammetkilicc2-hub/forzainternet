@@ -88,8 +88,8 @@ export default function HomePage() {
 
             <div className="card">
               <i className="fa-solid fa-clock" aria-hidden="true"></i>
-              <h3>Gece Boyu Açık</h3>
-              <p>Haftanın 7 günü 09:00 - 04:00 arası kesintisiz espor keyfi.</p>
+              <h3>7/24 Kesintisiz Açık</h3>
+              <p>Haftanın 7 günü 24 saat kesintisiz espor keyfi.</p>
             </div>
 
             <div className="card">
@@ -131,8 +131,8 @@ export default function HomePage() {
 
             <div className="card">
               <i className="fa-solid fa-clock" aria-hidden="true"></i>
-              <h3>Gece Boyu Açık</h3>
-              <p>Haftanın 7 günü 09:00 - 04:00 arası kesintisiz espor keyfi.</p>
+              <h3>7/24 Kesintisiz Açık</h3>
+              <p>Haftanın 7 günü 24 saat kesintisiz espor keyfi.</p>
             </div>
 
             <div className="card">
@@ -290,9 +290,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* PLAYER REVIEWS & RATINGS */}
+        {/* PLAYER REVIEWS & RATINGS ACCORDION */}
         <section className="home-section" id="yorumlar">
-          <div className="home-section-header">
+          <div className="home-section-header" style={{ textAlign: "center" }}>
             <span className="home-section-tag">
               <i className="fa-solid fa-star"></i> Oyuncu Değerlendirmeleri
             </span>
@@ -302,66 +302,138 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="home-reviews-grid">
-            <div className="home-review-card">
-              <div className="home-review-stars">
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-              </div>
-              <p className="home-review-text">
-                "540Hz ekranlar ve RTX 4090 sistemler gerçekten başka bir seviye. Valorant turnuvamız için Yeşil masaları kapattık, sıfır ping ve muazzam FPS aldık. Antalya'da tek geçerim."
-              </p>
-              <div className="home-reviewer">
-                <div className="home-reviewer-avatar">BK</div>
-                <div className="home-reviewer-info">
-                  <strong>Batuhan K.</strong>
-                  <span>Espor Takım Kaptanı</span>
+          <div className="home-reviews-accordion-list">
+            {/* Review 1 */}
+            <details className="home-review-accordion" open>
+              <summary className="home-review-summary">
+                <div className="home-review-header-left">
+                  <div className="home-reviewer-avatar">BK</div>
+                  <div className="home-reviewer-info">
+                    <strong>Batuhan K.</strong>
+                    <span>Espor Takım Kaptanı</span>
+                  </div>
+                </div>
+                <div className="home-review-header-right">
+                  <div className="home-review-stars">
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                  </div>
+                </div>
+              </summary>
+              <div className="home-review-body">
+                <p className="home-review-quote">
+                  "540Hz BenQ ZOWIE ekranlar ve RTX 4090 sistemler gerçekten başka bir seviye. Turnuvamızda sıfır ping ve 500+ FPS aldık. Akustik düzeni, kulaklıkları ve atmosferi Antalya'da tek geçerim."
+                </p>
+                <div className="home-review-tags">
+                  <span className="home-review-verified"><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                  <span className="home-review-tag-item">540 Hz Espor</span>
+                  <span className="home-review-tag-item">RTX 4090</span>
+                  <span className="home-review-tag-item">Valorant Turnuva</span>
                 </div>
               </div>
-            </div>
+            </details>
 
-            <div className="home-review-card">
-              <div className="home-review-stars">
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-              </div>
-              <p className="home-review-text">
-                "Online rezervasyon sistemi çok pratik, akşam saatlerinde yer kalmıyordu artık önceden masamı seçip geliyorum. Koltuklar aşırı rahat ve tostları çok lezzetli."
-              </p>
-              <div className="home-reviewer">
-                <div className="home-reviewer-avatar">EY</div>
-                <div className="home-reviewer-info">
-                  <strong>Emre Yılmaz</strong>
-                  <span>Düzenli Ziyaretçi</span>
+            {/* Review 2 */}
+            <details className="home-review-accordion">
+              <summary className="home-review-summary">
+                <div className="home-review-header-left">
+                  <div className="home-reviewer-avatar">EY</div>
+                  <div className="home-reviewer-info">
+                    <strong>Emre Yılmaz</strong>
+                    <span>Düzenli Ziyaretçi</span>
+                  </div>
+                </div>
+                <div className="home-review-header-right">
+                  <div className="home-review-stars">
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                  </div>
+                </div>
+              </summary>
+              <div className="home-review-body">
+                <p className="home-review-quote">
+                  "Online rezervasyon sistemi çok pratik, hafta sonları bile sıra beklemeden yerimi ayırtıp geliyorum. Koltuklar aşırı rahat, ortam ferah ve sıcak kaşarlı tostları çok lezzetli."
+                </p>
+                <div className="home-review-tags">
+                  <span className="home-review-verified"><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                  <span className="home-review-tag-item">Hızlı Rezervasyon</span>
+                  <span className="home-review-tag-item">Ergonomik Koltuk</span>
+                  <span className="home-review-tag-item">Zengin Cafe Menüsü</span>
                 </div>
               </div>
-            </div>
+            </details>
 
-            <div className="home-review-card">
-              <div className="home-review-stars">
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-              </div>
-              <p className="home-review-text">
-                "Kliması, havalandırması ve ortamı tertemiz. Personel çok ilgili, ekipmanlar sıfır ayarında. 5 saatlik paket fiyatı da çok uygun. Kesinlikle tavsiye ederim."
-              </p>
-              <div className="home-reviewer">
-                <div className="home-reviewer-avatar">SD</div>
-                <div className="home-reviewer-info">
-                  <strong>Serkan Demir</strong>
-                  <span>CS2 Oyuncusu</span>
+            {/* Review 3 */}
+            <details className="home-review-accordion">
+              <summary className="home-review-summary">
+                <div className="home-review-header-left">
+                  <div className="home-reviewer-avatar">SD</div>
+                  <div className="home-reviewer-info">
+                    <strong>Serkan Demir</strong>
+                    <span>CS2 Oyuncusu</span>
+                  </div>
+                </div>
+                <div className="home-review-header-right">
+                  <div className="home-review-stars">
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                  </div>
+                </div>
+              </summary>
+              <div className="home-review-body">
+                <p className="home-review-quote">
+                  "Kliması, havalandırması ve ortamı tertemiz. Personel çok ilgili, ekipmanlar sıfır ayarında. 1000 Mbps fiber altyapı ile 3ms sabit ping alıyoruz. Kesinlikle tavsiye ederim."
+                </p>
+                <div className="home-review-tags">
+                  <span className="home-review-verified"><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                  <span className="home-review-tag-item">1000 Mbps Fiber</span>
+                  <span className="home-review-tag-item">3ms Ping</span>
+                  <span className="home-review-tag-item">CS2 Turnuva</span>
                 </div>
               </div>
-            </div>
+            </details>
+
+            {/* Review 4 */}
+            <details className="home-review-accordion">
+              <summary className="home-review-summary">
+                <div className="home-review-header-left">
+                  <div className="home-reviewer-avatar">CA</div>
+                  <div className="home-reviewer-info">
+                    <strong>Caner Aydın</strong>
+                    <span>Espor Yayıncısı &amp; Oyuncu</span>
+                  </div>
+                </div>
+                <div className="home-review-header-right">
+                  <div className="home-review-stars">
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                  </div>
+                </div>
+              </summary>
+              <div className="home-review-body">
+                <p className="home-review-quote">
+                  "Arkadaşlarla 5'li takım olarak geldik. SteelSeries Nova kulaklıklar ve Logitech G Pro fareler ile kusursuz bir rekabetçi ortam sağlanmış. 5 saatlik paket avantajı da çok cazip."
+                </p>
+                <div className="home-review-tags">
+                  <span className="home-review-verified"><i className="fa-solid fa-circle-check"></i> Doğrulanmış Oyuncu</span>
+                  <span className="home-review-tag-item">5v5 Takım Oyunu</span>
+                  <span className="home-review-tag-item">Pro Ekipmanlar</span>
+                  <span className="home-review-tag-item">Avantajlı Paket</span>
+                </div>
+              </div>
+            </details>
           </div>
         </section>
 
@@ -414,7 +486,7 @@ export default function HomePage() {
             <div className="home-contact-info">
               <h3>Forza Gaming &amp; İnternet Cafe'ye Bekleriz</h3>
               <p><i className="fa-solid fa-location-dot" style={{ color: "#ffd700" }}></i> Kültür Mh. 3809 Sk. No:14 Muratpaşa / Antalya</p>
-              <p><i className="fa-solid fa-clock" style={{ color: "#ffd700" }}></i> Haftanın Her Günü: 09:00 - 04:00 Kesintisiz Açık</p>
+              <p><i className="fa-solid fa-clock" style={{ color: "#ffd700" }}></i> 7 Gün 24 Saat Kesintisiz Açık</p>
               <p><i className="fa-solid fa-phone" style={{ color: "#ffd700" }}></i> 0 (546) 465 96 93</p>
             </div>
 

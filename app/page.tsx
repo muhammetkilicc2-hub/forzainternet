@@ -1,10 +1,18 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
 
 export default function HomePage() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const toggleFaq = (index: number) => {
+    setOpenFaq((prev) => (prev === index ? null : index));
+  };
+
   return (
     <>
       <Navbar />
@@ -14,7 +22,7 @@ export default function HomePage() {
         <header className="home-header">
           <div className="hero-pill-badge">
             <span className="badge-dot"></span>
-            🟢 Şu An Açık | Her Gün 09:00 - 04:00
+            🟢 7/24 Kesintisiz Açık | Antalya Espor &amp; Gaming Merkezi
           </div>
 
           <h1 className="para1">FORZA GAMING &amp; INTERNET CAFE</h1>
@@ -433,42 +441,86 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="home-faq-list" style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%", margin: "0 auto", textAlign: "left" }}>
-            <details className="home-faq-item" style={{ background: "rgba(18, 24, 38, 0.85)", border: "1px solid rgba(255, 255, 255, 0.1)", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.25)" }} open>
-              <summary className="home-faq-summary" style={{ padding: "18px 20px", fontFamily: "'Sora', sans-serif", fontSize: "15px", fontWeight: 700, color: "#ffffff", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", listStyle: "none", userSelect: "none" }}>
-                <span>Rezervasyon yaptırdıktan sonra ne zaman gelmeliyim?</span>
-              </summary>
-              <div className="home-faq-body" style={{ padding: "0 20px 18px", fontSize: "13.5px", color: "#94a3b8", lineHeight: 1.6 }}>
-                Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek seçtiğiniz masaya anında oturabilirsiniz.
+          <div className="home-faq-list">
+            {/* Soru 1 */}
+            <div className={`home-faq-item ${openFaq === 0 ? "active" : ""}`}>
+              <button
+                type="button"
+                className="home-faq-header"
+                onClick={() => toggleFaq(0)}
+                aria-expanded={openFaq === 0}
+              >
+                <span className="home-faq-question-text">Rezervasyon yaptırdıktan sonra ne zaman gelmeliyim?</span>
+                <span className="home-faq-icon" aria-hidden="true">
+                  <i className="fa-solid fa-play"></i>
+                </span>
+              </button>
+              <div className="home-faq-collapse">
+                <div className="home-faq-body">
+                  Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek seçtiğiniz masaya anında oturabilirsiniz.
+                </div>
               </div>
-            </details>
+            </div>
 
-            <details className="home-faq-item" style={{ background: "rgba(18, 24, 38, 0.85)", border: "1px solid rgba(255, 255, 255, 0.1)", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.25)" }}>
-              <summary className="home-faq-summary" style={{ padding: "18px 20px", fontFamily: "'Sora', sans-serif", fontSize: "15px", fontWeight: 700, color: "#ffffff", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", listStyle: "none", userSelect: "none" }}>
-                <span>Bilgisayarlarda hangi oyunlar ve programlar hazır?</span>
-              </summary>
-              <div className="home-faq-body" style={{ padding: "0 20px 18px", fontSize: "13.5px", color: "#94a3b8", lineHeight: 1.6 }}>
-                Valorant, CS2, League of Legends, GTA V, FC24 (FIFA), PUBG, Call of Duty Warzone, Apex Legends, Rust, Dota 2, R6 Siege ve Steam kütüphanesindeki yüzlerce oyun en son güncellemeleriyle hazır olarak yüklüdür.
+            {/* Soru 2 */}
+            <div className={`home-faq-item ${openFaq === 1 ? "active" : ""}`}>
+              <button
+                type="button"
+                className="home-faq-header"
+                onClick={() => toggleFaq(1)}
+                aria-expanded={openFaq === 1}
+              >
+                <span className="home-faq-question-text">Bilgisayarlarda hangi oyunlar ve programlar hazır?</span>
+                <span className="home-faq-icon" aria-hidden="true">
+                  <i className="fa-solid fa-play"></i>
+                </span>
+              </button>
+              <div className="home-faq-collapse">
+                <div className="home-faq-body">
+                  Valorant, CS2, League of Legends, GTA V, FC24 (FIFA), PUBG, Call of Duty Warzone, Apex Legends, Rust, Dota 2, R6 Siege ve Steam kütüphanesindeki yüzlerce oyun en son güncellemeleriyle hazır olarak yüklüdür.
+                </div>
               </div>
-            </details>
+            </div>
 
-            <details className="home-faq-item" style={{ background: "rgba(18, 24, 38, 0.85)", border: "1px solid rgba(255, 255, 255, 0.1)", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.25)" }}>
-              <summary className="home-faq-summary" style={{ padding: "18px 20px", fontFamily: "'Sora', sans-serif", fontSize: "15px", fontWeight: 700, color: "#ffffff", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", listStyle: "none", userSelect: "none" }}>
-                <span>5 Saatlik ve Gün Boyu paketler nasıl çalışır?</span>
-              </summary>
-              <div className="home-faq-body" style={{ padding: "0 20px 18px", fontSize: "13.5px", color: "#94a3b8", lineHeight: 1.6 }}>
-                5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz masaya giriş yaptığınız andan itibaren başlar.
+            {/* Soru 3 */}
+            <div className={`home-faq-item ${openFaq === 2 ? "active" : ""}`}>
+              <button
+                type="button"
+                className="home-faq-header"
+                onClick={() => toggleFaq(2)}
+                aria-expanded={openFaq === 2}
+              >
+                <span className="home-faq-question-text">5 Saatlik ve Gün Boyu paketler nasıl çalışır?</span>
+                <span className="home-faq-icon" aria-hidden="true">
+                  <i className="fa-solid fa-play"></i>
+                </span>
+              </button>
+              <div className="home-faq-collapse">
+                <div className="home-faq-body">
+                  5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz masaya giriş yaptığınız andan itibaren başlar.
+                </div>
               </div>
-            </details>
+            </div>
 
-            <details className="home-faq-item" style={{ background: "rgba(18, 24, 38, 0.85)", border: "1px solid rgba(255, 255, 255, 0.1)", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.25)" }}>
-              <summary className="home-faq-summary" style={{ padding: "18px 20px", fontFamily: "'Sora', sans-serif", fontSize: "15px", fontWeight: 700, color: "#ffffff", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", listStyle: "none", userSelect: "none" }}>
-                <span>Kendi mouse, kulaklık veya klavyemi getirebilir miyim?</span>
-              </summary>
-              <div className="home-faq-body" style={{ padding: "0 20px 18px", fontSize: "13.5px", color: "#94a3b8", lineHeight: 1.6 }}>
-                Elbette! Tüm masalarımızda yüksek kaliteli profesyonel ekipmanlar bulunmaktadır ancak dileyen oyuncularımız kendi özel mouse, mousepad veya kulaklıklarını takıp kullanabilirler.
+            {/* Soru 4 */}
+            <div className={`home-faq-item ${openFaq === 3 ? "active" : ""}`}>
+              <button
+                type="button"
+                className="home-faq-header"
+                onClick={() => toggleFaq(3)}
+                aria-expanded={openFaq === 3}
+              >
+                <span className="home-faq-question-text">Kendi mouse, kulaklık veya klavyemi getirebilir miyim?</span>
+                <span className="home-faq-icon" aria-hidden="true">
+                  <i className="fa-solid fa-play"></i>
+                </span>
+              </button>
+              <div className="home-faq-collapse">
+                <div className="home-faq-body">
+                  Elbette! Tüm masalarımızda yüksek kaliteli profesyonel ekipmanlar bulunmaktadır ancak dileyen oyuncularımız kendi özel mouse, mousepad veya kulaklıklarını takıp kullanabilirler.
+                </div>
               </div>
-            </details>
+            </div>
           </div>
         </section>
 

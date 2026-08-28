@@ -464,8 +464,8 @@
         </section>
 
         <!-- FAQ ACCORDION SECTION -->
-        <section class="home-section" id="sss" style="max-width: 800px; margin: 0 auto 80px; width: min(800px, calc(100% - 32px)); text-align: center;">
-            <div class="home-section-header" style="text-align: center; margin-bottom: 30px;">
+        <section class="home-section" id="sss">
+            <div class="home-section-header">
                 <span class="home-section-tag">
                     <i class="fa-solid fa-circle-question"></i> Sıkça Sorulan Sorular
                 </span>
@@ -475,42 +475,66 @@
                 </p>
             </div>
 
-            <div class="home-faq-list" style="display: flex; flex-direction: column; gap: 12px; width: 100%; margin: 0 auto; text-align: left;">
-                <details class="home-faq-item" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);" open>
-                    <summary class="home-faq-summary" style="padding: 18px 20px; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: #ffffff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; user-select: none;">
-                        <span>Rezervasyon yaptırdıktan sonra ne zaman gelmeliyim?</span>
-                    </summary>
-                    <div class="home-faq-body" style="padding: 0 20px 18px; font-size: 13.5px; color: #94a3b8; line-height: 1.6;">
-                        Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek seçtiğiniz masaya anında oturabilirsiniz.
+            <div class="home-faq-list">
+                <!-- Soru 1 -->
+                <div class="home-faq-item">
+                    <button type="button" class="home-faq-header" aria-expanded="false">
+                        <span class="home-faq-question-text">Rezervasyon yaptırdıktan sonra ne zaman gelmeliyim?</span>
+                        <span class="home-faq-icon" aria-hidden="true">
+                            <i class="fa-solid fa-play"></i>
+                        </span>
+                    </button>
+                    <div class="home-faq-collapse">
+                        <div class="home-faq-body">
+                            Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek seçtiğiniz masaya anında oturabilirsiniz.
+                        </div>
                     </div>
-                </details>
+                </div>
 
-                <details class="home-faq-item" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
-                    <summary class="home-faq-summary" style="padding: 18px 20px; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: #ffffff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; user-select: none;">
-                        <span>Bilgisayarlarda hangi oyunlar ve programlar hazır?</span>
-                    </summary>
-                    <div class="home-faq-body" style="padding: 0 20px 18px; font-size: 13.5px; color: #94a3b8; line-height: 1.6;">
-                        Valorant, CS2, League of Legends, GTA V, FC24 (FIFA), PUBG, Call of Duty Warzone, Apex Legends, Rust, Dota 2, R6 Siege ve Steam kütüphanesindeki yüzlerce oyun en son güncellemeleriyle hazır olarak yüklüdür.
+                <!-- Soru 2 -->
+                <div class="home-faq-item">
+                    <button type="button" class="home-faq-header" aria-expanded="false">
+                        <span class="home-faq-question-text">Bilgisayarlarda hangi oyunlar ve programlar hazır?</span>
+                        <span class="home-faq-icon" aria-hidden="true">
+                            <i class="fa-solid fa-play"></i>
+                        </span>
+                    </button>
+                    <div class="home-faq-collapse">
+                        <div class="home-faq-body">
+                            Valorant, CS2, League of Legends, GTA V, FC24 (FIFA), PUBG, Call of Duty Warzone, Apex Legends, Rust, Dota 2, R6 Siege ve Steam kütüphanesindeki yüzlerce oyun en son güncellemeleriyle hazır olarak yüklüdür.
+                        </div>
                     </div>
-                </details>
+                </div>
 
-                <details class="home-faq-item" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
-                    <summary class="home-faq-summary" style="padding: 18px 20px; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: #ffffff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; user-select: none;">
-                        <span>5 Saatlik ve Gün Boyu paketler nasıl çalışır?</span>
-                    </summary>
-                    <div class="home-faq-body" style="padding: 0 20px 18px; font-size: 13.5px; color: #94a3b8; line-height: 1.6;">
-                        5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz masaya giriş yaptığınız andan itibaren başlar.
+                <!-- Soru 3 -->
+                <div class="home-faq-item">
+                    <button type="button" class="home-faq-header" aria-expanded="false">
+                        <span class="home-faq-question-text">5 Saatlik ve Gün Boyu paketler nasıl çalışır?</span>
+                        <span class="home-faq-icon" aria-hidden="true">
+                            <i class="fa-solid fa-play"></i>
+                        </span>
+                    </button>
+                    <div class="home-faq-collapse">
+                        <div class="home-faq-body">
+                            5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz masaya giriş yaptığınız andan itibaren başlar.
+                        </div>
                     </div>
-                </details>
+                </div>
 
-                <details class="home-faq-item" style="background: rgba(18, 24, 38, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
-                    <summary class="home-faq-summary" style="padding: 18px 20px; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: #ffffff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; user-select: none;">
-                        <span>Kendi mouse, kulaklık veya klavyemi getirebilir miyim?</span>
-                    </summary>
-                    <div class="home-faq-body" style="padding: 0 20px 18px; font-size: 13.5px; color: #94a3b8; line-height: 1.6;">
-                        Elbette! Tüm masalarımızda yüksek kaliteli profesyonel ekipmanlar bulunmaktadır ancak dileyen oyuncularımız kendi özel mouse, mousepad veya kulaklıklarını takıp kullanabilirler.
+                <!-- Soru 4 -->
+                <div class="home-faq-item">
+                    <button type="button" class="home-faq-header" aria-expanded="false">
+                        <span class="home-faq-question-text">Kendi mouse, kulaklık veya klavyemi getirebilir miyim?</span>
+                        <span class="home-faq-icon" aria-hidden="true">
+                            <i class="fa-solid fa-play"></i>
+                        </span>
+                    </button>
+                    <div class="home-faq-collapse">
+                        <div class="home-faq-body">
+                            Elbette! Tüm masalarımızda yüksek kaliteli profesyonel ekipmanlar bulunmaktadır ancak dileyen oyuncularımız kendi özel mouse, mousepad veya kulaklıklarını takıp kullanabilirler.
+                        </div>
                     </div>
-                </details>
+                </div>
             </div>
         </section>
 

@@ -12,7 +12,6 @@ import {
   ExternalLink,
   LogOut,
   X,
-  Shield,
   Activity,
 } from "lucide-react";
 
@@ -46,8 +45,7 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
     { href: "/admin/ayarlar", label: "Sistem Ayarları", icon: Settings, desc: "Şifre, İletişim & Galeri" },
   ];
 
-  useEffect(() => {
-    // Load avatar from localStorage
+  const loadAvatarSettings = async () => {
     try {
       const raw = localStorage.getItem("forzaAyarlar");
       if (raw) {
@@ -55,6 +53,32 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
         if (data.adminAvatar) setAvatar(data.adminAvatar);
       }
     } catch (e) {}
+
+    try {
+      const res = await fetch("/api/auth/settings", { cache: "no-store" });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.settings && data.settings.adminAvatar) {
+          setAvatar(data.settings.adminAvatar);
+        }
+      }
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    loadAvatarSettings();
+
+    // Event listener for real-time avatar updates
+    const handleSettingsUpdate = (e: CustomEvent<any>) => {
+      if (e.detail && e.detail.adminAvatar !== undefined) {
+        setAvatar(e.detail.adminAvatar);
+      } else {
+        loadAvatarSettings();
+      }
+    };
+
+    window.addEventListener("forzaAyarlarGuncellendi" as any, handleSettingsUpdate);
+    window.addEventListener("storage", loadAvatarSettings);
 
     // Load unread reservations count and pc stats
     const fetchQuickStats = async () => {
@@ -82,7 +106,11 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
     fetchQuickStats();
     const interval = setInterval(fetchQuickStats, 5000);
 
-    return () => clearInterval(interval);
+    return () => {
+      window.removeEventListener("forzaAyarlarGuncellendi" as any, handleSettingsUpdate);
+      window.removeEventListener("storage", loadAvatarSettings);
+      clearInterval(interval);
+    };
   }, []);
 
   const handleLogout = async () => {
@@ -106,12 +134,24 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
       )}
 
       <aside className={`admin-sidebar ${isOpen ? "open" : ""}`}>
-        {/* Brand Header */}
+        {/* Brand Header with Avatar / "F" Badge */}
         <div className="admin-sidebar-header">
           <div className="admin-sidebar-brand">
-            <div className="admin-sidebar-logo-badge">
-              {avatar ? <img src={avatar} alt="Admin" /> : <Shield size={20} />}
-            </div>
+            <Link
+              href="/admin/ayarlar"
+              className="admin-sidebar-logo-badge"
+              title={avatar ? "Profil Fotoğrafını Değiştir" : "Admin Profili"}
+            >
+              {avatar ? (
+                <img
+                  src={avatar}
+                  alt="Admin Profil Fotoğrafı"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              ) : (
+                <span className="brand-badge-f">F</span>
+              )}
+            </Link>
             <div className="admin-sidebar-title-group">
               <div className="admin-sidebar-brand-name">
                 FORZA <span className="brand-gold">GAMING</span>

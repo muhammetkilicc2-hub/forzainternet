@@ -307,10 +307,12 @@ export default function MasalarManagementPage() {
         ) : filtered.length === 0 ? (
           <p style={{ textAlign: "center", padding: "30px", color: "#94a3b8" }}>Eşleşen masa bulunamadı.</p>
         ) : (
-          <div className="computer-status-grid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(76px, 1fr))", gap: "12px" }}>
+          <div className="computer-status-grid">
             {filtered.map((pc) => {
               const original = serverSnapshot.find((s) => s.id === pc.id);
               const isModified = original && original.durum !== pc.durum;
+              const displayDurum =
+                pc.durum === "kullanimda" ? "KULLANIMDA" : pc.durum === "rezerve" ? "REZERVE" : "BOŞ";
 
               return (
                 <div
@@ -318,13 +320,11 @@ export default function MasalarManagementPage() {
                   onClick={() => toggleStatus(pc)}
                   className={`computer-item ${pc.durum === "kullanimda" ? "busy" : pc.durum === "rezerve" ? "reserved" : "available"}`}
                   style={{
-                    height: "68px",
                     position: "relative",
                     border: isModified ? "2px solid #10b981" : undefined,
-                    boxShadow: isModified ? "0 0 12px rgba(16, 185, 129, 0.4)" : undefined,
-                    cursor: "pointer",
+                    boxShadow: isModified ? "0 0 14px rgba(16, 185, 129, 0.45)" : undefined,
                   }}
-                  title={`${pc.isim} — Şu anki durum: ${pc.durum.toUpperCase()} (Tıklayarak değiştirin)`}
+                  title={`${pc.isim} — Durum: ${displayDurum} (Değiştirmek için dokunun)`}
                 >
                   {isModified && (
                     <span
@@ -332,16 +332,16 @@ export default function MasalarManagementPage() {
                         position: "absolute",
                         top: "-5px",
                         right: "-5px",
-                        width: "10px",
-                        height: "10px",
+                        width: "11px",
+                        height: "11px",
                         borderRadius: "50%",
                         background: "#10b981",
-                        boxShadow: "0 0 6px #10b981",
+                        boxShadow: "0 0 8px #10b981",
                       }}
                     />
                   )}
-                  <span className="computer-number" style={{ fontSize: "14px" }}>{pc.isim}</span>
-                  <span className="computer-status">{pc.durum}</span>
+                  <span className="computer-number">{pc.isim}</span>
+                  <span className="computer-status">{displayDurum}</span>
                 </div>
               );
             })}

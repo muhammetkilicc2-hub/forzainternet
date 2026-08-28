@@ -143,25 +143,62 @@ export default function AyarlarPage() {
 
       const data = await res.json();
       if (res.ok && data.success && data.url) {
-        setAvatar(data.url);
-        showToast("Profil Fotoğrafı Yüklendi", "Kalıcı olması için aşağıdaki 'Değişiklikleri Kaydet' butonuna basınız.", "info");
+        const avatarUrl = data.url;
+        setAvatar(avatarUrl);
+
+        // Sunucuya anında kaydet
+        try {
+          await fetch("/api/auth/settings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ adminAvatar: avatarUrl }),
+          });
+        } catch (e) {}
+
+        // Tarayıcı hafızasına yaz ve canlı event fırlat
+        try {
+          const raw = localStorage.getItem("forzaAyarlar");
+          const cur = raw ? JSON.parse(raw) : {};
+          cur.adminAvatar = avatarUrl;
+          localStorage.setItem("forzaAyarlar", JSON.stringify(cur));
+          window.dispatchEvent(new CustomEvent("forzaAyarlarGuncellendi", { detail: { adminAvatar: avatarUrl } }));
+          window.dispatchEvent(new Event("storage"));
+        } catch (e) {}
+
+        showToast("Profil Fotoğrafı Güncellendi 🎉", "Yeni fotoğrafınız başarıyla yüklendi ve sol üstteki logoya yerleştirildi.", "success");
       } else {
-        throw new Error();
+        throw new Error(data.error || "Yükleme başarısız");
       }
     } catch {
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        if (evt.target?.result) {
-          setAvatar(evt.target.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
+      showToast("Hata", "Fotoğraf sunucuya yüklenemedi.", "error");
+    } finally {
+      e.target.value = "";
     }
   };
 
-  const handleAvatarRemove = () => {
+  const handleAvatarRemove = async () => {
     setAvatar(null);
-    showToast("Profil Fotoğrafı Sıfırlandı (Taslak)", "Varsayılan logoya dönüldü. Kaydet butonuna basarak onaylayın.", "info");
+
+    // Sunucuya null kaydet
+    try {
+      await fetch("/api/auth/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ adminAvatar: null }),
+      });
+    } catch (e) {}
+
+    // Tarayıcı hafızasını güncelle ve canlı event fırlat
+    try {
+      const raw = localStorage.getItem("forzaAyarlar");
+      const cur = raw ? JSON.parse(raw) : {};
+      cur.adminAvatar = null;
+      localStorage.setItem("forzaAyarlar", JSON.stringify(cur));
+      window.dispatchEvent(new CustomEvent("forzaAyarlarGuncellendi", { detail: { adminAvatar: null } }));
+      window.dispatchEvent(new Event("storage"));
+    } catch (e) {}
+
+    showToast("Profil Fotoğrafı Sıfırlandı", "Varsayılan 'F' logosuna dönüldü.", "info");
   };
 
   // 1. Hakkımızda Ana Vitrin Görseli Yükleme

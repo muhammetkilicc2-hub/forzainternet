@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Shield, Eye, EyeOff, Lock, User, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 
 function LoginForm() {
   const router = useRouter();
@@ -15,6 +16,7 @@ function LoginForm() {
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(null);
 
   // Şifremi Unuttum State
   const [showForgotModal, setShowForgotModal] = useState(false);
@@ -27,6 +29,17 @@ function LoginForm() {
   const [showResetPass, setShowResetPass] = useState(false);
   const [showConfirmResetPass, setShowConfirmResetPass] = useState(false);
   const [forgotMsg, setForgotMsg] = useState<{ text: string; type: "success" | "error" } | null>(null);
+
+  useEffect(() => {
+    // Load avatar if exists
+    try {
+      const raw = localStorage.getItem("forzaAyarlar");
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (data.adminAvatar) setAvatar(data.adminAvatar);
+      }
+    } catch (e) {}
+  }, []);
 
   const handleSendResetCode = () => {
     const inputClean = forgotEmail.trim().toLowerCase();
@@ -147,93 +160,119 @@ function LoginForm() {
 
   return (
     <div
-      className="login-box"
       style={{
         width: "100%",
-        maxWidth: "380px",
-        background: "rgba(14, 18, 26, 0.94)",
-        border: "1px solid rgba(247, 242, 232, 0.22)",
-        borderRadius: "28px",
-        padding: "36px 28px",
-        boxShadow: "0 20px 60px rgba(0, 0, 0, 0.8)",
+        maxWidth: "420px",
+        background: "rgba(14, 18, 26, 0.95)",
+        border: "1px solid rgba(255, 215, 0, 0.25)",
+        borderRadius: "24px",
+        padding: "36px 30px",
+        boxShadow: "0 25px 70px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 215, 0, 0.08)",
         backdropFilter: "blur(30px)",
+        WebkitBackdropFilter: "blur(30px)",
         textAlign: "center",
+        boxSizing: "border-box",
       }}
     >
+      {/* Top Logo Badge */}
       <div
-        className="forza-logo-badge"
         style={{
-          width: "56px",
-          height: "56px",
-          fontSize: "24px",
+          width: "60px",
+          height: "60px",
           margin: "0 auto 16px",
           borderRadius: "16px",
-          background: "linear-gradient(135deg, #ffffff, #ede3d1)",
-          color: "#07090d",
+          background: "linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05))",
+          border: "1px solid rgba(255, 215, 0, 0.5)",
+          color: "#ffd700",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontWeight: 800,
-          boxShadow: "0 8px 24px rgba(245, 238, 219, 0.3)",
+          fontSize: "26px",
+          fontWeight: 900,
+          boxShadow: "0 0 24px rgba(255, 215, 0, 0.25)",
+          overflow: "hidden",
         }}
       >
-        F
+        {avatar ? (
+          <img src={avatar} alt="Admin Profil" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        ) : (
+          "F"
+        )}
       </div>
 
-      <h2 style={{ fontSize: "22px", fontWeight: 800, color: "#fdfbf7", margin: "0 0 6px" }}>
+      <h2 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", margin: "0 0 6px", letterSpacing: "-0.3px" }}>
         Forza Yönetici Girişi
       </h2>
-      <p style={{ fontSize: "12.5px", color: "#94a3b8", margin: "0 0 24px" }}>
-        Güvenli Apple Obsidian Studio Paneli
+      <p style={{ fontSize: "13px", color: "#94a3b8", margin: "0 0 24px" }}>
+        Güvenli Obsidian Studio Yönetim Portalı
       </p>
 
       {errorMsg && (
         <div
           style={{
-            padding: "10px",
+            padding: "11px 14px",
             borderRadius: "12px",
             background: "rgba(244, 63, 94, 0.15)",
-            border: "1px solid rgba(244, 63, 94, 0.4)",
-            color: "#f43f5e",
-            fontSize: "12.5px",
-            marginBottom: "16px",
+            border: "1px solid rgba(244, 63, 94, 0.35)",
+            color: "#fb7185",
+            fontSize: "13px",
+            marginBottom: "18px",
             fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            textAlign: "left",
           }}
         >
-          ✕ {errorMsg}
+          <AlertCircle size={16} style={{ flexShrink: 0 }} />
+          <span>{errorMsg}</span>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         <div style={{ textAlign: "left" }}>
-          <label style={{ fontSize: "11.5px", color: "#94a3b8", display: "block", marginBottom: "4px", fontWeight: 700 }}>
+          <label style={{ fontSize: "11.5px", color: "#cbd5e1", display: "block", marginBottom: "6px", fontWeight: 700, letterSpacing: "0.5px" }}>
             KULLANICI ADI
           </label>
-          <input
-            type="text"
-            required
-            autoFocus
-            placeholder="admin"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "12px 14px",
-              borderRadius: "12px",
-              background: "rgba(247, 242, 232, 0.06)",
-              border: "1px solid rgba(247, 242, 232, 0.18)",
-              color: "#ffffff",
-              fontSize: "14px",
-              outline: "none",
-            }}
-          />
+          <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+            <User size={18} style={{ position: "absolute", left: "14px", color: "#64748b" }} />
+            <input
+              type="text"
+              required
+              autoFocus
+              placeholder="admin"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "13px 14px 13px 42px",
+                borderRadius: "12px",
+                background: "rgba(255, 255, 255, 0.04)",
+                border: "1px solid rgba(255, 255, 255, 0.12)",
+                color: "#ffffff",
+                fontSize: "14.5px",
+                outline: "none",
+                transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+                boxSizing: "border-box",
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = "rgba(255, 215, 0, 0.6)";
+                e.target.style.boxShadow = "0 0 16px rgba(255, 215, 0, 0.15)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "rgba(255, 255, 255, 0.12)";
+                e.target.style.boxShadow = "none";
+              }}
+            />
+          </div>
         </div>
 
         <div style={{ textAlign: "left" }}>
-          <label style={{ fontSize: "11.5px", color: "#94a3b8", display: "block", marginBottom: "4px", fontWeight: 700 }}>
+          <label style={{ fontSize: "11.5px", color: "#cbd5e1", display: "block", marginBottom: "6px", fontWeight: 700, letterSpacing: "0.5px" }}>
             ŞİFRE
           </label>
           <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+            <Lock size={18} style={{ position: "absolute", left: "14px", color: "#64748b" }} />
             <input
               type={showPass ? "text" : "password"}
               required
@@ -242,13 +281,23 @@ function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               style={{
                 width: "100%",
-                padding: "12px 42px 12px 14px",
+                padding: "13px 42px 13px 42px",
                 borderRadius: "12px",
-                background: "rgba(247, 242, 232, 0.06)",
-                border: "1px solid rgba(247, 242, 232, 0.18)",
+                background: "rgba(255, 255, 255, 0.04)",
+                border: "1px solid rgba(255, 255, 255, 0.12)",
                 color: "#ffffff",
-                fontSize: "14px",
+                fontSize: "14.5px",
                 outline: "none",
+                transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+                boxSizing: "border-box",
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = "rgba(255, 215, 0, 0.6)";
+                e.target.style.boxShadow = "0 0 16px rgba(255, 215, 0, 0.15)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "rgba(255, 255, 255, 0.12)";
+                e.target.style.boxShadow = "none";
               }}
             />
             <button
@@ -260,26 +309,25 @@ function LoginForm() {
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                color: showPass ? "#ffd700" : "#94a3b8",
-                fontSize: "15px",
+                color: showPass ? "#ffd700" : "#64748b",
                 padding: "4px",
                 display: "flex",
                 alignItems: "center",
               }}
               title={showPass ? "Şifreyi Gizle" : "Şifreyi Göster"}
             >
-              {showPass ? "👁️" : "🔒"}
+              {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "-2px" }}>
-          <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "#94a3b8", cursor: "pointer", userSelect: "none" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "2px" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: "7px", fontSize: "12.5px", color: "#94a3b8", cursor: "pointer", userSelect: "none" }}>
             <input
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              style={{ accentColor: "#ffd700", cursor: "pointer" }}
+              style={{ accentColor: "#ffd700", cursor: "pointer", width: "15px", height: "15px" }}
             />
             Beni Hatırla
           </label>
@@ -290,9 +338,9 @@ function LoginForm() {
             style={{
               background: "none",
               border: "none",
-              color: "var(--cream-gold)",
-              fontSize: "12px",
-              fontWeight: 600,
+              color: "#ffd700",
+              fontSize: "12.5px",
+              fontWeight: 700,
               cursor: "pointer",
               padding: 0,
             }}
@@ -305,32 +353,43 @@ function LoginForm() {
           type="submit"
           disabled={loading}
           style={{
-            marginTop: "8px",
+            marginTop: "10px",
             width: "100%",
             padding: "14px",
             borderRadius: "12px",
-            background: "linear-gradient(135deg, #ffffff 0%, #f7f2e8 50%, #ede3d1 100%)",
-            color: "#07090d",
+            background: "linear-gradient(135deg, #ffd700 0%, #d4af37 50%, #b8860b 100%)",
+            color: "#000000",
             fontWeight: 800,
             fontSize: "15px",
             border: "none",
             cursor: loading ? "wait" : "pointer",
-            boxShadow: "0 6px 20px rgba(245, 238, 219, 0.3)",
-            transition: "transform 0.15s ease",
+            boxShadow: "0 6px 24px rgba(255, 215, 0, 0.35)",
+            transition: "all 0.2s ease",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
           }}
         >
-          {loading ? "Giriş Yapılıyor..." : "Giriş Yap ➔"}
+          {loading ? (
+            "Giriş Yapılıyor..."
+          ) : (
+            <>
+              <span>Güvenli Giriş Yap</span>
+              <ArrowRight size={17} />
+            </>
+          )}
         </button>
       </form>
 
       {/* Şifremi Unuttum Modal */}
       {showForgotModal && (
         <div className="modal-overlay" style={{ display: "flex" }}>
-          <div className="modal-card">
+          <div className="modal-card" style={{ maxWidth: "420px" }}>
             <div className="modal-header">
               <div>
                 <h3 style={{ fontSize: "17px", fontWeight: 800, color: "#fdfbf7", margin: 0 }}>🔐 Şifre Sıfırlama</h3>
-                <span style={{ fontSize: "12px", color: "#94a3b8" }}>E-posta veya telefon numaranıza kod üretilir</span>
+                <span style={{ fontSize: "12px", color: "#94a3b8" }}>E-posta veya telefonunuza güvenlik kodu üretilir</span>
               </div>
               <button
                 type="button"
@@ -347,7 +406,7 @@ function LoginForm() {
 
             {forgotStep === 1 ? (
               <div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "14px", textAlign: "left" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "16px", textAlign: "left" }}>
                   <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--cream-300)" }}>
                     Kayıtlı E-Posta veya Telefon
                   </label>
@@ -359,157 +418,127 @@ function LoginForm() {
                     style={{
                       width: "100%",
                       padding: "12px 14px",
-                      borderRadius: "12px",
-                      background: "rgba(247, 242, 232, 0.06)",
-                      border: "1px solid rgba(247, 242, 232, 0.18)",
+                      borderRadius: "10px",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
                       color: "#ffffff",
                       fontSize: "14px",
                       outline: "none",
+                      boxSizing: "border-box",
                     }}
                   />
                 </div>
                 <button
                   type="button"
                   onClick={handleSendResetCode}
-                  className="primary-btn"
-                  style={{ width: "100%" }}
+                  style={{
+                    width: "100%",
+                    padding: "12px",
+                    borderRadius: "10px",
+                    background: "linear-gradient(135deg, #ffd700, #b8860b)",
+                    color: "#000",
+                    fontWeight: 800,
+                    fontSize: "14px",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
                 >
-                  📩 Doğrulama Kodu Üret &amp; Gönder
+                  Güvenlik Kodu Üret &amp; Devam Et
                 </button>
               </div>
             ) : (
               <div>
-                {generatedCode && (
-                  <div style={{ marginBottom: "12px" }}>
-                    <a
-                      href={`https://wa.me/905464659693?text=${encodeURIComponent(`*FORZA YÖNETİCİ ŞİFRE SIFIRLAMA*\nGüvenlik Kodunuz: ${generatedCode}\nBu kodu girerek yeni şifrenizi belirleyebilirsiniz.`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="primary-btn"
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "16px", textAlign: "left" }}>
+                  <div>
+                    <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--cream-300)", display: "block", marginBottom: "4px" }}>
+                      6 Haneli Güvenlik Kodu
+                    </label>
+                    <input
+                      type="text"
+                      maxLength={6}
+                      placeholder="6 haneli kodu girin"
+                      value={verifyCode}
+                      onChange={(e) => setVerifyCode(e.target.value)}
                       style={{
                         width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "8px",
-                        background: "#25D366",
-                        color: "#fff",
-                        textDecoration: "none",
-                        padding: "10px",
-                        borderRadius: "12px",
-                        fontWeight: 700,
-                        fontSize: "13px",
+                        padding: "12px 14px",
+                        borderRadius: "10px",
+                        background: "rgba(255, 255, 255, 0.05)",
+                        border: "1px solid rgba(255, 255, 255, 0.15)",
+                        color: "#ffd700",
+                        fontSize: "16px",
+                        fontWeight: 800,
+                        letterSpacing: "4px",
+                        textAlign: "center",
+                        outline: "none",
+                        boxSizing: "border-box",
                       }}
-                    >
-                      📲 WhatsApp ile Kodu Telefona İlet
-                    </a>
+                    />
                   </div>
-                )}
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "10px", textAlign: "left" }}>
-                  <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--cream-300)" }}>6 Haneli Güvenlik Kodu</label>
-                  <input
-                    type="text"
-                    maxLength={6}
-                    placeholder="Örn: 849201"
-                    value={verifyCode}
-                    onChange={(e) => setVerifyCode(e.target.value)}
-                    style={{
-                      width: "100%",
-                      padding: "12px 14px",
-                      borderRadius: "12px",
-                      background: "rgba(247, 242, 232, 0.06)",
-                      border: "1px solid rgba(247, 242, 232, 0.18)",
-                      color: "#ffffff",
-                      fontSize: "14px",
-                      outline: "none",
-                    }}
-                  />
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "10px", textAlign: "left" }}>
-                  <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--cream-300)" }}>Yeni Şifre</label>
-                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+
+                  <div>
+                    <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--cream-300)", display: "block", marginBottom: "4px" }}>
+                      Yeni Şifre
+                    </label>
                     <input
                       type={showResetPass ? "text" : "password"}
-                      placeholder="En az 3 karakter"
+                      placeholder="Yeni şifreniz"
                       value={newResetPass}
                       onChange={(e) => setNewResetPass(e.target.value)}
                       style={{
                         width: "100%",
-                        padding: "12px 42px 12px 14px",
-                        borderRadius: "12px",
-                        background: "rgba(247, 242, 232, 0.06)",
-                        border: "1px solid rgba(247, 242, 232, 0.18)",
+                        padding: "12px 14px",
+                        borderRadius: "10px",
+                        background: "rgba(255, 255, 255, 0.05)",
+                        border: "1px solid rgba(255, 255, 255, 0.15)",
                         color: "#ffffff",
                         fontSize: "14px",
                         outline: "none",
+                        boxSizing: "border-box",
                       }}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowResetPass(!showResetPass)}
-                      style={{
-                        position: "absolute",
-                        right: "12px",
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: showResetPass ? "#ffd700" : "#94a3b8",
-                        fontSize: "15px",
-                        padding: "4px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      {showResetPass ? "👁️" : "🔒"}
-                    </button>
                   </div>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "14px", textAlign: "left" }}>
-                  <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--cream-300)" }}>Yeni Şifre (Tekrar)</label>
-                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+
+                  <div>
+                    <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--cream-300)", display: "block", marginBottom: "4px" }}>
+                      Yeni Şifre Tekrarı
+                    </label>
                     <input
                       type={showConfirmResetPass ? "text" : "password"}
-                      placeholder="Yeni şifreyi tekrar yazın"
+                      placeholder="Yeni şifrenizi tekrar girin"
                       value={confirmResetPass}
                       onChange={(e) => setConfirmResetPass(e.target.value)}
                       style={{
                         width: "100%",
-                        padding: "12px 42px 12px 14px",
-                        borderRadius: "12px",
-                        background: "rgba(247, 242, 232, 0.06)",
-                        border: "1px solid rgba(247, 242, 232, 0.18)",
+                        padding: "12px 14px",
+                        borderRadius: "10px",
+                        background: "rgba(255, 255, 255, 0.05)",
+                        border: "1px solid rgba(255, 255, 255, 0.15)",
                         color: "#ffffff",
                         fontSize: "14px",
                         outline: "none",
+                        boxSizing: "border-box",
                       }}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmResetPass(!showConfirmResetPass)}
-                      style={{
-                        position: "absolute",
-                        right: "12px",
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: showConfirmResetPass ? "#ffd700" : "#94a3b8",
-                        fontSize: "15px",
-                        padding: "4px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      {showConfirmResetPass ? "👁️" : "🔒"}
-                    </button>
                   </div>
                 </div>
+
                 <button
                   type="button"
                   onClick={handleConfirmResetPass}
-                  className="primary-btn"
-                  style={{ width: "100%" }}
+                  style={{
+                    width: "100%",
+                    padding: "12px",
+                    borderRadius: "10px",
+                    background: "linear-gradient(135deg, #10b981, #059669)",
+                    color: "#fff",
+                    fontWeight: 800,
+                    fontSize: "14px",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
                 >
-                  ✓ Şifreyi Güncelle &amp; Kaydet
+                  ✓ Şifreyi Güncelle &amp; Giriş Yap
                 </button>
               </div>
             )}
@@ -517,7 +546,7 @@ function LoginForm() {
             {forgotMsg && (
               <div
                 style={{
-                  fontSize: "12px",
+                  fontSize: "12.5px",
                   fontWeight: 600,
                   marginTop: "14px",
                   textAlign: "center",
@@ -536,10 +565,13 @@ function LoginForm() {
           href="/"
           style={{
             color: "#94a3b8",
-            fontSize: "12px",
+            fontSize: "13px",
             textDecoration: "none",
             transition: "color 0.15s ease",
+            fontWeight: 600,
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#ffd700")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
         >
           ← Ana Sayfaya Geri Dön
         </Link>
@@ -556,8 +588,9 @@ export default function LoginPage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "radial-gradient(circle at 50% 0%, rgba(245, 238, 219, 0.08) 0%, transparent 70%), #07090d",
+        background: "radial-gradient(circle at 50% 15%, rgba(255, 215, 0, 0.08) 0%, transparent 60%), #07090e",
         padding: "20px",
+        boxSizing: "border-box",
       }}
     >
       <Suspense fallback={<div style={{ color: "#94a3b8", fontSize: "14px" }}>Yükleniyor...</div>}>

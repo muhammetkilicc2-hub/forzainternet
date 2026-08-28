@@ -318,16 +318,21 @@ export default function AdminDashboardPage() {
             <div style={{ textAlign: "center", padding: "30px", color: "#94a3b8" }}>Yükleniyor...</div>
           ) : (
             <div className="computer-status-grid" style={{ marginTop: "12px" }}>
-              {filteredPcs.slice(0, 12).map((pc) => (
-                <div
-                  key={pc.id}
-                  onClick={() => togglePcStatus(pc)}
-                  className={`computer-item ${pc.durum === "kullanimda" ? "busy" : pc.durum === "rezerve" ? "reserved" : "available"}`}
-                >
-                  <span className="computer-number">{pc.isim}</span>
-                  <span className="computer-status">{pc.durum}</span>
-                </div>
-              ))}
+              {filteredPcs.slice(0, 12).map((pc) => {
+                const displayDurum =
+                  pc.durum === "kullanimda" ? "KULLANIMDA" : pc.durum === "rezerve" ? "REZERVE" : "BOŞ";
+                return (
+                  <div
+                    key={pc.id}
+                    onClick={() => togglePcStatus(pc)}
+                    className={`computer-item ${pc.durum === "kullanimda" ? "busy" : pc.durum === "rezerve" ? "reserved" : "available"}`}
+                    title={`${pc.isim} — Durum: ${displayDurum}`}
+                  >
+                    <span className="computer-number">{pc.isim}</span>
+                    <span className="computer-status">{displayDurum}</span>
+                  </div>
+                );
+              })}
             </div>
           )}
 

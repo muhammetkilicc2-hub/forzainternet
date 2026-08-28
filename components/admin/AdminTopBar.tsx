@@ -1,15 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Menu,
   Bell,
-  LogOut,
   CalendarCheck,
   CheckCheck,
-  Globe,
   ShieldCheck,
 } from "lucide-react";
 
@@ -28,20 +25,18 @@ interface NotificationItem {
 }
 
 export default function AdminTopBar({
-  subtitle = "Forza Studio",
   onToggleSidebar,
 }: AdminTopBarProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [avatar, setAvatar] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const getPageTitle = () => {
-    if (pathname === "/admin") return { title: "Genel Bakış", tag: "Panel" };
+    if (pathname === "/admin") return { title: "Genel Bakış & Metrikler", tag: "Ana Sayfa" };
     if (pathname === "/admin/masalar") return { title: "Masa & PC Yönetimi", tag: "Masalar" };
-    if (pathname === "/admin/kampanya") return { title: "Fiyat & Kampanyalar", tag: "Tarifeler" };
+    if (pathname === "/admin/kampanya") return { title: "Fiyat & Kampanya Yönetimi", tag: "Tarifeler" };
     if (pathname === "/admin/rezervasyonlar") return { title: "Rezervasyon Talepleri", tag: "Talepler" };
     if (pathname === "/admin/ayarlar") return { title: "Sistem & Güvenlik Ayarları", tag: "Ayarlar" };
     return { title: "Yönetim Paneli", tag: "Admin" };
@@ -89,14 +84,6 @@ export default function AdminTopBar({
   };
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("forzaAyarlar");
-      if (raw) {
-        const data = JSON.parse(raw);
-        if (data.adminAvatar) setAvatar(data.adminAvatar);
-      }
-    } catch (e) {}
-
     loadNotifications();
 
     const handleNotifUpdate = (e: CustomEvent<NotificationItem[]>) => {
@@ -133,15 +120,6 @@ export default function AdminTopBar({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-      router.push("/giris");
-    } catch {
-      router.push("/giris");
-    }
-  };
 
   const handleMarkAllRead = () => {
     const updated = notifications.map((n) => ({ ...n, okundu: true }));
@@ -202,19 +180,8 @@ export default function AdminTopBar({
         {/* Live Indicator */}
         <div className="admin-live-badge" title="Sistem Aktif ve Bağlı">
           <span className="live-dot-pulse"></span>
-          <span className="live-text-desktop">Sistem Canlı</span>
+          <span>Canlı Sistem</span>
         </div>
-
-        {/* View Main Website Button */}
-        <Link
-          href="/"
-          target="_blank"
-          className="admin-quick-web-btn"
-          title="Ana Sayfayı Gör"
-        >
-          <Globe size={16} />
-          <span>Siteyi Gör</span>
-        </Link>
 
         {/* BİLDİRİM KUTUSU & DROPDOWN */}
         <div className="notification-wrapper" ref={dropdownRef}>
@@ -285,24 +252,6 @@ export default function AdminTopBar({
               </div>
             </div>
           )}
-        </div>
-
-        {/* User Mini Profile Avatar & Logout */}
-        <div className="admin-user-profile-menu">
-          <div className="admin-mini-avatar" title="Yönetici">
-            {avatar ? <img src={avatar} alt="Admin" /> : "F"}
-          </div>
-
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="admin-logout-action-btn"
-            title="Güvenli Çıkış Yap"
-            aria-label="Çıkış"
-          >
-            <LogOut size={16} />
-            <span className="logout-text-desktop">Çıkış</span>
-          </button>
         </div>
       </div>
     </header>

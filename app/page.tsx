@@ -356,7 +356,7 @@ export default function HomePage() {
         </section>
 
         {/* LOCATION & QUICK CONTACT ACCORDION BANNER */}
-        <section className="home-section" id="iletisim" style={{ maxWidth: "820px", margin: "0 auto 80px", width: "min(820px, calc(100% - 32px))", textAlign: "center" }}>
+        <section className="home-section" id="iletisim" style={{ maxWidth: "820px", margin: "0 auto 36px", width: "min(820px, calc(100% - 32px))", textAlign: "center" }}>
           <div className="home-contact-banner" style={{ background: "linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(14, 165, 233, 0.08) 50%, rgba(18, 24, 38, 0.95) 100%)", border: "1px solid rgba(255, 215, 0, 0.35)", borderRadius: "28px", padding: "42px 32px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", width: "100%", boxShadow: "0 12px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.1)", gap: "20px" }}>
             <div style={{ width: "52px", height: "52px", borderRadius: "50%", background: "linear-gradient(135deg, #ffd700, #b8860b)", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px", boxShadow: "0 0 16px rgba(255,215,0,0.4)", margin: "0 auto 4px" }}>
               <i className="fa-solid fa-location-dot"></i>

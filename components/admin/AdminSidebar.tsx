@@ -137,7 +137,7 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
         {/* Navigation Menu */}
         <div className="admin-sidebar-nav-container">
           <div className="admin-sidebar-section-title">YÖNETİM MENÜSÜ</div>
-          <nav className="admin-sidebar-nav" aria-label="Sol Kenar Çubuğu Menüsü">
+          <div className="admin-sidebar-nav" role="navigation" aria-label="Sol Kenar Çubuğu Menüsü">
             {menuItems.map((item) => {
               const IconComp = item.icon;
               const isActive = pathname === item.href;
@@ -167,7 +167,7 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
                 </Link>
               );
             })}
-          </nav>
+          </div>
         </div>
 
         {/* Live System Mini Stats Widget */}

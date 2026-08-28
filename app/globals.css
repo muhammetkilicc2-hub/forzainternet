@@ -206,8 +206,7 @@ button, input {
 /* =========================================================
    3. NAVIGATION (PREMIUM FLOATING GLASS)
    ========================================================= */
-nav.public-navbar,
-nav:not(.ios-tab-bar) {
+nav.public-navbar {
     position: fixed;
     top: 16px;
     left: 50%;
@@ -231,8 +230,7 @@ nav:not(.ios-tab-bar) {
                 transform var(--duration-normal) var(--spring-smooth);
 }
 
-nav.public-navbar.scrolled,
-nav:not(.ios-tab-bar).scrolled {
+nav.public-navbar.scrolled {
     background: var(--bg-glass-heavy);
     border-color: rgba(255, 255, 255, 0.14);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
@@ -2015,8 +2013,7 @@ footer,
 
 /* --- 2. TABLET EKRANLARI (769px - 1024px) --- */
 @media (min-width: 769px) and (max-width: 1024px) {
-    nav.public-navbar,
-    nav:not(.ios-tab-bar) {
+    nav.public-navbar {
         width: calc(100% - 40px);
     }
     .kampanya-kartlari {
@@ -2048,8 +2045,7 @@ footer,
     }
 
     /* Top Nav: Kompakt iOS Status Header */
-    nav.public-navbar,
-    nav:not(.ios-tab-bar) {
+    nav.public-navbar {
         top: 8px;
         left: 50%;
         transform: translateX(-50%);

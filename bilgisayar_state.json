@@ -1,0 +1,386 @@
+[
+  {
+    "id": "pc-1",
+    "no": 1,
+    "isim": "PC 1",
+    "kategori": "sari",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.702Z"
+  },
+  {
+    "id": "pc-2",
+    "no": 2,
+    "isim": "PC 2",
+    "kategori": "sari",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.704Z"
+  },
+  {
+    "id": "pc-4",
+    "no": 4,
+    "isim": "PC 4",
+    "kategori": "sari",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.706Z"
+  },
+  {
+    "id": "pc-5",
+    "no": 5,
+    "isim": "PC 5",
+    "kategori": "sari",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.707Z"
+  },
+  {
+    "id": "pc-6",
+    "no": 6,
+    "isim": "PC 6",
+    "kategori": "sari",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.709Z"
+  },
+  {
+    "id": "pc-8",
+    "no": 8,
+    "isim": "PC 8",
+    "kategori": "sari",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.711Z"
+  },
+  {
+    "id": "pc-9",
+    "no": 9,
+    "isim": "PC 9",
+    "kategori": "sari",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.713Z"
+  },
+  {
+    "id": "pc-10",
+    "no": 10,
+    "isim": "PC 10",
+    "kategori": "sari",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.716Z"
+  },
+  {
+    "id": "pc-11",
+    "no": 11,
+    "isim": "PC 11",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.717Z"
+  },
+  {
+    "id": "pc-12",
+    "no": 12,
+    "isim": "PC 12",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.720Z"
+  },
+  {
+    "id": "pc-14",
+    "no": 14,
+    "isim": "PC 14",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.722Z"
+  },
+  {
+    "id": "pc-15",
+    "no": 15,
+    "isim": "PC 15",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.724Z"
+  },
+  {
+    "id": "pc-16",
+    "no": 16,
+    "isim": "PC 16",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.726Z"
+  },
+  {
+    "id": "pc-17",
+    "no": 17,
+    "isim": "PC 17",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.728Z"
+  },
+  {
+    "id": "pc-18",
+    "no": 18,
+    "isim": "PC 18",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.729Z"
+  },
+  {
+    "id": "pc-20",
+    "no": 20,
+    "isim": "PC 20",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.732Z"
+  },
+  {
+    "id": "pc-22",
+    "no": 22,
+    "isim": "PC 22",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.734Z"
+  },
+  {
+    "id": "pc-24",
+    "no": 24,
+    "isim": "PC 24",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.736Z"
+  },
+  {
+    "id": "pc-25",
+    "no": 25,
+    "isim": "PC 25",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.737Z"
+  },
+  {
+    "id": "pc-26",
+    "no": 26,
+    "isim": "PC 26",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.739Z"
+  },
+  {
+    "id": "pc-27",
+    "no": 27,
+    "isim": "PC 27",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.740Z"
+  },
+  {
+    "id": "pc-28",
+    "no": 28,
+    "isim": "PC 28",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.742Z"
+  },
+  {
+    "id": "pc-29",
+    "no": 29,
+    "isim": "PC 29",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.744Z"
+  },
+  {
+    "id": "pc-31",
+    "no": 31,
+    "isim": "PC 31",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.746Z"
+  },
+  {
+    "id": "pc-32",
+    "no": 32,
+    "isim": "PC 32",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.747Z"
+  },
+  {
+    "id": "pc-33",
+    "no": 33,
+    "isim": "PC 33",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.749Z"
+  },
+  {
+    "id": "pc-34",
+    "no": 34,
+    "isim": "PC 34",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.752Z"
+  },
+  {
+    "id": "pc-36",
+    "no": 36,
+    "isim": "PC 36",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.753Z"
+  },
+  {
+    "id": "pc-37",
+    "no": 37,
+    "isim": "PC 37",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.755Z"
+  },
+  {
+    "id": "pc-38",
+    "no": 38,
+    "isim": "PC 38",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.757Z"
+  },
+  {
+    "id": "pc-40",
+    "no": 40,
+    "isim": "PC 40",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.758Z"
+  },
+  {
+    "id": "pc-42",
+    "no": 42,
+    "isim": "PC 42",
+    "kategori": "mavi",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.760Z"
+  },
+  {
+    "id": "pc-43",
+    "no": 43,
+    "isim": "PC 43",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.762Z"
+  },
+  {
+    "id": "pc-44",
+    "no": 44,
+    "isim": "PC 44",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.764Z"
+  },
+  {
+    "id": "pc-45",
+    "no": 45,
+    "isim": "PC 45",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.767Z"
+  },
+  {
+    "id": "pc-46",
+    "no": 46,
+    "isim": "PC 46",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.768Z"
+  },
+  {
+    "id": "pc-47",
+    "no": 47,
+    "isim": "PC 47",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.771Z"
+  },
+  {
+    "id": "pc-48",
+    "no": 48,
+    "isim": "PC 48",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.773Z"
+  },
+  {
+    "id": "pc-49",
+    "no": 49,
+    "isim": "PC 49",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.774Z"
+  },
+  {
+    "id": "pc-50",
+    "no": 50,
+    "isim": "PC 50",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.776Z"
+  },
+  {
+    "id": "pc-51",
+    "no": 51,
+    "isim": "PC 51",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.778Z"
+  },
+  {
+    "id": "pc-52",
+    "no": 52,
+    "isim": "PC 52",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.780Z"
+  },
+  {
+    "id": "pc-54",
+    "no": 54,
+    "isim": "PC 54",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.782Z"
+  },
+  {
+    "id": "pc-55",
+    "no": 55,
+    "isim": "PC 55",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.784Z"
+  },
+  {
+    "id": "pc-56",
+    "no": 56,
+    "isim": "PC 56",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.785Z"
+  },
+  {
+    "id": "pc-57",
+    "no": 57,
+    "isim": "PC 57",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.787Z"
+  },
+  {
+    "id": "pc-59",
+    "no": 59,
+    "isim": "PC 59",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.788Z"
+  },
+  {
+    "id": "pc-60",
+    "no": 60,
+    "isim": "PC 60",
+    "kategori": "yesil",
+    "durum": "bos",
+    "guncellemeTarihi": "2026-08-28T21:20:22.790Z"
+  }
+]

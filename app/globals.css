@@ -9,19 +9,19 @@
    ========================================================= */
 :root {
     /* =========================================================
-       1. APPLE LUXURY OBSIDIAN BLACK & GOLD PALETTE
+       1. APPLE LUXURY JET BLACK, CHAMPAGNE GOLD & CRISP WHITE
        ========================================================= */
-    --a-bg: #080b11;
-    --bg-main: #080b11;
-    --a-surface: #101624;
-    --bg-surface: #101624;
-    --a-surface-soft: #141c2e;
-    --bg-surface-elevated: #162035;
-    --a-surface-card: rgba(18, 24, 38, 0.94);
-    --bg-surface-card: rgba(18, 24, 38, 0.94);
-    --a-surface-glass: rgba(16, 22, 35, 0.9);
-    --bg-glass: rgba(14, 20, 32, 0.92);
-    --bg-glass-heavy: rgba(10, 14, 24, 0.98);
+    --a-bg: #000000;
+    --bg-main: #000000;
+    --a-surface: #0a0a0e;
+    --bg-surface: #0a0a0e;
+    --a-surface-soft: #121217;
+    --bg-surface-elevated: #16161d;
+    --a-surface-card: rgba(18, 18, 24, 0.96);
+    --bg-surface-card: rgba(18, 18, 24, 0.96);
+    --a-surface-glass: rgba(20, 20, 26, 0.92);
+    --bg-glass: rgba(16, 16, 22, 0.92);
+    --bg-glass-heavy: rgba(10, 10, 14, 0.98);
 
     /* =========================================================
        2. APPLE RICH WARM CREAM & CHAMPAGNE PALETTE
@@ -32,7 +32,7 @@
     --cream-300: #ede3d1;
     --cream-400: #dfcfb4;
     --cream-accent: #f5eedb;
-    --cream-gold: #ffd700;
+    --cream-gold: #dfb758;
     --cream-pill: rgba(247, 242, 232, 0.14);
     
     /* High Contrast Cream Borders & Highlights */
@@ -40,20 +40,20 @@
     --cream-border-strong: rgba(247, 242, 232, 0.45);
     --cream-glow: rgba(245, 238, 219, 0.28);
     --cream-gradient: linear-gradient(135deg, #ffffff 0%, #f7f2e8 50%, #ede3d1 100%);
-    --gold-cream-gradient: linear-gradient(135deg, #fff4d4 0%, #ffd700 60%, #cca400 100%);
+    --gold-cream-gradient: linear-gradient(135deg, #fff4d4 0%, #dfb758 60%, #b8860b 100%);
 
     /* =========================================================
        3. GOLD & VIBRANT ACCENTS
        ========================================================= */
-    --a-accent: #ffd700;
-    --gold: #ffd700;
-    --a-accent-hover: #ffe04d;
-    --gold-hover: #ffe04d;
-    --a-accent-soft: rgba(255, 215, 0, 0.16);
-    --gold-dim: rgba(255, 215, 0, 0.16);
-    --a-accent-glow: rgba(255, 215, 0, 0.35);
-    --gold-glow: rgba(255, 215, 0, 0.35);
-    --gold-gradient: linear-gradient(135deg, #ffe066 0%, #ffd700 50%, #cca400 100%);
+    --a-accent: #dfb758;
+    --gold: #dfb758;
+    --a-accent-hover: #eed58e;
+    --gold-hover: #eed58e;
+    --a-accent-soft: rgba(223, 183, 88, 0.16);
+    --gold-dim: rgba(223, 183, 88, 0.16);
+    --a-accent-glow: rgba(223, 183, 88, 0.35);
+    --gold-glow: rgba(223, 183, 88, 0.35);
+    --gold-gradient: linear-gradient(135deg, #fff2cc 0%, #dfb758 50%, #b8860b 100%);
 
     /* =========================================================
        4. SEMANTIC STATUS ACCENTS (SUCCESS / DANGER / WARNING / INFO)
@@ -162,11 +162,11 @@ html {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: radial-gradient(circle at 15% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 45%),
-                radial-gradient(circle at 85% 15%, rgba(255, 215, 0, 0.07) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.05) 0%, transparent 45%),
-                radial-gradient(circle at 80% 85%, rgba(52, 211, 153, 0.05) 0%, transparent 45%),
-                #0c111d;
+    background: #000000;
+    background-image:
+        radial-gradient(circle at 50% 0%, rgba(223, 183, 88, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 10% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 70%, rgba(223, 183, 88, 0.06) 0%, transparent 45%);
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
@@ -6700,10 +6700,12 @@ body.login-page {
     display: flex;
     min-height: 100vh;
     width: 100%;
-    background: radial-gradient(circle at 15% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 45%),
-                radial-gradient(circle at 85% 20%, rgba(255, 215, 0, 0.07) 0%, transparent 40%),
-                #0c111d;
-    color: #f8fafc;
+    background: #000000;
+    background-image: 
+        radial-gradient(circle at 15% 0%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 15%, rgba(223, 183, 88, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+    color: #ffffff;
     position: relative;
     box-sizing: border-box;
 }
@@ -6718,17 +6720,17 @@ body.login-page {
     top: 0;
     left: 0;
     bottom: 0;
-    background: rgba(18, 25, 42, 0.98);
+    background: rgba(10, 10, 14, 0.98);
     backdrop-filter: blur(32px) saturate(180%);
     -webkit-backdrop-filter: blur(32px) saturate(180%);
-    border-right: 1px solid rgba(255, 255, 255, 0.16);
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 20px 16px;
     box-sizing: border-box;
     z-index: 99999;
-    box-shadow: 6px 0 35px rgba(0, 0, 0, 0.65), inset -1px 0 0 rgba(255, 255, 255, 0.08);
+    box-shadow: 8px 0 35px rgba(0, 0, 0, 0.85), inset -1px 0 0 rgba(255, 255, 255, 0.08);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
@@ -6876,10 +6878,20 @@ body.login-page {
 }
 
 .admin-sidebar-link.active {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    color: #000000 !important;
+    background: #ffffff !important;
+    border: 1px solid #ffffff !important;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.4), 0 0 10px rgba(223, 183, 88, 0.3) !important;
+}
+
+.admin-sidebar-link.active .admin-sidebar-link-label {
+    color: #000000 !important;
+    font-weight: 900 !important;
+}
+
+.admin-sidebar-link.active .admin-sidebar-link-desc {
+    color: #444444 !important;
+    font-weight: 600 !important;
 }
 
 .admin-sidebar-link-left {
@@ -6908,10 +6920,10 @@ body.login-page {
 }
 
 .admin-sidebar-link.active .admin-sidebar-link-icon {
-    background: #ffffff;
-    color: #0b0f19;
-    box-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
-    border-color: #ffffff;
+    background: #000000 !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
 }
 
 .admin-sidebar-link-text {
@@ -6930,10 +6942,6 @@ body.login-page {
     color: #94a3b8;
     font-weight: 500;
     margin-top: 2px;
-}
-
-.admin-sidebar-link.active .admin-sidebar-link-desc {
-    color: #cbd5e1;
 }
 
 .admin-sidebar-badge {

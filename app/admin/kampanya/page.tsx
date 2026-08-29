@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useToast } from "@/components/admin/Toast";
 import { PricingConfig, PcKategori } from "@/lib/types";
-import { Clock, Zap, SunMedium, Save, Sparkles, CheckCircle2, Monitor, Cpu } from "lucide-react";
+import { Clock, Zap, SunMedium, Save, Sparkles, Monitor } from "lucide-react";
 
 export default function KampanyaManagementPage() {
   const { showToast } = useToast();
@@ -79,46 +79,27 @@ export default function KampanyaManagementPage() {
     hzTag: string;
     title: string;
     subtitle: string;
-    specs: string[];
   }[] = [
     {
       id: "sari",
       badgeName: "STANDART GAMING",
-      hzTag: "144 Hz Espor Ekran",
+      hzTag: "144 Hz",
       title: "Sarı Masalar",
-      subtitle: "144 Hz Espor Ekran • RTX 3060 • Intel i5 • 16 GB RAM",
-      specs: [
-        "144 Hz Gaming Espor Monitör",
-        "Nvidia GeForce RTX 3060",
-        "Intel Core i5 Yüksek Performans",
-        "16 GB DDR4 Yüksek Hızlı RAM",
-      ],
+      subtitle: "144 Hz Espor Gaming Monitör",
     },
     {
       id: "mavi",
       badgeName: "PRO ESPOR GAMING",
-      hzTag: "240 Hz Espor Ekran",
+      hzTag: "240 Hz",
       title: "Mavi Masalar",
-      subtitle: "240 Hz Espor Ekran • RTX 3060 OC • Intel i5 • 16 GB RAM",
-      specs: [
-        "240 Hz Ultra Espor Monitör",
-        "Nvidia GeForce RTX 3060 OC",
-        "Intel Core i5 Gaming İşlemci",
-        "16 GB DDR4 Yüksek Hızlı RAM",
-      ],
+      subtitle: "240 Hz Ultra Espor Monitör",
     },
     {
       id: "yesil",
       badgeName: "ULTRA VIP ESPOR",
-      hzTag: "360 – 540 Hz Espor",
+      hzTag: "360 – 540 Hz",
       title: "Yeşil Masalar (VIP)",
-      subtitle: "360-540 Hz Turnuva Ekranı • RTX 3070 Ti / 5060 • Ryzen 7 7800X3D • 32 GB DDR5",
-      specs: [
-        "360-540 Hz Turnuva Monitörü",
-        "RTX 3070 Ti / RTX 5060",
-        "AMD Ryzen 7 7800X3D Canavarı",
-        "32 GB DDR5 Yüksek Frekans RAM",
-      ],
+      subtitle: "360 – 540 Hz Turnuva Espor Ekranı",
     },
   ];
 
@@ -168,12 +149,21 @@ export default function KampanyaManagementPage() {
         </button>
       </div>
 
-      {/* 3 Pricing Cards Grid */}
+      {/* 3 Clean Pricing Cards */}
       <div className="fiyat-yonetim-grid">
         {categories.map((cat) => (
-          <div key={cat.id} className="fiyat-yonetim-karti">
-            {/* Header: Non-overlapping structured top area */}
-            <div className="fiyat-yonetim-baslik">
+          <div
+            key={cat.id}
+            className="fiyat-yonetim-karti"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "18px",
+              padding: "24px 22px",
+            }}
+          >
+            {/* Header: Non-overlapping structured top area with clear badges */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <div
                 style={{
                   display: "flex",
@@ -187,23 +177,27 @@ export default function KampanyaManagementPage() {
                 <span className={`fiyat-renk-etiketi ${cat.id}`}>{cat.badgeName}</span>
                 <span
                   style={{
-                    fontSize: "11px",
-                    fontWeight: 700,
-                    color: "#94a3b8",
+                    fontSize: "12px",
+                    fontWeight: 900,
+                    color: cat.id === "sari" ? "#dfb758" : cat.id === "mavi" ? "#38bdf8" : "#34d399",
                     background: "rgba(255, 255, 255, 0.06)",
-                    padding: "3px 10px",
-                    borderRadius: "8px",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    padding: "4px 12px",
+                    borderRadius: "10px",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "5px",
                   }}
                 >
-                  {cat.hzTag}
+                  <Monitor size={13} />
+                  <span>{cat.hzTag}</span>
                 </span>
               </div>
 
-              <div style={{ marginTop: "6px" }}>
+              <div>
                 <h3
                   style={{
-                    fontSize: "18px",
+                    fontSize: "19px",
                     fontWeight: 800,
                     color: "#ffffff",
                     margin: 0,
@@ -214,44 +208,23 @@ export default function KampanyaManagementPage() {
                 </h3>
                 <span
                   style={{
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#94a3b8",
                     marginTop: "3px",
                     display: "block",
-                    lineHeight: 1.4,
+                    fontWeight: 600,
                   }}
                 >
                   {cat.subtitle}
                 </span>
               </div>
-
-              {/* Hardware Specs Bullets */}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "5px",
-                  marginTop: "8px",
-                  padding: "10px 12px",
-                  background: "rgba(255, 255, 255, 0.03)",
-                  borderRadius: "10px",
-                  border: "1px solid rgba(255, 255, 255, 0.06)",
-                }}
-              >
-                {cat.specs.map((s, idx) => (
-                  <div key={idx} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11.5px", color: "#cbd5e1" }}>
-                    <CheckCircle2 size={12} style={{ color: cat.id === "sari" ? "#ffd700" : cat.id === "mavi" ? "#38bdf8" : "#34d399", flexShrink: 0 }} />
-                    <span>{s}</span>
-                  </div>
-                ))}
-              </div>
             </div>
 
             {/* Inputs: 3 Stacked Full-Width Luxury Fields with Icons */}
-            <div className="fiyat-yonetim-alanlari">
-              <div className="form-group">
-                <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <Clock size={13} style={{ color: "#ffd700" }} />
+            <div className="fiyat-yonetim-alanlari" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                  <Clock size={14} style={{ color: "#dfb758" }} />
                   <span>Saatlik Ücret (₺)</span>
                 </label>
                 <input
@@ -259,12 +232,13 @@ export default function KampanyaManagementPage() {
                   className="settings-input"
                   value={pricing[cat.id].saatlik}
                   onChange={(e) => handlePriceChange(cat.id, "saatlik", parseInt(e.target.value) || 0)}
+                  style={{ fontSize: "16px", fontWeight: 800 }}
                 />
               </div>
 
-              <div className="form-group">
-                <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <Zap size={13} style={{ color: "#38bdf8" }} />
+              <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                  <Zap size={14} style={{ color: "#38bdf8" }} />
                   <span>5 Saat Paket (₺)</span>
                 </label>
                 <input
@@ -272,12 +246,13 @@ export default function KampanyaManagementPage() {
                   className="settings-input"
                   value={pricing[cat.id].besSaatlik}
                   onChange={(e) => handlePriceChange(cat.id, "besSaatlik", parseInt(e.target.value) || 0)}
+                  style={{ fontSize: "16px", fontWeight: 800 }}
                 />
               </div>
 
-              <div className="form-group">
-                <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <SunMedium size={13} style={{ color: "#34d399" }} />
+              <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                  <SunMedium size={14} style={{ color: "#34d399" }} />
                   <span>Gün Boyu Paket (₺)</span>
                 </label>
                 <input
@@ -285,12 +260,13 @@ export default function KampanyaManagementPage() {
                   className="settings-input"
                   value={pricing[cat.id].gunluk}
                   onChange={(e) => handlePriceChange(cat.id, "gunluk", parseInt(e.target.value) || 0)}
+                  style={{ fontSize: "16px", fontWeight: 800 }}
                 />
               </div>
             </div>
 
             {/* Action Button */}
-            <div className="fiyat-yonetim-aksiyonlar" style={{ marginTop: "auto" }}>
+            <div style={{ marginTop: "auto", paddingTop: "8px" }}>
               <button
                 type="button"
                 className="apple-btn-white"

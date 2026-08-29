@@ -7412,8 +7412,16 @@ body.login-page {
     }
 
     .admin-page-content-area {
-        padding: 14px 14px calc(90px + env(safe-area-inset-bottom, 14px)) !important;
+        padding: 16px 14px calc(24px + env(safe-area-inset-bottom, 16px)) !important;
         gap: 16px !important;
+    }
+
+    .ios-tab-bar,
+    .admin-tab-bar,
+    .mobile-only-dock {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
     }
 
     .ios-widgets-grid {

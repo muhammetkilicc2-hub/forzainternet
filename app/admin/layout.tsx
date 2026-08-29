@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminTopBar from "@/components/admin/AdminTopBar";
-import AdminTabBar from "@/components/admin/AdminTabBar";
 import { ToastProvider } from "@/components/admin/Toast";
 
 export default function AdminRootLayout({
@@ -29,9 +28,6 @@ export default function AdminRootLayout({
             {children}
           </div>
         </div>
-
-        {/* Mobile Bottom Tab Bar (Fast 1-hand thumb switching on phones) */}
-        <AdminTabBar />
       </div>
     </ToastProvider>
   );

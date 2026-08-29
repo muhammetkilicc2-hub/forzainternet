@@ -264,7 +264,7 @@ export default function HomePage() {
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
                   <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.35)" }}>
-                    PRO GAMING
+                    PRO ESPOR GAMING
                   </span>
                   <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600 }}>240 Hz Espor</span>
                 </div>

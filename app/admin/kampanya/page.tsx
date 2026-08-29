@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useToast } from "@/components/admin/Toast";
 import { PricingConfig, PcKategori } from "@/lib/types";
-import { Clock, Zap, SunMedium, Save, Sparkles } from "lucide-react";
+import { Clock, Zap, SunMedium, Save, Sparkles, CheckCircle2, Monitor, Cpu } from "lucide-react";
 
 export default function KampanyaManagementPage() {
   const { showToast } = useToast();
@@ -79,27 +79,46 @@ export default function KampanyaManagementPage() {
     hzTag: string;
     title: string;
     subtitle: string;
+    specs: string[];
   }[] = [
     {
       id: "sari",
-      badgeName: "🟡 SARI MASALAR",
-      hzTag: "240 Hz IPS",
-      title: "Standart Gaming",
-      subtitle: "RTX 4060 • 240 Hz Fast IPS Monitör",
+      badgeName: "STANDART GAMING",
+      hzTag: "144 Hz Espor Ekran",
+      title: "Sarı Masalar",
+      subtitle: "144 Hz Espor Ekran • RTX 3060 • Intel i5 • 16 GB RAM",
+      specs: [
+        "144 Hz Gaming Espor Monitör",
+        "Nvidia GeForce RTX 3060",
+        "Intel Core i5 Yüksek Performans",
+        "16 GB DDR4 Yüksek Hızlı RAM",
+      ],
     },
     {
       id: "mavi",
-      badgeName: "🔵 MAVİ MASALAR",
-      hzTag: "360 Hz Espor",
-      title: "Pro Gaming",
-      subtitle: "RTX 4070 Super • 360 Hz Espor Monitör",
+      badgeName: "PRO ESPOR GAMING",
+      hzTag: "240 Hz Espor Ekran",
+      title: "Mavi Masalar",
+      subtitle: "240 Hz Espor Ekran • RTX 3060 OC • Intel i5 • 16 GB RAM",
+      specs: [
+        "240 Hz Ultra Espor Monitör",
+        "Nvidia GeForce RTX 3060 OC",
+        "Intel Core i5 Gaming İşlemci",
+        "16 GB DDR4 Yüksek Hızlı RAM",
+      ],
     },
     {
       id: "yesil",
-      badgeName: "🟢 YEŞİL VIP MASALAR",
-      hzTag: "540 Hz DyAc+",
-      title: "Elite VIP 540Hz",
-      subtitle: "RTX 4090 / 4080 • 540 Hz Zirve Deneyim",
+      badgeName: "ULTRA VIP ESPOR",
+      hzTag: "360 – 540 Hz Espor",
+      title: "Yeşil Masalar (VIP)",
+      subtitle: "360-540 Hz Turnuva Ekranı • RTX 3070 Ti / 5060 • Ryzen 7 7800X3D • 32 GB DDR5",
+      specs: [
+        "360-540 Hz Turnuva Monitörü",
+        "RTX 3070 Ti / RTX 5060",
+        "AMD Ryzen 7 7800X3D Canavarı",
+        "32 GB DDR5 Yüksek Frekans RAM",
+      ],
     },
   ];
 
@@ -129,7 +148,7 @@ export default function KampanyaManagementPage() {
             Fiyat &amp; Kampanya Yönetimi
           </h1>
           <span style={{ fontSize: "13px", color: "#cbd5e1", marginTop: "4px", display: "block" }}>
-            Saatlik ve avantajlı paket ücretlerini anlık olarak belirleyin
+            Masa kategorileri, saatlik ve süreli paket ücretlerini anlık olarak belirleyin
           </span>
         </div>
 
@@ -137,14 +156,11 @@ export default function KampanyaManagementPage() {
           type="button"
           onClick={() => handleSave()}
           disabled={saving}
-          className="save-settings-btn"
+          className="apple-btn-white"
           style={{
             padding: "12px 24px",
             fontSize: "14px",
             fontWeight: 900,
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
           }}
         >
           <Save size={17} />
@@ -184,10 +200,10 @@ export default function KampanyaManagementPage() {
                 </span>
               </div>
 
-              <div style={{ marginTop: "4px" }}>
+              <div style={{ marginTop: "6px" }}>
                 <h3
                   style={{
-                    fontSize: "17px",
+                    fontSize: "18px",
                     fontWeight: 800,
                     color: "#ffffff",
                     margin: 0,
@@ -198,8 +214,8 @@ export default function KampanyaManagementPage() {
                 </h3>
                 <span
                   style={{
-                    fontSize: "12.5px",
-                    color: "#cbd5e1",
+                    fontSize: "12px",
+                    color: "#94a3b8",
                     marginTop: "3px",
                     display: "block",
                     lineHeight: 1.4,
@@ -207,6 +223,27 @@ export default function KampanyaManagementPage() {
                 >
                   {cat.subtitle}
                 </span>
+              </div>
+
+              {/* Hardware Specs Bullets */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "5px",
+                  marginTop: "8px",
+                  padding: "10px 12px",
+                  background: "rgba(255, 255, 255, 0.03)",
+                  borderRadius: "10px",
+                  border: "1px solid rgba(255, 255, 255, 0.06)",
+                }}
+              >
+                {cat.specs.map((s, idx) => (
+                  <div key={idx} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11.5px", color: "#cbd5e1" }}>
+                    <CheckCircle2 size={12} style={{ color: cat.id === "sari" ? "#ffd700" : cat.id === "mavi" ? "#38bdf8" : "#34d399", flexShrink: 0 }} />
+                    <span>{s}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -256,14 +293,12 @@ export default function KampanyaManagementPage() {
             <div className="fiyat-yonetim-aksiyonlar" style={{ marginTop: "auto" }}>
               <button
                 type="button"
-                className="fiyat-kaydet-btn"
+                className="apple-btn-white"
                 onClick={() => handleSave(cat.id)}
                 disabled={saving}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
+                  width: "100%",
                   justifyContent: "center",
-                  gap: "8px",
                 }}
               >
                 <Sparkles size={15} />

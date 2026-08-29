@@ -378,10 +378,11 @@ export function getPricing(): KampanyaFiyatlari {
   return globalThis.__forzaPricing!;
 }
 
-export function updatePricing(newPricing: Partial<KampanyaFiyatlari>): KampanyaFiyatlari {
+export function updatePricing(newPricing: any): KampanyaFiyatlari {
+  const payload = newPricing && newPricing.pricing ? newPricing.pricing : newPricing;
   globalThis.__forzaPricing = {
     ...globalThis.__forzaPricing!,
-    ...newPricing,
+    ...payload,
   };
   persistPricing(globalThis.__forzaPricing!);
   return globalThis.__forzaPricing!;

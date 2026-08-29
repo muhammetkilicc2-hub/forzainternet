@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getPricing, updatePricing } from "@/lib/data";
 import { getSession } from "@/lib/auth";
 
@@ -15,7 +15,8 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const updated = updatePricing(body);
+    const payload = body && body.pricing ? body.pricing : body;
+    const updated = updatePricing(payload);
     return NextResponse.json({ success: true, pricing: updated });
   } catch (error) {
     return NextResponse.json({ error: "Fiyatlar güncellenemedi" }, { status: 500 });

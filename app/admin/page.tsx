@@ -53,12 +53,19 @@ export default function AdminDashboardPage() {
       else loadData();
     };
 
+    const handleFiyatUpdate = (e: CustomEvent<any>) => {
+      if (e.detail && e.detail.sari) setPricing(e.detail);
+      else loadData();
+    };
+
     window.addEventListener("forzaGaleriGuncellendi" as any, handleGalUpdate);
+    window.addEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
     window.addEventListener("storage", loadData);
 
     const interval = setInterval(loadData, 8000);
     return () => {
       window.removeEventListener("forzaGaleriGuncellendi" as any, handleGalUpdate);
+      window.removeEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
       window.removeEventListener("storage", loadData);
       clearInterval(interval);
     };

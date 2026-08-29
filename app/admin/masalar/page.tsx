@@ -21,6 +21,19 @@ export default function MasalarManagementPage() {
 
   useEffect(() => {
     loadData();
+
+    const handleFiyatUpdate = (e: CustomEvent<any>) => {
+      if (e.detail && e.detail.sari) setPricing(e.detail);
+      else loadData();
+    };
+
+    window.addEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
+    window.addEventListener("storage", loadData);
+
+    return () => {
+      window.removeEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
+      window.removeEventListener("storage", loadData);
+    };
   }, []);
 
   async function loadData() {

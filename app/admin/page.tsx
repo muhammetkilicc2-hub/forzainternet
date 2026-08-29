@@ -4,6 +4,21 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { PC, PcDurum, Rezervasyon, AdminStats } from "@/lib/types";
 import { useToast } from "@/components/admin/Toast";
+import {
+  Monitor,
+  Flame,
+  CheckCircle2,
+  CalendarCheck,
+  Image as ImageIcon,
+  ExternalLink,
+  Edit3,
+  ArrowRight,
+  Clock,
+  User,
+  Check,
+  X,
+  Sparkles,
+} from "lucide-react";
 
 export default function AdminDashboardPage() {
   const { showToast } = useToast();
@@ -41,7 +56,7 @@ export default function AdminDashboardPage() {
     window.addEventListener("forzaGaleriGuncellendi" as any, handleGalUpdate);
     window.addEventListener("storage", loadData);
 
-    const interval = setInterval(loadData, 10000); // 10 sn otomatik yenileme
+    const interval = setInterval(loadData, 8000);
     return () => {
       window.removeEventListener("forzaGaleriGuncellendi" as any, handleGalUpdate);
       window.removeEventListener("storage", loadData);
@@ -91,100 +106,94 @@ export default function AdminDashboardPage() {
           });
         }
       }
+
       let localRezList: Rezervasyon[] = [];
       try {
         const rawNotifs = localStorage.getItem("forzaBildirimler");
         if (rawNotifs) {
           const parsed = JSON.parse(rawNotifs);
           if (Array.isArray(parsed)) {
-            localRezList = parsed.map((b: { id?: string; musteri?: string; baslik?: string; telefon?: string; pcler?: string[]; masaId?: string; masaIsim?: string; kampanya?: string; tarih?: string; sure?: string | number; tutar?: number | string; durum?: string; okundu?: boolean }) => ({
-              id: b.id || `loc-${Date.now()}-${Math.random()}`,
-              musteriAdi: b.musteri || b.baslik || "Müşteri",
-              telefon: b.telefon || "0546 465 96 93",
-              masaId: Array.isArray(b.pcler) ? b.pcler.join(", ") : b.masaId || "PC",
-              masaIsim: Array.isArray(b.pcler) ? b.pcler.join(", ") : b.masaIsim || "Seçilen Masalar",
+            localRezList = parsed.map((b: any) => ({
+              id: b.id,
+              musteriAdi: b.baslik?.replace("Yeni Rezervasyon — ", "") || "Misafir",
+              telefon: b.mesaj ? b.mesaj.split(" · ")[0] : "05XX XXX XX XX",
+              masaId: b.baslik?.split(" — ")[1] || "PC",
+              masaIsim: b.baslik?.split(" — ")[1] || "PC Masa",
               kategori: b.kampanya?.toLowerCase().includes("60") ? "sari" : b.kampanya?.toLowerCase().includes("70") ? "mavi" : "yesil",
-              tarih: b.tarih ? b.tarih.split("T")[0] : new Date().toISOString().split("T")[0],
-              saat: b.tarih ? new Date(b.tarih).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }) : "19:00",
-              sure: typeof b.sure === "number" ? b.sure : (typeof b.sure === "string" && b.sure.includes("Gün") ? 12 : 5),
-              toplamTutar: Number(b.tutar) || 200,
+              tarih: new Date().toISOString().split("T")[0],
+              saat: "18:00",
+              sure: 5,
+              toplamTutar: 250,
               odemeYontemi: "kart",
-              durum: (b.durum === "confirmed" ? "confirmed" : b.durum === "rejected" ? "rejected" : "pending") as Rezervasyon["durum"],
+              durum: b.durum || "pending",
               olusturuldu: b.tarih || new Date().toISOString(),
-              okundu: Boolean(b.okundu),
+              okundu: b.okundu,
             }));
           }
         }
       } catch (e) {}
 
-      const serverRez = dataRez.reservations || [];
-      const rezMap = new Map<string, Rezervasyon>();
-      localRezList.forEach((r) => rezMap.set(r.id, r));
-      serverRez.forEach((r: Rezervasyon) => rezMap.set(r.id, r));
-      const mergedRez = Array.from(rezMap.values()).sort((a, b) => new Date(b.olusturuldu).getTime() - new Date(a.olusturuldu).getTime());
-      setReservations(mergedRez);
+      if (dataRez.reservations && Array.isArray(dataRez.reservations)) {
+        const map = new Map<string, Rezervasyon>();
+        localRezList.forEach((r) => map.set(r.id, r));
+        dataRez.reservations.forEach((r: Rezervasyon) => map.set(r.id, r));
+        const merged = Array.from(map.values()).sort(
+          (a, b) => new Date(b.olusturuldu).getTime() - new Date(a.olusturuldu).getTime()
+        );
+        setReservations(merged);
+      } else {
+        setReservations(localRezList);
+      }
     } catch (err) {
-      console.error("Dashboard yüklenemedi:", err);
+      console.error("Dashboard veri yükleme hatası:", err);
     } finally {
       setLoading(false);
     }
   }
 
-  // Masanın durumunu döngüsel değiştir (Boş -> Kullanımda -> Rezerve -> Boş)
+  // PC Durumunu Tıklandığında Değiştir
   const togglePcStatus = async (pc: PC) => {
-    const nextStatus: PcDurum =
-      pc.durum === "bos" ? "kullanimda" : pc.durum === "kullanimda" ? "rezerve" : "bos";
+    let nextDurum: PcDurum = "bos";
+    if (pc.durum === "bos") nextDurum = "kullanimda";
+    else if (pc.durum === "kullanimda") nextDurum = "rezerve";
+    else nextDurum = "bos";
 
-    // 1. React State Güncelle
-    const updatedList: PC[] = computers.map((p) => (p.id === pc.id ? { ...p, durum: nextStatus } : p));
-    setComputers(updatedList);
-    setStats((prev) =>
-      prev
-        ? {
-            ...prev,
-            aktifPc: updatedList.filter((p) => p.durum === "kullanimda").length,
-            bosPc: updatedList.filter((p) => p.durum === "bos").length,
-            rezervePc: updatedList.filter((p) => p.durum === "rezerve").length,
-          }
-        : null
-    );
+    const updated = computers.map((p) => (p.id === pc.id ? { ...p, durum: nextDurum } : p));
+    setComputers(updated);
 
-    // 2. localStorage Senkronizasyonu
     try {
-      let localStatuses: Record<string, string> = {};
-      const raw = localStorage.getItem("forzaPcDurumlari");
-      if (raw) localStatuses = JSON.parse(raw);
-      const numId = pc.no || (pc.isim.match(/\d+/) ? parseInt(pc.isim.match(/\d+/)![0], 10) : pc.id);
-      const trDurum = nextStatus === "kullanimda" ? "kullanımda" : nextStatus;
-      localStatuses[numId] = trDurum;
-      localStatuses[pc.id] = trDurum;
-      localStorage.setItem("forzaPcDurumlari", JSON.stringify(localStatuses));
+      const locMap: Record<string, string> = {};
+      updated.forEach((p) => {
+        locMap[p.no] = p.durum === "kullanimda" ? "kullanımda" : p.durum;
+      });
+      localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: localStatuses }));
+        window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: locMap }));
+        window.dispatchEvent(new Event("storage"));
       }
     } catch (e) {}
 
-    // 3. API Sunucusuna Gönder
     try {
-      await fetch("/api/computers", {
+      const res = await fetch("/api/computers", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: pc.id, durum: nextStatus }),
+        body: JSON.stringify({ id: pc.id, durum: nextDurum }),
       });
-      showToast("Masa Güncellendi", `${pc.isim} durumu: ${nextStatus.toUpperCase()}`, "success");
+      const data = await res.json();
+      if (data.success && data.stats) {
+        setStats(data.stats);
+      }
     } catch {
-      showToast("Bilgi", "Yerel olarak kaydedildi", "info");
+      showToast("Bilgi", `${pc.isim} durumu güncellendi.`, "info");
     }
   };
 
   // Rezervasyon Onayla / Reddet
   const handleReservationAction = async (id: string, durum: "confirmed" | "rejected") => {
-    // 1. React State Güncelle
     setReservations((prev) =>
       prev.map((r) => (r.id === id ? { ...r, durum, okundu: true } : r))
     );
 
-    // 2. LocalStorage Senkronizasyonu
     try {
       const raw = localStorage.getItem("forzaBildirimler");
       if (raw) {
@@ -200,7 +209,6 @@ export default function AdminDashboardPage() {
         }
       }
 
-      // Onaylandıysa masaları kullanıma al
       if (durum === "confirmed") {
         const rez = reservations.find((r) => r.id === id);
         if (rez) {
@@ -220,7 +228,6 @@ export default function AdminDashboardPage() {
       }
     } catch (e) {}
 
-    // 3. API Sunucusuna Bildir
     try {
       const res = await fetch("/api/reservations", {
         method: "PATCH",
@@ -233,7 +240,7 @@ export default function AdminDashboardPage() {
       }
       showToast(
         durum === "confirmed" ? "Rezervasyon Onaylandı" : "Rezervasyon Reddedildi",
-        durum === "confirmed" ? "Masa kullanıma hazırlandı ve aktifleştirildi." : "Talep iptal edildi.",
+        durum === "confirmed" ? "Masa kullanıma hazırlandı." : "Talep iptal edildi.",
         durum === "confirmed" ? "success" : "warning"
       );
     } catch {
@@ -246,47 +253,75 @@ export default function AdminDashboardPage() {
   );
 
   return (
-    <main className="dashboard-content" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-      
-      {/* 1. iOS STATS WIDGETS */}
-      <div className="ios-widgets-grid">
+    <main className="dashboard-content" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      {/* 1. APPLE OBSIDIAN STATS WIDGETS (4 KART) */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "16px",
+          width: "100%",
+        }}
+      >
+        {/* Toplam Masa */}
         <div className="ios-stat-widget">
-          <div className="ios-widget-icon">🖥️</div>
+          <div className="ios-widget-icon" style={{ background: "rgba(255, 215, 0, 0.15)", color: "#ffd700", border: "1px solid rgba(255, 215, 0, 0.3)" }}>
+            <Monitor size={22} />
+          </div>
           <div className="ios-widget-info">
-            <span>Toplam Masa</span>
-            <strong>{stats ? stats.toplamPc : 64}</strong>
+            <span style={{ fontSize: "12px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.5px" }}>Toplam Masa</span>
+            <strong style={{ fontSize: "28px", fontWeight: 900, color: "#ffffff", letterSpacing: "-0.5px" }}>{stats ? stats.toplamPc : 48}</strong>
           </div>
         </div>
 
+        {/* Kullanımda */}
         <div className="ios-stat-widget">
-          <div className="ios-widget-icon icon-busy">🎮</div>
+          <div className="ios-widget-icon" style={{ background: "rgba(239, 68, 68, 0.15)", color: "#ef4444", border: "1px solid rgba(239, 68, 68, 0.3)" }}>
+            <Flame size={22} />
+          </div>
           <div className="ios-widget-info">
-            <span>Kullanımda</span>
-            <strong style={{ color: "var(--a-danger)" }}>{stats ? stats.aktifPc : 0}</strong>
+            <span style={{ fontSize: "12px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.5px" }}>Kullanımda (Dolu)</span>
+            <strong style={{ fontSize: "28px", fontWeight: 900, color: "#f87171", letterSpacing: "-0.5px" }}>{stats ? stats.aktifPc : 0}</strong>
           </div>
         </div>
 
+        {/* Boş Masa */}
         <div className="ios-stat-widget">
-          <div className="ios-widget-icon icon-available">🟢</div>
+          <div className="ios-widget-icon" style={{ background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.3)" }}>
+            <CheckCircle2 size={22} />
+          </div>
           <div className="ios-widget-info">
-            <span>Boş Masa</span>
-            <strong style={{ color: "var(--a-success)" }}>{stats ? stats.bosPc : 0}</strong>
+            <span style={{ fontSize: "12px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.5px" }}>Boş (Hazır) Masa</span>
+            <strong style={{ fontSize: "28px", fontWeight: 900, color: "#34d399", letterSpacing: "-0.5px" }}>{stats ? stats.bosPc : 48}</strong>
+          </div>
+        </div>
+
+        {/* Bekleyen Rezervasyon */}
+        <div className="ios-stat-widget">
+          <div className="ios-widget-icon" style={{ background: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.3)" }}>
+            <CalendarCheck size={22} />
+          </div>
+          <div className="ios-widget-info">
+            <span style={{ fontSize: "12px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.5px" }}>Rezervasyon</span>
+            <strong style={{ fontSize: "28px", fontWeight: 900, color: "#38bdf8", letterSpacing: "-0.5px" }}>
+              {reservations.filter((r) => r.durum === "pending").length}
+            </strong>
           </div>
         </div>
       </div>
 
-      {/* 2. DASHBOARD MAIN 2-COL GRID */}
-      <div className="ios-dashboard-main-grid" style={{ marginTop: "28px" }}>
-        
-        {/* MASA DURUMLARI KARTI (İLK 12 MASA) */}
-        <div className="dashboard-card">
+      {/* 2. DASHBOARD MAIN 2-COLUMN GRID */}
+      <div className="ios-dashboard-main-grid">
+        {/* MASA DURUMLARI KARTI */}
+        <div className="dashboard-card" style={{ display: "flex", flexDirection: "column" }}>
           <div className="card-header">
             <div>
               <h2 className="card-title">Masa Durumları</h2>
-              <span className="card-subtitle">Hızlı durum değiştirmek için masaya dokunun</span>
+              <span className="card-subtitle">Hızlı durum değiştirmek için masaya tıklayın</span>
             </div>
-            <Link href="/admin/masalar" className="view-all">
-              Tümü (64) ➔
+            <Link href="/admin/masalar" className="apple-btn-glass">
+              <span>Tümü ({computers.length || 48})</span>
+              <ArrowRight size={14} />
             </Link>
           </div>
 
@@ -322,9 +357,9 @@ export default function AdminDashboardPage() {
           </div>
 
           {loading ? (
-            <div style={{ textAlign: "center", padding: "30px", color: "#94a3b8" }}>Yükleniyor...</div>
+            <div style={{ textAlign: "center", padding: "40px", color: "#94a3b8" }}>Yükleniyor...</div>
           ) : (
-            <div className="computer-status-grid" style={{ marginTop: "12px" }}>
+            <div className="computer-status-grid" style={{ marginTop: "14px" }}>
               {filteredPcs.slice(0, 12).map((pc) => {
                 const displayDurum =
                   pc.durum === "kullanimda" ? "KULLANIMDA" : pc.durum === "rezerve" ? "REZERVE" : "BOŞ";
@@ -343,30 +378,39 @@ export default function AdminDashboardPage() {
             </div>
           )}
 
-          <Link href="/admin/masalar" className="computer-more-link visible">
-            + {Math.max(0, filteredPcs.length - 12)} masa daha — Tüm Masaları Yönet
-          </Link>
+          <div style={{ marginTop: "auto", paddingTop: "16px" }}>
+            <Link
+              href="/admin/masalar"
+              className="apple-btn-white"
+              style={{ width: "100%", justifyContent: "center", textDecoration: "none", boxSizing: "border-box" }}
+            >
+              <span>+ {Math.max(0, filteredPcs.length - 12)} masa daha — Tüm Masaları Yönet</span>
+              <ArrowRight size={15} />
+            </Link>
+          </div>
         </div>
 
         {/* GELEN REZERVASYONLAR KARTI */}
-        <div className="dashboard-card">
+        <div className="dashboard-card" style={{ display: "flex", flexDirection: "column" }}>
           <div className="card-header">
             <div>
               <h2 className="card-title">Gelen Rezervasyonlar</h2>
               <span className="card-subtitle">Anlık müşteri talepleri</span>
             </div>
-            <Link href="/admin/rezervasyonlar" className="view-all">
-              Tümü ➔
+            <Link href="/admin/rezervasyonlar" className="apple-btn-glass">
+              <span>Tüm Talepler</span>
+              <ArrowRight size={14} />
             </Link>
           </div>
 
-          <div className="reservation-list" style={{ marginTop: "8px" }}>
+          <div className="reservation-list" style={{ marginTop: "12px", flex: 1 }}>
             {reservations.length === 0 ? (
-              <p style={{ textAlign: "center", padding: "20px", color: "#94a3b8", fontSize: "13px" }}>
-                Henüz rezervasyon bulunmuyor.
-              </p>
+              <div style={{ textAlign: "center", padding: "40px 20px", color: "#94a3b8", fontSize: "13.5px" }}>
+                <CalendarCheck size={32} style={{ opacity: 0.3, margin: "0 auto 10px" }} />
+                <p>Henüz bekleyen rezervasyon bulunmuyor.</p>
+              </div>
             ) : (
-              reservations.slice(0, 6).map((rez) => (
+              reservations.slice(0, 5).map((rez) => (
                 <div key={rez.id} className={`reservation-item ${rez.durum === "pending" ? "highlight" : ""}`}>
                   <div className="reservation-icon">🖥️</div>
                   <div className="reservation-info">
@@ -375,10 +419,11 @@ export default function AdminDashboardPage() {
                       <span className="res-price-pill">₺{rez.toplamTutar}</span>
                     </div>
                     <div className="res-card-meta">
-                      <span className="res-meta-item">👤 {rez.musteriAdi} ({rez.telefon})</span>
-                      <span className="res-meta-item">⏱️ {rez.sure >= 12 ? "Gün Boyu" : "5 Saat"}</span>
-                      <span className="res-meta-item res-time" style={{ color: "var(--cream-gold)", fontWeight: 700 }}>
-                        🕒 Randevu: {rez.tarih} {rez.saat}
+                      <span className="res-meta-item">
+                        <User size={12} /> {rez.musteriAdi} ({rez.telefon})
+                      </span>
+                      <span className="res-meta-item">
+                        <Clock size={12} /> {rez.tarih} {rez.saat} ({rez.sure >= 12 ? "Gün Boyu" : "5 Saat"})
                       </span>
                     </div>
                   </div>
@@ -390,7 +435,7 @@ export default function AdminDashboardPage() {
                         className="res-btn res-btn-approve"
                         title="Onayla"
                       >
-                        ✓
+                        <Check size={14} />
                       </button>
                       <button
                         type="button"
@@ -398,7 +443,7 @@ export default function AdminDashboardPage() {
                         className="res-btn res-btn-reject"
                         title="Reddet"
                       >
-                        ✕
+                        <X size={14} />
                       </button>
                     </div>
                   ) : (
@@ -411,31 +456,54 @@ export default function AdminDashboardPage() {
             )}
           </div>
 
-          <Link href="/admin/rezervasyonlar" className="computer-more-link visible" style={{ justifyContent: "center", textAlign: "center", marginTop: "auto" }}>
-            Tüm Rezervasyonları Gör ➔
-          </Link>
+          <div style={{ marginTop: "auto", paddingTop: "16px" }}>
+            <Link
+              href="/admin/rezervasyonlar"
+              className="apple-btn-white"
+              style={{ width: "100%", justifyContent: "center", textDecoration: "none", boxSizing: "border-box" }}
+            >
+              <span>Tüm Rezervasyonları İncele</span>
+              <ArrowRight size={15} />
+            </Link>
+          </div>
         </div>
-
       </div>
 
-      {/* 3. MEKAN & MEDYA GALERİSİ KARTI */}
+      {/* 3. MEKAN & MEDYA GALERİSİ KARTI - ZERO OVERFLOW APPLE HEADER */}
       <div className="dashboard-card">
-        <div className="card-header">
+        <div
+          className="card-header"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "14px",
+            width: "100%",
+          }}
+        >
           <div>
-            <h2 className="card-title">Mekan &amp; Medya Galerisi</h2>
-            <span className="card-subtitle">Hakkımızda sayfasında sergilenen fotoğraflar</span>
+            <h2 className="card-title" style={{ fontSize: "18px", fontWeight: 800, color: "#ffffff", margin: 0 }}>
+              Mekan &amp; Medya Galerisi
+            </h2>
+            <span className="card-subtitle" style={{ fontSize: "12.5px", color: "#94a3b8", marginTop: "3px", display: "block" }}>
+              Hakkımızda sayfasında sergilenen fotoğraflar
+            </span>
           </div>
-          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-            <Link href="/admin/ayarlar" className="view-all" style={{ color: "var(--cream-gold)" }}>
-              Fotoğrafları Düzenle ➔
+
+          <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+            <Link href="/admin/ayarlar" className="apple-btn-white" style={{ textDecoration: "none" }}>
+              <Edit3 size={15} />
+              <span>Fotoğrafları Düzenle</span>
             </Link>
-            <Link href="/hakkimizda" target="_blank" className="view-all">
-              Sitede Gör ↗
+            <Link href="/hakkimizda" target="_blank" className="apple-btn-glass" style={{ textDecoration: "none" }}>
+              <ExternalLink size={15} />
+              <span>Sitede Gör</span>
             </Link>
           </div>
         </div>
 
-        <div className="media-gallery-grid">
+        <div className="media-gallery-grid" style={{ marginTop: "18px" }}>
           {galleryPhotos.map((foto, index) => (
             <div key={foto.src + index} className="media-item">
               <img src={foto.src} alt={foto.badge || "Mekan"} />
@@ -444,7 +512,6 @@ export default function AdminDashboardPage() {
           ))}
         </div>
       </div>
-
     </main>
   );
 }

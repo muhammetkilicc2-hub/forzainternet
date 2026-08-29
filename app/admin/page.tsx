@@ -265,7 +265,7 @@ export default function AdminDashboardPage() {
       >
         {/* Toplam Masa */}
         <div className="ios-stat-widget">
-          <div className="ios-widget-icon" style={{ background: "rgba(255, 215, 0, 0.15)", color: "#ffd700", border: "1px solid rgba(255, 215, 0, 0.3)" }}>
+          <div className="ios-widget-icon" style={{ background: "rgba(223, 183, 88, 0.15)", color: "#dfb758", border: "1px solid rgba(223, 183, 88, 0.3)" }}>
             <Monitor size={22} />
           </div>
           <div className="ios-widget-info">

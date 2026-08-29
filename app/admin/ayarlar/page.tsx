@@ -3,8 +3,29 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useToast } from "@/components/admin/Toast";
-
 import { GalleryPhoto } from "@/lib/types";
+import {
+  Star,
+  Sparkles,
+  Upload,
+  Image as ImageIcon,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Lock,
+  Eye,
+  EyeOff,
+  Check,
+  RotateCcw,
+  Building2,
+  User,
+  Save,
+  ShieldCheck,
+  Bell,
+  RefreshCw,
+  Camera,
+} from "lucide-react";
 
 const DEFAULT_PHOTOS: GalleryPhoto[] = [
   { id: "f1", src: "/foto1.jpeg", badge: "Ana Salon", alt: "Forza Gaming Salonu - Ana Espor Alanı", caption: "Forza Gaming Salonu - Ana Espor Alanı" },
@@ -146,7 +167,6 @@ export default function AyarlarPage() {
         const avatarUrl = data.url;
         setAvatar(avatarUrl);
 
-        // Sunucuya anında kaydet
         try {
           await fetch("/api/auth/settings", {
             method: "POST",
@@ -155,7 +175,6 @@ export default function AyarlarPage() {
           });
         } catch (e) {}
 
-        // Tarayıcı hafızasına yaz ve canlı event fırlat
         try {
           const raw = localStorage.getItem("forzaAyarlar");
           const cur = raw ? JSON.parse(raw) : {};
@@ -179,7 +198,6 @@ export default function AyarlarPage() {
   const handleAvatarRemove = async () => {
     setAvatar(null);
 
-    // Sunucuya null kaydet
     try {
       await fetch("/api/auth/settings", {
         method: "POST",
@@ -188,7 +206,6 @@ export default function AyarlarPage() {
       });
     } catch (e) {}
 
-    // Tarayıcı hafızasını güncelle ve canlı event fırlat
     try {
       const raw = localStorage.getItem("forzaAyarlar");
       const cur = raw ? JSON.parse(raw) : {};
@@ -311,7 +328,7 @@ export default function AyarlarPage() {
     showToast("Sıralama Değiştirildi", `Fotoğraf ${direction === "left" ? "öne" : "arkaya"} taşındı.`, "info");
   };
 
-  // 4. Yeni Fotoğraf Yükleme (Mevcut Vitrin Görselini Bozmaz)
+  // 4. Yeni Fotoğraf Yükleme
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
@@ -482,7 +499,6 @@ export default function AyarlarPage() {
         }),
       });
 
-      // Ayrıca galeri API'sine de doğrudan kaydet
       try {
         await fetch("/api/gallery", {
           method: "POST",
@@ -498,7 +514,6 @@ export default function AyarlarPage() {
         return;
       }
 
-      // 1. Galeri fotoğraflarını kalıcı olarak kaydet ve canlı sayfaları tetikle
       localStorage.setItem("forzaAboutCoverPhoto", aboutCoverPhoto);
       localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(galleryPhotos));
       if (typeof window !== "undefined") {
@@ -506,7 +521,6 @@ export default function AyarlarPage() {
         window.dispatchEvent(new CustomEvent("forzaGaleriGuncellendi", { detail: galleryPhotos }));
       }
 
-      // 2. Sistem & Yönetici ayarlarını yerel depolamaya da eşitle
       const isPassChanged = newPassword.trim() !== "";
       const newConfig = {
         adminUser: adminUser.trim(),
@@ -544,50 +558,144 @@ export default function AyarlarPage() {
   };
 
   return (
-    <main className="dashboard-content" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-      
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" }}>
+    <main className="dashboard-content" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      {/* Top Action Bar */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "16px",
+          width: "100%",
+        }}
+      >
         <div>
-          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#fdfbf7", margin: 0 }}>
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", margin: 0, letterSpacing: "-0.3px" }}>
             Sistem &amp; Yönetici Ayarları
           </h1>
-          <span style={{ fontSize: "12.5px", color: "#94a3b8" }}>
+          <span style={{ fontSize: "13px", color: "#cbd5e1", marginTop: "4px", display: "block" }}>
             Hakkımızda vitrini, fotoğraf galerisi, yönetici profili ve işletme tercihleri
           </span>
         </div>
       </div>
 
       <form onSubmit={handleSave} className="settings-grid">
-        
-        {/* 1. Hakkımızda Ana Vitrin (Hero / Kapak) Görseli */}
-        <div className="dashboard-card settings-card" style={{ gridColumn: "1 / -1" }}>
-          <div className="card-header" style={{ marginBottom: "8px" }}>
-            <div className="settings-card-title" style={{ marginBottom: 0 }}>
-              <span style={{ fontSize: "18px" }}>⭐</span>
-              <h4>Hakkımızda Ana Vitrin (Hero / Kapak) Görseli</h4>
+        {/* 1. HAKKIMIZDA ANA VİTRİN GÖRSELİ KARTI (APPLE LUXURY DESIGN) */}
+        <div className="dashboard-card" style={{ gridColumn: "1 / -1" }}>
+          <div
+            className="card-header"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "14px",
+              width: "100%",
+              marginBottom: "8px",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "10px",
+                  background: "rgba(223, 183, 88, 0.15)",
+                  color: "#dfb758",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1px solid rgba(223, 183, 88, 0.3)",
+                }}
+              >
+                <Star size={18} />
+              </div>
+              <h3 style={{ fontSize: "17.5px", fontWeight: 800, color: "#ffffff", margin: 0 }}>
+                Hakkımızda Ana Vitrin (Hero / Kapak) Görseli
+              </h3>
             </div>
-            <Link href="/hakkimizda" target="_blank" className="view-all">
-              Hakkımızda Sayfasında Canlı Gör ↗
+
+            <Link href="/hakkimizda" target="_blank" className="apple-btn-glass">
+              <span>Hakkımızda Sayfasında Canlı Gör</span>
+              <ExternalLink size={14} />
             </Link>
           </div>
 
-          <span className="card-subtitle" style={{ marginTop: "-4px", marginBottom: "16px" }}>
+          <p style={{ fontSize: "12.5px", color: "#94a3b8", lineHeight: 1.5, margin: "4px 0 18px" }}>
             Hakkımızda sayfasında &quot;FORZA GAMING HAKKIMIZDA&quot; başlığının hemen sağında duran ana vitrin görselidir. Doğrudan yeni bir fotoğraf yükleyebilir veya aşağıdaki galeri fotoğraflarından birini &quot;⭐ Vitrin Yap&quot; butonuyla ana görsel seçebilirsiniz.
-          </span>
+          </p>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap", background: "rgba(255, 215, 0, 0.05)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "16px", padding: "18px 22px" }}>
-            <div style={{ position: "relative", width: "200px", height: "120px", borderRadius: "12px", overflow: "hidden", border: "2px solid #ffd700", boxShadow: "0 4px 20px rgba(0,0,0,0.5)", flexShrink: 0 }}>
-              <img src={aboutCoverPhoto || "/foto1.jpeg"} alt="Ana Vitrin Görseli" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", top: "6px", left: "6px", background: "#ffd700", color: "#000", fontSize: "10px", fontWeight: 800, padding: "2px 8px", borderRadius: "12px" }}>
+          {/* Vitrin Vitrin Box */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "24px",
+              flexWrap: "wrap",
+              background: "rgba(255, 255, 255, 0.03)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "18px",
+              padding: "20px",
+              boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                width: "220px",
+                height: "135px",
+                borderRadius: "14px",
+                overflow: "hidden",
+                border: "2px solid #dfb758",
+                boxShadow: "0 8px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(223, 183, 88, 0.25)",
+                flexShrink: 0,
+              }}
+            >
+              <img
+                src={aboutCoverPhoto || "/foto1.jpeg"}
+                alt="Ana Vitrin Görseli"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  top: "8px",
+                  left: "8px",
+                  background: "#dfb758",
+                  color: "#000000",
+                  fontSize: "10.5px",
+                  fontWeight: 900,
+                  padding: "3px 10px",
+                  borderRadius: "10px",
+                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.5)",
+                }}
+              >
                 ⭐ AKTİF VİTRİN
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px", flex: 1, minWidth: "220px" }}>
-              <strong style={{ fontSize: "14px", color: "#fdfbf7" }}>Mevcut Vitrin Görseli: <span style={{ color: "#ffd700", fontWeight: 600 }}>{aboutCoverPhoto}</span></strong>
-              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                <label className="avatar-upload-btn" htmlFor="coverFileInput" style={{ opacity: isCoverUploading ? 0.7 : 1, cursor: isCoverUploading ? "wait" : "pointer" }}>
-                  {isCoverUploading ? "⏳ Yükleniyor..." : "📷 Yeni Vitrin Fotoğrafı Yükle"}
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", flex: 1, minWidth: "240px" }}>
+              <div>
+                <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                  Mevcut Vitrin Görseli
+                </span>
+                <strong style={{ fontSize: "15px", color: "#ffffff", display: "block", marginTop: "2px" }}>
+                  {aboutCoverPhoto}
+                </strong>
+              </div>
+
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+                <label
+                  className="apple-btn-white"
+                  htmlFor="coverFileInput"
+                  style={{
+                    opacity: isCoverUploading ? 0.7 : 1,
+                    cursor: isCoverUploading ? "wait" : "pointer",
+                  }}
+                >
+                  <Camera size={15} />
+                  <span>{isCoverUploading ? "Yükleniyor..." : "Yeni Vitrin Fotoğrafı Yükle"}</span>
                 </label>
                 <input
                   type="file"
@@ -597,41 +705,104 @@ export default function AyarlarPage() {
                   onChange={handleCoverPhotoUpload}
                   style={{ display: "none" }}
                 />
+
                 <button
                   type="button"
                   onClick={() => handleSetCoverPhoto("/foto1.jpeg")}
-                  className="avatar-remove-btn"
+                  className="apple-btn-glass"
                   title="Varsayılan ana salon fotoğrafına dön"
                 >
-                  🔄 Varsayılana Dön (/foto1.jpeg)
+                  <RotateCcw size={14} />
+                  <span>Varsayılana Dön (/foto1.jpeg)</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 2. Hakkımızda Fotoğraf Galerisi & Sıralama */}
-        <div className="dashboard-card settings-card" style={{ gridColumn: "1 / -1" }}>
-          <div className="card-header" style={{ marginBottom: "8px" }}>
-            <div className="settings-card-title" style={{ marginBottom: 0 }}>
-              <span style={{ fontSize: "18px" }}>🖼️</span>
-              <h4>Mekan Fotoğraf Galerisi (Sıralama, Ekle &amp; Çıkart)</h4>
+        {/* 2. MEKAN FOTOĞRAF GALERİSİ & SIRALAMA */}
+        <div className="dashboard-card" style={{ gridColumn: "1 / -1" }}>
+          <div
+            className="card-header"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "14px",
+              width: "100%",
+              marginBottom: "8px",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "10px",
+                  background: "rgba(56, 189, 248, 0.15)",
+                  color: "#38bdf8",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1px solid rgba(56, 189, 248, 0.3)",
+                }}
+              >
+                <ImageIcon size={18} />
+              </div>
+              <h3 style={{ fontSize: "17.5px", fontWeight: 800, color: "#ffffff", margin: 0 }}>
+                Mekan Fotoğraf Galerisi (Sıralama, Ekle &amp; Çıkart)
+              </h3>
             </div>
-            <span style={{ fontSize: "12px", color: "#94a3b8" }}>
-              Toplam: <strong style={{ color: "#ffd700" }}>{galleryPhotos.length} Fotoğraf</strong>
+
+            <span
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                color: "#94a3b8",
+                background: "rgba(255, 255, 255, 0.06)",
+                padding: "4px 12px",
+                borderRadius: "10px",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+              }}
+            >
+              Toplam: <strong style={{ color: "#ffffff" }}>{galleryPhotos.length} Fotoğraf</strong>
             </span>
           </div>
 
-          <span className="card-subtitle" style={{ marginTop: "-4px", marginBottom: "14px" }}>
-            Fotoğraf ekleyebilir, <strong>◀ Sola / ▶ Sağa</strong> butonlarıyla sırasını değiştirebilir, <strong>⭐ Vitrin Yap</strong> ile ana kapak fotoğrafı yapabilir veya kırmızı butondan silebilirsiniz.
-          </span>
+          <p style={{ fontSize: "12.5px", color: "#94a3b8", lineHeight: 1.5, margin: "4px 0 16px" }}>
+            Fotoğraf ekleyebilir, <strong>◀ Sola / ▶ Sağa</strong> butonlarıyla sırasını değiştirebilir, <strong>⭐ Vitrin Yap</strong> ile ana kapak fotoğrafı yapabilir veya silme butonundan kaldırabilirsiniz.
+          </p>
 
           {/* Fotoğraf Ekleme Formu */}
-          <div className="gallery-upload-card">
-            <strong style={{ fontSize: "13px", color: "var(--cream-100)" }}>📸 Yeni Galeri Fotoğrafı Ekle</strong>
-            <div className="gallery-form-row">
-              <label className="gallery-file-label" htmlFor="galleryFileInput" style={{ opacity: isUploading ? 0.7 : 1, cursor: isUploading ? "wait" : "pointer" }}>
-                {isUploading ? "⏳ Yükleniyor..." : `📁 ${fileLabel}`}
+          <div
+            style={{
+              background: "rgba(255, 255, 255, 0.03)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "16px",
+              padding: "16px 20px",
+              marginBottom: "20px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+            }}
+          >
+            <strong style={{ fontSize: "13px", color: "#ffffff", display: "flex", alignItems: "center", gap: "6px" }}>
+              <Sparkles size={14} style={{ color: "#dfb758" }} />
+              <span>Yeni Galeri Fotoğrafı Ekle</span>
+            </strong>
+
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+              <label
+                className="apple-btn-glass"
+                htmlFor="galleryFileInput"
+                style={{
+                  opacity: isUploading ? 0.7 : 1,
+                  cursor: isUploading ? "wait" : "pointer",
+                }}
+              >
+                <Upload size={14} />
+                <span>{isUploading ? "Yükleniyor..." : fileLabel}</span>
               </label>
               <input
                 type="file"
@@ -644,8 +815,9 @@ export default function AyarlarPage() {
 
               <input
                 type="text"
-                className="gallery-form-input"
-                placeholder="veya görsel URL'si / dosya adı (örn: /foto1.jpeg)"
+                className="settings-input"
+                style={{ flex: 1, minWidth: "180px" }}
+                placeholder="veya görsel URL'si (örn: /foto1.jpeg)"
                 value={newPhotoUrl}
                 disabled={isUploading}
                 onChange={(e) => setNewPhotoUrl(e.target.value)}
@@ -653,8 +825,9 @@ export default function AyarlarPage() {
 
               <input
                 type="text"
-                className="gallery-form-input"
-                placeholder="Fotoğraf Başlığı / Etiketi (örn: 540Hz Espor Alanı)"
+                className="settings-input"
+                style={{ flex: 1, minWidth: "160px" }}
+                placeholder="Fotoğraf Başlığı (örn: 540Hz Espor Alanı)"
                 value={newPhotoBadge}
                 disabled={isUploading}
                 onChange={(e) => setNewPhotoBadge(e.target.value)}
@@ -664,9 +837,9 @@ export default function AyarlarPage() {
                 type="button"
                 onClick={handleAddPhoto}
                 disabled={isUploading}
-                className="gallery-add-btn"
+                className="apple-btn-white"
               >
-                + Galeriye Ekle
+                <span>+ Galeriye Ekle</span>
               </button>
             </div>
           </div>
@@ -681,15 +854,19 @@ export default function AyarlarPage() {
                   className="media-item"
                   style={{
                     height: "175px",
-                    border: isCover ? "2px solid #ffd700" : "1px solid rgba(255, 255, 255, 0.15)",
-                    boxShadow: isCover ? "0 0 15px rgba(255, 215, 0, 0.35)" : "none",
+                    borderRadius: "16px",
+                    overflow: "hidden",
+                    border: isCover ? "2px solid #dfb758" : "1px solid rgba(255, 255, 255, 0.15)",
+                    boxShadow: isCover ? "0 0 20px rgba(223, 183, 88, 0.3)" : "0 4px 16px rgba(0, 0, 0, 0.4)",
                   }}
                 >
                   <img src={foto.src} alt={foto.badge || "Mekan Fotoğrafı"} />
 
                   {/* Sıra & Vitrin Rozetleri */}
                   {isCover ? (
-                    <span className="photo-cover-badge">⭐ VİTRİN</span>
+                    <span className="photo-cover-badge" style={{ background: "#dfb758", color: "#000000", fontWeight: 900 }}>
+                      ⭐ VİTRİN
+                    </span>
                   ) : (
                     <span className="photo-order-badge">#{index + 1}</span>
                   )}
@@ -701,7 +878,7 @@ export default function AyarlarPage() {
                     className="photo-delete-btn"
                     title="Fotoğrafı Galeriden Sil"
                   >
-                    ✕
+                    <Trash2 size={13} />
                   </button>
 
                   {/* Başlık Rozeti */}
@@ -709,7 +886,7 @@ export default function AyarlarPage() {
                     {foto.badge || "Mekan"}
                   </span>
 
-                  {/* Alt Kontrol Çubuğu (Sıralama + Vitrin Yap) */}
+                  {/* Alt Kontrol Çubuğu */}
                   <div className="photo-controls-bar">
                     <button
                       type="button"
@@ -718,7 +895,7 @@ export default function AyarlarPage() {
                       className="photo-ctrl-btn"
                       title="Sola / Öne Taşı"
                     >
-                      ◀
+                      <ChevronLeft size={14} />
                     </button>
 
                     <button
@@ -737,7 +914,7 @@ export default function AyarlarPage() {
                       className="photo-ctrl-btn"
                       title="Sağa / Arkaya Taşı"
                     >
-                      ▶
+                      <ChevronRight size={14} />
                     </button>
                   </div>
                 </div>
@@ -746,18 +923,40 @@ export default function AyarlarPage() {
           </div>
         </div>
 
-        {/* 2. Yönetici Profili & Giriş Bilgileri */}
-        <div className="settings-card">
-          <h2 className="settings-card-title">👤 Yönetici Profili &amp; Giriş Bilgileri</h2>
+        {/* 3. YÖNETİCİ PROFİLİ & ŞİFRE YÖNETİMİ */}
+        <div className="dashboard-card">
+          <div className="card-header" style={{ marginBottom: "16px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "10px",
+                  background: "rgba(255, 255, 255, 0.1)",
+                  color: "#ffffff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                }}
+              >
+                <User size={18} />
+              </div>
+              <h3 style={{ fontSize: "17.5px", fontWeight: 800, color: "#ffffff", margin: 0 }}>
+                Yönetici Profili &amp; Giriş Bilgileri
+              </h3>
+            </div>
+          </div>
 
           {/* Avatar Yükleyici */}
-          <div className="admin-avatar-manager">
+          <div className="admin-avatar-manager" style={{ marginBottom: "18px" }}>
             <div className="admin-avatar-preview">
               {avatar ? <img src={avatar} alt="Admin Profil" /> : "F"}
             </div>
             <div className="admin-avatar-controls">
-              <label className="avatar-upload-btn" htmlFor="avatarFileInputNext">
-                📷 Profil Fotoğrafı Seç
+              <label className="apple-btn-white" htmlFor="avatarFileInputNext">
+                <Camera size={14} />
+                <span>Profil Fotoğrafı Seç</span>
               </label>
               <input
                 type="file"
@@ -769,15 +968,17 @@ export default function AyarlarPage() {
               <button
                 type="button"
                 onClick={handleAvatarRemove}
-                className="avatar-remove-btn"
+                className="apple-btn-glass"
               >
-                Fotoğrafı Kaldır / Sıfırla
+                <span>Fotoğrafı Kaldır / Sıfırla</span>
               </button>
             </div>
           </div>
           
-          <div className="form-group">
-            <label>Yönetici Kullanıcı Adı</label>
+          <div className="form-group" style={{ marginBottom: "14px" }}>
+            <label style={{ fontSize: "11.5px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              Yönetici Kullanıcı Adı
+            </label>
             <input
               type="text"
               required
@@ -788,8 +989,10 @@ export default function AyarlarPage() {
             />
           </div>
 
-          <div className="form-group">
-            <label>Yönetici E-Posta Adresi (Şifre Sıfırlama İçin)</label>
+          <div className="form-group" style={{ marginBottom: "14px" }}>
+            <label style={{ fontSize: "11.5px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              Yönetici E-Posta Adresi
+            </label>
             <input
               type="email"
               required
@@ -800,8 +1003,10 @@ export default function AyarlarPage() {
             />
           </div>
 
-          <div className="form-group">
-            <label>Mevcut Şifre</label>
+          <div className="form-group" style={{ marginBottom: "14px" }}>
+            <label style={{ fontSize: "11.5px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              Mevcut Şifre
+            </label>
             <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
               <input
                 type={showCurrentPass ? "text" : "password"}
@@ -820,21 +1025,20 @@ export default function AyarlarPage() {
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  color: showCurrentPass ? "#ffd700" : "#94a3b8",
-                  fontSize: "15px",
-                  padding: "4px",
+                  color: showCurrentPass ? "#dfb758" : "#94a3b8",
                   display: "flex",
                   alignItems: "center",
                 }}
-                title={showCurrentPass ? "Şifreyi Gizle" : "Şifreyi Göster"}
               >
-                {showCurrentPass ? "👁️" : "🔒"}
+                {showCurrentPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
           </div>
 
-          <div className="form-group">
-            <label>Yeni Şifre</label>
+          <div className="form-group" style={{ marginBottom: "14px" }}>
+            <label style={{ fontSize: "11.5px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              Yeni Şifre
+            </label>
             <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
               <input
                 type={showNewPass ? "text" : "password"}
@@ -853,19 +1057,15 @@ export default function AyarlarPage() {
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  color: showNewPass ? "#ffd700" : "#94a3b8",
-                  fontSize: "15px",
-                  padding: "4px",
+                  color: showNewPass ? "#dfb758" : "#94a3b8",
                   display: "flex",
                   alignItems: "center",
                 }}
-                title={showNewPass ? "Şifreyi Gizle" : "Şifreyi Göster"}
               >
-                {showNewPass ? "👁️" : "🔒"}
+                {showNewPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
 
-            {/* Canlı Güvenlik Seviyesi Göstergesi */}
             {newPassword.length > 0 && (
               <div style={{ marginTop: "8px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", marginBottom: "4px", color: getPasswordStrength(newPassword).color, fontWeight: 700 }}>
@@ -886,8 +1086,10 @@ export default function AyarlarPage() {
             )}
           </div>
 
-          <div className="form-group">
-            <label>Yeni Şifre (Tekrar)</label>
+          <div className="form-group" style={{ marginBottom: "14px" }}>
+            <label style={{ fontSize: "11.5px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              Yeni Şifre (Tekrar)
+            </label>
             <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
               <input
                 type={showConfirmPass ? "text" : "password"}
@@ -906,19 +1108,15 @@ export default function AyarlarPage() {
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  color: showConfirmPass ? "#ffd700" : "#94a3b8",
-                  fontSize: "15px",
-                  padding: "4px",
+                  color: showConfirmPass ? "#dfb758" : "#94a3b8",
                   display: "flex",
                   alignItems: "center",
                 }}
-                title={showConfirmPass ? "Şifreyi Gizle" : "Şifreyi Göster"}
               >
-                {showConfirmPass ? "👁️" : "🔒"}
+                {showConfirmPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
 
-            {/* Şifre Eşleşme Bildirimi */}
             {confirmPassword.length > 0 && (
               <div style={{ marginTop: "6px", fontSize: "11.5px", fontWeight: 700, color: newPassword === confirmPassword ? "#10b981" : "#f43f5e" }}>
                 {newPassword === confirmPassword ? "✓ Şifreler birebir uyuşuyor" : "✕ Şifreler eşleşmiyor"}
@@ -928,31 +1126,54 @@ export default function AyarlarPage() {
 
           <div
             style={{
-              marginTop: "12px",
-              padding: "10px 14px",
-              borderRadius: "12px",
-              background: passwordAgeDays >= 180 ? "rgba(244,63,94,0.12)" : "rgba(247,242,232,0.05)",
-              border: `1px solid ${passwordAgeDays >= 180 ? "rgba(244,63,94,0.3)" : "rgba(247,242,232,0.1)"}`,
+              marginTop: "14px",
+              padding: "12px 16px",
+              borderRadius: "14px",
+              background: passwordAgeDays >= 180 ? "rgba(244,63,94,0.12)" : "rgba(255, 255, 255, 0.04)",
+              border: `1px solid ${passwordAgeDays >= 180 ? "rgba(244,63,94,0.3)" : "rgba(255, 255, 255, 0.1)"}`,
               fontSize: "12px",
-              color: passwordAgeDays >= 180 ? "#f43f5e" : "var(--cream-300)",
+              color: passwordAgeDays >= 180 ? "#f43f5e" : "#cbd5e1",
               display: "flex",
               alignItems: "center",
               gap: "8px",
             }}
           >
-            <span>🛡️</span>
+            <ShieldCheck size={16} style={{ color: passwordAgeDays >= 180 ? "#f43f5e" : "#dfb758" }} />
             <span>
               Şifre Durumu: <strong>{passwordAgeDays} gün önce</strong> güncellendi (Aktif parola koruması devrede)
             </span>
           </div>
         </div>
 
-        {/* İşletme & Bildirim Ayarları */}
-        <div className="settings-card">
-          <h2 className="settings-card-title">🏢 İşletme &amp; Bildirim Tercihleri</h2>
+        {/* 4. İŞLETME & BİLDİRİM TERCİHLERİ */}
+        <div className="dashboard-card">
+          <div className="card-header" style={{ marginBottom: "16px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "10px",
+                  background: "rgba(223, 183, 88, 0.15)",
+                  color: "#dfb758",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1px solid rgba(223, 183, 88, 0.3)",
+                }}
+              >
+                <Building2 size={18} />
+              </div>
+              <h3 style={{ fontSize: "17.5px", fontWeight: 800, color: "#ffffff", margin: 0 }}>
+                İşletme &amp; Bildirim Tercihleri
+              </h3>
+            </div>
+          </div>
           
-          <div className="form-group">
-            <label>Kafe Adı</label>
+          <div className="form-group" style={{ marginBottom: "14px" }}>
+            <label style={{ fontSize: "11.5px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              Kafe Adı
+            </label>
             <input
               type="text"
               className="settings-input"
@@ -961,8 +1182,10 @@ export default function AyarlarPage() {
             />
           </div>
 
-          <div className="form-group">
-            <label>WhatsApp / İletişim Telefonu</label>
+          <div className="form-group" style={{ marginBottom: "16px" }}>
+            <label style={{ fontSize: "11.5px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              WhatsApp / İletişim Telefonu
+            </label>
             <input
               type="tel"
               className="settings-input"
@@ -971,53 +1194,79 @@ export default function AyarlarPage() {
             />
           </div>
 
-          <div className="toggle-setting-row" style={{ marginTop: "14px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "14px 16px",
+              borderRadius: "14px",
+              background: "rgba(255, 255, 255, 0.03)",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              marginBottom: "12px",
+            }}
+          >
             <div>
-              <strong style={{ fontSize: "13px", color: "#fdfbf7", display: "block" }}>Sesli Bildirim Uyarısı</strong>
-              <span style={{ fontSize: "11.5px", color: "#94a3b8" }}>Yeni rezervasyon geldiğinde ses çal</span>
+              <strong style={{ fontSize: "13.5px", color: "#ffffff", display: "flex", alignItems: "center", gap: "6px" }}>
+                <Bell size={14} style={{ color: "#dfb758" }} />
+                <span>Sesli Bildirim Uyarısı</span>
+              </strong>
+              <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "2px", display: "block" }}>
+                Yeni rezervasyon talebi geldiğinde ses çal
+              </span>
             </div>
             <input
               type="checkbox"
               checked={soundEnabled}
               onChange={(e) => setSoundEnabled(e.target.checked)}
-              style={{ width: "20px", height: "20px", accentColor: "var(--cream-gold)" }}
+              style={{ width: "22px", height: "22px", accentColor: "#dfb758", cursor: "pointer" }}
             />
           </div>
 
-          <div className="toggle-setting-row" style={{ marginTop: "12px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "14px 16px",
+              borderRadius: "14px",
+              background: "rgba(255, 255, 255, 0.03)",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+            }}
+          >
             <div>
-              <strong style={{ fontSize: "13px", color: "#fdfbf7", display: "block" }}>Otomatik Canlı Yenileme</strong>
-              <span style={{ fontSize: "11.5px", color: "#94a3b8" }}>Masa durumlarını periyodik olarak güncelle</span>
+              <strong style={{ fontSize: "13.5px", color: "#ffffff", display: "flex", alignItems: "center", gap: "6px" }}>
+                <RefreshCw size={14} style={{ color: "#38bdf8" }} />
+                <span>Otomatik Canlı Yenileme</span>
+              </strong>
+              <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "2px", display: "block" }}>
+                Masa ve rezervasyon durumlarını periyodik güncelle
+              </span>
             </div>
             <input
               type="checkbox"
               checked={autoRefresh}
               onChange={(e) => setAutoRefresh(e.target.checked)}
-              style={{ width: "20px", height: "20px", accentColor: "var(--cream-gold)" }}
+              style={{ width: "22px", height: "22px", accentColor: "#dfb758", cursor: "pointer" }}
             />
           </div>
         </div>
 
-        <div style={{ gridColumn: "1 / -1", display: "flex", justifyContent: "flex-end" }}>
+        {/* 5. KAYDET BUTONU */}
+        <div style={{ gridColumn: "1 / -1", display: "flex", justifyContent: "flex-end", marginTop: "8px" }}>
           <button
             type="submit"
-            className="save-settings-btn"
+            className="apple-btn-white"
             style={{
-              padding: "14px 28px",
-              borderRadius: "14px",
-              background: "var(--cream-gradient)",
-              color: "#07090d",
-              fontWeight: 800,
-              fontSize: "14px",
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 6px 20px rgba(245, 238, 219, 0.3)",
+              padding: "14px 32px",
+              fontSize: "14.5px",
+              fontWeight: 900,
             }}
           >
-            ✓ Değişiklikleri Kaydet
+            <Save size={18} />
+            <span>Tüm Değişiklikleri Kaydet</span>
           </button>
         </div>
-
       </form>
     </main>
   );

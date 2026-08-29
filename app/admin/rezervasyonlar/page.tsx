@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Rezervasyon } from "@/lib/types";
 import { useToast } from "@/components/admin/Toast";
+import { CheckCheck, Check, X, Search, Calendar, Phone, Monitor, Clock } from "lucide-react";
 
 export default function RezervasyonlarManagementPage() {
   const { showToast } = useToast();
@@ -23,7 +24,7 @@ export default function RezervasyonlarManagementPage() {
         if (raw) {
           const parsed = JSON.parse(raw);
           if (Array.isArray(parsed)) {
-            localRezList = parsed.map((b: { id?: string; musteri?: string; baslik?: string; telefon?: string; pcler?: string[]; masaId?: string; masaIsim?: string; kampanya?: string; tarih?: string; sure?: string | number; tutar?: number | string; durum?: string; okundu?: boolean }) => ({
+            localRezList = parsed.map((b: any) => ({
               id: b.id || `loc-${Date.now()}-${Math.random()}`,
               musteriAdi: b.musteri || b.baslik || "Müşteri",
               telefon: b.telefon || "0546 465 96 93",
@@ -47,7 +48,6 @@ export default function RezervasyonlarManagementPage() {
       const data = await res.json();
       const serverList = data.reservations || [];
 
-      // Merge by ID
       const map = new Map<string, Rezervasyon>();
       localRezList.forEach((r) => map.set(r.id, r));
       serverList.forEach((r: Rezervasyon) => map.set(r.id, r));
@@ -62,12 +62,10 @@ export default function RezervasyonlarManagementPage() {
   }
 
   const handleAction = async (id: string, durum: "confirmed" | "rejected") => {
-    // 1. React State Güncelle
     setReservations((prev) =>
       prev.map((r) => (r.id === id ? { ...r, durum, okundu: true } : r))
     );
 
-    // 2. LocalStorage Senkronizasyonu
     try {
       const raw = localStorage.getItem("forzaBildirimler");
       if (raw) {
@@ -83,7 +81,6 @@ export default function RezervasyonlarManagementPage() {
         }
       }
 
-      // Masaların durumunu güncelle (Onaylandı -> kullanımda / Reddedildi -> boş)
       const rez = reservations.find((r) => r.id === id);
       if (rez) {
         const rawPc = localStorage.getItem("forzaPcDurumlari");
@@ -102,7 +99,6 @@ export default function RezervasyonlarManagementPage() {
       }
     } catch (e) {}
 
-    // 3. API Sunucusuna Bildir
     try {
       await fetch("/api/reservations", {
         method: "PATCH",
@@ -111,7 +107,7 @@ export default function RezervasyonlarManagementPage() {
       });
       showToast(
         durum === "confirmed" ? "Onaylandı" : "Reddedildi",
-        durum === "confirmed" ? "Masa kullanıcı için hazırlandı ve aktifleştirildi." : "Talep iptal edildi.",
+        durum === "confirmed" ? "Masa kullanıcı için hazırlandı." : "Talep iptal edildi.",
         durum === "confirmed" ? "success" : "warning"
       );
     } catch {
@@ -157,14 +153,23 @@ export default function RezervasyonlarManagementPage() {
   });
 
   return (
-    <main className="dashboard-content" style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-      
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+    <main className="dashboard-content" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      {/* Top Header */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "14px",
+          width: "100%",
+        }}
+      >
         <div>
-          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#fdfbf7", margin: 0 }}>
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", margin: 0, letterSpacing: "-0.3px" }}>
             Gelen Siparişler &amp; Talepler
           </h1>
-          <span style={{ fontSize: "12px", color: "#94a3b8" }}>
+          <span style={{ fontSize: "13px", color: "#cbd5e1", marginTop: "4px", display: "block" }}>
             Web sitesinden anlık iletilen müşteri rezervasyonları
           </span>
         </div>
@@ -172,15 +177,24 @@ export default function RezervasyonlarManagementPage() {
         <button
           type="button"
           onClick={markAllRead}
-          className="mark-all-read-btn"
+          className="apple-btn-white"
         >
-          ✓✓ Tümünü Okundu Yap
+          <CheckCheck size={16} />
+          <span>Tümünü Okundu Yap</span>
         </button>
       </div>
 
       {/* Filter and Search */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
-        <div className="computer-filter-tabs" style={{ maxWidth: "380px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "14px",
+        }}
+      >
+        <div className="computer-filter-tabs">
           <button
             type="button"
             className={`filter-tab ${filterStatus === "tumu" ? "active" : ""}`}
@@ -204,7 +218,7 @@ export default function RezervasyonlarManagementPage() {
           </button>
         </div>
 
-        <div className="ios-search-bar" style={{ maxWidth: "300px", width: "100%" }}>
+        <div className="ios-search-bar" style={{ maxWidth: "320px", width: "100%" }}>
           <input
             type="text"
             placeholder="Müşteri veya tel ara..."
@@ -215,25 +229,46 @@ export default function RezervasyonlarManagementPage() {
       </div>
 
       {/* Reservation List */}
-      <div className="dashboard-card" style={{ padding: "20px" }}>
+      <div className="dashboard-card" style={{ padding: "24px" }}>
         {loading ? (
-          <div style={{ textAlign: "center", padding: "40px", color: "#94a3b8" }}>Yükleniyor...</div>
+          <div style={{ textAlign: "center", padding: "60px", color: "#94a3b8" }}>Yükleniyor...</div>
         ) : filtered.length === 0 ? (
-          <p style={{ textAlign: "center", padding: "30px", color: "#94a3b8" }}>Aramanızla eşleşen rezervasyon bulunamadı.</p>
+          <p style={{ textAlign: "center", padding: "40px", color: "#94a3b8" }}>Aramanızla eşleşen rezervasyon bulunamadı.</p>
         ) : (
           <div className="reservation-list">
             {filtered.map((rez) => (
               <div key={rez.id} className={`reservation-item ${rez.durum === "pending" ? "highlight" : ""}`}>
-                <div className="reservation-icon">📅</div>
+                <div className="reservation-icon">🖥️</div>
                 <div className="reservation-info">
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <strong style={{ fontSize: "14px" }}>{rez.musteriAdi}</strong>
-                    <span style={{ fontSize: "11px", padding: "2px 6px", background: "rgba(247,242,232,0.1)", borderRadius: "6px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                    <strong style={{ fontSize: "14.5px", color: "#ffffff" }}>{rez.musteriAdi}</strong>
+                    <span
+                      style={{
+                        fontSize: "11px",
+                        fontWeight: 700,
+                        padding: "2px 8px",
+                        background: "rgba(255, 255, 255, 0.08)",
+                        borderRadius: "6px",
+                        color: "#cbd5e1",
+                      }}
+                    >
                       📞 {rez.telefon}
                     </span>
+                    <span
+                      style={{
+                        fontSize: "11px",
+                        fontWeight: 800,
+                        padding: "2px 8px",
+                        background: rez.kategori === "sari" ? "rgba(255, 215, 0, 0.15)" : rez.kategori === "mavi" ? "rgba(56, 189, 248, 0.15)" : "rgba(52, 211, 153, 0.15)",
+                        color: rez.kategori === "sari" ? "#dfb758" : rez.kategori === "mavi" ? "#38bdf8" : "#34d399",
+                        borderRadius: "6px",
+                      }}
+                    >
+                      {rez.kategori.toUpperCase()}
+                    </span>
                   </div>
-                  <span>
-                    🖥️ {rez.masaIsim} ({rez.kategori.toUpperCase()}) • 🕒 {rez.tarih} {rez.saat} • ⏳ {rez.sure} Saat • 💰 {rez.toplamTutar} ₺ ({rez.odemeYontemi.toUpperCase()})
+                  <span style={{ fontSize: "12.5px", color: "#94a3b8", marginTop: "3px" }}>
+                    🖥️ {rez.masaIsim} • 🕒 {rez.tarih} {rez.saat} • ⏳ {rez.sure} Saat • 💰 ₺{rez.toplamTutar} ({rez.odemeYontemi.toUpperCase()})
                   </span>
                 </div>
 
@@ -245,7 +280,7 @@ export default function RezervasyonlarManagementPage() {
                       className="res-btn res-btn-approve"
                       title="Onayla"
                     >
-                      ✓
+                      <Check size={14} />
                     </button>
                     <button
                       type="button"
@@ -253,22 +288,12 @@ export default function RezervasyonlarManagementPage() {
                       className="res-btn res-btn-reject"
                       title="Reddet"
                     >
-                      ✕
+                      <X size={14} />
                     </button>
                   </div>
                 ) : (
-                  <span
-                    style={{
-                      fontSize: "11px",
-                      fontWeight: 700,
-                      padding: "6px 12px",
-                      borderRadius: "8px",
-                      background: rez.durum === "confirmed" ? "rgba(16,185,129,0.18)" : "rgba(244,63,94,0.18)",
-                      color: rez.durum === "confirmed" ? "#10b981" : "#f43f5e",
-                      border: `1px solid ${rez.durum === "confirmed" ? "rgba(16,185,129,0.4)" : "rgba(244,63,94,0.4)"}`,
-                    }}
-                  >
-                    {rez.durum === "confirmed" ? "ONAYLANDI" : "REDDEDİLDİ"}
+                  <span className={`reservation-status ${rez.durum === "confirmed" ? "confirmed" : "rejected"}`}>
+                    {rez.durum === "confirmed" ? "Onaylandı" : "Reddedildi"}
                   </span>
                 )}
               </div>
@@ -276,7 +301,6 @@ export default function RezervasyonlarManagementPage() {
           </div>
         )}
       </div>
-
     </main>
   );
 }

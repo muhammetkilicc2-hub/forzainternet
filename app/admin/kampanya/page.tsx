@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useToast } from "@/components/admin/Toast";
 import { PricingConfig, PcKategori } from "@/lib/types";
+import { Clock, Zap, SunMedium, Save, Sparkles } from "lucide-react";
 
 export default function KampanyaManagementPage() {
   const { showToast } = useToast();
@@ -72,24 +73,33 @@ export default function KampanyaManagementPage() {
     }
   };
 
-  const categories: { id: PcKategori; badgeName: string; title: string; subtitle: string }[] = [
+  const categories: {
+    id: PcKategori;
+    badgeName: string;
+    hzTag: string;
+    title: string;
+    subtitle: string;
+  }[] = [
     {
       id: "sari",
-      badgeName: "SARI MASALAR",
-      title: "Standart Gaming (Sarı Masalar)",
+      badgeName: "🟡 SARI MASALAR",
+      hzTag: "240 Hz IPS",
+      title: "Standart Gaming",
       subtitle: "RTX 4060 • 240 Hz Fast IPS Monitör",
     },
     {
       id: "mavi",
-      badgeName: "MAVİ MASALAR",
-      title: "Pro Gaming (Mavi Masalar)",
+      badgeName: "🔵 MAVİ MASALAR",
+      hzTag: "360 Hz Espor",
+      title: "Pro Gaming",
       subtitle: "RTX 4070 Super • 360 Hz Espor Monitör",
     },
     {
       id: "yesil",
-      badgeName: "YEŞİL VIP MASALAR",
-      title: "Elite VIP 540Hz (Yeşil Masalar)",
-      subtitle: "RTX 4090 / 4080 • 540 Hz Zirve DyAc+",
+      badgeName: "🟢 YEŞİL VIP MASALAR",
+      hzTag: "540 Hz DyAc+",
+      title: "Elite VIP 540Hz",
+      subtitle: "RTX 4090 / 4080 • 540 Hz Zirve Deneyim",
     },
   ];
 
@@ -103,12 +113,22 @@ export default function KampanyaManagementPage() {
 
   return (
     <main className="dashboard-content" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "14px" }}>
+      {/* Top Action Bar */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "16px",
+          width: "100%",
+        }}
+      >
         <div>
           <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", margin: 0, letterSpacing: "-0.3px" }}>
             Fiyat &amp; Kampanya Yönetimi
           </h1>
-          <span style={{ fontSize: "13px", color: "#cbd5e1", marginTop: "3px", display: "block" }}>
+          <span style={{ fontSize: "13px", color: "#cbd5e1", marginTop: "4px", display: "block" }}>
             Saatlik ve avantajlı paket ücretlerini anlık olarak belirleyin
           </span>
         </div>
@@ -118,30 +138,85 @@ export default function KampanyaManagementPage() {
           onClick={() => handleSave()}
           disabled={saving}
           className="save-settings-btn"
-          style={{ padding: "12px 24px", fontSize: "14px", fontWeight: 900 }}
+          style={{
+            padding: "12px 24px",
+            fontSize: "14px",
+            fontWeight: 900,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
         >
-          {saving ? "Kaydediliyor..." : "💾 Tüm Fiyatları Kaydet"}
+          <Save size={17} />
+          <span>{saving ? "Kaydediliyor..." : "Tüm Fiyatları Kaydet"}</span>
         </button>
       </div>
 
+      {/* 3 Pricing Cards Grid */}
       <div className="fiyat-yonetim-grid">
         {categories.map((cat) => (
           <div key={cat.id} className="fiyat-yonetim-karti">
+            {/* Header: Non-overlapping structured top area */}
             <div className="fiyat-yonetim-baslik">
-              <div>
-                <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#ffffff", margin: 0 }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                  gap: "8px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <span className={`fiyat-renk-etiketi ${cat.id}`}>{cat.badgeName}</span>
+                <span
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    color: "#94a3b8",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    padding: "3px 10px",
+                    borderRadius: "8px",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                  }}
+                >
+                  {cat.hzTag}
+                </span>
+              </div>
+
+              <div style={{ marginTop: "4px" }}>
+                <h3
+                  style={{
+                    fontSize: "17px",
+                    fontWeight: 800,
+                    color: "#ffffff",
+                    margin: 0,
+                    letterSpacing: "-0.3px",
+                  }}
+                >
                   {cat.title}
                 </h3>
-                <span style={{ fontSize: "12px", color: "#cbd5e1", marginTop: "3px", display: "block" }}>
+                <span
+                  style={{
+                    fontSize: "12.5px",
+                    color: "#cbd5e1",
+                    marginTop: "3px",
+                    display: "block",
+                    lineHeight: 1.4,
+                  }}
+                >
                   {cat.subtitle}
                 </span>
               </div>
-              <span className={`fiyat-renk-etiketi ${cat.id}`}>{cat.badgeName}</span>
             </div>
 
+            {/* Inputs: 3 Stacked Full-Width Luxury Fields with Icons */}
             <div className="fiyat-yonetim-alanlari">
               <div className="form-group">
-                <label>Saatlik Ücret (₺)</label>
+                <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <Clock size={13} style={{ color: "#ffd700" }} />
+                  <span>Saatlik Ücret (₺)</span>
+                </label>
                 <input
                   type="number"
                   className="settings-input"
@@ -151,7 +226,10 @@ export default function KampanyaManagementPage() {
               </div>
 
               <div className="form-group">
-                <label>5 Saat Paket (₺)</label>
+                <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <Zap size={13} style={{ color: "#38bdf8" }} />
+                  <span>5 Saat Paket (₺)</span>
+                </label>
                 <input
                   type="number"
                   className="settings-input"
@@ -161,7 +239,10 @@ export default function KampanyaManagementPage() {
               </div>
 
               <div className="form-group">
-                <label>Gün Boyu Paket (₺)</label>
+                <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <SunMedium size={13} style={{ color: "#34d399" }} />
+                  <span>Gün Boyu Paket (₺)</span>
+                </label>
                 <input
                   type="number"
                   className="settings-input"
@@ -171,14 +252,22 @@ export default function KampanyaManagementPage() {
               </div>
             </div>
 
-            <div className="fiyat-yonetim-aksiyonlar">
+            {/* Action Button */}
+            <div className="fiyat-yonetim-aksiyonlar" style={{ marginTop: "auto" }}>
               <button
                 type="button"
                 className="fiyat-kaydet-btn"
                 onClick={() => handleSave(cat.id)}
                 disabled={saving}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                }}
               >
-                Bu Tarifeyi Güncelle
+                <Sparkles size={15} />
+                <span>Bu Tarifeyi Güncelle</span>
               </button>
             </div>
           </div>

@@ -227,8 +227,48 @@ export default function AboutPage() {
               <h2 style={{ fontFamily: "'Sora', sans-serif", fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: 800, color: "#ffffff", margin: "4px 0 0" }}>Mekan Fotoğrafları</h2>
             </div>
             <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-              <button type="button" onClick={prevSlide} aria-label="Önceki" style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(18, 24, 38, 0.9)", border: "1px solid rgba(255, 215, 0, 0.35)", color: "#ffd700", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>&lt;</button>
-              <button type="button" onClick={nextSlide} aria-label="Sonraki" style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(18, 24, 38, 0.9)", border: "1px solid rgba(255, 215, 0, 0.35)", color: "#ffd700", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>&gt;</button>
+              <button
+                type="button"
+                onClick={prevSlide}
+                aria-label="Önceki"
+                style={{
+                  width: "44px",
+                  height: "44px",
+                  borderRadius: "50%",
+                  background: visibleCount === 1 ? "transparent" : "rgba(18, 24, 38, 0.9)",
+                  border: visibleCount === 1 ? "none" : "1px solid rgba(255, 215, 0, 0.35)",
+                  color: visibleCount === 1 ? "transparent" : "#ffd700",
+                  opacity: visibleCount === 1 ? 0 : 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  pointerEvents: "auto",
+                }}
+              >
+                &lt;
+              </button>
+              <button
+                type="button"
+                onClick={nextSlide}
+                aria-label="Sonraki"
+                style={{
+                  width: "44px",
+                  height: "44px",
+                  borderRadius: "50%",
+                  background: visibleCount === 1 ? "transparent" : "rgba(18, 24, 38, 0.9)",
+                  border: visibleCount === 1 ? "none" : "1px solid rgba(255, 215, 0, 0.35)",
+                  color: visibleCount === 1 ? "transparent" : "#ffd700",
+                  opacity: visibleCount === 1 ? 0 : 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  pointerEvents: "auto",
+                }}
+              >
+                &gt;
+              </button>
             </div>
           </div>
 
@@ -271,12 +311,48 @@ export default function AboutPage() {
         {lightboxIndex !== null && photos[lightboxIndex] && (
           <div role="dialog" aria-modal="true" onClick={() => setLightboxIndex(null)} onTouchStart={handleLbTouchStart} onTouchEnd={handleLbTouchEnd} style={{ position: "fixed", inset: 0, background: "rgba(3, 7, 18, 0.95)", backdropFilter: "blur(20px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
             <button type="button" onClick={() => setLightboxIndex(null)} style={{ position: "absolute", top: "20px", right: "20px", background: "none", border: "none", color: "#fff", fontSize: "32px", cursor: "pointer" }}>&times;</button>
-            <button type="button" onClick={lightboxPrev} style={{ position: "absolute", left: "20px", background: "none", border: "1px solid #ffd700", borderRadius: "50%", color: "#ffd700", width: "50px", height: "50px", cursor: "pointer" }}>&lt;</button>
+            <button
+              type="button"
+              onClick={lightboxPrev}
+              style={{
+                position: "absolute",
+                left: "20px",
+                background: "none",
+                border: visibleCount === 1 ? "none" : "1px solid #ffd700",
+                borderRadius: "50%",
+                color: visibleCount === 1 ? "transparent" : "#ffd700",
+                opacity: visibleCount === 1 ? 0 : 1,
+                width: visibleCount === 1 ? "60px" : "50px",
+                height: visibleCount === 1 ? "100%" : "50px",
+                cursor: "pointer",
+                pointerEvents: "auto",
+              }}
+            >
+              &lt;
+            </button>
             <div onClick={(e) => e.stopPropagation()} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
               <img src={photos[lightboxIndex].src} alt={photos[lightboxIndex].alt || photos[lightboxIndex].caption || "Mekan Fotoğrafı"} style={{ maxWidth: "90vw", maxHeight: "75vh", borderRadius: "16px" }} />
               <div style={{ color: "#fff", marginTop: "12px" }}>{photos[lightboxIndex].caption || photos[lightboxIndex].badge || "Mekan"} ({lightboxIndex + 1} / {photos.length})</div>
             </div>
-            <button type="button" onClick={lightboxNext} style={{ position: "absolute", right: "20px", background: "none", border: "1px solid #ffd700", borderRadius: "50%", color: "#ffd700", width: "50px", height: "50px", cursor: "pointer" }}>&gt;</button>
+            <button
+              type="button"
+              onClick={lightboxNext}
+              style={{
+                position: "absolute",
+                right: "20px",
+                background: "none",
+                border: visibleCount === 1 ? "none" : "1px solid #ffd700",
+                borderRadius: "50%",
+                color: visibleCount === 1 ? "transparent" : "#ffd700",
+                opacity: visibleCount === 1 ? 0 : 1,
+                width: visibleCount === 1 ? "60px" : "50px",
+                height: visibleCount === 1 ? "100%" : "50px",
+                cursor: "pointer",
+                pointerEvents: "auto",
+              }}
+            >
+              &gt;
+            </button>
           </div>
         )}
       </main>

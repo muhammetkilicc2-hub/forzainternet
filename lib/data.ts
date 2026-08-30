@@ -371,21 +371,34 @@ export function markAllReservationsRead(): void {
 }
 
 export function getPricing(): KampanyaFiyatlari {
-  const diskPricing = loadPersistedPricing();
-  if (diskPricing && typeof diskPricing === "object" && diskPricing.sari) {
-    globalThis.__forzaPricing = diskPricing;
+  if (!globalThis.__forzaPricing) {
+    const diskPricing = loadPersistedPricing();
+    if (diskPricing && typeof diskPricing === "object" && diskPricing.sari) {
+      globalThis.__forzaPricing = diskPricing;
+    } else {
+      globalThis.__forzaPricing = {
+        sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
+        mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
+        yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
+      };
+    }
   }
   return globalThis.__forzaPricing!;
 }
 
 export function updatePricing(newPricing: any): KampanyaFiyatlari {
   const payload = newPricing && newPricing.pricing ? newPricing.pricing : newPricing;
-  globalThis.__forzaPricing = {
-    ...globalThis.__forzaPricing!,
+  const updated: KampanyaFiyatlari = {
+    ...(globalThis.__forzaPricing || {
+      sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
+      mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
+      yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
+    }),
     ...payload,
   };
-  persistPricing(globalThis.__forzaPricing!);
-  return globalThis.__forzaPricing!;
+  globalThis.__forzaPricing = updated;
+  persistPricing(updated);
+  return updated;
 }
 
 export function getStats(): AdminStats {

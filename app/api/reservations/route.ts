@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { getReservations, createReservation, updateReservationStatus, markAllReservationsRead, getStats } from "@/lib/data";
 import { getSession } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   const reservations = getReservations();
   return NextResponse.json({ success: true, reservations, stats: getStats() });

@@ -246,8 +246,9 @@ export default function ReservationPage() {
 
   const handleOpenPayment = (tier: TierData) => {
     triggerHaptic();
-    const pcs = selectedPcsByTier[tier.id] || [];
-    const price = selectedPrices[tier.id];
+    const currentTier = tiers.find((t) => t.id === tier.id) || tier;
+    const pcs = selectedPcsByTier[currentTier.id] || [];
+    const price = selectedPrices[currentTier.id];
 
     if (pcs.length === 0) {
       alert("Lütfen rezervasyon yapmak istediğiniz en az 1 adet masayı seçiniz.");
@@ -258,13 +259,17 @@ export default function ReservationPage() {
       return;
     }
 
-    setActiveModalTier(tier);
+    setActiveModalTier(currentTier);
     setModalOpen(true);
   };
 
   const calculateTotal = () => {
-    const unitPrice = selectedPrices[activeModalTier.id]?.amount || 0;
-    const pcs = selectedPcsByTier[activeModalTier.id] || [];
+    const currentTier = tiers.find((t) => t.id === activeModalTier.id) || activeModalTier;
+    const selectedPriceObj = selectedPrices[currentTier.id];
+    if (!selectedPriceObj) return 0;
+    const dynamicPrice = currentTier.prices.find((p) => p.label === selectedPriceObj.label);
+    const unitPrice = dynamicPrice ? dynamicPrice.amount : selectedPriceObj.amount;
+    const pcs = selectedPcsByTier[currentTier.id] || [];
     return unitPrice * pcs.length;
   };
 

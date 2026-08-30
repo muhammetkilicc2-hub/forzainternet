@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { getComputers, updateComputerStatus, getStats } from "@/lib/data";
 import { getSession } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   const computers = getComputers();
   const stats = getStats();

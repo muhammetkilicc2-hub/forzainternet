@@ -4991,6 +4991,14 @@ button, input, select { font-family: inherit; }
     backdrop-filter: blur(8px);
 }
 
+.tab-mobile-text {
+    display: none;
+}
+
+.tab-desktop-text {
+    display: inline;
+}
+
 /* iOS Segmented Control */
 .computer-filter-tabs {
     display: flex;
@@ -7669,5 +7677,36 @@ body.login-page {
         font-weight: 900 !important;
         padding: 2px 3px !important;
         letter-spacing: -0.2px !important;
+    }
+
+    /* Mobile Filter Tabs 2x2 Grid: Zero Horizontal Scroll */
+    .tab-mobile-text {
+        display: inline !important;
+    }
+    .tab-desktop-text {
+        display: none !important;
+    }
+
+    .computer-filter-tabs {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+        overflow-x: visible !important;
+        padding: 6px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .filter-tab {
+        min-width: 0 !important;
+        padding: 9px 6px !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 10px !important;
     }
 }

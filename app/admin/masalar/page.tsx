@@ -265,28 +265,32 @@ export default function MasalarManagementPage() {
           className={`filter-tab ${filterCat === "tumu" ? "active" : ""}`}
           onClick={() => setFilterCat("tumu")}
         >
-          Tümü ({computers.length || 48})
+          <span className="tab-desktop-text">Tümü ({computers.length || 48})</span>
+          <span className="tab-mobile-text">Tümü ({computers.length || 48})</span>
         </button>
         <button
           type="button"
           className={`filter-tab ${filterCat === "sari" ? "active" : ""}`}
           onClick={() => setFilterCat("sari")}
         >
-          🟡 Sarı Masalar ({pricing?.sari?.saatlik || 60} TL)
+          <span className="tab-desktop-text">🟡 Sarı Masalar ({pricing?.sari?.saatlik || 60} TL)</span>
+          <span className="tab-mobile-text">🟡 Sarı ({pricing?.sari?.saatlik || 60}₺)</span>
         </button>
         <button
           type="button"
           className={`filter-tab ${filterCat === "mavi" ? "active" : ""}`}
           onClick={() => setFilterCat("mavi")}
         >
-          🔵 Mavi Masalar ({pricing?.mavi?.saatlik || 70} TL)
+          <span className="tab-desktop-text">🔵 Mavi Masalar ({pricing?.mavi?.saatlik || 70} TL)</span>
+          <span className="tab-mobile-text">🔵 Mavi ({pricing?.mavi?.saatlik || 70}₺)</span>
         </button>
         <button
           type="button"
           className={`filter-tab ${filterCat === "yesil" ? "active" : ""}`}
           onClick={() => setFilterCat("yesil")}
         >
-          🟢 Yeşil VIP ({pricing?.yesil?.saatlik || 90} TL)
+          <span className="tab-desktop-text">🟢 Yeşil VIP ({pricing?.yesil?.saatlik || 90} TL)</span>
+          <span className="tab-mobile-text">🟢 VIP ({pricing?.yesil?.saatlik || 90}₺)</span>
         </button>
       </div>
 

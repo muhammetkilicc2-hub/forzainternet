@@ -12,6 +12,8 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   ExternalLink,
   Lock,
   Eye,
@@ -56,7 +58,8 @@ export default function AyarlarPage() {
   const [avatar, setAvatar] = useState<string | null>(null);
   const [passwordAgeDays, setPasswordAgeDays] = useState(0);
 
-  // Galeri & Vitrin Yönetimi State
+  // Galeri & Vitrin Yönetimi State (Akordeonlu)
+  const [isMediaAccordionOpen, setIsMediaAccordionOpen] = useState(false);
   const [aboutCoverPhoto, setAboutCoverPhoto] = useState<string>("/foto1.jpeg");
   const [galleryPhotos, setGalleryPhotos] = useState<GalleryPhoto[]>(DEFAULT_PHOTOS);
   const [newPhotoUrl, setNewPhotoUrl] = useState("");
@@ -599,346 +602,368 @@ export default function AyarlarPage() {
       </div>
 
       <form onSubmit={handleSave} className="settings-grid">
-        {/* 1. HAKKIMIZDA ANA VİTRİN GÖRSELİ KARTI (APPLE LUXURY DESIGN) */}
-        <div className="dashboard-card" style={{ gridColumn: "1 / -1" }}>
+        {/* AKORDEON: FOTOĞRAF GALERİSİ & VİTRİN GÖRSELLERİ YÖNETİMİ */}
+        <div className="dashboard-card" style={{ gridColumn: "1 / -1", padding: "0", overflow: "hidden" }}>
+          {/* Akordeon Tıklanabilir Başlık Barı */}
           <div
-            className="card-header"
+            onClick={() => setIsMediaAccordionOpen(!isMediaAccordionOpen)}
             style={{
+              padding: "18px 20px",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
               flexWrap: "wrap",
-              gap: "14px",
-              width: "100%",
-              marginBottom: "8px",
+              gap: "12px",
+              cursor: "pointer",
+              userSelect: "none",
+              background: isMediaAccordionOpen ? "rgba(255, 255, 255, 0.05)" : "transparent",
+              transition: "all 0.2s ease",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <div
                 style={{
-                  width: "36px",
-                  height: "36px",
-                  borderRadius: "10px",
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "12px",
                   background: "rgba(223, 183, 88, 0.15)",
                   color: "#dfb758",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   border: "1px solid rgba(223, 183, 88, 0.3)",
+                  boxShadow: "0 0 16px rgba(223, 183, 88, 0.15)",
+                  flexShrink: 0,
                 }}
               >
-                <Star size={18} />
+                <ImageIcon size={20} />
               </div>
-              <h3 style={{ fontSize: "17.5px", fontWeight: 800, color: "#ffffff", margin: 0 }}>
-                Hakkımızda Ana Vitrin (Hero / Kapak) Görseli
-              </h3>
-            </div>
-
-            <Link href="/hakkimizda" target="_blank" className="apple-btn-glass">
-              <span>Hakkımızda Sayfasında Canlı Gör</span>
-              <ExternalLink size={14} />
-            </Link>
-          </div>
-
-          <p style={{ fontSize: "12.5px", color: "#94a3b8", lineHeight: 1.5, margin: "4px 0 18px" }}>
-            Hakkımızda sayfasında &quot;FORZA GAMING HAKKIMIZDA&quot; başlığının hemen sağında duran ana vitrin görselidir. Doğrudan yeni bir fotoğraf yükleyebilir veya aşağıdaki galeri fotoğraflarından birini &quot;⭐ Vitrin Yap&quot; butonuyla ana görsel seçebilirsiniz.
-          </p>
-
-          {/* Vitrin Vitrin Box */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "24px",
-              flexWrap: "wrap",
-              background: "rgba(255, 255, 255, 0.03)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              borderRadius: "18px",
-              padding: "20px",
-              boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.15)",
-            }}
-          >
-            <div
-              style={{
-                position: "relative",
-                width: "220px",
-                height: "135px",
-                borderRadius: "14px",
-                overflow: "hidden",
-                border: "2px solid #dfb758",
-                boxShadow: "0 8px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(223, 183, 88, 0.25)",
-                flexShrink: 0,
-              }}
-            >
-              <img
-                src={aboutCoverPhoto || "/foto1.jpeg"}
-                alt="Ana Vitrin Görseli"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  top: "8px",
-                  left: "8px",
-                  background: "#dfb758",
-                  color: "#000000",
-                  fontSize: "10.5px",
-                  fontWeight: 900,
-                  padding: "3px 10px",
-                  borderRadius: "10px",
-                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.5)",
-                }}
-              >
-                ⭐ AKTİF VİTRİN
-              </div>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", flex: 1, minWidth: "240px" }}>
               <div>
-                <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                  Mevcut Vitrin Görseli
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                  <h3 style={{ fontSize: "16.5px", fontWeight: 800, color: "#ffffff", margin: 0 }}>
+                    Mekan Galerisi &amp; Vitrin Fotoğrafları
+                  </h3>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 800,
+                      color: "#dfb758",
+                      background: "rgba(223, 183, 88, 0.15)",
+                      padding: "2px 8px",
+                      borderRadius: "6px",
+                      border: "1px solid rgba(223, 183, 88, 0.3)",
+                    }}
+                  >
+                    {galleryPhotos.length} Fotoğraf
+                  </span>
+                </div>
+                <span style={{ fontSize: "12px", color: "#94a3b8", display: "block", marginTop: "2px" }}>
+                  {isMediaAccordionOpen
+                    ? "Kapatmak için başlığa tıklayın."
+                    : "Kapak ve galeri fotoğraflarını yönetmek için tıklayarak açın."}
                 </span>
-                <strong style={{ fontSize: "15px", color: "#ffffff", display: "block", marginTop: "2px" }}>
-                  {aboutCoverPhoto}
-                </strong>
-              </div>
-
-              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
-                <label
-                  className="apple-btn-white"
-                  htmlFor="coverFileInput"
-                  style={{
-                    opacity: isCoverUploading ? 0.7 : 1,
-                    cursor: isCoverUploading ? "wait" : "pointer",
-                  }}
-                >
-                  <Camera size={15} />
-                  <span>{isCoverUploading ? "Yükleniyor..." : "Yeni Vitrin Fotoğrafı Yükle"}</span>
-                </label>
-                <input
-                  type="file"
-                  id="coverFileInput"
-                  accept="image/*"
-                  disabled={isCoverUploading}
-                  onChange={handleCoverPhotoUpload}
-                  style={{ display: "none" }}
-                />
-
-                <button
-                  type="button"
-                  onClick={() => handleSetCoverPhoto("/foto1.jpeg")}
-                  className="apple-btn-glass"
-                  title="Varsayılan ana salon fotoğrafına dön"
-                >
-                  <RotateCcw size={14} />
-                  <span>Varsayılana Dön (/foto1.jpeg)</span>
-                </button>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* 2. MEKAN FOTOĞRAF GALERİSİ & SIRALAMA */}
-        <div className="dashboard-card" style={{ gridColumn: "1 / -1" }}>
-          <div
-            className="card-header"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: "14px",
-              width: "100%",
-              marginBottom: "8px",
-            }}
-          >
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div
-                style={{
-                  width: "36px",
-                  height: "36px",
-                  borderRadius: "10px",
-                  background: "rgba(56, 189, 248, 0.15)",
-                  color: "#38bdf8",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "1px solid rgba(56, 189, 248, 0.3)",
-                }}
-              >
-                <ImageIcon size={18} />
-              </div>
-              <h3 style={{ fontSize: "17.5px", fontWeight: 800, color: "#ffffff", margin: 0 }}>
-                Mekan Fotoğraf Galerisi (Sıralama, Ekle &amp; Çıkart)
-              </h3>
-            </div>
-
-            <span
-              style={{
-                fontSize: "12px",
-                fontWeight: 700,
-                color: "#94a3b8",
-                background: "rgba(255, 255, 255, 0.06)",
-                padding: "4px 12px",
-                borderRadius: "10px",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-              }}
-            >
-              Toplam: <strong style={{ color: "#ffffff" }}>{galleryPhotos.length} Fotoğraf</strong>
-            </span>
-          </div>
-
-          <p style={{ fontSize: "12.5px", color: "#94a3b8", lineHeight: 1.5, margin: "4px 0 16px" }}>
-            Fotoğraf ekleyebilir, <strong>◀ Sola / ▶ Sağa</strong> butonlarıyla sırasını değiştirebilir, <strong>⭐ Vitrin Yap</strong> ile ana kapak fotoğrafı yapabilir veya silme butonundan kaldırabilirsiniz.
-          </p>
-
-          {/* Fotoğraf Ekleme Formu */}
-          <div
-            style={{
-              background: "rgba(255, 255, 255, 0.03)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              borderRadius: "16px",
-              padding: "16px 20px",
-              marginBottom: "20px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-            }}
-          >
-            <strong style={{ fontSize: "13px", color: "#ffffff", display: "flex", alignItems: "center", gap: "6px" }}>
-              <Sparkles size={14} style={{ color: "#dfb758" }} />
-              <span>Yeni Galeri Fotoğrafı Ekle</span>
-            </strong>
-
-            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
-              <label
-                className="apple-btn-glass"
-                htmlFor="galleryFileInput"
-                style={{
-                  opacity: isUploading ? 0.7 : 1,
-                  cursor: isUploading ? "wait" : "pointer",
-                }}
-              >
-                <Upload size={14} />
-                <span>{isUploading ? "Yükleniyor..." : fileLabel}</span>
-              </label>
-              <input
-                type="file"
-                id="galleryFileInput"
-                accept="image/*"
-                disabled={isUploading}
-                onChange={handleFileUpload}
-                style={{ display: "none" }}
-              />
-
-              <input
-                type="text"
-                className="settings-input"
-                style={{ flex: 1, minWidth: "180px" }}
-                placeholder="veya görsel URL'si (örn: /foto1.jpeg)"
-                value={newPhotoUrl}
-                disabled={isUploading}
-                onChange={(e) => setNewPhotoUrl(e.target.value)}
-              />
-
-              <input
-                type="text"
-                className="settings-input"
-                style={{ flex: 1, minWidth: "160px" }}
-                placeholder="Fotoğraf Başlığı (örn: 540Hz Espor Alanı)"
-                value={newPhotoBadge}
-                disabled={isUploading}
-                onChange={(e) => setNewPhotoBadge(e.target.value)}
-              />
-
               <button
                 type="button"
-                onClick={handleAddPhoto}
-                disabled={isUploading}
-                className="apple-btn-white"
+                className={isMediaAccordionOpen ? "apple-btn-white" : "apple-btn-glass"}
+                style={{ pointerEvents: "none", padding: "7px 14px", fontSize: "12.5px" }}
               >
-                <span>+ Galeriye Ekle</span>
+                <span>{isMediaAccordionOpen ? "Kapat" : "Fotoğrafları Düzenle"}</span>
+                {isMediaAccordionOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
               </button>
             </div>
           </div>
 
-          {/* Galeri Izgarası */}
-          <div className="media-gallery-grid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: "16px" }}>
-            {galleryPhotos.map((foto, index) => {
-              const isCover = foto.src === aboutCoverPhoto || foto.isCover;
-              return (
+          {/* Akordeon Açılır İçeriği */}
+          {isMediaAccordionOpen && (
+            <div
+              style={{
+                padding: "20px",
+                borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "24px",
+                background: "rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              {/* 1. HAKKIMIZDA ANA VİTRİN GÖRSELİ */}
+              <div
+                style={{
+                  background: "rgba(255, 255, 255, 0.02)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  borderRadius: "16px",
+                  padding: "16px",
+                }}
+              >
                 <div
-                  key={foto.id || foto.src + index}
-                  className="media-item"
                   style={{
-                    height: "175px",
-                    borderRadius: "16px",
-                    overflow: "hidden",
-                    border: isCover ? "2px solid #dfb758" : "1px solid rgba(255, 255, 255, 0.15)",
-                    boxShadow: isCover ? "0 0 20px rgba(223, 183, 88, 0.3)" : "0 4px 16px rgba(0, 0, 0, 0.4)",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "10px",
+                    marginBottom: "12px",
                   }}
                 >
-                  <img src={foto.src} alt={foto.badge || "Mekan Fotoğrafı"} />
+                  <strong style={{ fontSize: "14.5px", color: "#ffffff", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <Star size={16} style={{ color: "#dfb758" }} />
+                    <span>Hakkımızda Ana Vitrin (Hero / Kapak) Görseli</span>
+                  </strong>
 
-                  {/* Sıra & Vitrin Rozetleri */}
-                  {isCover ? (
-                    <span className="photo-cover-badge" style={{ background: "#dfb758", color: "#000000", fontWeight: 900 }}>
-                      ⭐ VİTRİN
-                    </span>
-                  ) : (
-                    <span className="photo-order-badge">#{index + 1}</span>
-                  )}
+                  <Link href="/hakkimizda" target="_blank" className="apple-btn-glass" style={{ fontSize: "12px", padding: "6px 12px" }}>
+                    <span>Canlı Gör</span>
+                    <ExternalLink size={13} />
+                  </Link>
+                </div>
 
-                  {/* Silme Butonu */}
-                  <button
-                    type="button"
-                    onClick={() => handleDeletePhoto(foto.id || index)}
-                    className="photo-delete-btn"
-                    title="Fotoğrafı Galeriden Sil"
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "18px",
+                    flexWrap: "wrap",
+                    background: "rgba(255, 255, 255, 0.03)",
+                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    borderRadius: "14px",
+                    padding: "14px",
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "180px",
+                      height: "110px",
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                      border: "2px solid #dfb758",
+                      boxShadow: "0 6px 20px rgba(0, 0, 0, 0.7), 0 0 16px rgba(223, 183, 88, 0.2)",
+                      flexShrink: 0,
+                    }}
                   >
-                    <Trash2 size={13} />
-                  </button>
-
-                  {/* Başlık Rozeti */}
-                  <span className="media-badge" style={{ bottom: "38px" }}>
-                    {foto.badge || "Mekan"}
-                  </span>
-
-                  {/* Alt Kontrol Çubuğu */}
-                  <div className="photo-controls-bar">
-                    <button
-                      type="button"
-                      disabled={index === 0}
-                      onClick={() => handleMovePhoto(index, "left")}
-                      className="photo-ctrl-btn"
-                      title="Sola / Öne Taşı"
+                    <img
+                      src={aboutCoverPhoto || "/foto1.jpeg"}
+                      alt="Ana Vitrin Görseli"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "6px",
+                        left: "6px",
+                        background: "#dfb758",
+                        color: "#000000",
+                        fontSize: "9.5px",
+                        fontWeight: 900,
+                        padding: "2px 8px",
+                        borderRadius: "8px",
+                      }}
                     >
-                      <ChevronLeft size={14} />
-                    </button>
+                      ⭐ AKTİF VİTRİN
+                    </div>
+                  </div>
 
-                    <button
-                      type="button"
-                      onClick={() => handleSetCoverPhoto(foto.src)}
-                      className={`photo-ctrl-btn cover-btn ${isCover ? "active" : ""}`}
-                      title={isCover ? "Bu fotoğraf zaten ana vitrin görseli" : "Hakkımızda sayfasının ana görseli yap"}
-                    >
-                      {isCover ? "⭐ Vitrin" : "Vitrin Yap"}
-                    </button>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px", flex: 1, minWidth: "200px" }}>
+                    <div>
+                      <span style={{ fontSize: "11.5px", color: "#94a3b8", fontWeight: 700, textTransform: "uppercase" }}>
+                        Mevcut Vitrin Görseli
+                      </span>
+                      <strong style={{ fontSize: "13.5px", color: "#ffffff", display: "block", marginTop: "2px", wordBreak: "break-all" }}>
+                        {aboutCoverPhoto}
+                      </strong>
+                    </div>
 
-                    <button
-                      type="button"
-                      disabled={index === galleryPhotos.length - 1}
-                      onClick={() => handleMovePhoto(index, "right")}
-                      className="photo-ctrl-btn"
-                      title="Sağa / Arkaya Taşı"
-                    >
-                      <ChevronRight size={14} />
-                    </button>
+                    <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+                      <label
+                        className="apple-btn-white"
+                        htmlFor="coverFileInput"
+                        style={{
+                          opacity: isCoverUploading ? 0.7 : 1,
+                          cursor: isCoverUploading ? "wait" : "pointer",
+                          fontSize: "12px",
+                          padding: "7px 12px",
+                        }}
+                      >
+                        <Camera size={14} />
+                        <span>{isCoverUploading ? "Yükleniyor..." : "Yeni Vitrin Yükle"}</span>
+                      </label>
+                      <input
+                        type="file"
+                        id="coverFileInput"
+                        accept="image/*"
+                        disabled={isCoverUploading}
+                        onChange={handleCoverPhotoUpload}
+                        style={{ display: "none" }}
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => handleSetCoverPhoto("/foto1.jpeg")}
+                        className="apple-btn-glass"
+                        style={{ fontSize: "12px", padding: "7px 12px" }}
+                        title="Varsayılan fotoğrafa dön"
+                      >
+                        <RotateCcw size={13} />
+                        <span>Varsayılana Dön (/foto1.jpeg)</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+
+              {/* 2. FOTOĞRAF EKLEME FORMU & GALERİ IZGARASI */}
+              <div
+                style={{
+                  background: "rgba(255, 255, 255, 0.02)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  borderRadius: "16px",
+                  padding: "16px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "14px",
+                }}
+              >
+                <strong style={{ fontSize: "14.5px", color: "#ffffff", display: "flex", alignItems: "center", gap: "8px" }}>
+                  <Sparkles size={16} style={{ color: "#38bdf8" }} />
+                  <span>Yeni Galeri Fotoğrafı Ekle</span>
+                </strong>
+
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+                  <label
+                    className="apple-btn-glass"
+                    htmlFor="galleryFileInput"
+                    style={{
+                      opacity: isUploading ? 0.7 : 1,
+                      cursor: isUploading ? "wait" : "pointer",
+                      fontSize: "12px",
+                      padding: "7px 14px",
+                    }}
+                  >
+                    <Upload size={14} />
+                    <span>{isUploading ? "Yükleniyor..." : fileLabel}</span>
+                  </label>
+                  <input
+                    type="file"
+                    id="galleryFileInput"
+                    accept="image/*"
+                    disabled={isUploading}
+                    onChange={handleFileUpload}
+                    style={{ display: "none" }}
+                  />
+
+                  <input
+                    type="text"
+                    className="settings-input"
+                    style={{ flex: 1, minWidth: "160px", padding: "8px 12px", fontSize: "13px" }}
+                    placeholder="Görsel URL (örn: /foto1.jpeg)"
+                    value={newPhotoUrl}
+                    disabled={isUploading}
+                    onChange={(e) => setNewPhotoUrl(e.target.value)}
+                  />
+
+                  <input
+                    type="text"
+                    className="settings-input"
+                    style={{ flex: 1, minWidth: "140px", padding: "8px 12px", fontSize: "13px" }}
+                    placeholder="Başlık (örn: VIP 540Hz)"
+                    value={newPhotoBadge}
+                    disabled={isUploading}
+                    onChange={(e) => setNewPhotoBadge(e.target.value)}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={handleAddPhoto}
+                    disabled={isUploading}
+                    className="apple-btn-white"
+                    style={{ fontSize: "12.5px", padding: "8px 14px" }}
+                  >
+                    <span>+ Galeriye Ekle</span>
+                  </button>
+                </div>
+
+                {/* Galeri Izgarası */}
+                <div className="media-gallery-grid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "14px", marginTop: "10px" }}>
+                  {galleryPhotos.map((foto, index) => {
+                    const isCover = foto.src === aboutCoverPhoto || foto.isCover;
+                    return (
+                      <div
+                        key={foto.id || foto.src + index}
+                        className="media-item"
+                        style={{
+                          height: "165px",
+                          borderRadius: "14px",
+                          overflow: "hidden",
+                          border: isCover ? "2px solid #dfb758" : "1px solid rgba(255, 255, 255, 0.15)",
+                          boxShadow: isCover ? "0 0 16px rgba(223, 183, 88, 0.3)" : "0 4px 14px rgba(0, 0, 0, 0.4)",
+                        }}
+                      >
+                        <img src={foto.src} alt={foto.badge || "Mekan Fotoğrafı"} />
+
+                        {/* Sıra & Vitrin Rozetleri */}
+                        {isCover ? (
+                          <span className="photo-cover-badge" style={{ background: "#dfb758", color: "#000000", fontWeight: 900 }}>
+                            ⭐ VİTRİN
+                          </span>
+                        ) : (
+                          <span className="photo-order-badge">#{index + 1}</span>
+                        )}
+
+                        {/* Silme Butonu */}
+                        <button
+                          type="button"
+                          onClick={() => handleDeletePhoto(foto.id || index)}
+                          className="photo-delete-btn"
+                          title="Fotoğrafı Galeriden Sil"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+
+                        {/* Başlık Rozeti */}
+                        <span className="media-badge" style={{ bottom: "38px" }}>
+                          {foto.badge || "Mekan"}
+                        </span>
+
+                        {/* Alt Kontrol Çubuğu */}
+                        <div className="photo-controls-bar">
+                          <button
+                            type="button"
+                            disabled={index === 0}
+                            onClick={() => handleMovePhoto(index, "left")}
+                            className="photo-ctrl-btn"
+                            title="Sola / Öne Taşı"
+                          >
+                            <ChevronLeft size={14} />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleSetCoverPhoto(foto.src)}
+                            className={`photo-ctrl-btn cover-btn ${isCover ? "active" : ""}`}
+                            title={isCover ? "Bu fotoğraf zaten ana vitrin görseli" : "Hakkımızda sayfasının ana görseli yap"}
+                          >
+                            {isCover ? "⭐ Vitrin" : "Vitrin Yap"}
+                          </button>
+
+                          <button
+                            type="button"
+                            disabled={index === galleryPhotos.length - 1}
+                            onClick={() => handleMovePhoto(index, "right")}
+                            className="photo-ctrl-btn"
+                            title="Sağa / Arkaya Taşı"
+                          >
+                            <ChevronRight size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* 3. YÖNETİCİ PROFİLİ & ŞİFRE YÖNETİMİ */}

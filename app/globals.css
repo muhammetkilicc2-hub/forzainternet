@@ -2420,35 +2420,56 @@ footer,
         font-size: 13px;
     }
 
-    /* Sticky Contact Button: Safe-Area KorumalÄ± */
+    /* Sticky Contact Button: Safe-Area Korumalı & Zarif Boyut */
     .sticky-contact {
-        right: 14px;
-        bottom: max(16px, env(safe-area-inset-bottom, 16px));
+        right: 16px;
+        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        z-index: 999;
     }
 
     .sticky-contact-button {
-        width: 52px;
-        height: 52px;
-        font-size: 22px;
+        width: 46px;
+        height: 46px;
+        font-size: 19px;
+        box-shadow: 0 4px 18px rgba(255, 215, 0, 0.4);
     }
 
-    /* Footer: Mobil Temiz Bloklar */
+    /* Footer: Mobil Temiz Bloklar & Buton Çakışmasını Engelleyen Güvenli Alan */
     footer,
     .public-footer {
-        padding: 40px 18px 0;
+        padding: 36px 16px 0;
         margin-bottom: 0;
     }
 
     .footer-container {
         grid-template-columns: 1fr;
-        gap: 28px;
-        padding-bottom: 28px;
+        gap: 24px;
+        padding-bottom: 24px;
+    }
+
+    .footer-bottom {
+        padding: 20px 16px calc(24px + env(safe-area-inset-bottom, 16px));
     }
 
     .footer-bottom-container {
         flex-direction: column;
         text-align: center;
-        gap: 10px;
+        gap: 8px;
+        padding: 0 48px; /* Sağdaki yüzen butonun metinleri kapatmasını önler */
+        box-sizing: border-box;
+    }
+
+    .footer-copy {
+        font-size: 11.5px;
+        color: #94a3b8;
+        line-height: 1.45;
+    }
+
+    .footer-bottom-links {
+        justify-content: center;
+        gap: 8px;
+        font-size: 12px;
+        flex-wrap: wrap;
     }
 }
 

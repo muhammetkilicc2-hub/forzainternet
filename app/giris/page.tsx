@@ -800,12 +800,25 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div style={{ textAlign: "center", color: "#ffffff", padding: "80px 20px" }}>
+        <div style={{ minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", padding: "20px" }}>
           Yükleniyor...
         </div>
       }
     >
-      <LoginForm />
+      <div
+        style={{
+          minHeight: "100dvh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "32px 20px",
+          boxSizing: "border-box",
+          position: "relative",
+          background: "radial-gradient(ellipse at center, rgba(30, 41, 59, 0.45) 0%, rgba(7, 9, 13, 1) 100%), #07090d",
+        }}
+      >
+        <LoginForm />
+      </div>
     </Suspense>
   );
 }

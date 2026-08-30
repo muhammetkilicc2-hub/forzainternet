@@ -369,7 +369,7 @@ export default function AdminDashboardPage() {
             <div className="computer-status-grid" style={{ marginTop: "14px" }}>
               {filteredPcs.slice(0, 12).map((pc) => {
                 const displayDurum =
-                  pc.durum === "kullanimda" ? "KULLANIMDA" : pc.durum === "rezerve" ? "REZERVE" : "BOŞ";
+                  pc.durum === "kullanimda" ? "DOLU" : pc.durum === "rezerve" ? "REZERVE" : "BOŞ";
                 return (
                   <div
                     key={pc.id}

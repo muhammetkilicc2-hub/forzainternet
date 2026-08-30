@@ -5059,12 +5059,16 @@ button, input, select { font-family: inherit; }
 }
 
 .computer-status {
-    font-size: 10.5px;
+    font-size: 10px;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 3px 8px;
+    letter-spacing: 0.3px;
+    padding: 3px 6px;
     border-radius: 8px;
+    white-space: nowrap;
+    text-align: center;
+    max-width: 96%;
+    box-sizing: border-box;
 }
 
 .computer-item.available {
@@ -5095,6 +5099,9 @@ button, input, select { font-family: inherit; }
     background: rgba(223, 183, 88, 0.18);
     color: #dfb758;
     border: 1px solid rgba(223, 183, 88, 0.35);
+    font-size: 9px;
+    letter-spacing: 0px;
+    padding: 3px 4px;
 }
 
 .empty-state {
@@ -7608,5 +7615,38 @@ body.login-page {
         display: flex !important;
         flex-direction: column !important;
         gap: 16px !important;
+    }
+
+    /* Mobile Desk Status & Grid Fine-Tuning */
+    .computer-status-grid {
+        grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)) !important;
+        gap: 8px !important;
+    }
+
+    .computer-item {
+        padding: 10px 4px !important;
+        min-height: 56px !important;
+        border-radius: 12px !important;
+        gap: 4px !important;
+    }
+
+    .computer-number {
+        font-size: 12px !important;
+        font-weight: 800 !important;
+    }
+
+    .computer-status {
+        font-size: 8.5px !important;
+        font-weight: 900 !important;
+        padding: 2px 4px !important;
+        letter-spacing: 0px !important;
+        border-radius: 6px !important;
+    }
+
+    .computer-item.reserved .computer-status {
+        font-size: 7.5px !important;
+        font-weight: 900 !important;
+        padding: 2px 3px !important;
+        letter-spacing: -0.2px !important;
     }
 }

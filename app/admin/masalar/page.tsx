@@ -300,7 +300,7 @@ export default function MasalarManagementPage() {
           <div className="computer-status-grid">
             {filteredPcs.map((pc) => {
               const displayDurum =
-                pc.durum === "kullanimda" ? "KULLANIMDA" : pc.durum === "rezerve" ? "REZERVE" : "BOŞ";
+                pc.durum === "kullanimda" ? "DOLU" : pc.durum === "rezerve" ? "REZERVE" : "BOŞ";
               const original = serverSnapshot.find((s) => s.id === pc.id);
               const isModified = original && original.durum !== pc.durum;
 

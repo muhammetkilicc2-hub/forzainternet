@@ -168,7 +168,7 @@ function loadPersistedGalleryPhotos(): GalleryPhoto[] | null {
     if (fs.existsSync(p)) {
       const content = fs.readFileSync(p, "utf-8");
       const parsed = JSON.parse(content);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
         return parsed;
       }
     }
@@ -260,11 +260,15 @@ if (!globalThis.__forzaGalleryPhotos) {
 // ----------------------------------------------------
 
 export function getGalleryPhotos(): GalleryPhoto[] {
-  const diskList = loadPersistedGalleryPhotos();
-  if (diskList && Array.isArray(diskList) && diskList.length > 0) {
-    globalThis.__forzaGalleryPhotos = diskList;
+  if (!globalThis.__forzaGalleryPhotos) {
+    const diskList = loadPersistedGalleryPhotos();
+    if (diskList && Array.isArray(diskList)) {
+      globalThis.__forzaGalleryPhotos = diskList;
+    } else {
+      globalThis.__forzaGalleryPhotos = DEFAULT_GALLERY_PHOTOS;
+    }
   }
-  return globalThis.__forzaGalleryPhotos!;
+  return globalThis.__forzaGalleryPhotos;
 }
 
 export function updateGalleryPhotos(photos: GalleryPhoto[]): GalleryPhoto[] {

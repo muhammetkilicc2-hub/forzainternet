@@ -37,11 +37,12 @@ export default function AboutPage() {
       const raw = localStorage.getItem("forzaGaleriFotograflar");
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           setPhotos(parsed);
-          if (!savedCover) {
+          if (!savedCover && parsed.length > 0) {
             const coverItem = parsed.find((p: GalleryPhoto) => p.isCover);
             if (coverItem) setCoverPhoto(coverItem.src);
+            else setCoverPhoto(parsed[0].src);
           }
         }
       }
@@ -57,7 +58,7 @@ export default function AboutPage() {
 
         if (resGal && resGal.ok) {
           const data = await resGal.json();
-          if (data.success && Array.isArray(data.photos) && data.photos.length > 0) {
+          if (data.success && Array.isArray(data.photos)) {
             setPhotos(data.photos);
           }
         }
@@ -74,7 +75,7 @@ export default function AboutPage() {
 
     // 3. Canlı Değişiklikleri Dinleme
     const handleGalleryUpdate = (e: CustomEvent<GalleryPhoto[]>) => {
-      if (e.detail && Array.isArray(e.detail) && e.detail.length > 0) {
+      if (e.detail && Array.isArray(e.detail)) {
         setPhotos(e.detail);
       } else {
         fetchGalleryAndSettings();

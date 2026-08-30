@@ -44,7 +44,7 @@ export default function AdminDashboardPage() {
       const raw = localStorage.getItem("forzaGaleriFotograflar");
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) setGalleryPhotos(parsed);
+        if (Array.isArray(parsed)) setGalleryPhotos(parsed);
       }
     } catch (e) {}
 

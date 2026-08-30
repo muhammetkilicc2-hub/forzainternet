@@ -436,22 +436,40 @@ export default function AyarlarPage() {
   };
 
   const handleDeletePhoto = async (idOrIndex: string | number) => {
+    const deletedPhoto = galleryPhotos.find((f, idx) => f.id === idOrIndex || idx === idOrIndex);
     const updated = galleryPhotos.filter((f, idx) => f.id !== idOrIndex && idx !== idOrIndex);
     setGalleryPhotos(updated);
+
+    let nextCover = aboutCoverPhoto;
+    if (deletedPhoto && deletedPhoto.src === aboutCoverPhoto) {
+      nextCover = updated.length > 0 ? updated[0].src : "/foto1.jpeg";
+      setAboutCoverPhoto(nextCover);
+      localStorage.setItem("forzaAboutCoverPhoto", nextCover);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("forzaAyarlarGuncellendi", { detail: { aboutCoverPhoto: nextCover } }));
+      }
+    }
 
     localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(updated));
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("forzaGaleriGuncellendi", { detail: updated }));
     }
     try {
-      await fetch("/api/gallery", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ photos: updated }),
-      });
+      await Promise.all([
+        fetch("/api/gallery", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ photos: updated }),
+        }),
+        fetch("/api/auth/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ aboutCoverPhoto: nextCover, galleryPhotos: updated }),
+        }),
+      ]);
     } catch (e) {}
 
-    showToast("Fotoğraf Silindi", "Fotoğraf galeriden kaldırıldı.", "warning");
+    showToast("Fotoğraf Silindi", "Fotoğraf galeriden kaldırıldı ve Hakkımızda sayfası güncellendi.", "warning");
   };
 
   const handleSave = async (e: React.FormEvent) => {

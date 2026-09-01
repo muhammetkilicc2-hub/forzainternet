@@ -372,6 +372,7 @@ export function markAllReservationsRead(): void {
   list.forEach((r) => {
     r.okundu = true;
   });
+  persistReservations(list);
 }
 
 export function getPricing(): KampanyaFiyatlari {

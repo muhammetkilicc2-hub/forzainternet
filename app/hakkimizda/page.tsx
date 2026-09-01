@@ -48,25 +48,22 @@ export default function AboutPage() {
       }
     } catch (e) {}
 
-    // 2. Sunucu API'sinden Canlı Senkronizasyon (Galeri & Ayarlar)
+    // 2. Sunucu API'sinden Canlı Senkronizasyon (Galeri & Kapak Görseli)
     async function fetchGalleryAndSettings() {
       try {
-        const [resGal, resSettings] = await Promise.all([
-          fetch("/api/gallery", { cache: "no-store" }),
-          fetch("/api/auth/settings", { cache: "no-store" }).catch(() => null),
-        ]);
-
+        const resGal = await fetch("/api/gallery", { cache: "no-store" });
         if (resGal && resGal.ok) {
           const data = await resGal.json();
-          if (data.success && Array.isArray(data.photos)) {
-            setPhotos(data.photos);
-          }
-        }
-
-        if (resSettings && resSettings.ok) {
-          const sData = await resSettings.json();
-          if (sData.settings?.aboutCoverPhoto) {
-            setCoverPhoto(sData.settings.aboutCoverPhoto);
+          if (data.success) {
+            if (Array.isArray(data.photos)) {
+              setPhotos(data.photos);
+            }
+            if (data.coverPhoto) {
+              setCoverPhoto(data.coverPhoto);
+              try {
+                localStorage.setItem("forzaAboutCoverPhoto", data.coverPhoto);
+              } catch (e) {}
+            }
           }
         }
       } catch (e) {}

@@ -1,13 +1,16 @@
 import { NextResponse } from "next/server";
-import { getGalleryPhotos, updateGalleryPhotos } from "@/lib/data";
+import { getGalleryPhotos, updateGalleryPhotos, getAdminSettings } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function GET() {
   const photos = getGalleryPhotos();
+  const settings = getAdminSettings();
+  const coverPhoto = settings.aboutCoverPhoto || "/foto1.jpeg";
+
   return NextResponse.json(
-    { success: true, photos },
+    { success: true, photos, coverPhoto },
     {
       headers: {
         "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",

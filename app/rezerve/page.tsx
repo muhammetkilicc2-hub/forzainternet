@@ -221,11 +221,11 @@ export default function ReservationPage() {
 
   const handleSelectPrice = (tierId: string, priceObj: { label: string; amount: number }) => {
     triggerHaptic();
-    setSelectedPrices((prev) => {
-      if (prev[tierId]?.label === priceObj.label) {
-        return { ...prev, [tierId]: priceObj };
-      }
-      return { ...prev, [tierId]: priceObj };
+    setSelectedPrices({ [tierId]: priceObj });
+    setSelectedPcsByTier((prev) => {
+      const updated: Record<string, string[]> = {};
+      if (prev[tierId]) updated[tierId] = prev[tierId];
+      return updated;
     });
   };
 
@@ -238,23 +238,25 @@ export default function ReservationPage() {
 
     triggerHaptic();
 
-    // Otomatik ilk tarifeyi seç (eğer seçili tarife yoksa)
     const tier = tiers.find((t) => t.id === tierId);
-    if (tier && (!selectedPrices[tierId] || !selectedPrices[tierId].amount)) {
-      setSelectedPrices((prev) => ({ ...prev, [tierId]: tier.prices[0] }));
-    }
+    const defaultPrice = tier?.prices?.[0] || { label: "5 Saat Paket", amount: 200 };
+
+    setSelectedPrices((prev) => {
+      const currentPrice = prev[tierId] || defaultPrice;
+      return { [tierId]: currentPrice };
+    });
 
     setSelectedPcsByTier((prev) => {
       const current = prev[tierId] || [];
       if (current.includes(pcName)) {
         const filtered = current.filter((p) => p !== pcName);
-        return { ...prev, [tierId]: filtered };
+        return { [tierId]: filtered };
       } else {
         if (current.length >= 3) {
           alert("Aynı anda en fazla 3 masa seçebilirsiniz.");
           return prev;
         }
-        return { ...prev, [tierId]: [...current, pcName] };
+        return { [tierId]: [...current, pcName] };
       }
     });
   };

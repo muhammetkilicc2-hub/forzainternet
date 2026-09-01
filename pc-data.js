@@ -145,8 +145,8 @@
 
                     data.computers.forEach(function (pc) {
                         const num = pc.no || idCikar(pc.id) || idCikar(pc.isim);
-                        if (num !== null) {
-                            const sunucuDurum = pc.durum === "kullanimda" ? DURUM.KULLANIMDA : pc.durum === "rezerve" ? DURUM.REZERVE : DURUM.BOS;
+                            const rawSt = String(pc.durum || "").trim().toLowerCase();
+                            const sunucuDurum = (rawSt === "kullanimda" || rawSt === "kullanımda" || rawSt === "dolu") ? DURUM.KULLANIMDA : rawSt === "rezerve" ? DURUM.REZERVE : DURUM.BOS;
                             if (durumlar[num] !== sunucuDurum) {
                                 durumlar[num] = sunucuDurum;
                                 degisti = true;

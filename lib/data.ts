@@ -31,7 +31,7 @@ export const KATEGORILER: Record<PcKategori, KategoriBilgisi> = {
     baslik: "Elite VIP Turnuva (Yeşil Masa)",
     fiyat: 90,
     renkKodu: "#10b981",
-    ozellikler: ["RTX 4080 Super / 4090", "Pro Turnuva Espor Monitörü", "Intel i9 14900K", "VIP Özel Akustik Alan"],
+    ozellikler: ["RTX 4080 Super / 4090", "540 Hz Espor Turnuva Monitörü", "Intel i9 14900K", "VIP Özel Akustik Alan"],
   },
 };
 

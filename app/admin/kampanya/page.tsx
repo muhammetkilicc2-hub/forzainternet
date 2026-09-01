@@ -98,9 +98,9 @@ export default function KampanyaManagementPage() {
     {
       id: "yesil",
       badgeName: "ULTRA VIP ESPOR",
-      hzTag: "VIP Turnuva",
+      hzTag: "540 Hz",
       title: "Yeşil Masalar (VIP)",
-      subtitle: "Zirve Turnuva Espor Alanı",
+      subtitle: "540 Hz Espor Turnuva Alanı",
     },
   ];
 

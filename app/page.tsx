@@ -317,10 +317,10 @@ export default function HomePage() {
                   <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(52, 211, 153, 0.15)", color: "#34d399", border: "1px solid rgba(52, 211, 153, 0.35)" }}>
                     ULTRA VIP ESPOR
                   </span>
-                  <span style={{ fontSize: "12px", color: "#34d399", fontWeight: 700 }}>VIP Turnuva Alanı</span>
+                  <span style={{ fontSize: "12px", color: "#34d399", fontWeight: 700 }}>540 Hz Turnuva Alanı</span>
                 </div>
                 <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Yeşil Masalar</h3>
-                <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "20px" }}>RTX 3070 Ti / 5060 • Ryzen 7 7800X3D • 32GB DDR5 • Turnuva Masaları</p>
+                <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "20px" }}>RTX 3070 Ti / 5060 • Ryzen 7 7800X3D • 32GB DDR5 • 540 Hz Espor Monitörü</p>
                 
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", marginBottom: "24px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

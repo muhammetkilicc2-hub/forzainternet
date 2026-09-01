@@ -6,8 +6,8 @@ export const metadata: Metadata = {
     default: "FORZA İnternet & Cafe — Şehrin 1 Numaralı Espor ve Gaming Alanı",
     template: "%s | FORZA İnternet & Cafe",
   },
-  description: "En yeni nesil RTX 40 serisi bilgisayarlar, 540 Hz espor monitörleri, özel turnuva masaları ve konforlu alanıyla Forza İnternet Cafe'ye hoş geldiniz.",
-  keywords: ["forza internet cafe", "espor kafe", "540hz monitör", "gaming cafe", "rtx 4090 internet kafe"],
+  description: "En yeni nesil RTX 40 serisi bilgisayarlar, profesyonel espor monitörleri, özel turnuva masaları ve konforlu alanıyla Forza İnternet Cafe'ye hoş geldiniz.",
+  keywords: ["forza internet cafe", "espor kafe", "gaming cafe", "profesyonel espor", "rtx gaming cafe"],
   authors: [{ name: "Forza Gaming" }],
   icons: {
     icon: "/forzaikon.jpeg",

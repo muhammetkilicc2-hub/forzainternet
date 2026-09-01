@@ -63,9 +63,9 @@ const getTiers = (pricing: KampanyaFiyatlari): TierData[] => [
     name: `${pricing.yesil.saatlik} TL Masa`,
     badge: "Ultra VIP Espor",
     badgeIcon: "fa-solid fa-crown",
-    hz: "360 - 540 Hz Espor Ekran",
+    hz: "Pro Espor Turnuva Ekranı",
     specs: [
-      { icon: "fa-solid fa-desktop", text: "360-540 Hz Turnuva Monitörü" },
+      { icon: "fa-solid fa-desktop", text: "Pro Espor Turnuva Monitörü" },
       { icon: "fa-solid fa-microchip", text: "RTX 3070 Ti / RTX 5060" },
       { icon: "fa-solid fa-cpu", text: "AMD Ryzen 7 7800X3D Canavarı" },
       { icon: "fa-solid fa-memory", text: "32 GB DDR5 Yüksek Frekans RAM" },

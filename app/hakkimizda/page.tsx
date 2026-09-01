@@ -9,7 +9,7 @@ import { GalleryPhoto } from "@/lib/types";
 
 const DEFAULT_PHOTOS: GalleryPhoto[] = [
   { id: "f1", src: "/foto1.jpeg", alt: "Forza Gaming Salonu - Ana Espor Alanı", caption: "Forza Gaming Salonu - Ana Espor Alanı", badge: "Ana Salon" },
-  { id: "f2", src: "/foto2.jpeg", alt: "540Hz BenQ Espor Turnuva Masaları", caption: "540Hz BenQ Espor Turnuva Masaları", badge: "540 Hz Alan" },
+  { id: "f2", src: "/foto2.jpeg", alt: "BenQ Espor Turnuva Masaları", caption: "BenQ Espor Turnuva Masaları", badge: "VIP Espor" },
   { id: "f3", src: "/foto3.jpeg", alt: "Pro Gaming RTX 4070 Setup", caption: "Pro Gaming RTX 4070 Setup", badge: "Pro Setup" },
   { id: "f4", src: "/foto4.jpeg", alt: "VIP Espor Akustik Alanı", caption: "VIP Espor Akustik Alanı", badge: "VIP Lounge" },
   { id: "f5", src: "/foto5.jpeg", alt: "Ergonomik Espor Koltukları & Ekipmanlar", caption: "Ergonomik Espor Koltukları & Ekipmanlar", badge: "Ekipman" },
@@ -197,7 +197,7 @@ export default function AboutPage() {
             </h2>
             <div className="gold-line" style={{ width: "64px", height: "4px", background: "#ffd700", borderRadius: "4px", boxShadow: "0 0 12px rgba(255,215,0,0.4)" }}></div>
             <p style={{ fontSize: "15.5px", color: "#cbd5e1", lineHeight: 1.7, margin: 0 }}>
-              Antalya'nın Premium Gaming Merkezi olarak, yüksek performanslı espor bilgisayarlarımız, 540 Hz monitörlerimiz ve konforlu ortamımızla oyunculara benzersiz bir deneyim sunuyoruz.
+              Antalya'nın Premium Gaming Merkezi olarak, yüksek performanslı espor bilgisayarlarımız, profesyonel espor monitörlerimiz ve konforlu ortamımızla oyunculara benzersiz bir deneyim sunuyoruz.
             </p>
             <p style={{ fontSize: "15.5px", color: "#94a3b8", lineHeight: 1.7, margin: 0 }}>
               Arkadaşlarınızla takım kurup rekabet edebileceğiniz, turnuva heyecanını yaşayabileceğiniz ve kesintisiz fiber hızında oyunun tadını çıkarabileceğiniz modern bir buluşma noktasıyız.

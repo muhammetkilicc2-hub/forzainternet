@@ -31,7 +31,7 @@ import {
 
 const DEFAULT_PHOTOS: GalleryPhoto[] = [
   { id: "f1", src: "/foto1.jpeg", badge: "Ana Salon", alt: "Forza Gaming Salonu - Ana Espor Alanı", caption: "Forza Gaming Salonu - Ana Espor Alanı" },
-  { id: "f2", src: "/foto2.jpeg", badge: "540 Hz Alan", alt: "540Hz BenQ Espor Turnuva Masaları", caption: "540Hz BenQ Espor Turnuva Masaları" },
+  { id: "f2", src: "/foto2.jpeg", badge: "VIP Espor", alt: "BenQ Espor Turnuva Masaları", caption: "BenQ Espor Turnuva Masaları" },
   { id: "f3", src: "/foto3.jpeg", badge: "Pro Setup", alt: "Pro Gaming RTX 4070 Setup", caption: "Pro Gaming RTX 4070 Setup" },
   { id: "f4", src: "/foto4.jpeg", badge: "VIP Lounge", alt: "VIP Espor Akustik Alanı", caption: "VIP Espor Akustik Alanı" },
   { id: "f5", src: "/foto5.jpeg", badge: "Ekipman", alt: "Ergonomik Espor Koltukları & Ekipmanlar", caption: "Ergonomik Espor Koltukları & Ekipmanlar" },
@@ -867,7 +867,7 @@ export default function AyarlarPage() {
                     type="text"
                     className="settings-input"
                     style={{ flex: 1, minWidth: "140px", padding: "8px 12px", fontSize: "13px" }}
-                    placeholder="Başlık (örn: VIP 540Hz)"
+                    placeholder="Başlık (örn: VIP Espor)"
                     value={newPhotoBadge}
                     disabled={isUploading}
                     onChange={(e) => setNewPhotoBadge(e.target.value)}

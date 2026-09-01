@@ -164,7 +164,7 @@
 
             const VARSAYILAN_FOTOLAR = [
                 { src: "foto1.jpeg", alt: "Forza Gaming Salonu - Ana Salon" },
-                { src: "foto2.jpeg", alt: "Forza 540Hz Espor Alanı" },
+                { src: "foto2.jpeg", alt: "Forza VIP Espor Alanı" },
                 { src: "foto3.jpeg", alt: "Pro Gaming Setup" },
                 { src: "foto4.jpeg", alt: "VIP Oyuncu Alanı" },
                 { src: "foto5.jpeg", alt: "Ekipman ve Konfor" },

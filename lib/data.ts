@@ -4,7 +4,7 @@ import { PC, PcKategori, PcDurum, KategoriBilgisi, Rezervasyon, KampanyaFiyatlar
 
 export const DEFAULT_GALLERY_PHOTOS: GalleryPhoto[] = [
   { id: "f1", src: "/foto1.jpeg", badge: "Ana Salon", alt: "Forza Gaming Salonu - Ana Espor Alanı", caption: "Forza Gaming Salonu - Ana Espor Alanı", isCover: true, order: 1 },
-  { id: "f2", src: "/foto2.jpeg", badge: "540 Hz Alan", alt: "540Hz BenQ Espor Turnuva Masaları", caption: "540Hz BenQ Espor Turnuva Masaları", isCover: false, order: 2 },
+  { id: "f2", src: "/foto2.jpeg", badge: "VIP Espor", alt: "BenQ Espor Turnuva Masaları", caption: "BenQ Espor Turnuva Masaları", isCover: false, order: 2 },
   { id: "f3", src: "/foto3.jpeg", badge: "Pro Setup", alt: "Pro Gaming RTX 4070 Setup", caption: "Pro Gaming RTX 4070 Setup", isCover: false, order: 3 },
   { id: "f4", src: "/foto4.jpeg", badge: "VIP Lounge", alt: "VIP Espor Akustik Alanı", caption: "VIP Espor Akustik Alanı", isCover: false, order: 4 },
   { id: "f5", src: "/foto5.jpeg", badge: "Ekipman", alt: "Ergonomik Espor Koltukları & Ekipmanlar", caption: "Ergonomik Espor Koltukları & Ekipmanlar", isCover: false, order: 5 },
@@ -28,10 +28,10 @@ export const KATEGORILER: Record<PcKategori, KategoriBilgisi> = {
   },
   yesil: {
     id: "yesil",
-    baslik: "Elite 540Hz VIP (Yeşil Masa)",
+    baslik: "Elite VIP Turnuva (Yeşil Masa)",
     fiyat: 90,
     renkKodu: "#10b981",
-    ozellikler: ["RTX 4080 Super / 4090", "540 Hz Espor Monitör", "Intel i9 14900K", "VIP Özel Akustik Alan"],
+    ozellikler: ["RTX 4080 Super / 4090", "Pro Turnuva Espor Monitörü", "Intel i9 14900K", "VIP Özel Akustik Alan"],
   },
 };
 

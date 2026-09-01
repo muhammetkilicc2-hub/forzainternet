@@ -20,7 +20,7 @@ export default function Footer() {
           </div>
 
           <p className="footer-bio">
-            Antalya'nın merkezinde 540 Hz espor monitörleri, RTX canavar sistemler, 1000 Mbps simetrik fiber internet ve özel turnuva alanları ile profesyonel gaming deneyimi.
+            Antalya'nın merkezinde profesyonel espor monitörleri, RTX canavar sistemler, 1000 Mbps simetrik fiber internet ve özel turnuva alanları ile profesyonel gaming deneyimi.
           </p>
 
           <div className="footer-social-links">

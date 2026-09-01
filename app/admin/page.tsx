@@ -29,7 +29,7 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [galleryPhotos, setGalleryPhotos] = useState<Array<{ src: string; badge?: string }>>([
     { src: "/foto1.jpeg", badge: "Ana Salon" },
-    { src: "/foto2.jpeg", badge: "540 Hz Alan" },
+    { src: "/foto2.jpeg", badge: "VIP Espor" },
     { src: "/foto3.jpeg", badge: "Pro Setup" },
     { src: "/foto4.jpeg", badge: "VIP Lounge" },
     { src: "/foto5.jpeg", badge: "Ekipman" },

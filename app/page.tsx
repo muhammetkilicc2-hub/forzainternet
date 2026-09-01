@@ -64,7 +64,7 @@ export default function HomePage() {
           </div>
 
           <h1 className="para1">FORZA GAMING &amp; INTERNET CAFE</h1>
-          <p className="para1">540 Hz Espor Monitörler, RTX Canavar Sistemler ve 1000 Mbps Düşük Ping Deneyimi.</p>
+          <p className="para1">Profesyonel Espor Monitörleri, RTX Canavar Sistemler ve 1000 Mbps Düşük Ping Deneyimi.</p>
           <p className="hero-subtext">Arkadaşlarınla toplan, avantajlı 5 saatlik &amp; gün boyu paketlerle yerini hemen ayırt.</p>
 
           <div className="hero-actions czr">
@@ -85,7 +85,7 @@ export default function HomePage() {
                 <i className="fa-solid fa-bolt"></i>
               </div>
               <div className="hero-spec-text">
-                <strong>540 Hz Espor</strong>
+                <strong>Ultra Yüksek Hz</strong>
                 <span>BenQ ZOWIE Monitörler</span>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function HomePage() {
 
             <div className="card">
               <i className="fa-solid fa-desktop" aria-hidden="true"></i>
-              <h3>540 Hz &amp; 360 Hz</h3>
+              <h3>Espor Monitörleri</h3>
               <p>Turnuva standartlarında BenQ Fast IPS ve DyAc+ teknolojisi.</p>
             </div>
 
@@ -189,7 +189,7 @@ export default function HomePage() {
 
             <div className="card">
               <i className="fa-solid fa-desktop" aria-hidden="true"></i>
-              <h3>540 Hz &amp; 360 Hz</h3>
+              <h3>Espor Monitörleri</h3>
               <p>Turnuva standartlarında BenQ Fast IPS ve DyAc+ teknolojisi.</p>
             </div>
 
@@ -303,10 +303,10 @@ export default function HomePage() {
                   <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(52, 211, 153, 0.15)", color: "#34d399", border: "1px solid rgba(52, 211, 153, 0.35)" }}>
                     ULTRA VIP ESPOR
                   </span>
-                  <span style={{ fontSize: "12px", color: "#34d399", fontWeight: 700 }}>360 - 540 Hz</span>
+                  <span style={{ fontSize: "12px", color: "#34d399", fontWeight: 700 }}>VIP Turnuva Alanı</span>
                 </div>
                 <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Yeşil Masalar</h3>
-                <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "20px" }}>RTX 3070 Ti / 5060 • Ryzen 7 7800X3D • 32GB DDR5 • 540Hz</p>
+                <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "20px" }}>RTX 3070 Ti / 5060 • Ryzen 7 7800X3D • 32GB DDR5 • Turnuva Masaları</p>
                 
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", marginBottom: "24px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -392,11 +392,11 @@ export default function HomePage() {
               </summary>
               <div className="home-review-body" style={{ padding: "16px 22px 22px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", textAlign: "left" }}>
                 <p style={{ fontSize: "14px", color: "#cbd5e1", lineHeight: 1.75, fontStyle: "italic", marginBottom: "14px" }}>
-                  "BenQ ZOWIE monitörler ve 540Hz deneyimi muazzam. CS2 turnuva maçlarımızda sıfır gecikme aldık. Kafenin havalandırması ve ortamı tertemiz, çalışanlar da çok saygılı."
+                  "BenQ ZOWIE monitörler ve espor deneyimi muazzam. CS2 turnuva maçlarımızda sıfır gecikme aldık. Kafenin havalandırması ve ortamı tertemiz, çalışanlar da çok saygılı."
                 </p>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
                   <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(16, 185, 129, 0.18)", border: "1px solid rgba(16, 185, 129, 0.35)", color: "#34d399" }}><i className="fa-solid fa-circle-check"></i> Doğrulanmış Müşteri</span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>540 Hz Espor</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>VIP Espor</span>
                   <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>CS2 Turnuva</span>
                   <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>0 Ping Fiber</span>
                 </div>

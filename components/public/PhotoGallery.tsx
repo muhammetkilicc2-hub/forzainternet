@@ -12,7 +12,7 @@ interface PhotoItem {
 
 const DEFAULT_PHOTOS: PhotoItem[] = [
   { id: "f1", src: "/foto1.jpeg", title: "Ana Espor ve Oyun Salonu", desc: "RGB aydınlatmalı ferah atmosfer", badge: "Ana Salon" },
-  { id: "f2", src: "/foto2.jpeg", title: "540 Hz Profesyonel Espor Masaları", desc: "Zirve turnuva monitörleri ve ekipmanları", badge: "540 Hz Alan" },
+  { id: "f2", src: "/foto2.jpeg", title: "Profesyonel Espor Masaları", desc: "Zirve turnuva monitörleri ve ekipmanları", badge: "VIP Espor" },
   { id: "f3", src: "/foto3.jpeg", title: "Özel VIP & Takım Odası", desc: "Akustik yalıtımlı özel antrenman alanı", badge: "VIP Lounge" },
   { id: "f4", src: "/foto4.jpeg", title: "Mekanik Klavye & Espor Kulaklıklar", desc: "Ultra düşük gecikmeli oyuncu donanımları", badge: "Pro Setup" },
   { id: "f5", src: "/foto5.jpeg", title: "Kafe & Dinlenme Alanı", desc: "Sıcak/soğuk içecekler ve atıştırmalıklar", badge: "Ekipman" },

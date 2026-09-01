@@ -422,7 +422,7 @@
             ],
             canliAktiviteler: [
                 { id: "a1", metin: "Antalya / Muratpaşa'dan yeni bir ziyaretçi bağlandı", zaman: "1 dk önce", ikon: "fa-location-dot" },
-                { id: "a2", metin: "Yeşil VIP 540Hz Espor Masaları inceleniyor", zaman: "3 dk önce", ikon: "fa-eye" },
+                { id: "a2", metin: "Yeşil VIP Turnuva Espor Masaları inceleniyor", zaman: "3 dk önce", ikon: "fa-eye" },
                 { id: "a3", metin: "PC 18 için 5 Saatlik Rezervasyon yapıldı", zaman: "6 dk önce", ikon: "fa-circle-check" },
                 { id: "a4", metin: "Mavi Pro Masalar inceleniyor", zaman: "9 dk önce", ikon: "fa-fire" }
             ],
@@ -501,7 +501,7 @@
         }
         analitik.kategoriBakilma[kategori] = (analitik.kategoriBakilma[kategori] || 0) + 1;
 
-        const katAdi = kategori === "yesil" ? "Yeşil VIP 540Hz" : kategori === "mavi" ? "Mavi Pro 360Hz" : "Sarı Standart 240Hz";
+        const katAdi = kategori === "yesil" ? "Yeşil VIP Turnuva" : kategori === "mavi" ? "Mavi Pro 360Hz" : "Sarı Standart 240Hz";
         canliAktiviteEkle(`${katAdi} Masa tarifesi inceleniyor`, "fa-eye");
 
         analitikKaydet(analitik);

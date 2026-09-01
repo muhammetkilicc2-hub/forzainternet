@@ -1367,7 +1367,7 @@
 
         const VARSAYILAN_FOTOGRAFLAR = [
             { id: "f1", src: "foto1.jpeg", badge: "Ana Salon", alt: "Forza Gaming Salonu" },
-            { id: "f2", src: "foto2.jpeg", badge: "540 Hz Alan", alt: "540Hz Espor Alanı" },
+            { id: "f2", src: "foto2.jpeg", badge: "VIP Espor", alt: "VIP Espor Alanı" },
             { id: "f3", src: "foto3.jpeg", badge: "Pro Setup", alt: "Pro Gaming Setup" },
             { id: "f4", src: "foto4.jpeg", badge: "VIP Lounge", alt: "VIP Oyuncu Alanı" },
             { id: "f5", src: "foto5.jpeg", badge: "Ekipman", alt: "Ekipman ve Konfor" },

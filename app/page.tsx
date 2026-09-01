@@ -541,7 +541,7 @@ export default function HomePage() {
             <div className="home-contact-info" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", width: "100%" }}>
               <h3 style={{ fontFamily: "'Sora', sans-serif", fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: 800, color: "#ffffff", marginBottom: "14px", textAlign: "center" }}>Forza Gaming &amp; İnternet Cafe'ye Bekleriz</h3>
               <p style={{ fontSize: "15px", color: "#cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "10px", textAlign: "center" }}>
-                <i className="fa-solid fa-location-dot" style={{ color: "#ffd700", fontSize: "16px" }}></i> Kültür Mh. 3809 Sk. No:14 Muratpaşa / Antalya
+                <i className="fa-solid fa-location-dot" style={{ color: "#ffd700", fontSize: "16px" }}></i> Kültür Mh. 3809 Sk. No:14 Kepez / Antalya
               </p>
               <p style={{ fontSize: "15px", color: "#cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "10px", textAlign: "center" }}>
                 <i className="fa-solid fa-clock" style={{ color: "#ffd700", fontSize: "16px" }}></i> 7 Gün 24 Saat Kesintisiz Açık
@@ -553,7 +553,7 @@ export default function HomePage() {
 
             <div className="home-contact-actions" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "16px", flexWrap: "wrap", marginTop: "6px", width: "100%" }}>
               <a
-                href="https://maps.google.com/?q=Forza+Internet+Cafe+Muratpasa+Antalya"
+                href="https://maps.google.com/?q=Forza+Internet+Cafe+Kepez+Antalya"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-secondary"

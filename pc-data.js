@@ -421,7 +421,7 @@
                 { saat: "01:00", hit: 46 }
             ],
             canliAktiviteler: [
-                { id: "a1", metin: "Antalya / Muratpaşa'dan yeni bir ziyaretçi bağlandı", zaman: "1 dk önce", ikon: "fa-location-dot" },
+                { id: "a1", metin: "Antalya / Kepez'den yeni bir ziyaretçi bağlandı", zaman: "1 dk önce", ikon: "fa-location-dot" },
                 { id: "a2", metin: "Yeşil VIP Turnuva Espor Masaları inceleniyor", zaman: "3 dk önce", ikon: "fa-eye" },
                 { id: "a3", metin: "PC 18 için 5 Saatlik Rezervasyon yapıldı", zaman: "6 dk önce", ikon: "fa-circle-check" },
                 { id: "a4", metin: "Mavi Pro Masalar inceleniyor", zaman: "9 dk önce", ikon: "fa-fire" }

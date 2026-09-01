@@ -45,7 +45,7 @@ export default function Footer() {
               <span>Instagram</span>
             </a>
             <a
-              href="https://maps.google.com/?q=Forza+Internet+Cafe+Muratpasa+Antalya"
+              href="https://maps.google.com/?q=Forza+Internet+Cafe+Kepez+Antalya"
               target="_blank"
               rel="noopener noreferrer"
               className="footer-social-btn maps"
@@ -94,7 +94,7 @@ export default function Footer() {
           <h3 className="footer-heading">İletişim &amp; Lokasyon</h3>
           <div className="footer-contact-list">
             <a
-              href="https://maps.google.com/?q=Forza+Internet+Cafe+Muratpasa+Antalya"
+              href="https://maps.google.com/?q=Forza+Internet+Cafe+Kepez+Antalya"
               target="_blank"
               rel="noopener noreferrer"
               className="footer-contact-item"
@@ -105,7 +105,7 @@ export default function Footer() {
               </div>
               <div className="contact-info">
                 <strong>Adres</strong>
-                <span>Kültür Mh. 3809 Sk. No:14 Muratpaşa / Antalya</span>
+                <span>Kültür Mh. 3809 Sk. No:14 Kepez / Antalya</span>
               </div>
             </a>
 

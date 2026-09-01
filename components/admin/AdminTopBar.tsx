@@ -35,15 +35,15 @@ export default function AdminTopBar({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const getPageTitle = () => {
-    if (pathname === "/admin") return { title: "Genel Bakış & Metrikler", tag: "Ana Sayfa" };
-    if (pathname === "/admin/masalar") return { title: "Masa & PC Yönetimi", tag: "Masalar" };
-    if (pathname === "/admin/kampanya") return { title: "Fiyat & Kampanya Yönetimi", tag: "Tarifeler" };
-    if (pathname === "/admin/rezervasyonlar") return { title: "Rezervasyon Talepleri", tag: "Talepler" };
-    if (pathname === "/admin/ayarlar") return { title: "Sistem & Güvenlik Ayarları", tag: "Ayarlar" };
-    return { title: "Yönetim Paneli", tag: "Admin" };
+    if (pathname === "/admin") return "Ana Sayfa";
+    if (pathname === "/admin/kampanya") return "Kampanyalar";
+    if (pathname === "/admin/masalar") return "Masalar";
+    if (pathname === "/admin/rezervasyonlar") return "Rezervasyonlar";
+    if (pathname === "/admin/ayarlar") return "Ayarlar";
+    return "Yönetim Paneli";
   };
 
-  const currentInfo = getPageTitle();
+  const pageTitle = getPageTitle();
 
   const loadNotifications = async () => {
     let localList: NotificationItem[] = [];
@@ -181,16 +181,15 @@ export default function AdminTopBar({
         )}
 
         <div className="admin-page-breadcrumb">
-          <div className="admin-page-tag">{currentInfo.tag}</div>
-          <h1 className="admin-page-title">{currentInfo.title}</h1>
+          <h1 className="admin-page-title">{pageTitle}</h1>
         </div>
       </div>
 
       <div className="admin-top-right">
         {/* Live Indicator */}
-        <div className="admin-live-badge" title="Sistem Aktif ve Bağlı">
+        <div className="admin-live-badge" title="Sistem Aktif ve Canlı Senkronize">
           <span className="live-dot-pulse"></span>
-          <span>Canlı Sistem</span>
+          <span className="admin-live-text">Canlı Sistem</span>
         </div>
 
         {/* BİLDİRİM KUTUSU & DROPDOWN */}

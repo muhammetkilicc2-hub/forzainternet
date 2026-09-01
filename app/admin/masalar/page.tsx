@@ -4,55 +4,58 @@ import React, { useState, useEffect, useRef } from "react";
 import { PC, PcDurum } from "@/lib/types";
 import { useToast } from "@/components/admin/Toast";
 import { subscribeLiveUpdate, emitLiveUpdate } from "@/lib/liveSync";
-import { Save, RotateCcw, Search, CheckCircle2, Flame, Sparkles } from "lucide-react";
+import { Save, RotateCcw, CheckCircle2, Flame, RefreshCw } from "lucide-react";
 
 export default function MasalarManagementPage() {
   const { showToast } = useToast();
   const [computers, setComputers] = useState<PC[]>([]);
-  const [serverSnapshot, setServerSnapshot] = useState<PC[]>([]);
   const [pricing, setPricing] = useState<any>(null);
   const [filterCat, setFilterCat] = useState<string>("tumu");
-  const [searchQuery, setSearchQuery] = useState<string>("" );
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [unsavedCount, setUnsavedCount] = useState(0);
-
-  const unsavedRef = useRef(unsavedCount);
-  unsavedRef.current = unsavedCount;
 
   useEffect(() => {
     loadData();
 
-    // 1. Fast background polling when no unsaved changes exist
+    // 1. Fast background polling
     const interval = setInterval(() => {
-      if (unsavedRef.current === 0) {
-        loadData();
-      }
-    }, 2500);
+      loadData(false);
+    }, 3000);
 
     // 2. Subscribe to instant inter-tab channels
     const unsubPricing = subscribeLiveUpdate("pricing", (p) => {
       if (p) setPricing(p);
     });
 
-    const unsubComputers = subscribeLiveUpdate("computers", () => {
-      if (unsavedRef.current === 0) {
-        loadData();
+    const unsubComputers = subscribeLiveUpdate("computers", (updatedMap) => {
+      if (updatedMap) {
+        setComputers((prev) =>
+          prev.map((pc) => {
+            const rawStatus = updatedMap[pc.no] || updatedMap[pc.id] || updatedMap[`pc-${pc.no}`];
+            if (rawStatus) {
+              const stdStatus: PcDurum =
+                rawStatus === "kullanımda" || rawStatus === "kullanimda"
+                  ? "kullanimda"
+                  : rawStatus === "rezerve"
+                  ? "rezerve"
+                  : "bos";
+              return { ...pc, durum: stdStatus };
+            }
+            return pc;
+          })
+        );
+      } else {
+        loadData(false);
       }
     });
 
     const unsubRez = subscribeLiveUpdate("reservations", () => {
-      if (unsavedRef.current === 0) {
-        loadData();
-      }
+      loadData(false);
     });
 
     // 3. Tab focus & visibility change
-    const handleFocus = () => {
-      if (unsavedRef.current === 0) {
-        loadData();
-      }
-    };
+    const handleFocus = () => loadData(false);
     window.addEventListener("focus", handleFocus);
     document.addEventListener("visibilitychange", handleFocus);
     window.addEventListener("storage", handleFocus);
@@ -68,7 +71,8 @@ export default function MasalarManagementPage() {
     };
   }, []);
 
-  async function loadData() {
+  async function loadData(showSpinner = true) {
+    if (showSpinner && computers.length === 0) setLoading(true);
     try {
       const [resPc, resPricing] = await Promise.all([
         fetch("/api/computers", { cache: "no-store" }),
@@ -79,8 +83,6 @@ export default function MasalarManagementPage() {
 
       if (dataPc.computers && Array.isArray(dataPc.computers)) {
         setComputers(dataPc.computers);
-        setServerSnapshot(JSON.parse(JSON.stringify(dataPc.computers)));
-        setUnsavedCount(0);
 
         try {
           const locMap: Record<string, string> = {};
@@ -98,33 +100,47 @@ export default function MasalarManagementPage() {
     }
   }
 
-  const toggleStatus = (pc: PC) => {
-    const nextStatus: PcDurum =
-      pc.durum === "bos" ? "kullanimda" : pc.durum === "kullanimda" ? "rezerve" : "bos";
+  // Tekil Masa Durumu Değiştirme (Anında Kaydet & Anında Yayınla)
+  const toggleStatus = async (pc: PC) => {
+    let nextStatus: PcDurum = "bos";
+    if (pc.durum === "bos") nextStatus = "kullanimda";
+    else if (pc.durum === "kullanimda") nextStatus = "rezerve";
+    else nextStatus = "bos";
 
     const updated = computers.map((p) => (p.id === pc.id ? { ...p, durum: nextStatus } : p));
     setComputers(updated);
 
+    const locMap: Record<string, string> = {};
+    updated.forEach((p) => {
+      locMap[p.no] = p.durum === "kullanimda" ? "kullanımda" : p.durum;
+    });
+
     try {
-      const locMap: Record<string, string> = {};
-      updated.forEach((p) => {
-        locMap[p.no] = p.durum === "kullanimda" ? "kullanımda" : p.durum;
-      });
       localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
       emitLiveUpdate("computers", locMap);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: locMap }));
+      }
     } catch (e) {}
 
-    let diff = 0;
-    updated.forEach((p) => {
-      const original = serverSnapshot.find((s) => s.id === p.id);
-      if (original && original.durum !== p.durum) {
-        diff++;
+    try {
+      const res = await fetch("/api/computers", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: pc.id, durum: nextStatus }),
+      });
+      const data = await res.json();
+      if (data.success && data.computers) {
+        setComputers(data.computers);
       }
-    });
-    setUnsavedCount(diff);
+    } catch {
+      showToast("Bilgi", `${pc.isim} durumu güncellendi.`, "info");
+    }
   };
 
-  const setAllStatus = (durum: PcDurum, cat: string = "tumu") => {
+  // Toplu Masa Durumu Değiştirme (Tümünü veya Grubu Dolu/Boş Yap)
+  const setAllStatus = async (durum: PcDurum, cat: string = "tumu") => {
+    setIsSaving(true);
     const updated = computers.map((p) => {
       if (cat === "tumu" || p.kategori === cat) {
         return { ...p, durum };
@@ -133,69 +149,38 @@ export default function MasalarManagementPage() {
     });
     setComputers(updated);
 
+    const locMap: Record<string, string> = {};
+    updated.forEach((p) => {
+      locMap[p.no] = p.durum === "kullanimda" ? "kullanımda" : p.durum;
+    });
+
     try {
-      const locMap: Record<string, string> = {};
-      updated.forEach((p) => {
-        locMap[p.no] = p.durum === "kullanimda" ? "kullanımda" : p.durum;
-      });
       localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
       emitLiveUpdate("computers", locMap);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: locMap }));
+      }
     } catch (e) {}
 
-    let diff = 0;
-    updated.forEach((p) => {
-      const original = serverSnapshot.find((s) => s.id === p.id);
-      if (original && original.durum !== p.durum) {
-        diff++;
-      }
-    });
-    setUnsavedCount(diff);
-  };
-
-  const handleSaveAllToDatabase = async () => {
-    setIsSaving(true);
     try {
       const res = await fetch("/api/computers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ computers }),
+        body: JSON.stringify({ computers: updated }),
       });
       const data = await res.json();
-
-      if (res.ok && data.success) {
-        setServerSnapshot(JSON.parse(JSON.stringify(computers)));
-        setUnsavedCount(0);
-
-        try {
-          const locMap: Record<string, string> = {};
-          computers.forEach((pc) => {
-            locMap[pc.no] = pc.durum === "kullanimda" ? "kullanımda" : pc.durum;
-          });
-          localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
-          if (typeof window !== "undefined") {
-            emitLiveUpdate("computers", locMap);
-          }
-        } catch (e) {}
-
-        showToast(
-          "Veritabanına Kaydedildi 🎉",
-          "Tüm masa durumları başarıyla kalıcı olarak veritabanına işlendi.",
-          "success"
-        );
-      } else {
-        throw new Error(data.error || "Kayıt başarısız");
+      if (data.success && data.computers) {
+        setComputers(data.computers);
       }
+
+      const label = cat === "tumu" ? "Tüm Masalar" : cat === "sari" ? "Sarı Masalar" : cat === "mavi" ? "Mavi Masalar" : "Yeşil VIP Masalar";
+      const durumLabel = durum === "kullanimda" ? "DOLU" : durum === "rezerve" ? "REZERVE" : "BOŞ";
+      showToast(`${label} ${durumLabel} Yapıldı`, "Tüm masalar güncellendi ve web sitesine anında yansıtıldı.", "success");
     } catch {
-      showToast("Hata", "Masa durumları veritabanına kaydedilemedi.", "error");
+      showToast("Hata", "Masa durumları güncellenemedi.", "error");
     } finally {
       setIsSaving(false);
     }
-  };
-
-  const handleDiscardChanges = () => {
-    setComputers(JSON.parse(JSON.stringify(serverSnapshot)));
-    setUnsavedCount(0);
-    showToast("Değişiklikler Geri Alındı", "Masa durumları sunucudaki son kaydedilen haline döndü.", "info");
   };
 
   const filteredPcs = computers.filter((p) => {
@@ -235,31 +220,14 @@ export default function MasalarManagementPage() {
         </div>
 
         <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
-          {unsavedCount > 0 && (
-            <button
-              type="button"
-              onClick={handleDiscardChanges}
-              className="apple-btn-glass"
-            >
-              <RotateCcw size={15} />
-              <span>Vazgeç</span>
-            </button>
-          )}
-
           <button
             type="button"
-            onClick={handleSaveAllToDatabase}
-            disabled={isSaving}
-            className="apple-btn-white"
+            onClick={() => loadData(true)}
+            className="apple-btn-glass"
+            title="Verileri Yenile"
           >
-            <Save size={16} />
-            <span>
-              {isSaving
-                ? "Kaydediliyor..."
-                : unsavedCount > 0
-                ? `Kaydet (${unsavedCount} Masa Değişti)`
-                : "Masaları Kaydet"}
-            </span>
+            <RefreshCw size={15} />
+            <span>Yenile</span>
           </button>
         </div>
       </div>
@@ -285,24 +253,26 @@ export default function MasalarManagementPage() {
 
         {/* Hızlı Toplu Aksiyonlar */}
         <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-          <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 700 }}>Hızlı İşlem:</span>
+          <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 700 }}>Hızlı İşlem ({filterCat === "tumu" ? "Tümü" : filterCat.toUpperCase()}):</span>
           <button
             type="button"
             onClick={() => setAllStatus("bos", filterCat)}
+            disabled={isSaving}
             className="apple-btn-glass"
-            style={{ padding: "6px 14px", fontSize: "12px" }}
+            style={{ padding: "8px 16px", fontSize: "12.5px", cursor: "pointer" }}
           >
-            <CheckCircle2 size={13} style={{ color: "#10b981" }} />
-            <span>Seçili Grubu Boş Yap</span>
+            <CheckCircle2 size={15} style={{ color: "#10b981" }} />
+            <span>Grubu BOŞ Yap</span>
           </button>
           <button
             type="button"
             onClick={() => setAllStatus("kullanimda", filterCat)}
+            disabled={isSaving}
             className="apple-btn-glass"
-            style={{ padding: "6px 14px", fontSize: "12px" }}
+            style={{ padding: "8px 16px", fontSize: "12.5px", cursor: "pointer", border: "1px solid rgba(239, 68, 68, 0.4)", background: "rgba(239, 68, 68, 0.12)" }}
           >
-            <Flame size={13} style={{ color: "#ef4444" }} />
-            <span>Seçili Grubu Dolu Yap</span>
+            <Flame size={15} style={{ color: "#ef4444" }} />
+            <span style={{ color: "#fca5a5" }}>Grubu DOLU Yap</span>
           </button>
         </div>
       </div>
@@ -345,7 +315,13 @@ export default function MasalarManagementPage() {
 
       {/* Main Grid */}
       <div className="dashboard-card" style={{ padding: "24px" }}>
-        {loading ? (
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+          <span style={{ fontSize: "13px", color: "#94a3b8" }}>
+            💡 Masaların üzerine tıklayarak durumlarını anında <strong>BOŞ ➔ DOLU ➔ REZERVE</strong> yapabilirsiniz. Değişiklikler anında canlı web sitesine uygulanır.
+          </span>
+        </div>
+
+        {loading && computers.length === 0 ? (
           <div style={{ textAlign: "center", padding: "60px", color: "#94a3b8" }}>Masalar yükleniyor...</div>
         ) : filteredPcs.length === 0 ? (
           <p style={{ textAlign: "center", padding: "40px", color: "#94a3b8" }}>Aramanızla eşleşen masa bulunamadı.</p>
@@ -354,36 +330,28 @@ export default function MasalarManagementPage() {
             {filteredPcs.map((pc) => {
               const displayDurum =
                 pc.durum === "kullanimda" ? "DOLU" : pc.durum === "rezerve" ? "REZERVE" : "BOŞ";
-              const original = serverSnapshot.find((s) => s.id === pc.id);
-              const isModified = original && original.durum !== pc.durum;
 
               return (
                 <div
                   key={pc.id}
                   onClick={() => toggleStatus(pc)}
-                  className={`computer-item ${pc.durum === "kullanimda" ? "busy" : pc.durum === "rezerve" ? "reserved" : "available"} ${isModified ? "modified-pulse" : ""}`}
+                  className={`computer-item ${pc.durum === "kullanimda" ? "busy" : pc.durum === "rezerve" ? "reserved" : "available"}`}
                   style={{
-                    position: "relative",
-                    border: isModified ? "2px dashed #dfb758" : undefined,
+                    cursor: "pointer",
+                    userSelect: "none",
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      toggleStatus(pc);
+                    }
                   }}
                   title={`${pc.isim} — Durum: ${displayDurum} (Değiştirmek için tıkla)`}
                 >
                   <span className="computer-number">{pc.isim}</span>
                   <span className="computer-status">{displayDurum}</span>
-                  {isModified && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "4px",
-                        right: "4px",
-                        width: "8px",
-                        height: "8px",
-                        borderRadius: "50%",
-                        background: "#dfb758",
-                        boxShadow: "0 0 8px #dfb758",
-                      }}
-                    />
-                  )}
                 </div>
               );
             })}

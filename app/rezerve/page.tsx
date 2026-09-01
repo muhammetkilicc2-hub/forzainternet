@@ -215,42 +215,38 @@ export default function ReservationPage() {
     triggerHaptic();
     setSelectedPrices((prev) => {
       if (prev[tierId]?.label === priceObj.label) {
-        return {};
+        return { ...prev, [tierId]: priceObj };
       }
-      return { [tierId]: priceObj };
+      return { ...prev, [tierId]: priceObj };
     });
   };
 
   const handleTogglePc = (tierId: string, pcName: string) => {
-    const status = tableStatuses[pcName] || "bos";
+    const status = tableStatuses[pcName] || tableStatuses[pcName.replace(/\D/g, "")] || "bos";
     if (status === "rezerve" || status === "kullanimda") {
       triggerHaptic();
-      alert(`${pcName} şu anda ${status === "rezerve" ? "rezerve edilmiştir" : "kullanımdadır"}. Lütfen boş bir masa seçiniz.`);
       return;
     }
 
     triggerHaptic();
+
     // Otomatik ilk tarifeyi seç (eğer seçili tarife yoksa)
-    setSelectedPrices((prev) => {
-      if (!prev[tierId]) {
-        const tier = tiers.find((t) => t.id === tierId);
-        return tier ? { [tierId]: tier.prices[0] } : prev;
-      }
-      return prev;
-    });
+    const tier = tiers.find((t) => t.id === tierId);
+    if (tier && (!selectedPrices[tierId] || !selectedPrices[tierId].amount)) {
+      setSelectedPrices((prev) => ({ ...prev, [tierId]: tier.prices[0] }));
+    }
 
     setSelectedPcsByTier((prev) => {
       const current = prev[tierId] || [];
       if (current.includes(pcName)) {
         const filtered = current.filter((p) => p !== pcName);
-        if (filtered.length === 0) return {};
-        return { [tierId]: filtered };
+        return { ...prev, [tierId]: filtered };
       } else {
         if (current.length >= 3) {
           alert("Aynı anda en fazla 3 masa seçebilirsiniz.");
           return prev;
         }
-        return { [tierId]: [...current, pcName] };
+        return { ...prev, [tierId]: [...current, pcName] };
       }
     });
   };
@@ -259,14 +255,16 @@ export default function ReservationPage() {
     triggerHaptic();
     const currentTier = tiers.find((t) => t.id === tier.id) || tier;
     const pcs = selectedPcsByTier[currentTier.id] || [];
-    const price = selectedPrices[currentTier.id];
+    let price = selectedPrices[currentTier.id];
+
+    // Fiyat seçilmemişse varsayılan 5 Saat paketini uygula
+    if (!price && currentTier.prices && currentTier.prices.length > 0) {
+      price = currentTier.prices[0];
+      setSelectedPrices((prev) => ({ ...prev, [currentTier.id]: currentTier.prices[0] }));
+    }
 
     if (pcs.length === 0) {
       alert("Lütfen rezervasyon yapmak istediğiniz en az 1 adet masayı seçiniz.");
-      return;
-    }
-    if (!price) {
-      alert("Lütfen bir süre tarifesi (5 Saat veya Gün Boyu) seçiniz.");
       return;
     }
 

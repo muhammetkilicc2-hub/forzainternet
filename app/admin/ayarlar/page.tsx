@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useToast } from "@/components/admin/Toast";
 import { GalleryPhoto } from "@/lib/types";
+import { emitLiveUpdate } from "@/lib/liveSync";
 import {
   Star,
   Sparkles,
@@ -243,6 +244,7 @@ export default function AyarlarPage() {
         setAboutCoverPhoto(data.url);
         localStorage.setItem("forzaAboutCoverPhoto", data.url);
 
+        emitLiveUpdate("gallery", galleryPhotos);
         if (typeof window !== "undefined") {
           window.dispatchEvent(new CustomEvent("forzaAyarlarGuncellendi", { detail: { aboutCoverPhoto: data.url } }));
           window.dispatchEvent(new CustomEvent("forzaGaleriGuncellendi", { detail: galleryPhotos }));
@@ -277,6 +279,7 @@ export default function AyarlarPage() {
 
     localStorage.setItem("forzaAboutCoverPhoto", photoSrc);
     localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(updated));
+    emitLiveUpdate("gallery", updated);
 
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("forzaAyarlarGuncellendi", { detail: { aboutCoverPhoto: photoSrc } }));
@@ -316,6 +319,7 @@ export default function AyarlarPage() {
     setGalleryPhotos(reordered);
 
     localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(reordered));
+    emitLiveUpdate("gallery", reordered);
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("forzaGaleriGuncellendi", { detail: reordered }));
     }
@@ -370,6 +374,7 @@ export default function AyarlarPage() {
         setFileLabel("Dosya Seç");
 
         localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(updated));
+        emitLiveUpdate("gallery", updated);
         if (typeof window !== "undefined") {
           window.dispatchEvent(new CustomEvent("forzaGaleriGuncellendi", { detail: updated }));
         }
@@ -424,6 +429,7 @@ export default function AyarlarPage() {
     setFileLabel("Dosya Seç");
 
     localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(updated));
+    emitLiveUpdate("gallery", updated);
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("forzaGaleriGuncellendi", { detail: updated }));
     }
@@ -454,6 +460,7 @@ export default function AyarlarPage() {
     }
 
     localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(updated));
+    emitLiveUpdate("gallery", updated);
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("forzaGaleriGuncellendi", { detail: updated }));
     }
@@ -537,6 +544,7 @@ export default function AyarlarPage() {
 
       localStorage.setItem("forzaAboutCoverPhoto", aboutCoverPhoto);
       localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(galleryPhotos));
+      emitLiveUpdate("gallery", galleryPhotos);
       if (typeof window !== "undefined") {
         window.dispatchEvent(new CustomEvent("forzaAyarlarGuncellendi", { detail: { aboutCoverPhoto } }));
         window.dispatchEvent(new CustomEvent("forzaGaleriGuncellendi", { detail: galleryPhotos }));

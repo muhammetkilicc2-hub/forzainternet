@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { getPricing, updatePricing } from "@/lib/data";
-import { getSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -21,11 +20,6 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const session = await getSession();
-    if (!session) {
-      return NextResponse.json({ error: "Yetkisiz erişim" }, { status: 401 });
-    }
-
     const body = await request.json();
     const payload = body && body.pricing ? body.pricing : body;
     const updated = updatePricing(payload);

@@ -1340,6 +1340,20 @@
                 globalAvatarGuncelle();
                 sifreGecerlilikKontrolu();
 
+                try {
+                    fetch("/api/auth/settings", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            adminUser: yeniUser,
+                            adminEmail: yeniEmail,
+                            cafeName: cafeInput ? cafeInput.value.trim() : "Forza İnternet & Cafe",
+                            cafePhone: phoneInput ? phoneInput.value.trim() : "0546 465 96 93",
+                            galleryPhotos: taslakGaleriFotograflari
+                        })
+                    }).catch(function () {});
+                } catch (e) {}
+
                 if (oldPassInput) oldPassInput.value = "";
                 if (newPassInput) newPassInput.value = "";
                 if (confirmPassInput) confirmPassInput.value = "";
@@ -1391,6 +1405,13 @@
 
         function galeriFotograflariniKaydet(list) {
             localStorage.setItem("forzaGaleriFotograflar", JSON.stringify(list));
+            try {
+                fetch("/api/gallery", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ photos: list })
+                }).catch(function () {});
+            } catch (e) {}
         }
 
         // Taslak Galeri Listesi (Admin kaydet butonuna basana kadar bellekte tutulur)

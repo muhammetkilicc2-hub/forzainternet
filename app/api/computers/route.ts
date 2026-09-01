@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { getComputers, updateComputerStatus, getStats } from "@/lib/data";
-import { getSession } from "@/lib/auth";
+import { getComputers, updateComputerStatus, updateAllComputers, getStats } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -12,7 +11,7 @@ export async function GET() {
     { success: true, computers, stats },
     {
       headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
         Pragma: "no-cache",
         Expires: "0",
       },
@@ -24,17 +23,23 @@ export async function POST(request: Request) {
   try {
     const { computers } = await request.json();
     if (Array.isArray(computers)) {
-      computers.forEach((pc: { id: string; durum: any }) => {
-        if (pc.id && pc.durum) {
-          updateComputerStatus(pc.id, pc.durum);
+      const updatedList = updateAllComputers(computers);
+      const stats = getStats();
+      return NextResponse.json(
+        {
+          success: true,
+          message: "Tüm masa durumları veritabanına kaydedildi.",
+          computers: updatedList,
+          stats: stats,
+        },
+        {
+          headers: {
+            "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
         }
-      });
-      return NextResponse.json({
-        success: true,
-        message: "Tüm masa durumları veritabanına kaydedildi.",
-        computers: getComputers(),
-        stats: getStats(),
-      });
+      );
     }
     return NextResponse.json({ error: "Geçersiz veri" }, { status: 400 });
   } catch (error) {
@@ -49,7 +54,18 @@ export async function PATCH(request: Request) {
     if (!updated) {
       return NextResponse.json({ error: "Masa bulunamadı" }, { status: 404 });
     }
-    return NextResponse.json({ success: true, computer: updated, stats: getStats() });
+    const computers = getComputers();
+    const stats = getStats();
+    return NextResponse.json(
+      { success: true, computer: updated, computers, stats },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   } catch (error) {
     return NextResponse.json({ error: "İşlem başarısız" }, { status: 500 });
   }

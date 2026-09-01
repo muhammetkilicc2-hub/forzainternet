@@ -132,6 +132,7 @@
     function sunucudanSenkronizeEt(callback) {
         if (typeof fetch === "undefined") return;
 
+        // 1. Bilgisayar Durumları Senkronizasyonu
         fetch("/api/computers", { cache: "no-store" })
             .then(function (res) {
                 if (!res.ok) throw new Error("Masa verisi alınamadı");
@@ -163,9 +164,54 @@
                 }
             })
             .catch(function () {});
+
+        // 2. Fiyat Senkronizasyonu
+        fetch("/api/pricing", { cache: "no-store" })
+            .then(function (res) {
+                if (!res.ok) return null;
+                return res.json();
+            })
+            .then(function (data) {
+                if (data && data.pricing) {
+                    const p = data.pricing;
+                    const yerelFiyatlar = fiyatlariYukle();
+                    let fiyatDegisti = false;
+
+                    ["sari", "mavi", "yesil"].forEach(function (kat) {
+                        if (p[kat]) {
+                            const b = Number(p[kat].saatlik);
+                            const s = Number(p[kat].besSaatlik);
+                            const g = Number(p[kat].gunluk);
+
+                            if (b && yerelFiyatlar[kat].bazSaatlik !== b) {
+                                yerelFiyatlar[kat].bazSaatlik = b;
+                                fiyatDegisti = true;
+                            }
+                            if (s && yerelFiyatlar[kat].saatlik !== s) {
+                                yerelFiyatlar[kat].saatlik = s;
+                                yerelFiyatlar[kat].besSaatlik = s;
+                                fiyatDegisti = true;
+                            }
+                            if (g && yerelFiyatlar[kat].gunluk !== g) {
+                                yerelFiyatlar[kat].gunluk = g;
+                                fiyatDegisti = true;
+                            }
+                        }
+                    });
+
+                    if (fiyatDegisti) {
+                        try {
+                            global.localStorage.setItem(FIYAT_STORAGE_KEY, JSON.stringify(yerelFiyatlar));
+                            global.localStorage.setItem("forzaFiyatlar", JSON.stringify(p));
+                            global.dispatchEvent(new CustomEvent(FIYAT_EVENT_NAME, { detail: yerelFiyatlar }));
+                        } catch (e) {}
+                    }
+                }
+            })
+            .catch(function () {});
     }
 
-    // İlk yüklemede ve 3 saniyede bir merkezi API'den senkronize et
+    // İlk yüklemede ve 2.5 saniyede bir merkezi API'den senkronize et
     if (typeof global !== "undefined" && global.addEventListener) {
         global.addEventListener("DOMContentLoaded", function () {
             sunucudanSenkronizeEt();
@@ -174,7 +220,7 @@
     sunucudanSenkronizeEt();
     setInterval(function () {
         sunucudanSenkronizeEt();
-    }, 3000);
+    }, 2500);
 
     // -----------------------------------------------------
     // Değişiklikleri dinlemek için yardımcı fonksiyon
@@ -264,6 +310,32 @@
         }
 
         global.dispatchEvent(new CustomEvent(FIYAT_EVENT_NAME, { detail: fiyatlar }));
+
+        // Sunucu API'sine de anında kaydet
+        try {
+            const apiPricing = {
+                sari: {
+                    saatlik: Number(fiyatlar.sari && (fiyatlar.sari.bazSaatlik || fiyatlar.sari.saatlik)) || 60,
+                    besSaatlik: Number(fiyatlar.sari && (fiyatlar.sari.besSaatlik || fiyatlar.sari.saatlik)) || 200,
+                    gunluk: Number(fiyatlar.sari && fiyatlar.sari.gunluk) || 400
+                },
+                mavi: {
+                    saatlik: Number(fiyatlar.mavi && (fiyatlar.mavi.bazSaatlik || fiyatlar.mavi.saatlik)) || 70,
+                    besSaatlik: Number(fiyatlar.mavi && (fiyatlar.mavi.besSaatlik || fiyatlar.mavi.saatlik)) || 250,
+                    gunluk: Number(fiyatlar.mavi && fiyatlar.mavi.gunluk) || 500
+                },
+                yesil: {
+                    saatlik: Number(fiyatlar.yesil && (fiyatlar.yesil.bazSaatlik || fiyatlar.yesil.saatlik)) || 90,
+                    besSaatlik: Number(fiyatlar.yesil && (fiyatlar.yesil.besSaatlik || fiyatlar.yesil.saatlik)) || 350,
+                    gunluk: Number(fiyatlar.yesil && fiyatlar.yesil.gunluk) || 700
+                }
+            };
+            fetch("/api/pricing", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ pricing: apiPricing })
+            }).catch(function () {});
+        } catch (e) {}
     }
 
     function tekFiyatGuncelle(kategori, yeniFiyat) {

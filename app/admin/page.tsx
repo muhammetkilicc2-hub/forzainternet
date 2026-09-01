@@ -20,7 +20,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import { subscribeLiveUpdate } from "@/lib/liveSync";
+import { subscribeLiveUpdate, emitLiveUpdate } from "@/lib/liveSync";
 
 export default function AdminDashboardPage() {
   const { showToast } = useToast();
@@ -191,6 +191,7 @@ export default function AdminDashboardPage() {
         locMap[p.no] = p.durum === "kullanimda" ? "kullanımda" : p.durum;
       });
       localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
+      emitLiveUpdate("computers", locMap);
       if (typeof window !== "undefined") {
         window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: locMap }));
         window.dispatchEvent(new Event("storage"));
@@ -204,8 +205,9 @@ export default function AdminDashboardPage() {
         body: JSON.stringify({ id: pc.id, durum: nextDurum }),
       });
       const data = await res.json();
-      if (data.success && data.stats) {
-        setStats(data.stats);
+      if (data.success) {
+        if (data.stats) setStats(data.stats);
+        if (data.computers) setComputers(data.computers);
       }
     } catch {
       showToast("Bilgi", `${pc.isim} durumu güncellendi.`, "info");
@@ -227,29 +229,31 @@ export default function AdminDashboardPage() {
           target.durum = durum;
           target.okundu = true;
           localStorage.setItem("forzaBildirimler", JSON.stringify(notifs));
+          emitLiveUpdate("notifications", notifs);
           if (typeof window !== "undefined") {
             window.dispatchEvent(new CustomEvent("forzaBildirimGuncellendi", { detail: notifs }));
           }
         }
       }
 
-      if (durum === "confirmed") {
-        const rez = reservations.find((r) => r.id === id);
-        if (rez) {
-          const rawPc = localStorage.getItem("forzaPcDurumlari");
-          const durumlar = rawPc ? JSON.parse(rawPc) : {};
-          const pcMatches = rez.masaId.match(/\d+/g) || [];
-          pcMatches.forEach((numStr) => {
-            const pcId = parseInt(numStr, 10);
-            durumlar[pcId] = "kullanımda";
-            durumlar[`pc-${pcId}`] = "kullanimda";
-          });
-          localStorage.setItem("forzaPcDurumlari", JSON.stringify(durumlar));
-          if (typeof window !== "undefined") {
-            window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: durumlar }));
-          }
+      const rez = reservations.find((r) => r.id === id);
+      const rawPc = localStorage.getItem("forzaPcDurumlari");
+      const durumlar = rawPc ? JSON.parse(rawPc) : {};
+      if (rez) {
+        const pcMatches = (rez.masaId || "").match(/\d+/g) || [];
+        pcMatches.forEach((numStr) => {
+          const pcId = parseInt(numStr, 10);
+          const st = durum === "confirmed" ? "kullanımda" : "boş";
+          durumlar[pcId] = st;
+          durumlar[`pc-${pcId}`] = durum === "confirmed" ? "kullanimda" : "bos";
+        });
+        localStorage.setItem("forzaPcDurumlari", JSON.stringify(durumlar));
+        emitLiveUpdate("computers", durumlar);
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: durumlar }));
         }
       }
+      emitLiveUpdate("reservations", { id, durum });
     } catch (e) {}
 
     try {

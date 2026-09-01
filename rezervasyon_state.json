@@ -1,5 +1,21 @@
 [
   {
+    "musteriAdi": "Test Kullanıcı",
+    "telefon": "05551234567",
+    "masaId": "PC 1",
+    "masaIsim": "PC 1",
+    "kategori": "sari",
+    "tarih": "2026-09-02",
+    "saat": "14:00",
+    "sure": "1 Saat",
+    "toplamTutar": 60,
+    "odemeYontemi": "nakit",
+    "id": "rez-795974",
+    "durum": "confirmed",
+    "olusturuldu": "2026-09-01T21:06:35.974Z",
+    "okundu": true
+  },
+  {
     "musteriAdi": "Sistem Test Kullanıcı",
     "telefon": "0555 999 88 77",
     "masaId": "pc-1",

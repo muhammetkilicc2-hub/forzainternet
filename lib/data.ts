@@ -138,6 +138,16 @@ function persistPcList(list: PC[]) {
   try {
     const p = getPcFilePath();
     fs.writeFileSync(p, JSON.stringify(list, null, 2), "utf-8");
+    try {
+      const p2 = path.join(process.cwd(), "bilgisayar.json");
+      const formatList = list.map((pc) => ({
+        id: pc.no,
+        isim: pc.isim,
+        kategori: pc.kategori,
+        durum: pc.durum === "kullanimda" ? "kullanımda" : pc.durum === "rezerve" ? "rezerve" : "boş",
+      }));
+      fs.writeFileSync(p2, JSON.stringify({ bilgisayarlar: formatList }, null, 4), "utf-8");
+    } catch (e) {}
   } catch (e) {}
 }
 
@@ -168,7 +178,7 @@ function loadPersistedGalleryPhotos(): GalleryPhoto[] | null {
     if (fs.existsSync(p)) {
       const content = fs.readFileSync(p, "utf-8");
       const parsed = JSON.parse(content);
-      if (Array.isArray(parsed)) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
         return parsed;
       }
     }
@@ -252,7 +262,7 @@ if (!globalThis.__forzaReservations) {
 
 if (!globalThis.__forzaGalleryPhotos) {
   const persistedGal = loadPersistedGalleryPhotos();
-  globalThis.__forzaGalleryPhotos = persistedGal || DEFAULT_GALLERY_PHOTOS;
+  globalThis.__forzaGalleryPhotos = persistedGal && persistedGal.length > 0 ? persistedGal : DEFAULT_GALLERY_PHOTOS;
 }
 
 // ----------------------------------------------------
@@ -260,13 +270,14 @@ if (!globalThis.__forzaGalleryPhotos) {
 // ----------------------------------------------------
 
 export function getGalleryPhotos(): GalleryPhoto[] {
-  if (!globalThis.__forzaGalleryPhotos) {
-    const diskList = loadPersistedGalleryPhotos();
-    if (diskList && Array.isArray(diskList)) {
-      globalThis.__forzaGalleryPhotos = diskList;
-    } else {
-      globalThis.__forzaGalleryPhotos = DEFAULT_GALLERY_PHOTOS;
-    }
+  const diskList = loadPersistedGalleryPhotos();
+  if (diskList && Array.isArray(diskList) && diskList.length > 0) {
+    globalThis.__forzaGalleryPhotos = diskList;
+    return diskList;
+  }
+  if (!globalThis.__forzaGalleryPhotos || globalThis.__forzaGalleryPhotos.length === 0) {
+    globalThis.__forzaGalleryPhotos = DEFAULT_GALLERY_PHOTOS;
+    persistGalleryPhotos(DEFAULT_GALLERY_PHOTOS);
   }
   return globalThis.__forzaGalleryPhotos;
 }
@@ -281,14 +292,20 @@ export function getComputers(): PC[] {
   const diskList = loadPersistedPcList();
   if (diskList && Array.isArray(diskList) && diskList.length > 0) {
     globalThis.__forzaPcList = diskList;
+    return diskList;
+  }
+  if (!globalThis.__forzaPcList || globalThis.__forzaPcList.length === 0) {
+    globalThis.__forzaPcList = createInitialPcList();
+    persistPcList(globalThis.__forzaPcList);
   }
   return globalThis.__forzaPcList!;
 }
 
-export function updateComputerStatus(id: string, durum: PcDurum): PC | null {
+export function updateComputerStatus(id: string | number, durum: PcDurum): PC | null {
   const list = getComputers();
   const resList = getReservations();
-  const matches = (id || "").match(/\d+/g);
+  const strId = String(id || "");
+  const matches = strId.match(/\d+/g);
 
   let lastUpdated: PC | null = null;
   if (matches && matches.length > 0) {
@@ -312,7 +329,7 @@ export function updateComputerStatus(id: string, durum: PcDurum): PC | null {
       }
     });
   } else {
-    const pc = list.find((p) => p.id === id || p.isim.toLowerCase() === (id || "").toLowerCase());
+    const pc = list.find((p) => p.id === strId || p.isim.toLowerCase() === strId.toLowerCase());
     if (pc) {
       pc.durum = durum;
       pc.guncellemeTarihi = new Date().toISOString();
@@ -322,6 +339,40 @@ export function updateComputerStatus(id: string, durum: PcDurum): PC | null {
   persistPcList(list);
   persistReservations(resList);
   return lastUpdated;
+}
+
+export function updateAllComputers(computers: Array<{ id: string | number; durum: PcDurum }>): PC[] {
+  const list = getComputers();
+  const resList = getReservations();
+
+  computers.forEach((item) => {
+    if (!item.id || !item.durum) return;
+    const strId = String(item.id);
+    const matches = strId.match(/\d+/g);
+    if (matches && matches.length > 0) {
+      matches.forEach((numStr) => {
+        const num = parseInt(numStr, 10);
+        const target = list.find((p) => p.no === num || p.id === `pc-${num}` || p.isim.toLowerCase() === `pc ${num}`);
+        if (target) {
+          target.durum = item.durum;
+          target.guncellemeTarihi = new Date().toISOString();
+
+          if (item.durum === "bos") {
+            resList.forEach((r) => {
+              const rMatches: string[] = (r.masaId || "").match(/\d+/g) || [];
+              if (rMatches.includes(numStr) && r.durum === "pending") {
+                r.durum = "rejected";
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+
+  persistPcList(list);
+  persistReservations(resList);
+  return list;
 }
 
 export function getReservations(): Rezervasyon[] {
@@ -368,7 +419,7 @@ export function updateReservationStatus(id: string, durum: "confirmed" | "reject
 }
 
 export function markAllReservationsRead(): void {
-  const list = globalThis.__forzaReservations!;
+  const list = getReservations();
   list.forEach((r) => {
     r.okundu = true;
   });

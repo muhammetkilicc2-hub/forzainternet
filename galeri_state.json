@@ -5,6 +5,7 @@
     "badge": "Ana Salon",
     "alt": "Forza Gaming Salonu - Ana Espor Alanı",
     "caption": "Forza Gaming Salonu - Ana Espor Alanı",
+    "isCover": true,
     "order": 1
   },
   {
@@ -13,6 +14,7 @@
     "badge": "VIP Espor",
     "alt": "BenQ Espor Turnuva Masaları",
     "caption": "BenQ Espor Turnuva Masaları",
+    "isCover": false,
     "order": 2
   },
   {
@@ -21,7 +23,17 @@
     "badge": "Pro Setup",
     "alt": "Pro Gaming RTX 4070 Setup",
     "caption": "Pro Gaming RTX 4070 Setup",
+    "isCover": false,
     "order": 3
+  },
+  {
+    "id": "f4",
+    "src": "/foto4.jpeg",
+    "badge": "VIP Lounge",
+    "alt": "VIP Espor Akustik Alanı",
+    "caption": "VIP Espor Akustik Alanı",
+    "isCover": false,
+    "order": 4
   },
   {
     "id": "f5",
@@ -29,23 +41,15 @@
     "badge": "Ekipman",
     "alt": "Ergonomik Espor Koltukları & Ekipmanlar",
     "caption": "Ergonomik Espor Koltukları & Ekipmanlar",
-    "order": 6
-  },
-  {
-    "id": "galeri-1788090741763",
-    "src": "/uploads/img_1788090741756_mwxoq.jpeg",
-    "badge": "Mekan Fotoğrafı",
-    "alt": "Forza Gaming Mekan Fotoğrafı",
-    "caption": "Forza Gaming Mekan Fotoğrafı",
     "isCover": false,
     "order": 5
   },
   {
-    "id": "galeri-1788090757570",
-    "src": "/uploads/img_1788090757564_8085i.jpeg",
-    "badge": "Mekan Fotoğrafı",
-    "alt": "Forza Gaming Mekan Fotoğrafı",
-    "caption": "Forza Gaming Mekan Fotoğrafı",
+    "id": "f6",
+    "src": "/foto6.jpeg",
+    "badge": "Turnuva",
+    "alt": "Forza Turnuva ve Takım Odası",
+    "caption": "Forza Turnuva ve Takım Odası",
     "isCover": false,
     "order": 6
   }

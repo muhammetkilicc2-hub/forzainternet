@@ -105,6 +105,15 @@ export default function MasalarManagementPage() {
     const updated = computers.map((p) => (p.id === pc.id ? { ...p, durum: nextStatus } : p));
     setComputers(updated);
 
+    try {
+      const locMap: Record<string, string> = {};
+      updated.forEach((p) => {
+        locMap[p.no] = p.durum === "kullanimda" ? "kullanımda" : p.durum;
+      });
+      localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
+      emitLiveUpdate("computers", locMap);
+    } catch (e) {}
+
     let diff = 0;
     updated.forEach((p) => {
       const original = serverSnapshot.find((s) => s.id === p.id);
@@ -123,6 +132,15 @@ export default function MasalarManagementPage() {
       return p;
     });
     setComputers(updated);
+
+    try {
+      const locMap: Record<string, string> = {};
+      updated.forEach((p) => {
+        locMap[p.no] = p.durum === "kullanimda" ? "kullanımda" : p.durum;
+      });
+      localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
+      emitLiveUpdate("computers", locMap);
+    } catch (e) {}
 
     let diff = 0;
     updated.forEach((p) => {

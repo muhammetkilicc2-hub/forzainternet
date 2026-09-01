@@ -4,8 +4,8 @@
     "no": 1,
     "isim": "PC 1",
     "kategori": "sari",
-    "durum": "bos",
-    "guncellemeTarihi": "2026-09-01T18:32:36.351Z"
+    "durum": "kullanimda",
+    "guncellemeTarihi": "2026-09-01T21:07:26.055Z"
   },
   {
     "id": "pc-2",
@@ -29,7 +29,7 @@
     "isim": "PC 5",
     "kategori": "sari",
     "durum": "bos",
-    "guncellemeTarihi": "2026-08-30T14:04:49.604Z"
+    "guncellemeTarihi": "2026-09-01T21:07:26.075Z"
   },
   {
     "id": "pc-6",

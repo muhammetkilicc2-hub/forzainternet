@@ -5,6 +5,7 @@ import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
 import { KampanyaFiyatlari } from "@/lib/types";
+import { subscribeLiveUpdate, emitLiveUpdate } from "@/lib/liveSync";
 
 interface TierData {
   id: "sari" | "mavi" | "yesil";
@@ -166,37 +167,47 @@ export default function ReservationPage() {
   useEffect(() => {
     loadCentralStatuses();
     loadPricingData();
-    const interval = setInterval(loadCentralStatuses, 3000);
 
-    const handleCustomEvent = (e: any) => {
-      if (e.detail) {
-        const map: Record<string, "bos" | "rezerve" | "kullanimda"> = {};
-        Object.keys(e.detail).forEach((k) => {
-          const v = e.detail[k];
-          const trStatus = v === "kullanımda" || v === "kullanimda" ? "kullanimda" : v === "rezerve" ? "rezerve" : "bos";
-          map[`PC ${k}`] = trStatus;
-          map[k] = trStatus;
-        });
-        setTableStatuses((prev) => ({ ...prev, ...map }));
-      }
-    };
-
-    const handleFiyatUpdate = (e: CustomEvent<KampanyaFiyatlari>) => {
-      if (e.detail && e.detail.sari) setPricing(e.detail);
-      else loadPricingData();
-    };
-
-    window.addEventListener("forzaPcDurumGuncellendi", handleCustomEvent);
-    window.addEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
-    window.addEventListener("storage", () => {
+    // 1. Fast live polling (every 2.5s) for both computers and pricing
+    const interval = setInterval(() => {
       loadCentralStatuses();
       loadPricingData();
+    }, 2500);
+
+    // 2. Subscribe to instant inter-tab pricing and computers channels
+    const unsubPricing = subscribeLiveUpdate("pricing", (updatedPricing) => {
+      if (updatedPricing && updatedPricing.sari) {
+        setPricing(updatedPricing);
+      } else {
+        loadPricingData();
+      }
     });
+
+    const unsubComputers = subscribeLiveUpdate("computers", () => {
+      loadCentralStatuses();
+    });
+
+    const unsubRez = subscribeLiveUpdate("reservations", () => {
+      loadCentralStatuses();
+    });
+
+    // 3. Tab focus & visibility change
+    const handleFocus = () => {
+      loadCentralStatuses();
+      loadPricingData();
+    };
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+    window.addEventListener("storage", handleFocus);
 
     return () => {
       clearInterval(interval);
-      window.removeEventListener("forzaPcDurumGuncellendi", handleCustomEvent);
-      window.removeEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
+      unsubPricing();
+      unsubComputers();
+      unsubRez();
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+      window.removeEventListener("storage", handleFocus);
     };
   }, []);
 
@@ -380,8 +391,9 @@ export default function ReservationPage() {
         localStorage.setItem("forzaPcDurumlari", JSON.stringify(durumlar));
 
         if (typeof window !== "undefined") {
-          window.dispatchEvent(new CustomEvent("forzaBildirimGuncellendi", { detail: bildirimler }));
-          window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: durumlar }));
+          emitLiveUpdate("notifications", bildirimler);
+          emitLiveUpdate("computers", durumlar);
+          emitLiveUpdate("reservations", yeniBildirim);
         }
       } catch (e) {}
 

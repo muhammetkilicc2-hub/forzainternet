@@ -20,6 +20,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { subscribeLiveUpdate } from "@/lib/liveSync";
+
 export default function AdminDashboardPage() {
   const { showToast } = useToast();
   const [computers, setComputers] = useState<PC[]>([]);
@@ -48,26 +50,41 @@ export default function AdminDashboardPage() {
       }
     } catch (e) {}
 
-    const handleGalUpdate = (e: CustomEvent<any[]>) => {
-      if (e.detail && Array.isArray(e.detail)) setGalleryPhotos(e.detail);
-      else loadData();
-    };
+    // 1. Subscribe to instant inter-tab live updates
+    const unsubPricing = subscribeLiveUpdate("pricing", (p) => {
+      if (p) setPricing(p);
+    });
 
-    const handleFiyatUpdate = (e: CustomEvent<any>) => {
-      if (e.detail && e.detail.sari) setPricing(e.detail);
-      else loadData();
-    };
+    const unsubComputers = subscribeLiveUpdate("computers", () => {
+      loadData();
+    });
 
-    window.addEventListener("forzaGaleriGuncellendi" as any, handleGalUpdate);
-    window.addEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
+    const unsubRez = subscribeLiveUpdate("reservations", () => {
+      loadData();
+    });
+
+    const unsubGal = subscribeLiveUpdate("gallery", (photos) => {
+      if (photos && Array.isArray(photos)) setGalleryPhotos(photos);
+    });
+
+    // 2. Fast background polling
+    const interval = setInterval(loadData, 2500);
+
+    // 3. Tab focus & visibility change
+    const handleFocus = () => loadData();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
     window.addEventListener("storage", loadData);
 
-    const interval = setInterval(loadData, 8000);
     return () => {
-      window.removeEventListener("forzaGaleriGuncellendi" as any, handleGalUpdate);
-      window.removeEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
-      window.removeEventListener("storage", loadData);
+      unsubPricing();
+      unsubComputers();
+      unsubRez();
+      unsubGal();
       clearInterval(interval);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+      window.removeEventListener("storage", loadData);
     };
   }, []);
 

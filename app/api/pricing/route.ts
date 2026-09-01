@@ -20,16 +20,25 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const session = await getSession();
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz erişim" }, { status: 401 });
-  }
-
   try {
+    const session = await getSession();
+    if (!session) {
+      return NextResponse.json({ error: "Yetkisiz erişim" }, { status: 401 });
+    }
+
     const body = await request.json();
     const payload = body && body.pricing ? body.pricing : body;
     const updated = updatePricing(payload);
-    return NextResponse.json({ success: true, pricing: updated });
+    return NextResponse.json(
+      { success: true, pricing: updated },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   } catch (error) {
     return NextResponse.json({ error: "Fiyatlar güncellenemedi" }, { status: 500 });
   }

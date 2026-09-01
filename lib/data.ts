@@ -286,8 +286,8 @@ export function getComputers(): PC[] {
 }
 
 export function updateComputerStatus(id: string, durum: PcDurum): PC | null {
-  const list = globalThis.__forzaPcList!;
-  const resList = globalThis.__forzaReservations || [];
+  const list = getComputers();
+  const resList = getReservations();
   const matches = (id || "").match(/\d+/g);
 
   let lastUpdated: PC | null = null;
@@ -376,30 +376,40 @@ export function markAllReservationsRead(): void {
 }
 
 export function getPricing(): KampanyaFiyatlari {
+  const diskPricing = loadPersistedPricing();
+  if (diskPricing && typeof diskPricing === "object" && diskPricing.sari) {
+    globalThis.__forzaPricing = diskPricing;
+    return diskPricing;
+  }
   if (!globalThis.__forzaPricing) {
-    const diskPricing = loadPersistedPricing();
-    if (diskPricing && typeof diskPricing === "object" && diskPricing.sari) {
-      globalThis.__forzaPricing = diskPricing;
-    } else {
-      globalThis.__forzaPricing = {
-        sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
-        mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
-        yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
-      };
-    }
+    globalThis.__forzaPricing = {
+      sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
+      mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
+      yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
+    };
   }
   return globalThis.__forzaPricing!;
 }
 
 export function updatePricing(newPricing: any): KampanyaFiyatlari {
   const payload = newPricing && newPricing.pricing ? newPricing.pricing : newPricing;
+  const current = getPricing();
   const updated: KampanyaFiyatlari = {
-    ...(globalThis.__forzaPricing || {
-      sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
-      mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
-      yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
-    }),
-    ...payload,
+    sari: {
+      saatlik: Number(payload?.sari?.saatlik) || current.sari.saatlik,
+      besSaatlik: Number(payload?.sari?.besSaatlik) || current.sari.besSaatlik,
+      gunluk: Number(payload?.sari?.gunluk) || current.sari.gunluk,
+    },
+    mavi: {
+      saatlik: Number(payload?.mavi?.saatlik) || current.mavi.saatlik,
+      besSaatlik: Number(payload?.mavi?.besSaatlik) || current.mavi.besSaatlik,
+      gunluk: Number(payload?.mavi?.gunluk) || current.mavi.gunluk,
+    },
+    yesil: {
+      saatlik: Number(payload?.yesil?.saatlik) || current.yesil.saatlik,
+      besSaatlik: Number(payload?.yesil?.besSaatlik) || current.yesil.besSaatlik,
+      gunluk: Number(payload?.yesil?.gunluk) || current.yesil.gunluk,
+    },
   };
   globalThis.__forzaPricing = updated;
   persistPricing(updated);

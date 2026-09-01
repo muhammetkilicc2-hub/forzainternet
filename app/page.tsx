@@ -6,6 +6,7 @@ import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import WhatsAppWidget from "@/components/public/WhatsAppWidget";
 import { KampanyaFiyatlari } from "@/lib/types";
+import { subscribeLiveUpdate } from "@/lib/liveSync";
 
 export default function HomePage() {
   const [pricing, setPricing] = useState<KampanyaFiyatlari>({
@@ -38,16 +39,29 @@ export default function HomePage() {
 
     loadPricingData();
 
-    const handleFiyatUpdate = (e: CustomEvent<KampanyaFiyatlari>) => {
-      if (e.detail && e.detail.sari) setPricing(e.detail);
-      else loadPricingData();
-    };
+    // 1. Subscribe to instant inter-tab live channel
+    const unsubscribe = subscribeLiveUpdate("pricing", (updatedPricing) => {
+      if (updatedPricing && updatedPricing.sari) {
+        setPricing(updatedPricing);
+      } else {
+        loadPricingData();
+      }
+    });
 
-    window.addEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
+    // 2. High-speed background sync (every 2.5s)
+    const interval = setInterval(loadPricingData, 2500);
+
+    // 3. Tab focus & visibility change listener
+    const handleFocus = () => loadPricingData();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
     window.addEventListener("storage", loadPricingData);
 
     return () => {
-      window.removeEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
+      unsubscribe();
+      clearInterval(interval);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
       window.removeEventListener("storage", loadPricingData);
     };
   }, []);

@@ -5,6 +5,8 @@ import { useToast } from "@/components/admin/Toast";
 import { PricingConfig, PcKategori } from "@/lib/types";
 import { Clock, Zap, SunMedium, Save, Sparkles, Monitor } from "lucide-react";
 
+import { emitLiveUpdate } from "@/lib/liveSync";
+
 export default function KampanyaManagementPage() {
   const { showToast } = useToast();
   const [pricing, setPricing] = useState<PricingConfig>({
@@ -56,8 +58,7 @@ export default function KampanyaManagementPage() {
       if (res.ok) {
         try {
           localStorage.setItem("forzaFiyatlar", JSON.stringify(pricing));
-          window.dispatchEvent(new CustomEvent("forzaFiyatlarGuncellendi", { detail: pricing }));
-          window.dispatchEvent(new Event("storage"));
+          emitLiveUpdate("pricing", pricing);
         } catch (e) {}
 
         showToast(

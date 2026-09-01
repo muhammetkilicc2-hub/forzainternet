@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Rezervasyon } from "@/lib/types";
 import { useToast } from "@/components/admin/Toast";
+import { subscribeLiveUpdate, emitLiveUpdate } from "@/lib/liveSync";
 import {
   CheckCheck,
   Check,
@@ -40,6 +41,33 @@ export default function RezervasyonlarManagementPage() {
 
   useEffect(() => {
     loadData();
+
+    // 1. Fast background live polling (every 2.5s)
+    const interval = setInterval(loadData, 2500);
+
+    // 2. Subscribe to instant inter-tab channels
+    const unsubRez = subscribeLiveUpdate("reservations", () => {
+      loadData();
+    });
+
+    const unsubNotif = subscribeLiveUpdate("notifications", () => {
+      loadData();
+    });
+
+    // 3. Tab focus & visibility change
+    const handleFocus = () => loadData();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+    window.addEventListener("storage", loadData);
+
+    return () => {
+      clearInterval(interval);
+      unsubRez();
+      unsubNotif();
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+      window.removeEventListener("storage", loadData);
+    };
   }, []);
 
   async function loadData() {
@@ -96,23 +124,21 @@ export default function RezervasyonlarManagementPage() {
 
     try {
       const raw = localStorage.getItem("forzaBildirimler");
+      let notifs: any[] = [];
       if (raw) {
-        const notifs = JSON.parse(raw);
+        notifs = JSON.parse(raw);
         const target = notifs.find((b: { id: string; durum?: string; okundu?: boolean }) => b.id === id);
         if (target) {
           target.durum = durum;
           target.okundu = true;
           localStorage.setItem("forzaBildirimler", JSON.stringify(notifs));
-          if (typeof window !== "undefined") {
-            window.dispatchEvent(new CustomEvent("forzaBildirimGuncellendi", { detail: notifs }));
-          }
         }
       }
 
       const rez = reservations.find((r) => r.id === id);
+      const rawPc = localStorage.getItem("forzaPcDurumlari");
+      const durumlar = rawPc ? JSON.parse(rawPc) : {};
       if (rez) {
-        const rawPc = localStorage.getItem("forzaPcDurumlari");
-        const durumlar = rawPc ? JSON.parse(rawPc) : {};
         const pcMatches = rez.masaId.match(/\d+/g) || [];
         pcMatches.forEach((numStr) => {
           const pcId = parseInt(numStr, 10);
@@ -121,9 +147,12 @@ export default function RezervasyonlarManagementPage() {
           durumlar[`pc-${pcId}`] = durum === "confirmed" ? "kullanimda" : "bos";
         });
         localStorage.setItem("forzaPcDurumlari", JSON.stringify(durumlar));
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: durumlar }));
-        }
+      }
+
+      if (typeof window !== "undefined") {
+        emitLiveUpdate("reservations", { id, durum });
+        emitLiveUpdate("computers", durumlar);
+        emitLiveUpdate("notifications", notifs);
       }
     } catch (e) {}
 
@@ -159,7 +188,7 @@ export default function RezervasyonlarManagementPage() {
           notifs.forEach((n: { okundu: boolean }) => (n.okundu = true));
           localStorage.setItem("forzaBildirimler", JSON.stringify(notifs));
           if (typeof window !== "undefined") {
-            window.dispatchEvent(new CustomEvent("forzaBildirimGuncellendi", { detail: notifs }));
+            emitLiveUpdate("notifications", notifs);
           }
         }
       } catch (e) {}

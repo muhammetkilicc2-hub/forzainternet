@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { PC, PcDurum } from "@/lib/types";
 import { useToast } from "@/components/admin/Toast";
+import { subscribeLiveUpdate, emitLiveUpdate } from "@/lib/liveSync";
 import { Save, RotateCcw, Search, CheckCircle2, Flame, Sparkles } from "lucide-react";
 
 export default function MasalarManagementPage() {
@@ -11,7 +12,7 @@ export default function MasalarManagementPage() {
   const [serverSnapshot, setServerSnapshot] = useState<PC[]>([]);
   const [pricing, setPricing] = useState<any>(null);
   const [filterCat, setFilterCat] = useState<string>("tumu");
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("" );
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [unsavedCount, setUnsavedCount] = useState(0);
@@ -22,17 +23,48 @@ export default function MasalarManagementPage() {
   useEffect(() => {
     loadData();
 
-    const handleFiyatUpdate = (e: CustomEvent<any>) => {
-      if (e.detail && e.detail.sari) setPricing(e.detail);
-      else loadData();
-    };
+    // 1. Fast background polling when no unsaved changes exist
+    const interval = setInterval(() => {
+      if (unsavedRef.current === 0) {
+        loadData();
+      }
+    }, 2500);
 
-    window.addEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
-    window.addEventListener("storage", loadData);
+    // 2. Subscribe to instant inter-tab channels
+    const unsubPricing = subscribeLiveUpdate("pricing", (p) => {
+      if (p) setPricing(p);
+    });
+
+    const unsubComputers = subscribeLiveUpdate("computers", () => {
+      if (unsavedRef.current === 0) {
+        loadData();
+      }
+    });
+
+    const unsubRez = subscribeLiveUpdate("reservations", () => {
+      if (unsavedRef.current === 0) {
+        loadData();
+      }
+    });
+
+    // 3. Tab focus & visibility change
+    const handleFocus = () => {
+      if (unsavedRef.current === 0) {
+        loadData();
+      }
+    };
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+    window.addEventListener("storage", handleFocus);
 
     return () => {
-      window.removeEventListener("forzaFiyatlarGuncellendi" as any, handleFiyatUpdate);
-      window.removeEventListener("storage", loadData);
+      clearInterval(interval);
+      unsubPricing();
+      unsubComputers();
+      unsubRez();
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+      window.removeEventListener("storage", handleFocus);
     };
   }, []);
 
@@ -123,8 +155,7 @@ export default function MasalarManagementPage() {
           });
           localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
           if (typeof window !== "undefined") {
-            window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: locMap }));
-            window.dispatchEvent(new Event("storage"));
+            emitLiveUpdate("computers", locMap);
           }
         } catch (e) {}
 

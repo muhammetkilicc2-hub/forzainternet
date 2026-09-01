@@ -9,6 +9,7 @@ import {
   CheckCheck,
   ShieldCheck,
 } from "lucide-react";
+import { subscribeLiveUpdate, emitLiveUpdate } from "@/lib/liveSync";
 
 interface AdminTopBarProps {
   title?: string;
@@ -86,18 +87,24 @@ export default function AdminTopBar({
   useEffect(() => {
     loadNotifications();
 
-    const handleNotifUpdate = (e: CustomEvent<NotificationItem[]>) => {
-      if (e.detail && Array.isArray(e.detail)) {
-        setNotifications(e.detail.slice(0, 15));
+    const unsubNotif = subscribeLiveUpdate("notifications", (items) => {
+      if (items && Array.isArray(items)) {
+        setNotifications(items.slice(0, 15));
       } else {
         loadNotifications();
       }
-    };
+    });
 
-    window.addEventListener("forzaBildirimGuncellendi" as any, handleNotifUpdate);
+    const unsubRez = subscribeLiveUpdate("reservations", () => {
+      loadNotifications();
+    });
+
+    const interval = setInterval(loadNotifications, 2500);
+
+    const handleFocus = () => loadNotifications();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
     window.addEventListener("storage", loadNotifications);
-
-    const interval = setInterval(loadNotifications, 4000);
 
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -113,9 +120,12 @@ export default function AdminTopBar({
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener("forzaBildirimGuncellendi" as any, handleNotifUpdate);
-      window.removeEventListener("storage", loadNotifications);
+      unsubNotif();
+      unsubRez();
       clearInterval(interval);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+      window.removeEventListener("storage", loadNotifications);
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
@@ -126,7 +136,7 @@ export default function AdminTopBar({
     setNotifications(updated);
     try {
       localStorage.setItem("forzaBildirimler", JSON.stringify(updated));
-      window.dispatchEvent(new CustomEvent("forzaBildirimGuncellendi", { detail: updated }));
+      emitLiveUpdate("notifications", updated);
     } catch (e) {}
   };
 
@@ -135,7 +145,7 @@ export default function AdminTopBar({
     setNotifications(updated);
     try {
       localStorage.setItem("forzaBildirimler", JSON.stringify(updated));
-      window.dispatchEvent(new CustomEvent("forzaBildirimGuncellendi", { detail: updated }));
+      emitLiveUpdate("notifications", updated);
     } catch (e) {}
     setDropdownOpen(false);
     router.push(`/admin/rezervasyonlar?highlight=${encodeURIComponent(item.id)}`);

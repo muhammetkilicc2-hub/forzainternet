@@ -47,7 +47,6 @@ export function emitLiveUpdate(type: LiveSyncEventType, data: any) {
 
   try {
     window.dispatchEvent(new CustomEvent(eventMap[type], { detail: data }));
-    window.dispatchEvent(new Event("storage"));
   } catch {}
 }
 

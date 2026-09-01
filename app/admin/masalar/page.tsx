@@ -28,16 +28,24 @@ export default function MasalarManagementPage() {
       if (p) setPricing(p);
     });
 
-    const unsubComputers = subscribeLiveUpdate("computers", (updatedMap) => {
-      if (updatedMap) {
+    const unsubComputers = subscribeLiveUpdate("computers", (updatedData) => {
+      if (!updatedData) {
+        loadData(false);
+        return;
+      }
+      if (Array.isArray(updatedData)) {
+        setComputers(updatedData);
+        return;
+      }
+      if (typeof updatedData === "object") {
         setComputers((prev) =>
           prev.map((pc) => {
-            const rawStatus = updatedMap[pc.no] || updatedMap[pc.id] || updatedMap[`pc-${pc.no}`];
-            if (rawStatus) {
+            const val = updatedData[pc.no] || updatedData[pc.id] || updatedData[`pc-${pc.no}`];
+            if (typeof val === "string") {
               const stdStatus: PcDurum =
-                rawStatus === "kullanımda" || rawStatus === "kullanimda"
+                val === "kullanımda" || val === "kullanimda" || val === "dolu"
                   ? "kullanimda"
-                  : rawStatus === "rezerve"
+                  : val === "rezerve"
                   ? "rezerve"
                   : "bos";
               return { ...pc, durum: stdStatus };
@@ -45,8 +53,6 @@ export default function MasalarManagementPage() {
             return pc;
           })
         );
-      } else {
-        loadData(false);
       }
     });
 
@@ -87,7 +93,7 @@ export default function MasalarManagementPage() {
         try {
           const locMap: Record<string, string> = {};
           dataPc.computers.forEach((pc: PC) => {
-            locMap[pc.no] = pc.durum === "kullanimda" ? "kullanımda" : pc.durum;
+            locMap[pc.no] = pc.durum;
           });
           localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
         } catch (e) {}
@@ -107,20 +113,17 @@ export default function MasalarManagementPage() {
     else if (pc.durum === "kullanimda") nextStatus = "rezerve";
     else nextStatus = "bos";
 
-    const updated = computers.map((p) => (p.id === pc.id ? { ...p, durum: nextStatus } : p));
-    setComputers(updated);
+    // 1. Optimistic UI update for only the clicked PC
+    setComputers((prev) => prev.map((p) => (p.id === pc.id || p.no === pc.no ? { ...p, durum: nextStatus } : p)));
 
-    const locMap: Record<string, string> = {};
-    updated.forEach((p) => {
-      locMap[p.no] = p.durum === "kullanimda" ? "kullanımda" : p.durum;
-    });
-
+    // 2. Broadcast single change so other tabs know without clobbering all 50 PCs
+    const singleUpdate = { [pc.no]: nextStatus, [pc.id]: nextStatus, [`pc-${pc.no}`]: nextStatus };
     try {
-      localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
-      emitLiveUpdate("computers", locMap);
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: locMap }));
-      }
+      const raw = localStorage.getItem("forzaPcDurumlari");
+      const currentMap = raw ? JSON.parse(raw) : {};
+      currentMap[pc.no] = nextStatus;
+      localStorage.setItem("forzaPcDurumlari", JSON.stringify(currentMap));
+      emitLiveUpdate("computers", singleUpdate);
     } catch (e) {}
 
     try {

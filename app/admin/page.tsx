@@ -55,8 +55,29 @@ export default function AdminDashboardPage() {
       if (p) setPricing(p);
     });
 
-    const unsubComputers = subscribeLiveUpdate("computers", () => {
-      loadData();
+    const unsubComputers = subscribeLiveUpdate("computers", (updatedData) => {
+      if (!updatedData) return;
+      if (Array.isArray(updatedData)) {
+        setComputers(updatedData);
+        return;
+      }
+      if (typeof updatedData === "object") {
+        setComputers((prev) =>
+          prev.map((pc) => {
+            const val = updatedData[pc.no] || updatedData[pc.id] || updatedData[`pc-${pc.no}`];
+            if (typeof val === "string") {
+              const stdStatus: PcDurum =
+                val === "kullanımda" || val === "kullanimda" || val === "dolu"
+                  ? "kullanimda"
+                  : val === "rezerve"
+                  ? "rezerve"
+                  : "bos";
+              return { ...pc, durum: stdStatus };
+            }
+            return pc;
+          })
+        );
+      }
     });
 
     const unsubRez = subscribeLiveUpdate("reservations", () => {
@@ -182,20 +203,17 @@ export default function AdminDashboardPage() {
     else if (pc.durum === "kullanimda") nextDurum = "rezerve";
     else nextDurum = "bos";
 
-    const updated = computers.map((p) => (p.id === pc.id ? { ...p, durum: nextDurum } : p));
-    setComputers(updated);
+    // 1. Optimistic UI update for only the clicked PC
+    setComputers((prev) => prev.map((p) => (p.id === pc.id || p.no === pc.no ? { ...p, durum: nextDurum } : p)));
 
+    // 2. Broadcast single change so other tabs know without clobbering all 50 PCs
+    const singleUpdate = { [pc.no]: nextDurum, [pc.id]: nextDurum, [`pc-${pc.no}`]: nextDurum };
     try {
-      const locMap: Record<string, string> = {};
-      updated.forEach((p) => {
-        locMap[p.no] = p.durum === "kullanimda" ? "kullanımda" : p.durum;
-      });
-      localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
-      emitLiveUpdate("computers", locMap);
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("forzaPcDurumGuncellendi", { detail: locMap }));
-        window.dispatchEvent(new Event("storage"));
-      }
+      const raw = localStorage.getItem("forzaPcDurumlari");
+      const currentMap = raw ? JSON.parse(raw) : {};
+      currentMap[pc.no] = nextDurum;
+      localStorage.setItem("forzaPcDurumlari", JSON.stringify(currentMap));
+      emitLiveUpdate("computers", singleUpdate);
     } catch (e) {}
 
     try {

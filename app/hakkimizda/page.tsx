@@ -204,8 +204,8 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="about-right" style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "20px", border: "1px solid rgba(255, 215, 0, 0.25)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
-            <img src={coverPhoto || "/foto1.jpeg"} alt="Forza Gaming Espor Salonu" style={{ width: "100%", height: visibleCount === 1 ? "240px" : "380px", objectFit: "cover", display: "block" }} />
+          <div className="about-right" style={{ position: "relative", width: "100%", height: "100%", minHeight: visibleCount === 1 ? "240px" : "360px", maxHeight: "420px", overflow: "hidden", borderRadius: "20px", border: "1px solid rgba(255, 215, 0, 0.25)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
+            <img src={coverPhoto || "/foto1.jpeg"} alt="Forza Gaming Espor Salonu" style={{ width: "100%", height: "100%", minHeight: visibleCount === 1 ? "240px" : "360px", objectFit: "cover", objectPosition: "center 35%", display: "block" }} />
           </div>
         </section>
 

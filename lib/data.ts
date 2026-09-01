@@ -129,10 +129,29 @@ function persistPricing(pricing: KampanyaFiyatlari) {
   persistJson("kampanya.json", pricing);
 }
 
+export function normalizePcDurum(raw: string | undefined | null): PcDurum {
+  if (!raw) return "bos";
+  const s = String(raw).trim().toLowerCase();
+  if (s === "kullanimda" || s === "kullanımda" || s === "dolu" || s === "busy" || s === "kullanim") {
+    return "kullanimda";
+  }
+  if (s === "rezerve" || s === "reserved" || s === "rezerveli") {
+    return "rezerve";
+  }
+  return "bos";
+}
+
 function loadPersistedPcList(): PC[] | null {
   const parsed = loadPersistedJson<PC[]>("bilgisayar_state.json");
   if (Array.isArray(parsed) && parsed.length > 0) {
-    return parsed;
+    return parsed.map((p: any) => ({
+      id: p.id || `pc-${p.no}`,
+      no: Number(p.no) || (p.isim ? parseInt(String(p.isim).replace(/\D/g, ""), 10) : 1),
+      isim: p.isim || `PC ${p.no}`,
+      kategori: p.kategori || (p.no <= 10 ? "sari" : p.no <= 37 ? "mavi" : "yesil"),
+      durum: normalizePcDurum(p.durum),
+      guncellemeTarihi: p.guncellemeTarihi || new Date().toISOString(),
+    }));
   }
   return null;
 }

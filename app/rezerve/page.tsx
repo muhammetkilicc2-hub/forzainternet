@@ -123,19 +123,27 @@ export default function ReservationPage() {
       const data = await res.json();
       if (data && data.computers && Array.isArray(data.computers)) {
         const map: Record<string, "bos" | "rezerve" | "kullanimda"> = {};
-        data.computers.forEach((pc: { id: string; no: number; isim: string; durum: "bos" | "rezerve" | "kullanimda" }) => {
+        data.computers.forEach((pc: { id: string; no: number; isim: string; durum: string }) => {
           const num = pc.no || (pc.isim.match(/\d+/) ? parseInt(pc.isim.match(/\d+/)![0], 10) : pc.id);
-          map[`PC ${num}`] = pc.durum;
-          map[`${num}`] = pc.durum;
-          map[pc.isim] = pc.durum;
-          map[pc.id] = pc.durum;
+          const raw = String(pc.durum || "").trim().toLowerCase();
+          const stdDurum: "bos" | "rezerve" | "kullanimda" =
+            raw === "kullanimda" || raw === "kullanımda" || raw === "dolu"
+              ? "kullanimda"
+              : raw === "rezerve"
+              ? "rezerve"
+              : "bos";
+
+          map[`PC ${num}`] = stdDurum;
+          map[`${num}`] = stdDurum;
+          map[pc.isim] = stdDurum;
+          map[pc.id] = stdDurum;
         });
         setTableStatuses(map);
 
         try {
           const locMap: Record<string, string> = {};
           data.computers.forEach((pc: { no: number; durum: string }) => {
-            locMap[pc.no] = pc.durum === "kullanimda" ? "kullanımda" : pc.durum;
+            locMap[pc.no] = pc.durum;
           });
           localStorage.setItem("forzaPcDurumlari", JSON.stringify(locMap));
         } catch (e) {}

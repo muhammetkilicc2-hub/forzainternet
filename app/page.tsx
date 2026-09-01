@@ -491,41 +491,74 @@ export default function HomePage() {
 
           <div className="home-faq-list" style={{ display: "flex", flexDirection: "column", gap: "14px", width: "100%", margin: "0 auto", textAlign: "left" }}>
             {/* Soru 1 */}
-            <details className="home-faq-item" name="forza-faq-group">
-              <summary className="home-faq-summary">
-                <span className="home-faq-question-text">Rezervasyon yaptırdıktan sonra ne zaman gelmeliyim?</span>
-                <span className="home-faq-icon" aria-hidden="true">
-                  <i className="fa-solid fa-play"></i>
-                </span>
+            <details className="home-faq-item" name="forza-faq-group" style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "18px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.35)", backdropFilter: "blur(20px)" }}>
+              <summary className="home-faq-summary" style={{ padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "14px", background: "rgba(255, 255, 255, 0.02)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "38px", height: "38px", borderRadius: "12px", background: "linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05))", border: "1px solid rgba(255, 215, 0, 0.35)", color: "#ffd700", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14px", flexShrink: 0, boxShadow: "0 0 10px rgba(255, 215, 0, 0.15)" }}>
+                    <i className="fa-solid fa-circle-question"></i>
+                  </div>
+                  <strong style={{ fontSize: "15.5px", color: "#ffffff", fontWeight: 700, lineHeight: 1.4 }}>Rezervasyon yaptırdıktan sonra ne zaman gelmeliyim?</strong>
+                </div>
+                <div className="faq-chevron" style={{ width: "32px", height: "32px", borderRadius: "50%", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#ffd700", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", flexShrink: 0, transition: "transform 0.3s ease" }}>
+                  <i className="fa-solid fa-chevron-down"></i>
+                </div>
               </summary>
-              <div className="home-faq-body">
-                Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek doğrudan yerinize geçebilirsiniz.
+              <div className="home-faq-body" style={{ padding: "18px 22px 22px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", background: "rgba(10, 14, 22, 0.45)", fontSize: "14.5px", color: "#cbd5e1", lineHeight: 1.75 }}>
+                <p style={{ margin: "0 0 12px" }}>
+                  Rezervasyon saatinizden yaklaşık 10-15 dakika önce kafemize gelmeniz yeterlidir. Görevli arkadaşımıza isim ve telefon numaranızı belirterek doğrudan yerinize geçebilirsiniz.
+                </p>
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.3)", color: "#34d399" }}><i className="fa-solid fa-check"></i> Hızlı Giriş</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>10-15 Dk Önce</span>
+                </div>
               </div>
             </details>
 
             {/* Soru 2 */}
-            <details className="home-faq-item" name="forza-faq-group">
-              <summary className="home-faq-summary">
-                <span className="home-faq-question-text">Bilgisayarlarda hangi oyunlar ve programlar hazır?</span>
-                <span className="home-faq-icon" aria-hidden="true">
-                  <i className="fa-solid fa-play"></i>
-                </span>
+            <details className="home-faq-item" name="forza-faq-group" style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "18px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.35)", backdropFilter: "blur(20px)" }}>
+              <summary className="home-faq-summary" style={{ padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "14px", background: "rgba(255, 255, 255, 0.02)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "38px", height: "38px", borderRadius: "12px", background: "linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05))", border: "1px solid rgba(255, 215, 0, 0.35)", color: "#ffd700", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14px", flexShrink: 0, boxShadow: "0 0 10px rgba(255, 215, 0, 0.15)" }}>
+                    <i className="fa-solid fa-gamepad"></i>
+                  </div>
+                  <strong style={{ fontSize: "15.5px", color: "#ffffff", fontWeight: 700, lineHeight: 1.4 }}>Bilgisayarlarda hangi oyunlar ve programlar hazır?</strong>
+                </div>
+                <div className="faq-chevron" style={{ width: "32px", height: "32px", borderRadius: "50%", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#ffd700", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", flexShrink: 0, transition: "transform 0.3s ease" }}>
+                  <i className="fa-solid fa-chevron-down"></i>
+                </div>
               </summary>
-              <div className="home-faq-body">
-                Valorant, CS2, League of Legends, GTA V, FC24 (FIFA), PUBG, Call of Duty Warzone, Apex Legends, Rust, Dota 2, R6 Siege ve Steam kütüphanesindeki yüzlerce oyun en son güncellemeleriyle hazır olarak yüklüdür.
+              <div className="home-faq-body" style={{ padding: "18px 22px 22px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", background: "rgba(10, 14, 22, 0.45)", fontSize: "14.5px", color: "#cbd5e1", lineHeight: 1.75 }}>
+                <p style={{ margin: "0 0 12px" }}>
+                  Valorant, CS2, League of Legends, GTA V, FC24 (FIFA), PUBG, Call of Duty Warzone, Apex Legends, Rust, Dota 2, R6 Siege ve Steam kütüphanesindeki yüzlerce oyun en son güncellemeleriyle hazır olarak yüklüdür.
+                </p>
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(56, 189, 248, 0.15)", border: "1px solid rgba(56, 189, 248, 0.3)", color: "#38bdf8" }}>Tüm Espor Oyunları</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>Güncel Patchler</span>
+                </div>
               </div>
             </details>
 
             {/* Soru 3 */}
-            <details className="home-faq-item" name="forza-faq-group">
-              <summary className="home-faq-summary">
-                <span className="home-faq-question-text">5 Saatlik ve Gün Boyu paketler nasıl çalışır?</span>
-                <span className="home-faq-icon" aria-hidden="true">
-                  <i className="fa-solid fa-play"></i>
-                </span>
+            <details className="home-faq-item" name="forza-faq-group" style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 215, 0, 0.25)", borderRadius: "18px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.35)", backdropFilter: "blur(20px)" }}>
+              <summary className="home-faq-summary" style={{ padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", listStyle: "none", userSelect: "none", gap: "14px", background: "rgba(255, 255, 255, 0.02)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "38px", height: "38px", borderRadius: "12px", background: "linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05))", border: "1px solid rgba(255, 215, 0, 0.35)", color: "#ffd700", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "14px", flexShrink: 0, boxShadow: "0 0 10px rgba(255, 215, 0, 0.15)" }}>
+                    <i className="fa-solid fa-clock"></i>
+                  </div>
+                  <strong style={{ fontSize: "15.5px", color: "#ffffff", fontWeight: 700, lineHeight: 1.4 }}>5 Saatlik ve Gün Boyu paketler nasıl çalışır?</strong>
+                </div>
+                <div className="faq-chevron" style={{ width: "32px", height: "32px", borderRadius: "50%", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#ffd700", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", flexShrink: 0, transition: "transform 0.3s ease" }}>
+                  <i className="fa-solid fa-chevron-down"></i>
+                </div>
               </summary>
-              <div className="home-faq-body">
-                5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz oturumunuzu açtığınız andan itibaren başlar.
+              <div className="home-faq-body" style={{ padding: "18px 22px 22px", borderTop: "1px solid rgba(255, 255, 255, 0.08)", background: "rgba(10, 14, 22, 0.45)", fontSize: "14.5px", color: "#cbd5e1", lineHeight: 1.75 }}>
+                <p style={{ margin: "0 0 12px" }}>
+                  5 saatlik veya gün boyu paket satın aldığınızda, saatlik ücret yerine çok daha avantajlı indirimli fiyattan yararlanırsınız. Süreniz oturumunuzu açtığınız andan itibaren başlar.
+                </p>
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 215, 0, 0.15)", border: "1px solid rgba(255, 215, 0, 0.3)", color: "#ffd700" }}>İndirimli Fiyat</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", color: "#94a3b8" }}>Oturum Başlangıcı</span>
+                </div>
               </div>
             </details>
           </div>

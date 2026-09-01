@@ -7725,3 +7725,42 @@ body.login-page {
         border-radius: 10px !important;
     }
 }
+
+/* ==========================================================================
+   PUBLIC FAQ & ACCORDION ENHANCEMENTS
+   ========================================================================== */
+details.home-faq-item summary,
+details.home-review-accordion summary {
+    list-style: none !important;
+}
+
+details.home-faq-item summary::-webkit-details-marker,
+details.home-review-accordion summary::-webkit-details-marker {
+    display: none !important;
+}
+
+details.home-faq-item summary::marker,
+details.home-review-accordion summary::marker {
+    display: none !important;
+}
+
+details.home-faq-item {
+    transition: all 0.25s ease;
+}
+
+details.home-faq-item:hover {
+    border-color: rgba(255, 215, 0, 0.45) !important;
+    transform: translateY(-2px);
+}
+
+details.home-faq-item[open] {
+    border-color: rgba(255, 215, 0, 0.6) !important;
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.15) !important;
+}
+
+details.home-faq-item[open] .faq-chevron {
+    transform: rotate(180deg) !important;
+    background: rgba(255, 215, 0, 0.2) !important;
+    border-color: rgba(255, 215, 0, 0.4) !important;
+    color: #ffd700 !important;
+}

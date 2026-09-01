@@ -179,7 +179,7 @@ export default function HomePage() {
             <div className="card">
               <i className="fa-solid fa-burger" aria-hidden="true"></i>
               <h3>Cafe &amp; İkramlar</h3>
-              <p>Kavurmalı kaşarlı tost, taze kahve çeşitleri ve soğuk enerji içecekleri.</p>
+              <p>Kaşarlı sucuklu tost, taze kahve çeşitleri ve soğuk enerji içecekleri.</p>
             </div>
 
             {/* Group 2 (Seamless loop duplicate) */}
@@ -222,7 +222,7 @@ export default function HomePage() {
             <div className="card">
               <i className="fa-solid fa-burger" aria-hidden="true"></i>
               <h3>Cafe &amp; İkramlar</h3>
-              <p>Kavurmalı kaşarlı tost, taze kahve çeşitleri ve soğuk enerji içecekleri.</p>
+              <p>Kaşarlı sucuklu tost, taze kahve çeşitleri ve soğuk enerji içecekleri.</p>
             </div>
           </div>
         </section>

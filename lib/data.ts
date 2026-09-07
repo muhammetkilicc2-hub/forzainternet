@@ -145,8 +145,7 @@ export async function getComputers(): Promise<PC[]> {
 }
 
 export async function updateComputerStatus(id: string, durum: PcDurum): Promise<PC | null> {
-  const list = await getComputers();
-  const resList = await getReservations();
+  const [list, resList] = await Promise.all([getComputers(), getReservations()]);
   const matches = (id || "").match(/\d+/g);
 
   let lastUpdated: PC | null = null;
@@ -178,8 +177,11 @@ export async function updateComputerStatus(id: string, durum: PcDurum): Promise<
     }
   }
   
-  await writeData("computers", "bilgisayar_state.json", list);
-  await writeData("reservations", "rezervasyon_state.json", resList);
+  await Promise.all([
+    writeData("computers", "bilgisayar_state.json", list),
+    writeData("reservations", "rezervasyon_state.json", resList)
+  ]);
+  
   return lastUpdated;
 }
 
@@ -289,8 +291,7 @@ export async function verifyAdminCredentials(username: string, pass: string): Pr
 }
 
 export async function getStats(): Promise<AdminStats> {
-  const pcs = await getComputers();
-  const reservations = await getReservations();
+  const [pcs, reservations] = await Promise.all([getComputers(), getReservations()]);
 
   return {
     toplamPc: pcs.length,

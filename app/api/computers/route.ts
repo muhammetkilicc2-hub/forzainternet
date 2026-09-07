@@ -21,6 +21,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const session = await getSession();
+  if (!session) return NextResponse.json({ error: "Yetkisiz erişim" }, { status: 401 });
+
   try {
     const { computers } = await request.json();
     if (Array.isArray(computers)) {
@@ -43,6 +46,9 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
+  const session = await getSession();
+  if (!session) return NextResponse.json({ error: "Yetkisiz erişim" }, { status: 401 });
+
   try {
     const { id, durum } = await request.json();
     const updated = await updateComputerStatus(id, durum);

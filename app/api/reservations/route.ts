@@ -24,6 +24,9 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
+  const session = await getSession();
+  if (!session) return NextResponse.json({ error: "Yetkisiz erişim" }, { status: 401 });
+
   try {
     const { id, durum, markAllRead } = await request.json();
 

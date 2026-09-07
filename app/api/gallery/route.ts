@@ -1,19 +1,16 @@
 import { NextResponse } from "next/server";
-import { getGalleryPhotos, updateGalleryPhotos, getAdminSettings } from "@/lib/data";
+import { getGalleryPhotos, updateGalleryPhotos } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function GET() {
-  const photos = getGalleryPhotos();
-  const settings = getAdminSettings();
-  const coverPhoto = settings.aboutCoverPhoto || "/foto1.jpeg";
-
+  const photos = await getGalleryPhotos();
   return NextResponse.json(
-    { success: true, photos, coverPhoto },
+    { success: true, photos },
     {
       headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
         Pragma: "no-cache",
         Expires: "0",
       },
@@ -26,17 +23,8 @@ export async function POST(request: Request) {
     const body = await request.json();
     const photos = Array.isArray(body.photos) ? body.photos : Array.isArray(body) ? body : null;
     if (photos) {
-      const updated = updateGalleryPhotos(photos);
-      return NextResponse.json(
-        { success: true, photos: updated },
-        {
-          headers: {
-            "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
-            Pragma: "no-cache",
-            Expires: "0",
-          },
-        }
-      );
+      const updated = await updateGalleryPhotos(photos);
+      return NextResponse.json({ success: true, photos: updated });
     }
     return NextResponse.json({ error: "Geçersiz galeri verisi" }, { status: 400 });
   } catch (error) {

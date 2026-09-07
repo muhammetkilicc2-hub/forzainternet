@@ -6,10 +6,10 @@ export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
 
-    const isValid = verifyAdminCredentials(username, password);
+    const isValid = await verifyAdminCredentials(username, password);
 
     if (isValid) {
-      const settings = getAdminSettings();
+      const settings = await getAdminSettings();
       const token = await signToken({ username: settings.adminUser });
       await setSessionCookie(token);
       return NextResponse.json({ success: true, message: "Giriş başarılı" });

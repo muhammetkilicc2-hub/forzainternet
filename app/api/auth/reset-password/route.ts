@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const current = getAdminSettings();
+    const current = await getAdminSettings();
     const cleanInput = (emailOrPhone || "").trim().toLowerCase();
     const digitsOnly = cleanInput.replace(/\D/g, "");
 
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       );
     }
 
-    updateAdminSettings({
+    await updateAdminSettings({
       adminPass: newPassword.trim(),
       sifreSonDegismeTarihi: new Date().toISOString(),
     });

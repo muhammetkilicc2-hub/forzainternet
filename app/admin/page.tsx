@@ -553,9 +553,14 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
+        <style>{`
+          @media (max-width: 768px) {
+            .mobile-hide-photo { display: none !important; }
+          }
+        `}</style>
         <div className="media-gallery-grid" style={{ marginTop: "18px" }}>
-          {galleryPhotos.map((foto, index) => (
-            <div key={foto.src + index} className="media-item">
+          {galleryPhotos.slice(0, 4).map((foto, index) => (
+            <div key={foto.src + index} className={`media-item ${index >= 2 ? 'mobile-hide-photo' : ''}`}>
               <img src={foto.src} alt={foto.badge || "Mekan"} />
               <span className="media-badge">{foto.badge || "Mekan"}</span>
             </div>

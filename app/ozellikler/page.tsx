@@ -60,10 +60,20 @@ export default function OzelliklerPage() {
                 <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(255, 215, 0, 0.15)", color: "#ffd700", border: "1px solid rgba(255, 215, 0, 0.35)" }}>STANDART GAMING</span>
               </div>
               <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Sarı Masalar</h3>
-              <p style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "20px", lineHeight: 1.5 }}>
-                <i className="fa-solid fa-microchip" style={{ marginRight: '6px' }}></i>Nvidia RTX 3060 • Intel i5<br/>
-                <i className="fa-solid fa-memory" style={{ marginRight: '6px', marginTop: '6px' }}></i>16GB RAM • 144Hz Monitör
-              </p>
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px 0", display: "flex", flexDirection: "column", gap: "10px" }}>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-microchip" style={{ color: "#ffd700", width: "16px" }}></i> Nvidia RTX 3060 & Intel i5
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-memory" style={{ color: "#ffd700", width: "16px" }}></i> 16GB DDR4 Yüksek Hızlı RAM
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-desktop" style={{ color: "#ffd700", width: "16px" }}></i> 144Hz Espor Monitör
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-wifi" style={{ color: "#ffd700", width: "16px" }}></i> 1000 Mbps Fiber İnternet
+                </li>
+              </ul>
               
               <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", flexGrow: 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -79,6 +89,9 @@ export default function OzelliklerPage() {
                   <strong style={{ fontSize: "18px", color: "#ffd700", fontWeight: 800 }}>₺{pricing.sari.gunluk}</strong>
                 </div>
               </div>
+              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", marginTop: "16px", background: "linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05))", color: "#ffd700", border: "1px solid rgba(255, 215, 0, 0.3)" }}>
+                <i className="fa-solid fa-phone"></i> Hemen Bizi Ara
+              </a>
             </div>
 
             {/* MAVI MASA */}
@@ -87,10 +100,23 @@ export default function OzelliklerPage() {
                 <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.35)" }}>PRO ESPOR GAMING</span>
               </div>
               <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Mavi Masalar</h3>
-              <p style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "20px", lineHeight: 1.5 }}>
-                <i className="fa-solid fa-microchip" style={{ marginRight: '6px' }}></i>RTX 3060 OC • Intel i5 Gaming<br/>
-                <i className="fa-solid fa-memory" style={{ marginRight: '6px', marginTop: '6px' }}></i>16GB RAM • 240Hz Monitör
-              </p>
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px 0", display: "flex", flexDirection: "column", gap: "10px" }}>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-microchip" style={{ color: "#38bdf8", width: "16px" }}></i> RTX 3060 OC & Intel i5 Gaming
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-memory" style={{ color: "#38bdf8", width: "16px" }}></i> 16GB DDR4 Yüksek Hızlı RAM
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-desktop" style={{ color: "#38bdf8", width: "16px" }}></i> 240Hz Espor Monitörü
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-headphones" style={{ color: "#38bdf8", width: "16px" }}></i> Pro Espor Ekipmanları
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-wifi" style={{ color: "#38bdf8", width: "16px" }}></i> 1000 Mbps Fiber İnternet
+                </li>
+              </ul>
               
               <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", flexGrow: 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -110,6 +136,9 @@ export default function OzelliklerPage() {
                   <strong style={{ fontSize: "18px", color: "#38bdf8", fontWeight: 800 }}>₺{pricing.mavi.gunluk}</strong>
                 </div>
               </div>
+              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", marginTop: "16px", background: "linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.05))", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.3)" }}>
+                <i className="fa-solid fa-phone"></i> Hemen Bizi Ara
+              </a>
             </div>
 
             {/* YESIL MASA */}
@@ -119,10 +148,23 @@ export default function OzelliklerPage() {
                 <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(52, 211, 153, 0.15)", color: "#34d399", border: "1px solid rgba(52, 211, 153, 0.35)" }}>ULTRA VIP ESPOR</span>
               </div>
               <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Yeşil Masalar</h3>
-              <p style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "20px", lineHeight: 1.5 }}>
-                <i className="fa-solid fa-microchip" style={{ marginRight: '6px' }}></i>RTX 3070 Ti / 5060 • Ryzen 7 7800X3D<br/>
-                <i className="fa-solid fa-memory" style={{ marginRight: '6px', marginTop: '6px' }}></i>32GB DDR5 • 540 Hz Espor Monitörü
-              </p>
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px 0", display: "flex", flexDirection: "column", gap: "10px" }}>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-microchip" style={{ color: "#34d399", width: "16px" }}></i> RTX 3070 Ti / 5060 & Ryzen 7
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-memory" style={{ color: "#34d399", width: "16px" }}></i> 32GB DDR5 Yüksek Frekans RAM
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-desktop" style={{ color: "#34d399", width: "16px" }}></i> 540Hz Espor Turnuva Monitörü
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-crown" style={{ color: "#34d399", width: "16px" }}></i> Özel VIP Turnuva Odası
+                </li>
+                <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
+                  <i className="fa-solid fa-wifi" style={{ color: "#34d399", width: "16px" }}></i> 1000 Mbps Fiber İnternet
+                </li>
+              </ul>
               
               <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", flexGrow: 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -142,6 +184,9 @@ export default function OzelliklerPage() {
                   <strong style={{ fontSize: "18px", color: "#34d399", fontWeight: 800 }}>₺{pricing.yesil.gunluk}</strong>
                 </div>
               </div>
+              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", marginTop: "16px", background: "linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(52, 211, 153, 0.05))", color: "#34d399", border: "1px solid rgba(52, 211, 153, 0.3)" }}>
+                <i className="fa-solid fa-phone"></i> Hemen Bizi Ara
+              </a>
             </div>
 
           </div>

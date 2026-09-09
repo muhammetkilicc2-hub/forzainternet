@@ -99,32 +99,42 @@ async function writeData<T>(key: string, filename: string, data: T) {
 // ------------------------------------------------------------------
 
 export async function getPricing(): Promise<KampanyaFiyatlari> {
-  const dbData = await readData<KampanyaFiyatlari>("pricing", "kampanya_state.json");
-  if (dbData && dbData.sari) return dbData;
-  return {
-    sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
-    mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
-    yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
-  };
+  try {
+    const dbData = await readData<KampanyaFiyatlari>("pricing", "kampanya_state.json");
+    if (dbData && dbData.sari) return dbData;
+    return {
+      sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
+      mavi: { saatlik: 70, besSaatlik: 250, onSaatlik: 450, gunluk: 950 },
+      yesil: { saatlik: 90, besSaatlik: 350, onSaatlik: 650, gunluk: 1200 },
+    };
+  } catch (err) {
+    return {
+      sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
+      mavi: { saatlik: 70, besSaatlik: 250, onSaatlik: 450, gunluk: 950 },
+      yesil: { saatlik: 90, besSaatlik: 350, onSaatlik: 650, gunluk: 1200 },
+    };
+  }
 }
 
-export async function updatePricing(newPricing: any): Promise<KampanyaFiyatlari> {
-  const payload = newPricing && newPricing.pricing ? newPricing.pricing : newPricing;
+export async function updatePricing(payload: any): Promise<KampanyaFiyatlari> {
   const current = await getPricing();
   const updated: KampanyaFiyatlari = {
     sari: {
       saatlik: Number(payload?.sari?.saatlik) || current.sari.saatlik,
       besSaatlik: Number(payload?.sari?.besSaatlik) || current.sari.besSaatlik,
+      onSaatlik: payload?.sari?.onSaatlik !== undefined ? Number(payload.sari.onSaatlik) : current.sari.onSaatlik,
       gunluk: Number(payload?.sari?.gunluk) || current.sari.gunluk,
     },
     mavi: {
       saatlik: Number(payload?.mavi?.saatlik) || current.mavi.saatlik,
       besSaatlik: Number(payload?.mavi?.besSaatlik) || current.mavi.besSaatlik,
+      onSaatlik: payload?.mavi?.onSaatlik !== undefined ? Number(payload.mavi.onSaatlik) : current.mavi.onSaatlik,
       gunluk: Number(payload?.mavi?.gunluk) || current.mavi.gunluk,
     },
     yesil: {
       saatlik: Number(payload?.yesil?.saatlik) || current.yesil.saatlik,
       besSaatlik: Number(payload?.yesil?.besSaatlik) || current.yesil.besSaatlik,
+      onSaatlik: payload?.yesil?.onSaatlik !== undefined ? Number(payload.yesil.onSaatlik) : current.yesil.onSaatlik,
       gunluk: Number(payload?.yesil?.gunluk) || current.yesil.gunluk,
     },
   };

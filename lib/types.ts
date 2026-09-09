@@ -41,6 +41,7 @@ export interface Rezervasyon {
 export interface KategoriFiyatPaket {
   saatlik: number;
   besSaatlik: number;
+  onSaatlik?: number;
   gunluk: number;
 }
 

@@ -98,7 +98,8 @@ export default function Navbar() {
           </li>
           <li>
             <Link
-              href="/#ozellikler"
+              href="/ozellikler"
+              className={pathname === "/ozellikler" ? "active" : ""}
               onClick={() => setMobileOpen(false)}
             >
               Özellikler

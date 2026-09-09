@@ -63,10 +63,7 @@ export default function Navbar() {
           role="search"
           onSubmit={(e) => {
             e.preventDefault();
-            const input = document.getElementById("searchInput") as HTMLInputElement;
-            if (input && input.value.trim()) {
-              router.push(`/rezerve?search=${encodeURIComponent(input.value.trim())}`);
-            }
+            router.push(`/#fiyatlar`);
           }}
         >
           <i className="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
@@ -101,11 +98,10 @@ export default function Navbar() {
           </li>
           <li>
             <Link
-              href="/rezerve"
-              className={pathname === "/rezerve" ? "active" : ""}
+              href="/#ozellikler"
               onClick={() => setMobileOpen(false)}
             >
-              Rezervasyon &amp; Masalar
+              Özellikler
             </Link>
           </li>
           <li>

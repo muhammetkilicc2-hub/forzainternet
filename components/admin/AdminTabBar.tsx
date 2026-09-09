@@ -10,9 +10,7 @@ export default function AdminTabBar() {
 
   const tabs = [
     { href: "/admin", label: "Ana Sayfa", icon: Home },
-    { href: "/admin/masalar", label: "Masalar", icon: Monitor },
     { href: "/admin/kampanya", label: "Fiyatlar", icon: Tag },
-    { href: "/admin/rezervasyonlar", label: "Talepler", icon: CalendarCheck },
     { href: "/admin/ayarlar", label: "Ayarlar", icon: Settings },
   ];
 

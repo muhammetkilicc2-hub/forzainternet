@@ -81,11 +81,15 @@ export default function HomePage() {
           <p className="para1">Profesyonel Espor Monitörleri, RTX Canavar Sistemler ve 1000 Mbps Düşük Ping Deneyimi.</p>
           <p className="hero-subtext">Arkadaşlarınla toplan, avantajlı 5 saatlik &amp; gün boyu paketlerle yerini hemen ayırt.</p>
 
-          <div className="hero-actions czr">
-            <Link href="/rezerve" className="rzr-main">
-              <i className="fa-solid fa-calendar-check" aria-hidden="true"></i>
-              Masa Seç &amp; Yerini Ayırt
-            </Link>
+          <div className="hero-actions czr" style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center" }}>
+            <a href="https://maps.google.com/?q=Forza+Internet+Cafe+Kepez+Antalya" target="_blank" rel="noopener noreferrer" className="rzr-main" style={{ background: "linear-gradient(135deg, #10b981 0%, #059669 100%)", boxShadow: "0 0 20px rgba(16, 185, 129, 0.4)", textDecoration: "none" }}>
+              <i className="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+              Yol Tarifi
+            </a>
+            <a href="tel:05464659693" className="rzr-main" style={{ textDecoration: "none" }}>
+              <i className="fa-solid fa-phone" aria-hidden="true"></i>
+              Bizi Ara
+            </a>
             <Link href="/hakkimizda" className="btn-secondary">
               <i className="fa-solid fa-circle-info" aria-hidden="true"></i>
               Sistemleri İncele
@@ -268,9 +272,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <Link href="/rezerve" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>
-                Masa Seç &amp; Yerini Ayırt ➔
-              </Link>
+              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>Hemen Bizi Ara</a>
             </div>
 
             {/* Mavi Kart */}
@@ -301,9 +303,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <Link href="/rezerve" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>
-                Masa Seç &amp; Yerini Ayırt ➔
-              </Link>
+              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>Hemen Bizi Ara</a>
             </div>
 
             {/* Yeşil Kart (VIP) */}
@@ -338,13 +338,36 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <Link href="/rezerve" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>
-                Masa Seç &amp; Yerini Ayırt ➔
-              </Link>
+              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>Hemen Bizi Ara</a>
             </div>
           </div>
         </section>
 
+
+        <section className="home-section" id="ozellikler" style={{ maxWidth: "820px", margin: "0 auto 80px", width: "min(820px, calc(100% - 32px))", textAlign: "center" }}>
+          <div className="home-section-header" style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginBottom: "32px" }}>
+            <span className="home-section-tag" style={{ margin: "0 auto 12px" }}>
+              Neden Biz?
+            </span>
+            <h2 className="home-section-title">
+              Özellikler &amp; Hizmetlerimiz
+            </h2>
+            <p className="home-section-desc" style={{ maxWidth: "600px", margin: "16px auto 0" }}>
+              Antalya'nın en iyi espor deneyimini yaşamanız için tüm detayları düşündük. Kesintisiz oyun, turnuva seviyesi ekipmanlar ve rahatınız için buradayız.
+            </p>
+          </div>
+          
+          <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap", marginTop: "24px" }}>
+            <a href="https://maps.google.com/?q=Forza+Internet+Cafe+Kepez+Antalya" target="_blank" rel="noopener noreferrer" className="primary-btn" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", background: "linear-gradient(135deg, #10b981 0%, #059669 100%)" }}>
+              <i className="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+              Yol Tarifi
+            </a>
+            <a href="tel:05464659693" className="primary-btn" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <i className="fa-solid fa-phone" aria-hidden="true"></i>
+              Bizi Ara
+            </a>
+          </div>
+        </section>
 
         {/* PLAYER REVIEWS & RATINGS ACCORDION */}
         <section className="home-section" id="yorumlar" style={{ maxWidth: "820px", margin: "0 auto 80px", width: "min(820px, calc(100% - 32px))", textAlign: "center" }}>

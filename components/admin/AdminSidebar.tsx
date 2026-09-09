@@ -5,14 +5,11 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Home,
-  Monitor,
   Tag,
-  CalendarCheck,
   Settings,
   ExternalLink,
   LogOut,
   X,
-  Activity,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -24,24 +21,10 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
   const pathname = usePathname();
   const router = useRouter();
   const [avatar, setAvatar] = useState<string | null>(null);
-  const [unreadRezCount, setUnreadRezCount] = useState<number>(0);
-  const [stats, setStats] = useState<{ total: number; active: number; empty: number }>({
-    total: 48,
-    active: 0,
-    empty: 48,
-  });
 
   const menuItems = [
     { href: "/admin", label: "Ana Sayfa", icon: Home, desc: "Özet & Metrikler" },
-    { href: "/admin/masalar", label: "Masalar", icon: Monitor, desc: "PC Durumları & Kontrol" },
     { href: "/admin/kampanya", label: "Fiyat & Kampanya", icon: Tag, desc: "Tarifeler & Paketler" },
-    {
-      href: "/admin/rezervasyonlar",
-      label: "Rezervasyonlar",
-      icon: CalendarCheck,
-      desc: "Gelen Randevu Talepleri",
-      badge: unreadRezCount > 0 ? unreadRezCount : undefined,
-    },
     { href: "/admin/ayarlar", label: "Sistem Ayarları", icon: Settings, desc: "Şifre, İletişim & Galeri" },
   ];
 
@@ -80,36 +63,9 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
     window.addEventListener("forzaAyarlarGuncellendi" as any, handleSettingsUpdate);
     window.addEventListener("storage", loadAvatarSettings);
 
-    // Load unread reservations count and pc stats
-    const fetchQuickStats = async () => {
-      try {
-        const resRez = await fetch("/api/reservations", { cache: "no-store" });
-        const dataRez = await resRez.json();
-        if (dataRez.success && Array.isArray(dataRez.reservations)) {
-          const unread = dataRez.reservations.filter((r: any) => !r.okundu).length;
-          setUnreadRezCount(unread);
-        }
-      } catch (e) {}
-
-      try {
-        const resPc = await fetch("/api/computers", { cache: "no-store" });
-        const dataPc = await resPc.json();
-        if (dataPc.success && Array.isArray(dataPc.computers)) {
-          const total = dataPc.computers.length;
-          const active = dataPc.computers.filter((p: any) => p.durum === "kullanimda").length;
-          const empty = dataPc.computers.filter((p: any) => p.durum === "bos").length;
-          setStats({ total, active, empty });
-        }
-      } catch (e) {}
-    };
-
-    fetchQuickStats();
-    const interval = setInterval(fetchQuickStats, 5000);
-
     return () => {
       window.removeEventListener("forzaAyarlarGuncellendi" as any, handleSettingsUpdate);
       window.removeEventListener("storage", loadAvatarSettings);
-      clearInterval(interval);
     };
   }, []);
 
@@ -200,39 +156,9 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
                       <span className="admin-sidebar-link-desc">{item.desc}</span>
                     </div>
                   </div>
-
-                  {item.badge && item.badge > 0 && (
-                    <span className="admin-sidebar-badge">{item.badge}</span>
-                  )}
                 </Link>
               );
             })}
-          </div>
-        </div>
-
-        {/* Live System Mini Stats Widget */}
-        <div className="admin-sidebar-stats-card">
-          <div className="admin-sidebar-stats-header">
-            <div className="admin-sidebar-stats-title">
-              <Activity size={14} className="stats-icon-spin" /> Canlı Doluluk
-            </div>
-            <span className="admin-sidebar-stats-ratio">
-              {stats.active}/{stats.total}
-            </span>
-          </div>
-
-          <div className="admin-sidebar-progress-bg">
-            <div
-              className="admin-sidebar-progress-fill"
-              style={{
-                width: `${stats.total > 0 ? (stats.active / stats.total) * 100 : 0}%`,
-              }}
-            />
-          </div>
-
-          <div className="admin-sidebar-stats-details">
-            <span className="status-item-empty">🟢 {stats.empty} Boş</span>
-            <span className="status-item-active">🔴 {stats.active} Dolu</span>
           </div>
         </div>
 

@@ -195,16 +195,14 @@ export async function verifyAdminCredentials(username: string, pass: string): Pr
 }
 
 export async function getStats(): Promise<AdminStats> {
-  const [pcs, reservations] = await Promise.all([getComputers(), getReservations()]);
-
   return {
-    toplamPc: pcs.length,
-    aktifPc: pcs.filter((p) => p.durum === "kullanimda").length,
-    bosPc: pcs.filter((p) => p.durum === "bos").length,
-    rezervePc: pcs.filter((p) => p.durum === "rezerve").length,
-    toplamRezervasyon: reservations.length,
-    bekleyenRezervasyon: reservations.filter((r) => r.durum === "pending").length,
-    onaylananRezervasyon: reservations.filter((r) => r.durum === "confirmed").length,
+    toplamPc: 0,
+    aktifPc: 0,
+    bosPc: 0,
+    rezervePc: 0,
+    toplamRezervasyon: 0,
+    bekleyenRezervasyon: 0,
+    onaylananRezervasyon: 0,
   };
 }
 

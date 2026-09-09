@@ -166,7 +166,7 @@ export default function OzelliklerPage() {
                   <strong style={{ fontSize: "18px", color: "#ffd700", fontWeight: 800 }}>₺{pricing.sari.gunluk}</strong>
                 </div>
               </div>
-              <a href="tel:05464659693" className="btn-sari">
+              <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="btn-sari">
                 <i className="fa-solid fa-phone"></i> Hemen Bizi Ara
               </a>
             </div>
@@ -214,7 +214,7 @@ export default function OzelliklerPage() {
                   <strong style={{ fontSize: "18px", color: "#38bdf8", fontWeight: 800 }}>₺{pricing.mavi.gunluk}</strong>
                 </div>
               </div>
-              <a href="tel:05464659693" className="btn-mavi">
+              <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="btn-mavi">
                 <i className="fa-solid fa-phone"></i> Hemen Bizi Ara
               </a>
             </div>
@@ -263,7 +263,7 @@ export default function OzelliklerPage() {
                   <strong style={{ fontSize: "18px", color: "#34d399", fontWeight: 800 }}>₺{pricing.yesil.gunluk}</strong>
                 </div>
               </div>
-              <a href="tel:05464659693" className="btn-yesil">
+              <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="btn-yesil">
                 <i className="fa-solid fa-phone"></i> Hemen Bizi Ara
               </a>
             </div>

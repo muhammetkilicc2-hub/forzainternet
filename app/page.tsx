@@ -82,11 +82,11 @@ export default function HomePage() {
           <p className="hero-subtext">Arkadaşlarınla toplan, avantajlı 5 saatlik &amp; gün boyu paketlerle yerini hemen ayırt.</p>
 
           <div className="hero-actions czr" style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center" }}>
-            <a href="https://maps.google.com/?q=Forza+Internet+Cafe+Kepez+Antalya" target="_blank" rel="noopener noreferrer" className="rzr-main" style={{ background: "linear-gradient(135deg, #10b981 0%, #059669 100%)", boxShadow: "0 0 20px rgba(16, 185, 129, 0.4)", textDecoration: "none" }}>
+            <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "map" }) }) }}  href="https://maps.google.com/?q=Forza+Internet+Cafe+Kepez+Antalya" target="_blank" rel="noopener noreferrer" className="rzr-main" style={{ background: "linear-gradient(135deg, #10b981 0%, #059669 100%)", boxShadow: "0 0 20px rgba(16, 185, 129, 0.4)", textDecoration: "none" }}>
               <i className="fa-solid fa-map-location-dot" aria-hidden="true"></i>
               Yol Tarifi
             </a>
-            <a href="tel:05464659693" className="rzr-main" style={{ textDecoration: "none" }}>
+            <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="rzr-main" style={{ textDecoration: "none" }}>
               <i className="fa-solid fa-phone" aria-hidden="true"></i>
               Bizi Ara
             </a>
@@ -272,7 +272,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>Hemen Bizi Ara</a>
+              <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>Hemen Bizi Ara</a>
             </div>
 
             {/* Mavi Kart */}
@@ -307,7 +307,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>Hemen Bizi Ara</a>
+              <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>Hemen Bizi Ara</a>
             </div>
 
             {/* Yeşil Kart (VIP) */}
@@ -346,7 +346,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>Hemen Bizi Ara</a>
+              <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "block" }}>Hemen Bizi Ara</a>
             </div>
           </div>
         </section>

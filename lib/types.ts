@@ -112,4 +112,13 @@ export interface AnalyticsData {
     masaustu: number;
   };
   sonGuncelleme: string;
+  pageViews: {
+    home: number;
+    ozellikler: number;
+    hakkimizda: number;
+  };
+  clicks: {
+    map: number;
+    phone: number;
+  };
 }

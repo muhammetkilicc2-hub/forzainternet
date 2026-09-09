@@ -227,6 +227,8 @@ if (!globalThis.__forzaAnalytics) {
     anlikCanliKullanici: 14,
     kategoriBakilma: { sari: 320, mavi: 580, yesil: 790 },
     cihazDagilimi: { mobil: 68, masaustu: 32 },
+    pageViews: { home: 1200, ozellikler: 850, hakkimizda: 430 },
+    clicks: { map: 124, phone: 58 },
     sonGuncelleme: new Date().toISOString(),
   };
 }
@@ -254,3 +256,21 @@ export function trackCategoryInterest(kategori: "sari" | "mavi" | "yesil") {
   an.sonGuncelleme = new Date().toISOString();
   return an;
 }
+export function trackClick(type: "map" | "phone") {
+  const an = globalThis.__forzaAnalytics!;
+  if (an.clicks[type] !== undefined) an.clicks[type] += 1;
+  an.sonGuncelleme = new Date().toISOString();
+  return an;
+}
+
+export function trackPageView(page: "home" | "ozellikler" | "hakkimizda") {
+  const an = globalThis.__forzaAnalytics!;
+  if (an.pageViews[page] !== undefined) {
+    an.pageViews[page] += 1;
+    an.toplamZiyaret += 1;
+    an.bugunZiyaret += 1;
+  }
+  an.sonGuncelleme = new Date().toISOString();
+  return an;
+}
+

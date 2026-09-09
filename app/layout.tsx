@@ -1,3 +1,4 @@
+import AnalyticsTracker from "@/components/public/AnalyticsTracker";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
@@ -44,6 +45,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <AnalyticsTracker />
         {children}
       </body>
     </html>

@@ -12,6 +12,11 @@ interface GalleryPhoto {
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
+  const [analytics, setAnalytics] = useState({
+    visitors: { total: 0, today: 0, lastDate: "" },
+    pageViews: { home: 0, ozellikler: 0, hakkimizda: 0 },
+    clicks: { map: 0, phone: 0 }
+  });
   const [galleryPhotos, setGalleryPhotos] = useState<GalleryPhoto[]>([
     { src: "/foto1.jpeg", badge: "Ana Salon" },
     { src: "/foto2.jpeg", badge: "VIP Espor" },
@@ -42,6 +47,14 @@ export default function AdminDashboard() {
 
   async function loadData() {
     try {
+      const resAn = await fetch("/api/analytics", { cache: "no-store" });
+      const dataAn = await resAn.json();
+      if (dataAn.success && dataAn.analytics) {
+        setAnalytics(dataAn.analytics);
+      }
+    } catch(e) {}
+
+    try {
       const resGal = await fetch("/api/gallery", { cache: "no-store" });
       const dataGal = await resGal.json();
 
@@ -63,8 +76,56 @@ export default function AdminDashboard() {
             Ana Sayfa
           </h1>
           <span style={{ fontSize: "13px", color: "#cbd5e1", marginTop: "4px", display: "block" }}>
-            Forza Gaming Yönetim Paneli
+            Forza E-Sports & Gaming Yönetim Paneli
           </span>
+        </div>
+      </div>
+
+      {/* İSTATİSTİKLER VE ZİYARETÇİ ANALİZİ */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px" }}>
+        
+        {/* Toplam Ziyaretçi */}
+        <div style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "16px", padding: "20px", display: "flex", alignItems: "center", gap: "16px" }}>
+          <div style={{ width: "48px", height: "48px", borderRadius: "12px", background: "rgba(52, 211, 153, 0.15)", color: "#34d399", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "20px" }}>
+            <i className="fa-solid fa-users"></i>
+          </div>
+          <div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600, marginBottom: "4px" }}>TOPLAM ZİYARETÇİ</div>
+            <div style={{ fontSize: "24px", color: "#fff", fontWeight: 800 }}>{analytics.visitors?.total || 0}</div>
+          </div>
+        </div>
+
+        {/* Bugünkü Ziyaretçi */}
+        <div style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "16px", padding: "20px", display: "flex", alignItems: "center", gap: "16px" }}>
+          <div style={{ width: "48px", height: "48px", borderRadius: "12px", background: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "20px" }}>
+            <i className="fa-solid fa-user-clock"></i>
+          </div>
+          <div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600, marginBottom: "4px" }}>BUGÜNKÜ ZİYARETÇİ</div>
+            <div style={{ fontSize: "24px", color: "#fff", fontWeight: 800 }}>{analytics.visitors?.today || 0}</div>
+          </div>
+        </div>
+
+        {/* Yol Tarifi */}
+        <div style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "16px", padding: "20px", display: "flex", alignItems: "center", gap: "16px" }}>
+          <div style={{ width: "48px", height: "48px", borderRadius: "12px", background: "rgba(255, 215, 0, 0.15)", color: "#ffd700", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "20px" }}>
+            <i className="fa-solid fa-map-location-dot"></i>
+          </div>
+          <div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600, marginBottom: "4px" }}>YOL TARİFİ TIKLAMA</div>
+            <div style={{ fontSize: "24px", color: "#fff", fontWeight: 800 }}>{analytics.clicks?.map || 0}</div>
+          </div>
+        </div>
+
+        {/* Bizi Ara */}
+        <div style={{ background: "rgba(18, 24, 38, 0.88)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "16px", padding: "20px", display: "flex", alignItems: "center", gap: "16px" }}>
+          <div style={{ width: "48px", height: "48px", borderRadius: "12px", background: "rgba(244, 63, 94, 0.15)", color: "#f43f5e", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "20px" }}>
+            <i className="fa-solid fa-phone"></i>
+          </div>
+          <div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600, marginBottom: "4px" }}>BİZİ ARA TIKLAMA</div>
+            <div style={{ fontSize: "24px", color: "#fff", fontWeight: 800 }}>{analytics.clicks?.phone || 0}</div>
+          </div>
         </div>
       </div>
 

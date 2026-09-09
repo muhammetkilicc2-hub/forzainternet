@@ -3,10 +3,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "FORZA İnternet & Cafe — Şehrin 1 Numaralı Espor ve Gaming Alanı",
-    template: "%s | FORZA İnternet & Cafe",
+    default: "FORZA E-SPORTS & GAMING CAFE — Şehrin 1 Numaralı Espor ve Gaming Alanı",
+    template: "%s | FORZA E-SPORTS & GAMING CAFE",
   },
-  description: "En yeni nesil RTX 40 serisi bilgisayarlar, profesyonel espor monitörleri, özel turnuva masaları ve konforlu alanıyla Forza İnternet Cafe'ye hoş geldiniz.",
+  description: "En yeni nesil RTX 40 serisi bilgisayarlar, profesyonel espor monitörleri, özel turnuva masaları ve konforlu alanıyla Forza E-Sports & Gaming Cafe'ye hoş geldiniz.",
   keywords: ["forza internet cafe", "espor kafe", "gaming cafe", "profesyonel espor", "rtx gaming cafe"],
   authors: [{ name: "Forza Gaming" }],
   icons: {

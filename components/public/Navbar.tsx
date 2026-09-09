@@ -54,7 +54,7 @@ export default function Navbar() {
           />
           <h1 className="para2">
             <span className="logo-forza">FORZA</span>
-            <span className="logo-sub">İnternet&amp;Cafe</span>
+            <span className="logo-sub">E-SPORTS &amp; GAMING CAFE</span>
           </h1>
         </Link>
 

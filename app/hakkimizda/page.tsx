@@ -190,7 +190,7 @@ export default function AboutPage() {
               Antalya'nın Espor &amp; Gaming Merkezi
             </div>
             <h1 style={{ fontFamily: "'Racing Sans One', sans-serif", fontSize: "clamp(32px, 5vw, 48px)", color: "#ffd700", margin: 0, letterSpacing: "1px", lineHeight: 1.1 }}>
-              FORZA GAMING
+              FORZA E-SPORTS & GAMING CAFE
             </h1>
             <h2 style={{ fontFamily: "'Sora', sans-serif", fontSize: "clamp(20px, 3.5vw, 28px)", color: "#ffffff", fontWeight: 800, margin: 0 }}>
               HAKKIMIZDA

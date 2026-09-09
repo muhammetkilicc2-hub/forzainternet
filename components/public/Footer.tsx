@@ -14,7 +14,7 @@ export default function Footer() {
               <i className="fa-solid fa-gamepad" aria-hidden="true"></i>
             </div>
             <div className="footer-brand-text">
-              <h2>FORZA INTERNET &amp; CAFE</h2>
+              <h2>FORZA E-SPORTS &amp; GAMING CAFE</h2>
               <span>Şehrin 1 Numaralı Espor &amp; Gaming Merkezi</span>
             </div>
           </div>
@@ -137,8 +137,8 @@ export default function Footer() {
       {/* Alt Telif & Yönetici Barı */}
       <div className="footer-bottom">
         <div className="footer-bottom-container">
-          <p className="footer-copy">
-            © 2026 FORZA İnternet &amp; Cafe. Tüm Hakları Saklıdır.
+          <p style={{ margin: 0, fontSize: "13px", color: "#64748b" }}>
+            &copy; 2026 FORZA E-SPORTS & GAMING CAFE. Tüm Hakları Saklıdır.
           </p>
           <div className="footer-bottom-links">
             <Link href="/hakkimizda" className="footer-bottom-link">Hakkımızda</Link>

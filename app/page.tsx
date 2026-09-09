@@ -77,7 +77,7 @@ export default function HomePage() {
             🟢 7/24 Kesintisiz Açık | Antalya Espor &amp; Gaming Merkezi
           </div>
 
-          <h1 className="para1">FORZA GAMING &amp; INTERNET CAFE</h1>
+          <h1 className="para1">FORZA E-SPORTS &amp; GAMING CAFE</h1>
           <p className="para1">Profesyonel Espor Monitörleri, RTX Canavar Sistemler ve 1000 Mbps Düşük Ping Deneyimi.</p>
           <p className="hero-subtext">Arkadaşlarınla toplan, avantajlı 5 saatlik &amp; gün boyu paketlerle yerini hemen ayırt.</p>
 
@@ -580,7 +580,7 @@ export default function HomePage() {
             </div>
 
             <div className="home-contact-info" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", width: "100%" }}>
-              <h3 style={{ fontFamily: "'Sora', sans-serif", fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: 800, color: "#ffffff", marginBottom: "14px", textAlign: "center" }}>Forza Gaming &amp; İnternet Cafe'ye Bekleriz</h3>
+              <h3 style={{ fontFamily: "'Sora', sans-serif", fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: 800, color: "#ffffff", marginBottom: "14px", textAlign: "center" }}>Forza E-Sports &amp; Gaming Cafe'ye Bekleriz</h3>
               <p style={{ fontSize: "15px", color: "#cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "10px", textAlign: "center" }}>
                 <i className="fa-solid fa-location-dot" style={{ color: "#ffd700", fontSize: "16px" }}></i> Kültür Mh. 3809 Sk. No:14 Kepez / Antalya
               </p>

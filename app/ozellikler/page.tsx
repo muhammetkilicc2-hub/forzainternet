@@ -24,6 +24,82 @@ export default function OzelliklerPage() {
 
   return (
     <>
+      <style>{`
+        .btn-sari {
+          background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+          color: #ffd700;
+          border: 1px solid rgba(255, 215, 0, 0.3);
+          border-radius: 50px !important;
+          transition: all 0.3s ease;
+          width: 100%;
+          text-align: center;
+          text-decoration: none;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+          margin-top: 16px;
+          padding: 14px 24px;
+          font-weight: 700;
+        }
+        .btn-sari:hover {
+          background: rgba(255, 215, 0, 0.2);
+          border: 1px solid rgba(255, 215, 0, 0.8);
+          box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+          color: #fff;
+          transform: translateY(-2px);
+        }
+
+        .btn-mavi {
+          background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.05));
+          color: #38bdf8;
+          border: 1px solid rgba(56, 189, 248, 0.3);
+          border-radius: 50px !important;
+          transition: all 0.3s ease;
+          width: 100%;
+          text-align: center;
+          text-decoration: none;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+          margin-top: 16px;
+          padding: 14px 24px;
+          font-weight: 700;
+        }
+        .btn-mavi:hover {
+          background: rgba(56, 189, 248, 0.2);
+          border: 1px solid rgba(56, 189, 248, 0.8);
+          box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+          color: #fff;
+          transform: translateY(-2px);
+        }
+
+        .btn-yesil {
+          background: linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(52, 211, 153, 0.05));
+          color: #34d399;
+          border: 1px solid rgba(52, 211, 153, 0.3);
+          border-radius: 50px !important;
+          transition: all 0.3s ease;
+          width: 100%;
+          text-align: center;
+          text-decoration: none;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+          margin-top: 16px;
+          padding: 14px 24px;
+          font-weight: 700;
+        }
+        .btn-yesil:hover {
+          background: rgba(52, 211, 153, 0.2);
+          border: 1px solid rgba(52, 211, 153, 0.8);
+          box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+          color: #fff;
+          transform: translateY(-2px);
+        }
+      `}</style>
       <Navbar />
       <main style={{ paddingTop: "120px", paddingBottom: "80px", minHeight: "80vh", display: "flex", flexDirection: "column", alignItems: "center" }}>
         
@@ -90,7 +166,7 @@ export default function OzelliklerPage() {
                   <strong style={{ fontSize: "18px", color: "#ffd700", fontWeight: 800 }}>₺{pricing.sari.gunluk}</strong>
                 </div>
               </div>
-              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", marginTop: "16px", background: "linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05))", color: "#ffd700", border: "1px solid rgba(255, 215, 0, 0.3)" }}>
+              <a href="tel:05464659693" className="btn-sari">
                 <i className="fa-solid fa-phone"></i> Hemen Bizi Ara
               </a>
             </div>
@@ -138,7 +214,7 @@ export default function OzelliklerPage() {
                   <strong style={{ fontSize: "18px", color: "#38bdf8", fontWeight: 800 }}>₺{pricing.mavi.gunluk}</strong>
                 </div>
               </div>
-              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", marginTop: "16px", background: "linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.05))", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.3)" }}>
+              <a href="tel:05464659693" className="btn-mavi">
                 <i className="fa-solid fa-phone"></i> Hemen Bizi Ara
               </a>
             </div>
@@ -187,7 +263,7 @@ export default function OzelliklerPage() {
                   <strong style={{ fontSize: "18px", color: "#34d399", fontWeight: 800 }}>₺{pricing.yesil.gunluk}</strong>
                 </div>
               </div>
-              <a href="tel:05464659693" className="primary-btn" style={{ width: "100%", textAlign: "center", textDecoration: "none", display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", marginTop: "16px", background: "linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(52, 211, 153, 0.05))", color: "#34d399", border: "1px solid rgba(52, 211, 153, 0.3)" }}>
+              <a href="tel:05464659693" className="btn-yesil">
                 <i className="fa-solid fa-phone"></i> Hemen Bizi Ara
               </a>
             </div>

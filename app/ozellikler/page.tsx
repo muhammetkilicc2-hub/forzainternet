@@ -221,7 +221,7 @@ export default function OzelliklerPage() {
 
             {/* YESIL MASA */}
             <div style={{ background: "linear-gradient(145deg, rgba(20, 25, 35, 0.95) 0%, rgba(10, 30, 20, 0.95) 100%)", border: "2px solid rgba(52, 211, 153, 0.7)", borderRadius: "24px", padding: "32px 28px", boxShadow: "0 10px 50px rgba(52, 211, 153, 0.2)", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
-              <div style={{ position: "absolute", top: "-13px", right: "24px", background: "linear-gradient(135deg, #10b981, #059669)", color: "#ffffff", padding: "3px 12px", borderRadius: "12px", fontSize: "11px", fontWeight: 800 }}>⭐ EN POPÜLER</div>
+              <div style={{ position: "absolute", top: "12px", right: "12px", background: "linear-gradient(135deg, #10b981, #059669)", color: "#ffffff", padding: "5px 14px", borderRadius: "20px", fontSize: "11px", fontWeight: 800, zIndex: 10, boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)" }}>⭐ EN POPÜLER</div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
                 <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(52, 211, 153, 0.15)", color: "#34d399", border: "1px solid rgba(52, 211, 153, 0.35)" }}>ULTRA VIP ESPOR</span>
               </div>

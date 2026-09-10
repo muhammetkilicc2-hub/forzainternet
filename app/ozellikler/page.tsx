@@ -162,10 +162,6 @@ export default function OzelliklerPage() {
                   <strong style={{ fontSize: "18px", fontWeight: 900, color: "#ffd700", background: "rgba(255, 215, 0, 0.15)", border: "1px solid rgba(255, 215, 0, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(255, 215, 0, 0.2)" }}>₺{pricing.sari.besSaatlik}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>10 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#ffd700", background: "rgba(255, 215, 0, 0.15)", border: "1px solid rgba(255, 215, 0, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(255, 215, 0, 0.2)" }}>₺{pricing.sari.onSaatlik || 200}</strong>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>24 Saatlik Paket</span>
                   <strong style={{ fontSize: "18px", fontWeight: 900, color: "#ffd700", background: "rgba(255, 215, 0, 0.15)", border: "1px solid rgba(255, 215, 0, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(255, 215, 0, 0.2)" }}>₺{pricing.sari.gunluk}</strong>
                 </div>

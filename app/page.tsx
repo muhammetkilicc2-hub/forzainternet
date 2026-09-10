@@ -253,7 +253,7 @@ export default function HomePage() {
                   </span>
                   <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600 }}>144 Hz Espor</span>
                 </div>
-                <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Sarı Masalar</h3>
+                <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Silver Masalar</h3>
                 <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "20px" }}>Nvidia RTX 3060 • Intel i5 • 16GB RAM • 144Hz Monitör</p>
                 
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", marginBottom: "24px" }}>
@@ -284,7 +284,7 @@ export default function HomePage() {
                   </span>
                   <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600 }}>240 Hz Espor</span>
                 </div>
-                <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Mavi Masalar</h3>
+                <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Gold Pro Masalar</h3>
                 <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "20px" }}>RTX 3060 OC • Intel i5 Gaming • 16GB RAM • 240Hz Monitör</p>
                 
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", marginBottom: "24px" }}>
@@ -323,7 +323,7 @@ export default function HomePage() {
                   </span>
                   <span style={{ fontSize: "12px", color: "#34d399", fontWeight: 700 }}>540 Hz Turnuva Alanı</span>
                 </div>
-                <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Yeşil Masalar</h3>
+                <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Platinum Masalar</h3>
                 <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "20px" }}>RTX 3070 Ti / 5060 • Ryzen 7 7800X3D • 32GB DDR5 • 540 Hz Espor Monitörü</p>
                 
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.06)", marginBottom: "24px" }}>

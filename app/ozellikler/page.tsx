@@ -26,9 +26,9 @@ export default function OzelliklerPage() {
     <>
       <style>{`
         .btn-sari {
-          background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
-          color: #ffd700;
-          border: 1px solid rgba(255, 215, 0, 0.3);
+          background: linear-gradient(135deg, rgba(148, 163, 184, 0.1), rgba(148, 163, 184, 0.05));
+          color: #cbd5e1;
+          border: 1px solid rgba(148, 163, 184, 0.3);
           border-radius: 50px !important;
           transition: all 0.3s ease;
           width: 100%;
@@ -43,17 +43,17 @@ export default function OzelliklerPage() {
           font-weight: 700;
         }
         .btn-sari:hover {
-          background: rgba(255, 215, 0, 0.2);
-          border: 1px solid rgba(255, 215, 0, 0.8);
-          box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+          background: rgba(148, 163, 184, 0.2);
+          border: 1px solid rgba(148, 163, 184, 0.8);
+          box-shadow: 0 0 20px rgba(148, 163, 184, 0.4);
           color: #fff;
           transform: translateY(-2px);
         }
 
         .btn-mavi {
-          background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.05));
-          color: #38bdf8;
-          border: 1px solid rgba(56, 189, 248, 0.3);
+          background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(251, 191, 36, 0.05));
+          color: #fbbf24;
+          border: 1px solid rgba(251, 191, 36, 0.3);
           border-radius: 50px !important;
           transition: all 0.3s ease;
           width: 100%;
@@ -68,17 +68,17 @@ export default function OzelliklerPage() {
           font-weight: 700;
         }
         .btn-mavi:hover {
-          background: rgba(56, 189, 248, 0.2);
-          border: 1px solid rgba(56, 189, 248, 0.8);
-          box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+          background: rgba(251, 191, 36, 0.2);
+          border: 1px solid rgba(251, 191, 36, 0.8);
+          box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
           color: #fff;
           transform: translateY(-2px);
         }
 
         .btn-yesil {
-          background: linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(52, 211, 153, 0.05));
-          color: #34d399;
-          border: 1px solid rgba(52, 211, 153, 0.3);
+          background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.05));
+          color: #c084fc;
+          border: 1px solid rgba(168, 85, 247, 0.3);
           border-radius: 50px !important;
           transition: all 0.3s ease;
           width: 100%;
@@ -93,9 +93,9 @@ export default function OzelliklerPage() {
           font-weight: 700;
         }
         .btn-yesil:hover {
-          background: rgba(52, 211, 153, 0.2);
-          border: 1px solid rgba(52, 211, 153, 0.8);
-          box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+          background: rgba(168, 85, 247, 0.2);
+          border: 1px solid rgba(168, 85, 247, 0.8);
+          box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
           color: #fff;
           transform: translateY(-2px);
         }
@@ -109,11 +109,11 @@ export default function OzelliklerPage() {
               display: "inline-flex", 
               alignItems: "center", 
               gap: "8px", 
-              background: "rgba(255, 215, 0, 0.1)", 
-              border: "1px solid rgba(255, 215, 0, 0.3)", 
+              background: "rgba(148, 163, 184, 0.1)", 
+              border: "1px solid rgba(148, 163, 184, 0.3)", 
               padding: "6px 14px", 
               borderRadius: "20px", 
-              color: "#ffd700", 
+              color: "#cbd5e1", 
               fontSize: "13px", 
               fontWeight: 700,
               marginBottom: "16px"
@@ -131,24 +131,24 @@ export default function OzelliklerPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "24px", marginBottom: "80px" }}>
             
             {/* SARI MASA */}
-            <div style={{ background: "linear-gradient(145deg, rgba(20, 25, 35, 0.95) 0%, rgba(30, 25, 10, 0.95) 100%)", border: "1px solid rgba(255, 215, 0, 0.6)", borderRadius: "24px", padding: "32px 28px", boxShadow: "0 10px 40px rgba(255, 215, 0, 0.15)", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
+            <div style={{ background: "linear-gradient(145deg, rgba(20, 25, 35, 0.95) 0%, rgba(30, 25, 10, 0.95) 100%)", border: "1px solid rgba(148, 163, 184, 0.6)", borderRadius: "24px", padding: "32px 28px", boxShadow: "0 10px 40px rgba(148, 163, 184, 0.15)", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-                <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(255, 215, 0, 0.15)", color: "#ffd700", border: "1px solid rgba(255, 215, 0, 0.35)" }}>STANDART GAMING</span>
+                <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(148, 163, 184, 0.15)", color: "#cbd5e1", border: "1px solid rgba(148, 163, 184, 0.35)" }}>STANDART GAMING</span>
               </div>
-              <div style={{ position: "absolute", top: "-50px", left: "-50px", width: "150px", height: "150px", background: "radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0) 70%)", borderRadius: "50%", pointerEvents: "none" }}></div>
+              <div style={{ position: "absolute", top: "-50px", left: "-50px", width: "150px", height: "150px", background: "radial-gradient(circle, rgba(148, 163, 184, 0.15) 0%, rgba(148, 163, 184, 0) 70%)", borderRadius: "50%", pointerEvents: "none" }}></div>
               <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Silver Masalar</h3>
               <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px 0", display: "flex", flexDirection: "column", gap: "10px" }}>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-microchip" style={{ color: "#ffd700", width: "16px" }}></i> Nvidia RTX 3060 & Intel i5
+                  <i className="fa-solid fa-microchip" style={{ color: "#cbd5e1", width: "16px" }}></i> Nvidia RTX 3060 & Intel i5
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-memory" style={{ color: "#ffd700", width: "16px" }}></i> 16GB DDR4 Yüksek Hızlı RAM
+                  <i className="fa-solid fa-memory" style={{ color: "#cbd5e1", width: "16px" }}></i> 16GB DDR4 Yüksek Hızlı RAM
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-desktop" style={{ color: "#ffd700", width: "16px" }}></i> 144Hz Espor Monitör
+                  <i className="fa-solid fa-desktop" style={{ color: "#cbd5e1", width: "16px" }}></i> 144Hz Espor Monitör
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-wifi" style={{ color: "#ffd700", width: "16px" }}></i> 1000 Mbps Fiber İnternet
+                  <i className="fa-solid fa-wifi" style={{ color: "#cbd5e1", width: "16px" }}></i> 1000 Mbps Fiber İnternet
                 </li>
               </ul>
               
@@ -159,11 +159,11 @@ export default function OzelliklerPage() {
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>5 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#ffd700", background: "rgba(255, 215, 0, 0.15)", border: "1px solid rgba(255, 215, 0, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(255, 215, 0, 0.2)" }}>₺{pricing.sari.besSaatlik}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#cbd5e1", background: "rgba(148, 163, 184, 0.15)", border: "1px solid rgba(148, 163, 184, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(148, 163, 184, 0.2)" }}>₺{pricing.sari.besSaatlik}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>24 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#ffd700", background: "rgba(255, 215, 0, 0.15)", border: "1px solid rgba(255, 215, 0, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(255, 215, 0, 0.2)" }}>₺{pricing.sari.gunluk}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#cbd5e1", background: "rgba(148, 163, 184, 0.15)", border: "1px solid rgba(148, 163, 184, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(148, 163, 184, 0.2)" }}>₺{pricing.sari.gunluk}</strong>
                 </div>
               </div>
               <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="btn-sari">
@@ -172,27 +172,27 @@ export default function OzelliklerPage() {
             </div>
 
             {/* MAVI MASA */}
-            <div style={{ background: "linear-gradient(145deg, rgba(20, 25, 35, 0.95) 0%, rgba(10, 25, 40, 0.95) 100%)", border: "1px solid rgba(56, 189, 248, 0.6)", borderRadius: "24px", padding: "32px 28px", boxShadow: "0 10px 40px rgba(56, 189, 248, 0.15)", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
+            <div style={{ background: "linear-gradient(145deg, rgba(20, 25, 35, 0.95) 0%, rgba(10, 25, 40, 0.95) 100%)", border: "1px solid rgba(251, 191, 36, 0.6)", borderRadius: "24px", padding: "32px 28px", boxShadow: "0 10px 40px rgba(251, 191, 36, 0.15)", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-                <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(56, 189, 248, 0.15)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.35)" }}>PRO ESPOR GAMING</span>
+                <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(251, 191, 36, 0.15)", color: "#fbbf24", border: "1px solid rgba(251, 191, 36, 0.35)" }}>PRO ESPOR GAMING</span>
               </div>
-              <div style={{ position: "absolute", top: "-50px", left: "-50px", width: "150px", height: "150px", background: "radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(56, 189, 248, 0) 70%)", borderRadius: "50%", pointerEvents: "none" }}></div>
+              <div style={{ position: "absolute", top: "-50px", left: "-50px", width: "150px", height: "150px", background: "radial-gradient(circle, rgba(251, 191, 36, 0.15) 0%, rgba(251, 191, 36, 0) 70%)", borderRadius: "50%", pointerEvents: "none" }}></div>
               <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Gold Pro Masalar</h3>
               <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px 0", display: "flex", flexDirection: "column", gap: "10px" }}>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-microchip" style={{ color: "#38bdf8", width: "16px" }}></i> RTX 3060 OC & Intel i5 Gaming
+                  <i className="fa-solid fa-microchip" style={{ color: "#fbbf24", width: "16px" }}></i> RTX 3060 OC & Intel i5 Gaming
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-memory" style={{ color: "#38bdf8", width: "16px" }}></i> 16GB DDR4 Yüksek Hızlı RAM
+                  <i className="fa-solid fa-memory" style={{ color: "#fbbf24", width: "16px" }}></i> 16GB DDR4 Yüksek Hızlı RAM
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-desktop" style={{ color: "#38bdf8", width: "16px" }}></i> 240Hz Espor Monitörü
+                  <i className="fa-solid fa-desktop" style={{ color: "#fbbf24", width: "16px" }}></i> 240Hz Espor Monitörü
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-headphones" style={{ color: "#38bdf8", width: "16px" }}></i> Pro Espor Ekipmanları
+                  <i className="fa-solid fa-headphones" style={{ color: "#fbbf24", width: "16px" }}></i> Pro Espor Ekipmanları
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-wifi" style={{ color: "#38bdf8", width: "16px" }}></i> 1000 Mbps Fiber İnternet
+                  <i className="fa-solid fa-wifi" style={{ color: "#fbbf24", width: "16px" }}></i> 1000 Mbps Fiber İnternet
                 </li>
               </ul>
               
@@ -203,15 +203,15 @@ export default function OzelliklerPage() {
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>5 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#38bdf8", background: "rgba(56, 189, 248, 0.15)", border: "1px solid rgba(56, 189, 248, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(56, 189, 248, 0.2)" }}>₺{pricing.mavi.besSaatlik}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#fbbf24", background: "rgba(251, 191, 36, 0.15)", border: "1px solid rgba(251, 191, 36, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(251, 191, 36, 0.2)" }}>₺{pricing.mavi.besSaatlik}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>10 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#38bdf8", background: "rgba(56, 189, 248, 0.15)", border: "1px solid rgba(56, 189, 248, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(56, 189, 248, 0.2)" }}>₺{pricing.mavi.onSaatlik || 450}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#fbbf24", background: "rgba(251, 191, 36, 0.15)", border: "1px solid rgba(251, 191, 36, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(251, 191, 36, 0.2)" }}>₺{pricing.mavi.onSaatlik || 450}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>24 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#38bdf8", background: "rgba(56, 189, 248, 0.15)", border: "1px solid rgba(56, 189, 248, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(56, 189, 248, 0.2)" }}>₺{pricing.mavi.gunluk}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#fbbf24", background: "rgba(251, 191, 36, 0.15)", border: "1px solid rgba(251, 191, 36, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(251, 191, 36, 0.2)" }}>₺{pricing.mavi.gunluk}</strong>
                 </div>
               </div>
               <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="btn-mavi">
@@ -220,28 +220,28 @@ export default function OzelliklerPage() {
             </div>
 
             {/* YESIL MASA */}
-            <div style={{ background: "linear-gradient(145deg, rgba(20, 25, 35, 0.95) 0%, rgba(10, 30, 20, 0.95) 100%)", border: "2px solid rgba(52, 211, 153, 0.7)", borderRadius: "24px", padding: "32px 28px", boxShadow: "0 10px 50px rgba(52, 211, 153, 0.2)", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
-              <div style={{ position: "absolute", top: "12px", right: "12px", background: "linear-gradient(135deg, #10b981, #059669)", color: "#ffffff", padding: "5px 14px", borderRadius: "20px", fontSize: "11px", fontWeight: 800, zIndex: 10, boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)" }}>⭐ EN POPÜLER</div>
+            <div style={{ background: "linear-gradient(145deg, rgba(20, 25, 35, 0.95) 0%, rgba(10, 30, 20, 0.95) 100%)", border: "2px solid rgba(168, 85, 247, 0.7)", borderRadius: "24px", padding: "32px 28px", boxShadow: "0 10px 50px rgba(168, 85, 247, 0.2)", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}>
+              <div style={{ position: "absolute", top: "12px", right: "12px", background: "linear-gradient(135deg, #9333ea, #7e22ce)", color: "#ffffff", padding: "5px 14px", borderRadius: "20px", fontSize: "11px", fontWeight: 800, zIndex: 10, boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)" }}>⭐ EN POPÜLER</div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-                <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(52, 211, 153, 0.15)", color: "#34d399", border: "1px solid rgba(52, 211, 153, 0.35)" }}>ULTRA VIP ESPOR</span>
+                <span style={{ fontSize: "12px", fontWeight: 800, padding: "4px 12px", borderRadius: "12px", background: "rgba(168, 85, 247, 0.15)", color: "#c084fc", border: "1px solid rgba(168, 85, 247, 0.35)" }}>ULTRA VIP ESPOR</span>
               </div>
-              <div style={{ position: "absolute", top: "-50px", left: "-50px", width: "150px", height: "150px", background: "radial-gradient(circle, rgba(52, 211, 153, 0.2) 0%, rgba(52, 211, 153, 0) 70%)", borderRadius: "50%", pointerEvents: "none" }}></div>
+              <div style={{ position: "absolute", top: "-50px", left: "-50px", width: "150px", height: "150px", background: "radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0) 70%)", borderRadius: "50%", pointerEvents: "none" }}></div>
               <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", marginBottom: "6px" }}>Platinum Masalar</h3>
               <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px 0", display: "flex", flexDirection: "column", gap: "10px" }}>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-microchip" style={{ color: "#34d399", width: "16px" }}></i> RTX 3070 Ti / 5060 & Ryzen 7
+                  <i className="fa-solid fa-microchip" style={{ color: "#c084fc", width: "16px" }}></i> RTX 3070 Ti / 5060 & Ryzen 7
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-memory" style={{ color: "#34d399", width: "16px" }}></i> 32GB DDR5 Yüksek Frekans RAM
+                  <i className="fa-solid fa-memory" style={{ color: "#c084fc", width: "16px" }}></i> 32GB DDR5 Yüksek Frekans RAM
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-desktop" style={{ color: "#34d399", width: "16px" }}></i> 540Hz Espor Turnuva Monitörü
+                  <i className="fa-solid fa-desktop" style={{ color: "#c084fc", width: "16px" }}></i> 540Hz Espor Turnuva Monitörü
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-crown" style={{ color: "#34d399", width: "16px" }}></i> Özel VIP Turnuva Odası
+                  <i className="fa-solid fa-crown" style={{ color: "#c084fc", width: "16px" }}></i> Özel VIP Turnuva Odası
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#cbd5e1" }}>
-                  <i className="fa-solid fa-wifi" style={{ color: "#34d399", width: "16px" }}></i> 1000 Mbps Fiber İnternet
+                  <i className="fa-solid fa-wifi" style={{ color: "#c084fc", width: "16px" }}></i> 1000 Mbps Fiber İnternet
                 </li>
               </ul>
               
@@ -252,15 +252,15 @@ export default function OzelliklerPage() {
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>5 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#34d399", background: "rgba(52, 211, 153, 0.15)", border: "1px solid rgba(52, 211, 153, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(52, 211, 153, 0.2)" }}>₺{pricing.yesil.besSaatlik}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#c084fc", background: "rgba(168, 85, 247, 0.15)", border: "1px solid rgba(168, 85, 247, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(168, 85, 247, 0.2)" }}>₺{pricing.yesil.besSaatlik}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>10 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#34d399", background: "rgba(52, 211, 153, 0.15)", border: "1px solid rgba(52, 211, 153, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(52, 211, 153, 0.2)" }}>₺{pricing.yesil.onSaatlik || 650}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#c084fc", background: "rgba(168, 85, 247, 0.15)", border: "1px solid rgba(168, 85, 247, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(168, 85, 247, 0.2)" }}>₺{pricing.yesil.onSaatlik || 650}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>24 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#34d399", background: "rgba(52, 211, 153, 0.15)", border: "1px solid rgba(52, 211, 153, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(52, 211, 153, 0.2)" }}>₺{pricing.yesil.gunluk}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#c084fc", background: "rgba(168, 85, 247, 0.15)", border: "1px solid rgba(168, 85, 247, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(168, 85, 247, 0.2)" }}>₺{pricing.yesil.gunluk}</strong>
                 </div>
               </div>
               <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="btn-yesil">

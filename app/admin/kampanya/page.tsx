@@ -180,7 +180,7 @@ export default function KampanyaManagementPage() {
                   style={{
                     fontSize: "12px",
                     fontWeight: 900,
-                    color: cat.id === "sari" ? "#dfb758" : cat.id === "mavi" ? "#38bdf8" : "#34d399",
+                    color: cat.id === "sari" ? "#94a3b8" : cat.id === "mavi" ? "#fbbf24" : "#c084fc",
                     background: "rgba(255, 255, 255, 0.06)",
                     padding: "4px 12px",
                     borderRadius: "10px",
@@ -225,7 +225,7 @@ export default function KampanyaManagementPage() {
             <div className="fiyat-yonetim-alanlari" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
               <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                  <Clock size={14} style={{ color: "#dfb758" }} />
+                  <Clock size={14} style={{ color: "#94a3b8" }} />
                   <span>Saatlik Ücret (₺)</span>
                 </label>
                 <input
@@ -239,7 +239,7 @@ export default function KampanyaManagementPage() {
 
               <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                  <Zap size={14} style={{ color: "#38bdf8" }} />
+                  <Zap size={14} style={{ color: "#fbbf24" }} />
                   <span>5 Saat Paket (₺)</span>
                 </label>
                 <input
@@ -269,7 +269,7 @@ export default function KampanyaManagementPage() {
 
               <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                  <SunMedium size={14} style={{ color: "#34d399" }} />
+                  <SunMedium size={14} style={{ color: "#c084fc" }} />
                   <span>Gün Boyu Paket (₺)</span>
                 </label>
                 <input

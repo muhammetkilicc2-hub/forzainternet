@@ -25,7 +25,7 @@ export default function Footer() {
 
           <div className="footer-social-links">
             <a
-              href="https://wa.me/905464659693?text=Merhaba,%20Forza%20İnternet%20%26%20Cafe%20hakkında%20bilgi%20almak%20istiyorum."
+              href="whatsapp://send?phone=905464659693&text=Merhaba,%20Forza%20İnternet%20%26%20Cafe%20hakkında%20bilgi%20almak%20istiyorum."
               target="_blank"
               rel="noopener noreferrer"
               className="footer-social-btn whatsapp"

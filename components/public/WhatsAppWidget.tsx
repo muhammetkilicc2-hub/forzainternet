@@ -9,7 +9,7 @@ export default function WhatsAppWidget() {
     <div className={`sticky-contact ${open ? "active" : ""}`}>
       <div className="sticky-contact-options">
         <a
-          href="https://wa.me/905464659693?text=Merhaba,%20Forza%20İnternet%20%26%20Cafe%20hakkında%20bilgi%20almak%20istiyorum."
+          href="whatsapp://send?phone=905464659693&text=Merhaba,%20Forza%20İnternet%20%26%20Cafe%20hakkında%20bilgi%20almak%20istiyorum."
           target="_blank"
           rel="noopener noreferrer"
           className="contact-option whatsapp"

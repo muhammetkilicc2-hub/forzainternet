@@ -1,15 +1,8 @@
-﻿import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
     const contentType = request.headers.get("content-type") || "";
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
 
     // 1. Multipart Form Data (Dosya Yükleme)
     if (contentType.includes("multipart/form-data")) {
@@ -22,38 +15,21 @@ export async function POST(request: Request) {
 
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-
-      const originalName = file.name || "image.jpg";
-      const ext = path.extname(originalName) || ".jpg";
-      const cleanExt = [".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext.toLowerCase()) ? ext.toLowerCase() : ".jpg";
-      const fileName = `img_${Date.now()}_${Math.random().toString(36).substring(2, 7)}${cleanExt}`;
-      const filePath = path.join(uploadDir, fileName);
-
-      fs.writeFileSync(filePath, buffer);
-
-      const fileUrl = `/uploads/${fileName}`;
-      return NextResponse.json({ success: true, url: fileUrl });
+      const mimeType = file.type || "image/jpeg";
+      
+      const base64Url = `data:${mimeType};base64,${buffer.toString('base64')}`;
+      
+      // Vercel serverless ortamında diske yazmak (fs.writeFileSync) hata verir (Read-only file system).
+      // Bu yüzden küçük görselleri doğrudan Base64 olarak veritabanına kaydedilmesi için döndürüyoruz.
+      return NextResponse.json({ success: true, url: base64Url });
     }
 
-    // 2. Base64 Data URL JSON Yükleme
+    // 2. Base64 Data URL JSON Yükleme (zaten base64 geldiyse aynen geri döndür)
     const body = await request.json();
     const base64Data = body.image || body.file || body.data;
 
     if (typeof base64Data === "string" && base64Data.startsWith("data:image")) {
-      const matches = base64Data.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
-      if (matches) {
-        const extType = matches[1] === "jpeg" ? "jpg" : matches[1];
-        const base64Content = matches[2];
-        const buffer = Buffer.from(base64Content, "base64");
-
-        const fileName = `img_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${extType}`;
-        const filePath = path.join(uploadDir, fileName);
-
-        fs.writeFileSync(filePath, buffer);
-
-        const fileUrl = `/uploads/${fileName}`;
-        return NextResponse.json({ success: true, url: fileUrl });
-      }
+      return NextResponse.json({ success: true, url: base64Data });
     }
 
     return NextResponse.json({ error: "Geçersiz görsel verisi" }, { status: 400 });

@@ -17,7 +17,7 @@ export default function OzelliklerPage() {
     fetch("/api/pricing")
       .then(res => res.json())
       .then(data => {
-        if(data && data.sari) setPricing(data);
+        if(data && data.pricing && data.pricing.sari) setPricing(data.pricing);
       })
       .catch(err => console.error(err));
   }, []);
@@ -152,18 +152,22 @@ export default function OzelliklerPage() {
                 </li>
               </ul>
               
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "inset 0 2px 10px rgba(0,0,0,0.2)", flexGrow: 1 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "14px", padding: "20px", background: "linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "inset 0 2px 10px rgba(0,0,0,0.2)", flexGrow: 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>Saatlik Ücret</span>
-                  <strong style={{ fontSize: "18px", color: "#ffffff", fontWeight: 800 }}>₺{pricing.sari.saatlik} <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 500 }}>/ saat</span></strong>
+                  <strong style={{ fontSize: "16px", fontWeight: 900, color: "#ffffff", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", padding: "4px 12px", borderRadius: "20px" }}>₺{pricing.sari.saatlik} <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 500 }}>/ saat</span></strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>5 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", color: "#ffd700", fontWeight: 800 }}>₺{pricing.sari.besSaatlik}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#ffd700", background: "rgba(255, 215, 0, 0.15)", border: "1px solid rgba(255, 215, 0, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(255, 215, 0, 0.2)" }}>₺{pricing.sari.besSaatlik}</strong>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>10 Saatlik Paket</span>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#ffd700", background: "rgba(255, 215, 0, 0.15)", border: "1px solid rgba(255, 215, 0, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(255, 215, 0, 0.2)" }}>₺{pricing.sari.onSaatlik || 200}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>24 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", color: "#ffd700", fontWeight: 800 }}>₺{pricing.sari.gunluk}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#ffd700", background: "rgba(255, 215, 0, 0.15)", border: "1px solid rgba(255, 215, 0, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(255, 215, 0, 0.2)" }}>₺{pricing.sari.gunluk}</strong>
                 </div>
               </div>
               <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="btn-sari">
@@ -196,22 +200,22 @@ export default function OzelliklerPage() {
                 </li>
               </ul>
               
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "inset 0 2px 10px rgba(0,0,0,0.2)", flexGrow: 1 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "14px", padding: "20px", background: "linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "inset 0 2px 10px rgba(0,0,0,0.2)", flexGrow: 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>Saatlik Ücret</span>
-                  <strong style={{ fontSize: "18px", color: "#ffffff", fontWeight: 800 }}>₺{pricing.mavi.saatlik} <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 500 }}>/ saat</span></strong>
+                  <strong style={{ fontSize: "16px", fontWeight: 900, color: "#ffffff", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", padding: "4px 12px", borderRadius: "20px" }}>₺{pricing.mavi.saatlik} <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 500 }}>/ saat</span></strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>5 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", color: "#38bdf8", fontWeight: 800 }}>₺{pricing.mavi.besSaatlik}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#38bdf8", background: "rgba(56, 189, 248, 0.15)", border: "1px solid rgba(56, 189, 248, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(56, 189, 248, 0.2)" }}>₺{pricing.mavi.besSaatlik}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>10 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", color: "#38bdf8", fontWeight: 800 }}>₺{pricing.mavi.onSaatlik || 450}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#38bdf8", background: "rgba(56, 189, 248, 0.15)", border: "1px solid rgba(56, 189, 248, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(56, 189, 248, 0.2)" }}>₺{pricing.mavi.onSaatlik || 450}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>24 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", color: "#38bdf8", fontWeight: 800 }}>₺{pricing.mavi.gunluk}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#38bdf8", background: "rgba(56, 189, 248, 0.15)", border: "1px solid rgba(56, 189, 248, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(56, 189, 248, 0.2)" }}>₺{pricing.mavi.gunluk}</strong>
                 </div>
               </div>
               <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="btn-mavi">
@@ -245,22 +249,22 @@ export default function OzelliklerPage() {
                 </li>
               </ul>
               
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "16px", background: "linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "inset 0 2px 10px rgba(0,0,0,0.2)", flexGrow: 1 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "14px", padding: "20px", background: "linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "inset 0 2px 10px rgba(0,0,0,0.2)", flexGrow: 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>Saatlik Ücret</span>
-                  <strong style={{ fontSize: "18px", color: "#ffffff", fontWeight: 800 }}>₺{pricing.yesil.saatlik} <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 500 }}>/ saat</span></strong>
+                  <strong style={{ fontSize: "16px", fontWeight: 900, color: "#ffffff", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", padding: "4px 12px", borderRadius: "20px" }}>₺{pricing.yesil.saatlik} <span style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 500 }}>/ saat</span></strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>5 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", color: "#34d399", fontWeight: 800 }}>₺{pricing.yesil.besSaatlik}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#34d399", background: "rgba(52, 211, 153, 0.15)", border: "1px solid rgba(52, 211, 153, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(52, 211, 153, 0.2)" }}>₺{pricing.yesil.besSaatlik}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>10 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", color: "#34d399", fontWeight: 800 }}>₺{pricing.yesil.onSaatlik || 650}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#34d399", background: "rgba(52, 211, 153, 0.15)", border: "1px solid rgba(52, 211, 153, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(52, 211, 153, 0.2)" }}>₺{pricing.yesil.onSaatlik || 650}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13.5px", color: "#cbd5e1" }}>24 Saatlik Paket</span>
-                  <strong style={{ fontSize: "18px", color: "#34d399", fontWeight: 800 }}>₺{pricing.yesil.gunluk}</strong>
+                  <strong style={{ fontSize: "18px", fontWeight: 900, color: "#34d399", background: "rgba(52, 211, 153, 0.15)", border: "1px solid rgba(52, 211, 153, 0.4)", padding: "4px 14px", borderRadius: "20px", boxShadow: "0 2px 10px rgba(52, 211, 153, 0.2)" }}>₺{pricing.yesil.gunluk}</strong>
                 </div>
               </div>
               <a onClick={() => { fetch("/api/analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "click", type: "phone" }) }) }}  href="tel:05464659693" className="btn-yesil">

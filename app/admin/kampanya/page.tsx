@@ -11,8 +11,8 @@ export default function KampanyaManagementPage() {
   const { showToast } = useToast();
   const [pricing, setPricing] = useState<PricingConfig>({
     sari: { saatlik: 60, besSaatlik: 200, gunluk: 400 },
-    mavi: { saatlik: 70, besSaatlik: 250, gunluk: 500 },
-    yesil: { saatlik: 90, besSaatlik: 350, gunluk: 700 },
+    mavi: { saatlik: 70, besSaatlik: 250, onSaatlik: 450, gunluk: 500 },
+    yesil: { saatlik: 90, besSaatlik: 350, onSaatlik: 650, gunluk: 700 },
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -36,7 +36,7 @@ export default function KampanyaManagementPage() {
     loadPricing();
   }, []);
 
-  const handlePriceChange = (kategori: PcKategori, field: "saatlik" | "besSaatlik" | "gunluk", value: number) => {
+  const handlePriceChange = (kategori: PcKategori, field: "saatlik" | "besSaatlik" | "onSaatlik" | "gunluk", value: number) => {
     setPricing((prev) => ({
       ...prev,
       [kategori]: {
@@ -250,6 +250,22 @@ export default function KampanyaManagementPage() {
                   style={{ fontSize: "16px", fontWeight: 800 }}
                 />
               </div>
+
+              {cat.id !== "sari" && (
+                <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                    <Sparkles size={14} style={{ color: "#a855f7" }} />
+                    <span>10 Saat Paket (₺)</span>
+                  </label>
+                  <input
+                    type="number"
+                    className="settings-input"
+                    value={pricing[cat.id].onSaatlik || 0}
+                    onChange={(e) => handlePriceChange(cat.id, "onSaatlik", parseInt(e.target.value) || 0)}
+                    style={{ fontSize: "16px", fontWeight: 800 }}
+                  />
+                </div>
+              )}
 
               <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 800, color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.5px" }}>

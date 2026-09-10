@@ -215,20 +215,22 @@ export async function getStats(): Promise<AdminStats> {
     onaylananRezervasyon: 0,
   };
 }
-
-declare global {
-  var __forzaAnalytics: import("./types").AnalyticsData | undefined;
+  declare global {
+  var __forzaAnalytics: import('./types').AnalyticsData | undefined;
 }
+
 if (!globalThis.__forzaAnalytics) {
+  const initDate = new Date().toISOString().split('T')[0];
   globalThis.__forzaAnalytics = {
-    toplamZiyaret: 1482,
-    tekilZiyaret: 940,
-    bugunZiyaret: 184,
-    anlikCanliKullanici: 14,
-    kategoriBakilma: { sari: 320, mavi: 580, yesil: 790 },
-    cihazDagilimi: { mobil: 68, masaustu: 32 },
-    pageViews: { home: 1200, ozellikler: 850, hakkimizda: 430 },
-    clicks: { map: 124, phone: 58 },
+    toplamZiyaret: 0,
+    tekilZiyaret: 0,
+    bugunZiyaret: 0,
+    anlikCanliKullanici: 1,
+    kategoriBakilma: { sari: 0, mavi: 0, yesil: 0 },
+    cihazDagilimi: { mobil: 0, masaustu: 0 },
+    pageViews: { home: 0, ozellikler: 0, hakkimizda: 0 },
+    clicks: { map: 0, phone: 0 },
+    history: [{ date: initDate, views: 0, mapClicks: 0, phoneClicks: 0 }],
     sonGuncelleme: new Date().toISOString(),
   };
 }
@@ -238,39 +240,39 @@ export function getAnalytics() {
   const saat = new Date().getHours();
   const baz = (saat >= 16 && saat <= 24) ? 22 : 12;
   an.anlikCanliKullanici = Math.max(6, baz + Math.floor(Math.random() * 5) - 2);
+  
+  const today = new Date().toISOString().split('T')[0];
+  if (!an.history) an.history = [];
+  if (an.history.length === 0 || an.history[an.history.length - 1].date !== today) {
+    an.bugunZiyaret = 0;
+    an.history.push({ date: today, views: 0, mapClicks: 0, phoneClicks: 0 });
+    if (an.history.length > 30) an.history.shift();
+  }
   return an;
 }
 
-export function trackVisit(isUnique = false) {
-  const an = globalThis.__forzaAnalytics!;
-  an.toplamZiyaret += 1;
-  an.bugunZiyaret += 1;
-  if (isUnique) an.tekilZiyaret += 1;
-  an.sonGuncelleme = new Date().toISOString();
-  return an;
-}
 
-export function trackCategoryInterest(kategori: "sari" | "mavi" | "yesil") {
-  const an = globalThis.__forzaAnalytics!;
-  if (an.kategoriBakilma[kategori] !== undefined) an.kategoriBakilma[kategori] += 1;
-  an.sonGuncelleme = new Date().toISOString();
-  return an;
-}
-export function trackClick(type: "map" | "phone") {
-  const an = globalThis.__forzaAnalytics!;
-  if (an.clicks[type] !== undefined) an.clicks[type] += 1;
-  an.sonGuncelleme = new Date().toISOString();
-  return an;
-}
-
-export function trackPageView(page: "home" | "ozellikler" | "hakkimizda") {
-  const an = globalThis.__forzaAnalytics!;
+export function trackPageView(page: 'home' | 'ozellikler' | 'hakkimizda') {
+  const an = getAnalytics();
   if (an.pageViews[page] !== undefined) {
     an.pageViews[page] += 1;
     an.toplamZiyaret += 1;
     an.bugunZiyaret += 1;
+    if (an.history.length > 0) {
+      an.history[an.history.length - 1].views += 1;
+    }
   }
   an.sonGuncelleme = new Date().toISOString();
   return an;
 }
 
+export function trackClick(type: 'map' | 'phone') {
+  const an = getAnalytics();
+  if (an.clicks[type] !== undefined) an.clicks[type] += 1;
+  if (an.history.length > 0) {
+    if (type === 'map') an.history[an.history.length - 1].mapClicks += 1;
+    if (type === 'phone') an.history[an.history.length - 1].phoneClicks += 1;
+  }
+  an.sonGuncelleme = new Date().toISOString();
+  return an;
+}

@@ -101,6 +101,13 @@ export interface CategoryInterest {
   yesil: number;
 }
 
+export interface DailyStat {
+  date: string; // YYYY-MM-DD
+  views: number;
+  mapClicks: number;
+  phoneClicks: number;
+}
+
 export interface AnalyticsData {
   toplamZiyaret: number;
   tekilZiyaret: number;
@@ -121,4 +128,5 @@ export interface AnalyticsData {
     map: number;
     phone: number;
   };
+  history: DailyStat[];
 }

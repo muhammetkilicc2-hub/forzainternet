@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getAnalytics, trackClick, trackPageView } from "@/lib/data";
 
 export async function GET() {
-  const analytics = getAnalytics();
+  const analytics = await getAnalytics();
   return NextResponse.json({ success: true, analytics });
 }
 
@@ -13,9 +13,9 @@ export async function POST(req: Request) {
 
     let analytics;
     if (action === "click") {
-      analytics = trackClick(type as "map" | "phone");
+      analytics = await trackClick(type as "map" | "phone");
     } else if (action === "pageview") {
-      analytics = trackPageView(type as "home" | "ozellikler" | "hakkimizda");
+      analytics = await trackPageView(type as "home" | "ozellikler" | "hakkimizda");
     }
 
     return NextResponse.json({ success: true, analytics });

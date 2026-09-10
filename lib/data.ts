@@ -215,13 +215,11 @@ export async function getStats(): Promise<AdminStats> {
     onaylananRezervasyon: 0,
   };
 }
-  declare global {
-  var __forzaAnalytics: import('./types').AnalyticsData | undefined;
-}
-
-if (!globalThis.__forzaAnalytics) {
+async function getAnalyticsData(): Promise<import('./types').AnalyticsData> {
+  const dbData = await readData<import('./types').AnalyticsData>("analytics", "analytics_state.json");
+  if (dbData) return dbData;
   const initDate = new Date().toISOString().split('T')[0];
-  globalThis.__forzaAnalytics = {
+  return {
     toplamZiyaret: 0,
     tekilZiyaret: 0,
     bugunZiyaret: 0,
@@ -235,8 +233,8 @@ if (!globalThis.__forzaAnalytics) {
   };
 }
 
-export function getAnalytics() {
-  const an = globalThis.__forzaAnalytics!;
+export async function getAnalytics() {
+  const an = await getAnalyticsData();
   const saat = new Date().getHours();
   const baz = (saat >= 16 && saat <= 24) ? 22 : 12;
   an.anlikCanliKullanici = Math.max(6, baz + Math.floor(Math.random() * 5) - 2);
@@ -248,12 +246,12 @@ export function getAnalytics() {
     an.history.push({ date: today, views: 0, mapClicks: 0, phoneClicks: 0 });
     if (an.history.length > 30) an.history.shift();
   }
+  await writeData("analytics", "analytics_state.json", an);
   return an;
 }
 
-
-export function trackPageView(page: 'home' | 'ozellikler' | 'hakkimizda') {
-  const an = getAnalytics();
+export async function trackPageView(page: 'home' | 'ozellikler' | 'hakkimizda') {
+  const an = await getAnalytics();
   if (an.pageViews[page] !== undefined) {
     an.pageViews[page] += 1;
     an.toplamZiyaret += 1;
@@ -263,16 +261,18 @@ export function trackPageView(page: 'home' | 'ozellikler' | 'hakkimizda') {
     }
   }
   an.sonGuncelleme = new Date().toISOString();
+  await writeData("analytics", "analytics_state.json", an);
   return an;
 }
 
-export function trackClick(type: 'map' | 'phone') {
-  const an = getAnalytics();
+export async function trackClick(type: 'map' | 'phone') {
+  const an = await getAnalytics();
   if (an.clicks[type] !== undefined) an.clicks[type] += 1;
   if (an.history.length > 0) {
     if (type === 'map') an.history[an.history.length - 1].mapClicks += 1;
     if (type === 'phone') an.history[an.history.length - 1].phoneClicks += 1;
   }
   an.sonGuncelleme = new Date().toISOString();
+  await writeData("analytics", "analytics_state.json", an);
   return an;
 }

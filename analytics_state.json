@@ -1,0 +1,39 @@
+{
+  "anlikCanliKullanici": 23,
+  "bugunZiyaret": 29,
+  "cihazDagilimi": {
+    "masaustu": 0,
+    "mobil": 0
+  },
+  "clicks": {
+    "map": 0,
+    "phone": 2
+  },
+  "history": [
+    {
+      "date": "2026-09-10",
+      "mapClicks": 0,
+      "phoneClicks": 1,
+      "views": 33
+    },
+    {
+      "date": "2026-09-11",
+      "mapClicks": 0,
+      "phoneClicks": 1,
+      "views": 29
+    }
+  ],
+  "kategoriBakilma": {
+    "mavi": 0,
+    "sari": 0,
+    "yesil": 0
+  },
+  "pageViews": {
+    "hakkimizda": 5,
+    "home": 45,
+    "ozellikler": 12
+  },
+  "sonGuncelleme": "2026-09-11T14:01:19.006Z",
+  "tekilZiyaret": 0,
+  "toplamZiyaret": 62
+}

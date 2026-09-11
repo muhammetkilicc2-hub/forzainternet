@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 
+import { FORZA_WHATSAPP_LINK } from "@/lib/constants";
+
 export default function WhatsAppWidget() {
   const [open, setOpen] = useState(false);
 
@@ -9,7 +11,7 @@ export default function WhatsAppWidget() {
     <div className={`sticky-contact ${open ? "active" : ""}`}>
       <div className="sticky-contact-options">
         <a
-          href="whatsapp://send?phone=905464659693&text=Merhaba,%20Forza%20İnternet%20%26%20Cafe%20hakkında%20bilgi%20almak%20istiyorum."
+          href={FORZA_WHATSAPP_LINK}
           target="_blank"
           rel="noopener noreferrer"
           className="contact-option whatsapp"

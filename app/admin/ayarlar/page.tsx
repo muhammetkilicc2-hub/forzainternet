@@ -1263,7 +1263,7 @@ export default function AyarlarPage() {
                 <span>Sesli Bildirim Uyarısı</span>
               </strong>
               <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "2px", display: "block" }}>
-                Yeni rezervasyon talebi geldiğinde ses çal
+                Sistem bildirimleri geldiğinde ses çal
               </span>
             </div>
             <input
@@ -1291,7 +1291,7 @@ export default function AyarlarPage() {
                 <span>Otomatik Canlı Yenileme</span>
               </strong>
               <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "2px", display: "block" }}>
-                Masa ve rezervasyon durumlarını periyodik güncelle
+                Sistem durumlarını periyodik güncelle
               </span>
             </div>
             <input

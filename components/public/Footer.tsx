@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { FORZA_PHONE, FORZA_PHONE_FORMATTED, FORZA_MAPS_LINK, FORZA_WHATSAPP_LINK, FORZA_INSTAGRAM } from "@/lib/constants";
 
 export default function Footer() {
   return (
@@ -25,7 +26,7 @@ export default function Footer() {
 
           <div className="footer-social-links">
             <a
-              href="whatsapp://send?phone=905464659693&text=Merhaba,%20Forza%20İnternet%20%26%20Cafe%20hakkında%20bilgi%20almak%20istiyorum."
+              href={FORZA_WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="footer-social-btn whatsapp"
@@ -35,7 +36,7 @@ export default function Footer() {
               <span>WhatsApp</span>
             </a>
             <a
-              href="https://www.instagram.com/forza_internet_bilgisayar/"
+              href={FORZA_INSTAGRAM}
               target="_blank"
               rel="noopener noreferrer"
               className="footer-social-btn instagram"
@@ -45,7 +46,7 @@ export default function Footer() {
               <span>Instagram</span>
             </a>
             <a
-              href="https://maps.google.com/?q=Forza+Internet+Cafe+Kepez+Antalya"
+              href={FORZA_MAPS_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="footer-social-btn maps"
@@ -72,12 +73,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/rezerve">
-                <i className="fa-solid fa-angle-right" aria-hidden="true"></i> Online Masa Rezervasyonu
-              </Link>
-            </li>
-            <li>
-              <Link href="/rezerve">
+              <Link href="/ozellikler">
                 <i className="fa-solid fa-angle-right" aria-hidden="true"></i> Fiyat Tarifeleri &amp; Paketler
               </Link>
             </li>
@@ -94,7 +90,7 @@ export default function Footer() {
           <h3 className="footer-heading">İletişim &amp; Lokasyon</h3>
           <div className="footer-contact-list">
             <a
-              href="https://maps.google.com/?q=Forza+Internet+Cafe+Kepez+Antalya"
+              href={FORZA_MAPS_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="footer-contact-item"
@@ -109,13 +105,13 @@ export default function Footer() {
               </div>
             </a>
 
-            <a href="tel:05464659693" className="footer-contact-item" title="Hemen Ara">
+            <a href={`tel:${FORZA_PHONE}`} className="footer-contact-item" title="Hemen Ara">
               <div className="contact-icon">
                 <i className="fa-solid fa-phone" aria-hidden="true"></i>
               </div>
               <div className="contact-info">
                 <strong>Telefon</strong>
-                <span>0 (546) 465 96 93</span>
+                <span>{FORZA_PHONE_FORMATTED}</span>
               </div>
             </a>
 
@@ -142,8 +138,7 @@ export default function Footer() {
           </p>
           <div className="footer-bottom-links">
             <Link href="/hakkimizda" className="footer-bottom-link">Hakkımızda</Link>
-            <span className="footer-bottom-dot">•</span>
-            <Link href="/rezerve" className="footer-bottom-link">Rezervasyon</Link>
+            
             <span className="footer-bottom-dot">•</span>
             <Link href="/giris" className="footer-bottom-link admin-link">
               <i className="fa-solid fa-lock" aria-hidden="true"></i> Yönetici Girişi

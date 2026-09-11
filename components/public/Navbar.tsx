@@ -107,7 +107,7 @@ export default function Navbar() {
           </li>
           <li>
             <Link
-              href="/#iletisim"
+              href="#iletisim"
               onClick={() => setMobileOpen(false)}
             >
               İletişim

@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { PC, PcKategori, PcDurum, KategoriBilgisi, Rezervasyon, KampanyaFiyatlari, AdminStats, AdminAuthSettings, GalleryPhoto } from "./types";
+import { PC, PcKategori, PcDurum, KategoriBilgisi, KampanyaFiyatlari, AdminStats, AdminAuthSettings, GalleryPhoto } from "./types";
 
 export const DEFAULT_GALLERY_PHOTOS: GalleryPhoto[] = [
   { id: "f1", src: "/foto1.jpeg", badge: "Ana Salon", alt: "Forza Gaming Salonu - Ana Espor Alanı", caption: "Forza Gaming Salonu - Ana Espor Alanı", isCover: true, order: 1 },
@@ -209,10 +209,6 @@ export async function getStats(): Promise<AdminStats> {
     toplamPc: 0,
     aktifPc: 0,
     bosPc: 0,
-    rezervePc: 0,
-    toplamRezervasyon: 0,
-    bekleyenRezervasyon: 0,
-    onaylananRezervasyon: 0,
   };
 }
 async function getAnalyticsData(): Promise<import('./types').AnalyticsData> {

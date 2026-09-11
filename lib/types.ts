@@ -1,5 +1,5 @@
 export type PcKategori = "sari" | "mavi" | "yesil";
-export type PcDurum = "bos" | "kullanimda" | "rezerve" | "arizali";
+export type PcDurum = "bos" | "kullanimda" | "arizali";
 
 export interface PC {
   id: string;
@@ -18,25 +18,6 @@ export interface KategoriBilgisi {
   ozellikler: string[];
 }
 
-export type OdemeYontemi = "kart" | "nakit" | "havale";
-export type RezervasyonDurum = "pending" | "confirmed" | "rejected";
-
-export interface Rezervasyon {
-  id: string;
-  musteriAdi: string;
-  telefon: string;
-  masaId: string;
-  masaIsim: string;
-  kategori: PcKategori;
-  tarih: string;
-  saat: string;
-  sure: number;
-  toplamTutar: number;
-  odemeYontemi: OdemeYontemi;
-  durum: RezervasyonDurum;
-  olusturuldu: string;
-  okundu?: boolean;
-}
 
 export interface KategoriFiyatPaket {
   saatlik: number;
@@ -89,10 +70,6 @@ export interface AdminStats {
   toplamPc: number;
   aktifPc: number;
   bosPc: number;
-  rezervePc: number;
-  toplamRezervasyon: number;
-  bekleyenRezervasyon: number;
-  onaylananRezervasyon: number;
 }
 
 export interface CategoryInterest {

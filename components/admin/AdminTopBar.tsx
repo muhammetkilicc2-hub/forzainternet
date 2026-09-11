@@ -38,8 +38,7 @@ export default function AdminTopBar({
     if (pathname === "/admin") return "Ana Sayfa";
     if (pathname === "/admin/kampanya") return "Kampanyalar";
     if (pathname === "/admin/masalar") return "Masalar";
-    if (pathname === "/admin/rezervasyonlar") return "Rezervasyonlar";
-    if (pathname === "/admin/ayarlar") return "Ayarlar";
+        if (pathname === "/admin/ayarlar") return "Ayarlar";
     return "Yönetim Paneli";
   };
 
@@ -57,29 +56,7 @@ export default function AdminTopBar({
       }
     } catch (e) {}
 
-    try {
-      const res = await fetch("/api/reservations", { cache: "no-store" });
-      const data = await res.json();
-      if (data.success && Array.isArray(data.reservations)) {
-        const serverNotifs: NotificationItem[] = data.reservations.map((r: any) => ({
-          id: r.id,
-          baslik: `Yeni Rezervasyon — ${r.masaIsim || r.masaId}`,
-          mesaj: `${r.musteriAdi} (${r.telefon}) · 🕒 Randevu: ${r.tarih} ${r.saat} · ₺${r.toplamTutar}`,
-          tarih: r.olusturuldu || new Date().toISOString(),
-          okundu: Boolean(r.okundu),
-        }));
-
-        const map = new Map<string, NotificationItem>();
-        localList.forEach((n) => map.set(n.id, n));
-        serverNotifs.forEach((n) => map.set(n.id, n));
-
-        const merged = Array.from(map.values()).sort(
-          (a, b) => new Date(b.tarih).getTime() - new Date(a.tarih).getTime()
-        );
-        setNotifications(merged.slice(0, 15));
-        return;
-      }
-    } catch (e) {}
+    
 
     setNotifications(localList.slice(0, 15));
   };
@@ -95,10 +72,7 @@ export default function AdminTopBar({
       }
     });
 
-    const unsubRez = subscribeLiveUpdate("reservations", () => {
-      loadNotifications();
-    });
-
+    
     const interval = setInterval(loadNotifications, 2500);
 
     const handleFocus = () => loadNotifications();
@@ -121,8 +95,7 @@ export default function AdminTopBar({
 
     return () => {
       unsubNotif();
-      unsubRez();
-      clearInterval(interval);
+            clearInterval(interval);
       window.removeEventListener("focus", handleFocus);
       document.removeEventListener("visibilitychange", handleFocus);
       window.removeEventListener("storage", loadNotifications);
